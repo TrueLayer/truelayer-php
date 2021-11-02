@@ -1,0 +1,33 @@
+{
+    "name": "truelayer/sdk",
+    "description": "TrueLayer's payments platform SDK",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stefan Adrian Danaita",
+            "email": "me@dsa.io"
+        },
+        {
+            "name": "Lee Boynton",
+            "email": "lee.boynton@truelayer.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TrueLayer\\Sdk\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TrueLayer\\Sdk\\Tests\\": "tests"
+        }
+    },
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.20"
+    }
+}
