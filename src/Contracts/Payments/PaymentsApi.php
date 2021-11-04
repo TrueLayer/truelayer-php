@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Contracts\Payments;
 
 use Psr\Http\Message\UriInterface;

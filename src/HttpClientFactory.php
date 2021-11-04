@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer;
 
 use Http\Client\Common\PluginClient;

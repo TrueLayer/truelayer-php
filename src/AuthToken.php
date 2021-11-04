@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer;
 
 use TrueLayer\Contracts\Auth\Resources\AuthToken as IAuthToken;
