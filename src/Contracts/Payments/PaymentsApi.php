@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Payments;
 
 use Psr\Http\Message\UriInterface;
+use TrueLayer\Models\PaymentRequest;
 
 interface PaymentsApi
 {
-    public function createPayment();
+    public function createPayment(PaymentRequest $paymentRequest);
 
     public function getPayment();
 

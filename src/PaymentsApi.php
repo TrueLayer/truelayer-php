@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Authentication;
+namespace TrueLayer;
 
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use TrueLayer\Contracts\Auth\AuthApi as IAuthApi;
-use TrueLayer\Contracts\Auth\Resources\AuthToken;
-use TrueLayer\Options;
+use Psr\Http\Message\UriInterface;
+use TrueLayer\Models\PaymentRequest;
 
-class AuthApi implements IAuthApi
+final class PaymentsApi implements \TrueLayer\Contracts\Payments\PaymentsApi
 {
-    private const PRODUCTION_URL = "https://auth.truelayer.com";
-    private const SANDBOX_URL = "https://auth.truelayer-sandbox.com";
+    private const PRODUCTION_URL = "https://api.truelayer.com/payments";
+    private const SANDBOX_URL = "https://test-pay-api.t7r.dev/payments";
     private HttpMethodsClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
@@ -34,20 +33,29 @@ class AuthApi implements IAuthApi
         $this->options = $options;
     }
 
-    public function getAuthToken(): AuthToken
+    public function createPayment(PaymentRequest $paymentRequest)
     {
-        // TODO: Handle errors
         $response = $this->httpClient->post(
-            ($this->options->useSandbox() ? self::SANDBOX_URL : self::PRODUCTION_URL) . '/connect/token',
+            ($this->options->useSandbox() ? self::SANDBOX_URL : self::PRODUCTION_URL),
             [],
-            http_build_query([
-                'grant_type' => 'client_credentials',
-                'client_id' => $this->options->getClientId(),
-                'client_secret' => $this->options->getClientSecret(),
-                'scope' => 'paydirect',
-            ])
+            $this->createJsonBody($paymentRequest->toArray())
         );
 
-        return new \TrueLayer\AuthToken((string)$response->getBody());
+        var_dump($response);
+    }
+
+    public function getPayment()
+    {
+        // TODO: Implement getPayment() method.
+    }
+
+    public function createHostedPaymentPageLink(string $paymentId, string $resourceToken, UriInterface $returnUri): string
+    {
+        // TODO: Implement createHostedPaymentPageLink() method.
+    }
+
+    protected function createJsonBody(array $parameters): ?string
+    {
+        return (count($parameters) === 0) ? null : json_encode($parameters, empty($parameters) ? JSON_FORCE_OBJECT : 0);
     }
 }

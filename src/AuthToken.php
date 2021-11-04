@@ -39,4 +39,9 @@ class AuthToken implements IAuthToken
     {
         // TODO: Implement isScoped() method.
     }
+
+    public function __toString(): string
+    {
+        return $this->getToken();
+    }
 }
