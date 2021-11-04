@@ -16,7 +16,7 @@ use TrueLayer\Options;
 class AuthApi implements IAuthApi
 {
     private const PRODUCTION_URL = "https://auth.truelayer.com";
-    private const SANDBOX_URL = "https://auth.truelayer-sandbox.com";
+    private const SANDBOX_URL = "https://auth.t7r.dev";
     private HttpMethodsClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private StreamFactoryInterface $streamFactory;
@@ -44,7 +44,7 @@ class AuthApi implements IAuthApi
                 'grant_type' => 'client_credentials',
                 'client_id' => $this->options->getClientId(),
                 'client_secret' => $this->options->getClientSecret(),
-                'scope' => 'paydirect',
+                'scope' => 'payments',
             ])
         );
 
