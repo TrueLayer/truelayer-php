@@ -2,9 +2,7 @@
 
 namespace TrueLayer\Contracts;
 
-use Psr\Http\Message\UriInterface;
-
 interface HttpClient
 {
-    public function get(UriInterface $uri, ?string $accessToken);
+    public function get(UriInterface $uri, ?string $accessToken = null);
 }

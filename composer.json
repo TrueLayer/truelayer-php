@@ -25,12 +25,16 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": "^8.0",
+        "php": "^7.4 || ^8.0",
         "psr/http-client-implementation": "^1.0",
-        "php-http/message-factory": "^1.0"
+        "php-http/message-factory": "^1.0",
+        "php-http/client-common": "^2.4"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",
-        "php-http/mock-client": "^1.0"
+        "php-http/mock-client": "^1.0",
+        "phpstan/phpstan": "^1.0",
+        "php-http/curl-client": "^2.2",
+        "guzzlehttp/psr7": "^2.1"
     }
 }
