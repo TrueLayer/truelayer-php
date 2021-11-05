@@ -24,7 +24,8 @@ $payments = new \TrueLayer\PaymentsApi($paymentsHttpClient, $options);
 $paymentRequest = new \TrueLayer\Models\PaymentRequest(
     1,
     \TrueLayer\Constants\Currencies::GBP,
-    new \TrueLayer\Models\Beneficiary('external', 'Test ref', 'Benny Fishery', '04-00-04', '12345678')
+    new \TrueLayer\Models\Beneficiary('external', 'Test ref', 'Benny Fishery', '04-00-04', '12345678'),
+    new \TrueLayer\Models\User()
 );
 
 $payments->createPayment($paymentRequest);
