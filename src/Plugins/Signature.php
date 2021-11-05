@@ -32,6 +32,6 @@ class Signature implements Plugin
             return $next($newRequest);
         }
 
-        return next($request);
+        return $next($request);
     }
 }

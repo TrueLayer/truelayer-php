@@ -11,6 +11,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use TrueLayer\Models\PaymentRequest;
+use TrueLayer\Models\PaymentResponse;
 
 final class PaymentsApi implements \TrueLayer\Contracts\Payments\PaymentsApi
 {
@@ -41,12 +42,16 @@ final class PaymentsApi implements \TrueLayer\Contracts\Payments\PaymentsApi
             $this->createJsonBody($paymentRequest->toArray())
         );
 
-        var_dump($response);
+        var_dump((string)$response->getBody());
     }
 
-    public function getPayment()
+    public function getPayment(string $paymentId): PaymentResponse
     {
-        // TODO: Implement getPayment() method.
+        $response = $this->httpClient->get(
+            ($this->options->useSandbox() ? self::SANDBOX_URL : self::PRODUCTION_URL) . '/' . rawurlencode($paymentId),
+        );
+
+        return new PaymentResponse((string)$response->getBody());
     }
 
     public function createHostedPaymentPageLink(string $paymentId, string $resourceToken, UriInterface $returnUri): string

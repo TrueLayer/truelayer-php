@@ -5,9 +5,9 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 $options = new \TrueLayer\Options(
-    'test-53ac4e',
+    'test-390ed6',
     file_get_contents(__DIR__ . '/client-secret.txt'),
-    'e6e4f604-6905-46e8-83d3-f588fc1d1e6a',
+    '8aa1e9dc-49b6-4afd-9152-5af9e0b9db47',
     file_get_contents(__DIR__ . '/private-key.pem'),
     true
 );
@@ -28,3 +28,6 @@ $paymentRequest = new \TrueLayer\Models\PaymentRequest(
 );
 
 $payments->createPayment($paymentRequest);
+
+$payment = $payments->getPayment('a005f886-18a7-46ef-af89-ebff400c142c');
+var_dump($payment);
