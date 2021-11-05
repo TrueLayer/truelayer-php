@@ -24,7 +24,11 @@ class PaymentRequest
         return [
             'amount_in_minor' => $this->amount,
             'currency' => $this->currency,
-            'payment_method' => 'bank_transfer',
+            'payment_method' => [
+                'type' => 'bank_transfer',
+                'statement_reference' => 'test',
+                'provider_filter' => []
+            ],
             'beneficiary' => $this->beneficiary->toArray(),
             'user' => $this->user->toArray(),
         ];
