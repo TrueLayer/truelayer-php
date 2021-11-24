@@ -33,19 +33,14 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "psr/http-client-implementation": "^1.0",
-        "php-http/message-factory": "^1.0",
-        "php-http/client-common": "^2.4",
         "truelayer/signing": "@dev",
         "ext-json": "*",
-        "php-http/discovery": "^1.14",
-        "guzzlehttp/guzzle": "^7.4"
+        "guzzlehttp/guzzle": "^7.4",
+        "ramsey/uuid": "^4.2"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",
-        "php-http/mock-client": "^1.0",
         "phpstan/phpstan": "^1.0",
-        "php-http/curl-client": "^2.2",
-        "guzzlehttp/psr7": "^2.1",
         "friendsofphp/php-cs-fixer": "^3.3"
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Builders;
 
 use TrueLayer\Contracts\Builders\BeneficiaryBuilderInterface;
+use TrueLayer\Models\IbanAccountBeneficiary;
 use TrueLayer\Models\MerchantAccountBeneficiary;
 use TrueLayer\Models\SortCodeAccountNumber;
 
@@ -19,11 +20,11 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     }
 
     /**
-     * @return MerchantAccountBeneficiary
+     * @return IbanAccountBeneficiary
      */
-    public function ibanAccount(): MerchantAccountBeneficiary
+    public function ibanAccount(): IbanAccountBeneficiary
     {
-        return new MerchantAccountBeneficiary();
+        return new IbanAccountBeneficiary();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace TrueLayer\Contracts\Builders;
 
+use TrueLayer\Models\IbanAccountBeneficiary;
 use TrueLayer\Models\MerchantAccountBeneficiary;
 use TrueLayer\Models\SortCodeAccountNumber;
 
@@ -13,9 +14,9 @@ interface BeneficiaryBuilderInterface
     public function sortCodeAccountNumber(): SortCodeAccountNumber;
 
     /**
-     * @return MerchantAccountBeneficiary
+     * @return IbanAccountBeneficiary
      */
-    public function ibanAccount(): MerchantAccountBeneficiary;
+    public function ibanAccount(): IbanAccountBeneficiary;
 
     /**
      * @return MerchantAccountBeneficiary

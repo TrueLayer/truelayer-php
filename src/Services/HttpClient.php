@@ -6,8 +6,10 @@ namespace TrueLayer\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use Ramsey\Uuid\Uuid;
 use TrueLayer\Contracts\Services\AuthTokenManagerInterface;
 use TrueLayer\Contracts\Services\HttpClientInterface;
 use TrueLayer\Exceptions\InvalidRequestData;
@@ -15,6 +17,8 @@ use TrueLayer\Signing\Contracts\Signer;
 
 class HttpClient implements HttpClientInterface
 {
+    const MAX_RETRIES = 1;
+
     /**
      * @var ClientInterface
      */
@@ -149,7 +153,7 @@ class HttpClient implements HttpClientInterface
     {
         $headers = [
             'Content-Type' => 'application/json',
-            'Idempotency-Key' => '123',
+            'Idempotency-Key' => Uuid::uuid1()->toString(),
         ];
 
         $body = \json_encode($data);
@@ -170,6 +174,23 @@ class HttpClient implements HttpClientInterface
             $this->withSignature = false;
         }
 
-        return $this->client->sendRequest($request);
+        return $this->sendRequest($request);
+    }
+
+    /**
+     * Send the request and retry in case of client failures.
+     * Note: Non 200 response status codes will not trigger a retry
+     * @param Request $request
+     * @param int $retry
+     */
+    private function sendRequest(Request $request, int $retry = 0): ResponseInterface
+    {
+        try {
+            return $this->client->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            if ($retry < self::MAX_RETRIES) {
+                return $this->sendRequest($request, $retry + 1);
+            }
+        }
     }
 }
