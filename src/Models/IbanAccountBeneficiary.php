@@ -15,11 +15,13 @@ class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
 
     /**
      * @param string $iban
+     *
      * @return IbanAccountBeneficiary
      */
     public function iban(string $iban): IbanAccountBeneficiary
     {
         $this->iban = $iban;
+
         return $this;
     }
 

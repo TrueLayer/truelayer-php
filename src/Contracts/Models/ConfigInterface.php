@@ -13,6 +13,7 @@ interface ConfigInterface
 
     /**
      * @param string $clientId
+     *
      * @return $this
      */
     public function clientId(string $clientId): self;
@@ -24,6 +25,7 @@ interface ConfigInterface
 
     /**
      * @param string $clientSecret
+     *
      * @return $this
      */
     public function clientSecret(string $clientSecret): self;
@@ -35,6 +37,7 @@ interface ConfigInterface
 
     /**
      * @param string $keyId
+     *
      * @return $this
      */
     public function keyId(string $keyId): self;
@@ -46,6 +49,7 @@ interface ConfigInterface
 
     /**
      * @param string $pem
+     *
      * @return $this
      */
     public function pem(string $pem): self;
@@ -57,6 +61,7 @@ interface ConfigInterface
 
     /**
      * @param bool $useProduction
+     *
      * @return $this
      */
     public function useProduction(bool $useProduction): self;
@@ -68,6 +73,7 @@ interface ConfigInterface
 
     /**
      * @param ClientInterface $client
+     *
      * @return $this
      */
     public function httpClient(ClientInterface $client): self;

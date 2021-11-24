@@ -7,8 +7,9 @@ use TrueLayer\Exceptions\AuthTokenRetrievalFailure;
 interface AuthTokenManagerInterface
 {
     /**
-     * @return string
      * @throws AuthTokenRetrievalFailure
+     *
+     * @return string
      */
     public function getAccessToken(): string;
 

@@ -49,11 +49,13 @@ class Config implements ConfigInterface
 
     /**
      * @param string $clientId
+     *
      * @return $this
      */
     public function clientId(string $clientId): self
     {
         $this->clientId = $clientId;
+
         return $this;
     }
 
@@ -67,11 +69,13 @@ class Config implements ConfigInterface
 
     /**
      * @param string $clientSecret
+     *
      * @return $this
      */
     public function clientSecret(string $clientSecret): self
     {
         $this->clientSecret = $clientSecret;
+
         return $this;
     }
 
@@ -85,11 +89,13 @@ class Config implements ConfigInterface
 
     /**
      * @param string $keyId
+     *
      * @return $this
      */
     public function keyId(string $keyId): self
     {
         $this->keyId = $keyId;
+
         return $this;
     }
 
@@ -103,11 +109,13 @@ class Config implements ConfigInterface
 
     /**
      * @param string $pem
+     *
      * @return $this
      */
     public function pem(string $pem): self
     {
         $this->pem = $pem;
+
         return $this;
     }
 
@@ -121,11 +129,13 @@ class Config implements ConfigInterface
 
     /**
      * @param bool $useProduction
+     *
      * @return $this
      */
     public function useProduction(bool $useProduction): self
     {
         $this->useProduction = $useProduction;
+
         return $this;
     }
 
@@ -139,6 +149,7 @@ class Config implements ConfigInterface
 
     /**
      * @param ClientInterface $client
+     *
      * @return $this
      */
     public function httpClient(ClientInterface $httpClient): self

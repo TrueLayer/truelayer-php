@@ -26,7 +26,7 @@ class PaymentRequestBuilder extends Payment implements PaymentRequestBuilderInte
 
     public function create()
     {
-        var_dump($this->toArray());
+        \var_dump($this->toArray());
 
         try {
             $response = $this->httpClient
@@ -34,8 +34,9 @@ class PaymentRequestBuilder extends Payment implements PaymentRequestBuilderInte
                 ->withAuthToken()
                 ->post(Endpoints::PAYMENTS, $this->toArray());
         } catch (\Exception $e) {
-            var_dump($e->getResponse()->getBody()->getContents());
+            \var_dump($e->getResponse()->getBody()->getContents());
         }
-        var_dump(json_decode($response->getBody()->getContents())); die();
+        \var_dump(\json_decode($response->getBody()->getContents()));
+        exit();
     }
 }

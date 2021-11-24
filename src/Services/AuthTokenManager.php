@@ -15,7 +15,7 @@ class AuthTokenManager implements AuthTokenManagerInterface
      * We apply a safety margin when checking for token expiration.
      * This is to prevent errors due to network delays.
      */
-    const SAFETY_MARGIN = 10;
+    public const SAFETY_MARGIN = 10;
 
     /**
      * @var HttpClientInterface
@@ -49,8 +49,8 @@ class AuthTokenManager implements AuthTokenManagerInterface
 
     /**
      * @param HttpClientInterface $httpClient
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param string              $clientId
+     * @param string              $clientSecret
      */
     public function __construct(HttpClientInterface $httpClient, string $clientId, string $clientSecret)
     {
@@ -60,8 +60,9 @@ class AuthTokenManager implements AuthTokenManagerInterface
     }
 
     /**
-     * @return string
      * @throws AuthTokenRetrievalFailure
+     *
+     * @return string
      */
     public function getAccessToken(): string
     {
@@ -93,7 +94,7 @@ class AuthTokenManager implements AuthTokenManagerInterface
         ]);
 
         $data = $response->getBody()->getContents();
-        $data = json_decode($data);
+        $data = \json_decode($data);
 
         if (empty($data->access_token) || empty($data->expires_in)) {
             throw new AuthTokenRetrievalFailure();
@@ -101,6 +102,6 @@ class AuthTokenManager implements AuthTokenManagerInterface
 
         $this->accessToken = (string) $data->access_token;
         $this->expiresIn = (int) $data->expires_in;
-        $this->retrievedAt = time();
+        $this->retrievedAt = \time();
     }
 }

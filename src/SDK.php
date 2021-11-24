@@ -20,7 +20,6 @@ use TrueLayer\Models\User;
 use TrueLayer\Services\AuthTokenManager;
 use TrueLayer\Services\HttpClient;
 
-
 class SDK implements SDKInterface
 {
     /**
@@ -65,7 +64,6 @@ class SDK implements SDKInterface
      */
     public function payout(): PayoutRequestBuilderInterface
     {
-
     }
 
     /**
@@ -78,8 +76,10 @@ class SDK implements SDKInterface
 
     /**
      * @param SDKBuilderInterface $builder
-     * @return SDKInterface
+     *
      * @throws Exceptions\AuthTokenRetrievalFailure
+     *
+     * @return SDKInterface
      */
     public static function make(SDKBuilderInterface $builder): SDKInterface
     {

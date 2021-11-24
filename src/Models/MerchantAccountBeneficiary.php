@@ -21,21 +21,25 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
 
     /**
      * @param string $id
+     *
      * @return MerchantAccountBeneficiary
      */
     public function id(string $id): MerchantAccountBeneficiary
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @param string $name
+     *
      * @return MerchantAccountBeneficiary
      */
     public function name(string $name): MerchantAccountBeneficiary
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -47,7 +51,7 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
         return [
             'type' => BeneficiaryTypes::MERCHANT_ACCOUNT,
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
         ];
     }
 }

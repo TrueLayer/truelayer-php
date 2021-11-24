@@ -23,7 +23,6 @@ class User implements UserInterface
      */
     private string $phone = '';
 
-
     public function new(): UserInterface
     {
         // TODO: 'what is existing'
@@ -32,31 +31,37 @@ class User implements UserInterface
 
     /**
      * @param string $name
+     *
      * @return UserInterface
      */
     public function name(string $name): UserInterface
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * @param string $email
+     *
      * @return UserInterface
      */
     public function email(string $email): UserInterface
     {
         $this->email = $email;
+
         return $this;
     }
 
     /**
      * @param string $phone
+     *
      * @return UserInterface
      */
     public function phone(string $phone): UserInterface
     {
         $this->phone = $phone;
+
         return $this;
     }
 

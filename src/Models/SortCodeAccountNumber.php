@@ -20,21 +20,25 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
 
     /**
      * @param string $sortCode
+     *
      * @return SortCodeAccountNumber
      */
     public function sortCode(string $sortCode): SortCodeAccountNumber
     {
         $this->sortCode = $sortCode;
+
         return $this;
     }
 
     /**
      * @param string $accountNumber
+     *
      * @return SortCodeAccountNumber
      */
     public function accountNumber(string $accountNumber): SortCodeAccountNumber
     {
         $this->accountNumber = $accountNumber;
+
         return $this;
     }
 

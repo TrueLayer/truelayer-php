@@ -37,51 +37,61 @@ class Payment implements PaymentInterface
 
     /**
      * @param int $amount
+     *
      * @return $this
      */
     public function amountInMinor(int $amount): self
     {
         $this->amount = $amount;
+
         return $this;
     }
 
     /**
      * @param string $currency
+     *
      * @return $this
      */
     public function currency(string $currency): self
     {
         $this->currency = $currency;
+
         return $this;
     }
 
     /**
      * @param string $statementReference
+     *
      * @return $this
      */
     public function statementReference(string $statementReference): self
     {
         $this->statementReference = $statementReference;
+
         return $this;
     }
 
     /**
      * @param BeneficiaryInterface $beneficiary
+     *
      * @return $this
      */
     public function beneficiary(BeneficiaryInterface $beneficiary): self
     {
         $this->beneficiary = $beneficiary;
+
         return $this;
     }
 
     /**
      * @param UserInterface $user
+     *
      * @return $this
      */
     public function user(UserInterface $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 

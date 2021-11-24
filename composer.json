@@ -45,6 +45,7 @@
         "php-http/mock-client": "^1.0",
         "phpstan/phpstan": "^1.0",
         "php-http/curl-client": "^2.2",
-        "guzzlehttp/psr7": "^2.1"
+        "guzzlehttp/psr7": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.3"
     }
 }
