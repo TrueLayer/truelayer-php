@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Contracts\Services\AuthTokenManagerInterface;
 use TrueLayer\Contracts\Services\HttpClientInterface;
-use TrueLayer\Exceptions\InvalidRequestData;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Signing\Contracts\Signer;
 
 class HttpClient implements HttpClientInterface
@@ -158,7 +158,7 @@ class HttpClient implements HttpClientInterface
 
         $body = \json_encode($data);
         if (\JSON_ERROR_NONE !== \json_last_error()) {
-            throw new InvalidRequestData(\json_last_error_msg());
+            throw new ApiRequestJsonSerializationException(\json_last_error_msg());
         }
 
         $request = new Request($method, $this->baseUri . $uri, $headers, $body);

@@ -9,9 +9,17 @@ use TrueLayer\Constants\ExternalAccountTypes;
 class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $iban;
+    private ?string $iban = null;
+
+    /**
+     * @return string|null
+     */
+    public function getIban(): ?string
+    {
+        return $this->iban;
+    }
 
     /**
      * @param string $iban
@@ -26,13 +34,21 @@ class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
     }
 
     /**
+     * @return string
+     */
+    public function getSchemeType(): string
+    {
+        return ExternalAccountTypes::IBAN;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
         return $this->wrap([
-            'type' => ExternalAccountTypes::IBAN,
-            'iban' => $this->iban,
+            'type' => $this->getSchemeType(),
+            'iban' => $this->getIban(),
         ]);
     }
 }

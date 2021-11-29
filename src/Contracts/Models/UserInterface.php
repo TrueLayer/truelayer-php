@@ -5,9 +5,20 @@ namespace TrueLayer\Contracts\Models;
 interface UserInterface
 {
     /**
+     * @return string|null
+     */
+    public function getId(): ?string;
+
+    /**
+     * @param string $id
      * @return UserInterface
      */
-    public function new(): UserInterface;
+    public function id(string $id): UserInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string;
 
     /**
      * @param string $name
@@ -17,11 +28,21 @@ interface UserInterface
     public function name(string $name): UserInterface;
 
     /**
+     * @return string|null
+     */
+    public function getEmail(): ?string;
+
+    /**
      * @param string $email
      *
      * @return UserInterface
      */
     public function email(string $email): UserInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string;
 
     /**
      * @param string $phone

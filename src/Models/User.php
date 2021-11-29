@@ -9,24 +9,49 @@ use TrueLayer\Contracts\Models\UserInterface;
 class User implements UserInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $name;
+    private ?string $id = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $email = '';
+    private ?string $name = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $phone = '';
+    private ?string $email = null;
 
-    public function new(): UserInterface
+    /**
+     * @var string|null
+     */
+    private ?string $phone = null;
+
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string
     {
-        // TODO: 'what is existing'
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return UserInterface
+     */
+    public function id(string $id): UserInterface
+    {
+        $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     /**
@@ -42,6 +67,14 @@ class User implements UserInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
      * @param string $email
      *
      * @return UserInterface
@@ -51,6 +84,14 @@ class User implements UserInterface
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
     }
 
     /**
@@ -70,19 +111,11 @@ class User implements UserInterface
      */
     public function toArray(): array
     {
-        $data = [
-            'type' => 'new', // TODO: move to constants
-            'name' => $this->name,
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'phone' => $this->getPhone(),
         ];
-
-        if (!empty($this->email)) {
-            $data['email'] = $this->email;
-        }
-
-        if (!empty($this->phone)) {
-            $data['phone'] = $this->phone;
-        }
-
-        return $data;
     }
 }

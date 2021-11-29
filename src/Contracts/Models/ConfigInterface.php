@@ -7,9 +7,9 @@ use Psr\Http\Client\ClientInterface;
 interface ConfigInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientId(): string;
+    public function getClientId(): ?string;
 
     /**
      * @param string $clientId
@@ -19,9 +19,9 @@ interface ConfigInterface
     public function clientId(string $clientId): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientSecret(): string;
+    public function getClientSecret(): ?string;
 
     /**
      * @param string $clientSecret
@@ -31,9 +31,9 @@ interface ConfigInterface
     public function clientSecret(string $clientSecret): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getKeyId(): string;
+    public function getKeyId(): ?string;
 
     /**
      * @param string $keyId
@@ -43,9 +43,9 @@ interface ConfigInterface
     public function keyId(string $keyId): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPem(): string;
+    public function getPem(): ?string;
 
     /**
      * @param string $pem

@@ -4,39 +4,36 @@ declare(strict_types=1);
 
 namespace TrueLayer\Builders;
 
-use TrueLayer\Constants\Endpoints;
+use TrueLayer\Contracts\Api\PaymentCreateInterface;
 use TrueLayer\Contracts\Builders\PaymentRequestBuilderInterface;
-use TrueLayer\Contracts\Services\HttpClientInterface;
+use TrueLayer\Contracts\Models\PaymentCreatedInterface;
 use TrueLayer\Models\Payment;
 
 class PaymentRequestBuilder extends Payment implements PaymentRequestBuilderInterface
 {
     /**
-     * @var HttpClientInterface
+     * @var PaymentCreateInterface
      */
-    private HttpClientInterface $httpClient;
+    private PaymentCreateInterface $apiHandler;
 
     /**
-     * @param HttpClientInterface $httpClient
+     * @param PaymentCreateInterface $apiHandler
      */
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(PaymentCreateInterface $apiHandler)
     {
-        $this->httpClient = $httpClient;
+        $this->apiHandler = $apiHandler;
     }
 
-    public function create()
+    /**
+     * @return PaymentCreatedInterface
+     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
+     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     * @throws \TrueLayer\Exceptions\AuthTokenRetrievalFailure
+     */
+    public function create(): PaymentCreatedInterface
     {
-        \var_dump($this->toArray());
-
-        try {
-            $response = $this->httpClient
-                ->withSignature()
-                ->withAuthToken()
-                ->post(Endpoints::PAYMENTS, $this->toArray());
-        } catch (\Exception $e) {
-            \var_dump($e->getResponse()->getBody()->getContents());
-        }
-        \var_dump(\json_decode($response->getBody()->getContents()));
-        exit();
+        return $this->apiHandler->send($this);
     }
 }

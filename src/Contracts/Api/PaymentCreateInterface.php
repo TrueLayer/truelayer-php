@@ -1,13 +1,16 @@
 <?php
 
-namespace TrueLayer\Contracts\Builders;
+declare(strict_types=1);
 
-use TrueLayer\Contracts\Models\PaymentCreatedInterface;
+namespace TrueLayer\Contracts\Api;
+
 use TrueLayer\Contracts\Models\PaymentInterface;
+use TrueLayer\Contracts\Models\PaymentCreatedInterface;
 
-interface PaymentRequestBuilderInterface extends PaymentInterface
+interface PaymentCreateInterface
 {
     /**
+     * @param PaymentInterface $model
      * @return PaymentCreatedInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
@@ -15,5 +18,5 @@ interface PaymentRequestBuilderInterface extends PaymentInterface
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
      * @throws \TrueLayer\Exceptions\AuthTokenRetrievalFailure
      */
-    public function create(): PaymentCreatedInterface;
+    public function send(PaymentInterface $model): PaymentCreatedInterface;
 }

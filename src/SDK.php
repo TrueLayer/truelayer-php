@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace TrueLayer;
 
 use GuzzleHttp\Client;
+use TrueLayer\Api\ApiClient;
+use TrueLayer\Api\PaymentCreate;
 use TrueLayer\Builders\BeneficiaryBuilder;
 use TrueLayer\Builders\PaymentRequestBuilder;
 use TrueLayer\Builders\SDKBuilder;
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Builders\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Builders\PaymentRequestBuilderInterface;
 use TrueLayer\Contracts\Builders\PayoutRequestBuilderInterface;
 use TrueLayer\Contracts\Builders\SDKBuilderInterface;
 use TrueLayer\Contracts\Models\UserInterface;
 use TrueLayer\Contracts\SDKInterface;
-use TrueLayer\Contracts\Services\HttpClientInterface;
 use TrueLayer\Models\User;
 use TrueLayer\Services\AuthTokenManager;
 use TrueLayer\Services\HttpClient;
@@ -23,16 +25,16 @@ use TrueLayer\Services\HttpClient;
 class SDK implements SDKInterface
 {
     /**
-     * @var HttpClientInterface
+     * @var ApiClientInterface
      */
-    private HttpClientInterface $httpClient;
+    private ApiClientInterface $apiClient;
 
     /**
-     * @param HttpClientInterface $httpClient
+     * @param ApiClientInterface $apiClient
      */
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(ApiClientInterface $apiClient)
     {
-        $this->httpClient = $httpClient;
+        $this->apiClient = $apiClient;
     }
 
     /**
@@ -56,7 +58,9 @@ class SDK implements SDKInterface
      */
     public function payment(): PaymentRequestBuilderInterface
     {
-        return new PaymentRequestBuilder($this->httpClient);
+        return new PaymentRequestBuilder(
+            new PaymentCreate($this->apiClient)
+        );
     }
 
     /**
@@ -106,11 +110,15 @@ class SDK implements SDKInterface
             ? Endpoints::API_PROD_URL
             : Endpoints::API_SANDBOX_URL;
 
-        $httpClient = new HttpClient($client, $apiBaseUri);
-        $httpClient
-            ->authTokenManager($authTokenManager)
-            ->signer($signer);
+        $filesystem = new \Illuminate\Filesystem\Filesystem();
+        $loader = new \Illuminate\Translation\FileLoader($filesystem, dirname(__FILE__, 2) . '/lang');
+        $loader->addNamespace('lang', dirname(__FILE__, 2) . '/lang');
+        $loader->load('en', 'validation', 'lang');
+        $translationFactory = new \Illuminate\Translation\Translator($loader, 'en');
+        $validatorFactory = new \Illuminate\Validation\Factory($translationFactory);
 
-        return new static($httpClient);
+        $apiClient = new ApiClient($client, $authTokenManager, $signer, $validatorFactory, $apiBaseUri);
+
+        return new static($apiClient);
     }
 }

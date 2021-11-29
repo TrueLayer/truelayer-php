@@ -10,24 +10,24 @@ use TrueLayer\Contracts\Models\ConfigInterface;
 class Config implements ConfigInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $clientId;
+    private ?string $clientId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $clientSecret;
+    private ?string $clientSecret = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $keyId;
+    private ?string $keyId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $pem;
+    private ?string $pem = null;
 
     /**
      * @var bool
@@ -40,9 +40,9 @@ class Config implements ConfigInterface
     private ?ClientInterface $httpClient = null;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientId(): string
+    public function getClientId(): ?string
     {
         return $this->clientId;
     }
@@ -60,9 +60,9 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientSecret(): string
+    public function getClientSecret(): ?string
     {
         return $this->clientSecret;
     }
@@ -80,9 +80,9 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getKeyId(): string
+    public function getKeyId(): ?string
     {
         return $this->keyId;
     }
@@ -100,9 +100,9 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPem(): string
+    public function getPem(): ?string
     {
         return $this->pem;
     }
@@ -148,7 +148,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param ClientInterface $client
+     * @param ClientInterface $httpClient
      *
      * @return $this
      */

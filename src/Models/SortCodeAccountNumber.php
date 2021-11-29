@@ -9,14 +9,22 @@ use TrueLayer\Constants\ExternalAccountTypes;
 class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $sortCode;
+    private ?string $sortCode = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $accountNumber;
+    private ?string $accountNumber = null;
+
+    /**
+     * @return string|null
+     */
+    public function getSortCode(): ?string
+    {
+        return $this->sortCode;
+    }
 
     /**
      * @param string $sortCode
@@ -28,6 +36,14 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
         $this->sortCode = $sortCode;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccountNumber(): ?string
+    {
+        return $this->accountNumber;
     }
 
     /**
@@ -43,14 +59,22 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
     }
 
     /**
+     * @return string
+     */
+    public function getSchemeType(): string
+    {
+        return ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
         return $this->wrap([
-            'type' => ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER,
-            'sort_code' => $this->sortCode,
-            'account_number' => $this->accountNumber,
+            'type' => $this->getSchemeType(),
+            'sort_code' => $this->getSortCode(),
+            'account_number' => $this->getAccountNumber(),
         ]);
     }
 }

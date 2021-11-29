@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models;
 
+use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Models\BeneficiaryInterface;
 use TrueLayer\Contracts\Models\PaymentInterface;
 use TrueLayer\Contracts\Models\UserInterface;
@@ -11,29 +12,37 @@ use TrueLayer\Contracts\Models\UserInterface;
 class Payment implements PaymentInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
-    private int $amount;
+    private ?int $amount = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $currency;
+    private ?string $currency = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $statementReference;
+    private ?string $statementReference = null;
 
     /**
-     * @var BeneficiaryInterface
+     * @var BeneficiaryInterface|null
      */
-    private BeneficiaryInterface $beneficiary;
+    private ?BeneficiaryInterface $beneficiary = null;
 
     /**
-     * @var UserInterface
+     * @var UserInterface|null
      */
-    private UserInterface $user;
+    private ?UserInterface $user = null;
+
+    /**
+     * @return int|null
+     */
+    public function getAmountInMinor(): ?int
+    {
+        return $this->amount;
+    }
 
     /**
      * @param int $amount
@@ -45,6 +54,14 @@ class Payment implements PaymentInterface
         $this->amount = $amount;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
     }
 
     /**
@@ -60,6 +77,14 @@ class Payment implements PaymentInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getStatementReference(): ?string
+    {
+        return $this->statementReference;
+    }
+
+    /**
      * @param string $statementReference
      *
      * @return $this
@@ -72,6 +97,14 @@ class Payment implements PaymentInterface
     }
 
     /**
+     * @return BeneficiaryInterface|null
+     */
+    public function getBeneficiary(): ?BeneficiaryInterface
+    {
+        return $this->beneficiary;
+    }
+
+    /**
      * @param BeneficiaryInterface $beneficiary
      *
      * @return $this
@@ -81,6 +114,14 @@ class Payment implements PaymentInterface
         $this->beneficiary = $beneficiary;
 
         return $this;
+    }
+
+    /**
+     * @return UserInterface|null
+     */
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
     }
 
     /**
@@ -101,14 +142,14 @@ class Payment implements PaymentInterface
     public function toArray(): array
     {
         return [
-            'amount_in_minor' => $this->amount,
-            'currency' => $this->currency,
+            'amount_in_minor' => $this->getAmountInMinor(),
+            'currency' => $this->getCurrency(),
             'payment_method' => [
-                'type' => 'bank_transfer',
-                'statement_reference' => $this->statementReference,
+                'type' => PaymentMethods::BANK_TRANSFER,
+                'statement_reference' => $this->getStatementReference(),
             ],
-            'user' => $this->user->toArray(),
-            'beneficiary' => $this->beneficiary->toArray(),
+            'user' => $this->getUser()->toArray() ?? null,
+            'beneficiary' => $this->getBeneficiary()->toArray() ?? null,
         ];
     }
 }

@@ -37,17 +37,17 @@ interface HttpClientInterface
 
     /**
      * @param $uri
-     * @param array $options
-     *
+     * @param array $data
+     * @param array $headers
      * @return ResponseInterface
      */
-    public function get($uri, array $options = []): ResponseInterface;
+    public function get($uri, array $data = [], array $headers = []): ResponseInterface;
 
     /**
      * @param $uri
-     * @param array $options
-     *
+     * @param array $data
+     * @param array $headers
      * @return ResponseInterface
      */
-    public function post($uri, array $options = []): ResponseInterface;
+    public function post($uri, array $data = [], array $headers = []): ResponseInterface;
 }

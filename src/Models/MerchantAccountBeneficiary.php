@@ -10,14 +10,22 @@ use TrueLayer\Contracts\Models\BeneficiaryInterface;
 class MerchantAccountBeneficiary implements BeneficiaryInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $id;
+    private ?string $id = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $name;
+    private ?string $name = null;
+
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
 
     /**
      * @param string $id
@@ -29,6 +37,14 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     /**
@@ -44,14 +60,22 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return BeneficiaryTypes::MERCHANT_ACCOUNT;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
         return [
-            'type' => BeneficiaryTypes::MERCHANT_ACCOUNT,
-            'id' => $this->id,
-            'name' => $this->name,
+            'type' => $this->getType(),
+            'id' => $this->getId(),
+            'name' => $this->getName(),
         ];
     }
 }

@@ -10,14 +10,22 @@ use TrueLayer\Contracts\Models\BeneficiaryInterface;
 abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
-    private string $name;
+    private ?string $name = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $reference;
+    private ?string $reference = null;
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
     /**
      * @param string $name
@@ -29,6 +37,14 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReference(): ?string
+    {
+        return $this->reference;
     }
 
     /**
@@ -44,6 +60,19 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     }
 
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return BeneficiaryTypes::EXTERNAL_ACCOUNT;
+    }
+
+    /**
+     * @return string
+     */
+    abstract public function getSchemeType(): string;
+
+    /**
      * @param array $schemeIdentifier
      *
      * @return array[]
@@ -51,9 +80,9 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     protected function wrap(array $schemeIdentifier): array
     {
         return [
-            'type' => BeneficiaryTypes::EXTERNAL_ACCOUNT,
-            'reference' => $this->reference,
-            'name' => $this->name,
+            'type' => $this->getType(),
+            'reference' => $this->getReference(),
+            'name' => $this->getName(),
             'scheme_identifier' => $schemeIdentifier,
         ];
     }

@@ -36,7 +36,8 @@
         "truelayer/signing": "@dev",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.4",
-        "ramsey/uuid": "^4.2"
+        "ramsey/uuid": "^4.2",
+        "illuminate/validation": "^8.73"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",
