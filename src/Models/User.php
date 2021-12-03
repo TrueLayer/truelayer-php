@@ -37,10 +37,10 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      * @return UserInterface
      */
-    public function id(string $id): UserInterface
+    public function id(string $id = null): UserInterface
     {
         $this->id = $id;
         return $this;
@@ -55,11 +55,11 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return UserInterface
      */
-    public function name(string $name): UserInterface
+    public function name(string $name = null): UserInterface
     {
         $this->name = $name;
 
@@ -75,11 +75,11 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      *
      * @return UserInterface
      */
-    public function email(string $email): UserInterface
+    public function email(string $email = null): UserInterface
     {
         $this->email = $email;
 
@@ -95,11 +95,11 @@ class User implements UserInterface
     }
 
     /**
-     * @param string $phone
+     * @param string|null $phone
      *
      * @return UserInterface
      */
-    public function phone(string $phone): UserInterface
+    public function phone(string $phone = null): UserInterface
     {
         $this->phone = $phone;
 
@@ -117,5 +117,18 @@ class User implements UserInterface
             'email' => $this->getEmail(),
             'phone' => $this->getPhone(),
         ];
+    }
+
+    /**
+     * @param array $data
+     * @return UserInterface
+     */
+    public static function fromArray(array $data): UserInterface
+    {
+        return (new static())
+            ->id($data['id'] ?? null)
+            ->name($data['name'] ?? null)
+            ->phone($data['phone'] ?? null)
+            ->email($data['email'] ?? null);
     }
 }

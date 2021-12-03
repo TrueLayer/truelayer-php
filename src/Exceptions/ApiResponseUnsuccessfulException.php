@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Exceptions;
 
 class ApiResponseUnsuccessfulException extends \Exception

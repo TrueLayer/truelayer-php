@@ -22,11 +22,11 @@ class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
     }
 
     /**
-     * @param string $iban
+     * @param string|null $iban
      *
      * @return IbanAccountBeneficiary
      */
-    public function iban(string $iban): IbanAccountBeneficiary
+    public function iban(string $iban = null): IbanAccountBeneficiary
     {
         $this->iban = $iban;
 
@@ -50,5 +50,17 @@ class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
             'type' => $this->getSchemeType(),
             'iban' => $this->getIban(),
         ]);
+    }
+
+    /**
+     * @param array $data
+     * @return static
+     */
+    public static function fromArray(array $data): self
+    {
+        return (new self())
+            ->name($data['name'] ?? null)
+            ->reference($data['reference'] ?? null)
+            ->iban($data['scheme_identifier']['iban'] ?? null);
     }
 }

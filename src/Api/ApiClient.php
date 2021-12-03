@@ -13,12 +13,13 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Contracts\Validation;
 use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Services\AuthTokenManagerInterface;
+use TrueLayer\Contracts\Api\ApiRequestInterface;
+use TrueLayer\Contracts\Api\Handlers\AuthTokenRetrieveInterface;
+use TrueLayer\Contracts\Models\AuthTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
-use TrueLayer\Exceptions\AuthTokenRetrievalFailure;
 use TrueLayer\Signing\Contracts\Signer;
 
 class ApiClient implements ApiClientInterface
@@ -31,9 +32,9 @@ class ApiClient implements ApiClientInterface
     private HttpClientInterface $httpClient;
 
     /**
-     * @var AuthTokenManagerInterface
+     * @var AuthTokenRetrieveInterface|null
      */
-    private AuthTokenManagerInterface $authTokenManager;
+    private ?AuthTokenRetrieveInterface $authTokenRetrieve = null;
 
     /**
      * @var Signer
@@ -51,89 +52,69 @@ class ApiClient implements ApiClientInterface
     private string $baseUri;
 
     /**
-     * @param HttpClientInterface $httpClient
-     * @param AuthTokenManagerInterface $authTokenManager
-     * @param Signer $signer
+     * @var AuthTokenInterface|null
+     */
+    private ?AuthTokenInterface $authToken = null;
+
+    /**
      * @param string $baseUri
+     * @param HttpClientInterface $httpClient
+     * @param Signer $signer
+     * @param Validation\Factory $validationFactory
+     * @param AuthTokenRetrieveInterface|null $authTokenRetrieve
      */
     public function __construct(
+        string $baseUri,
         HttpClientInterface $httpClient,
-        AuthTokenManagerInterface $authTokenManager,
         Signer $signer,
         Validation\Factory $validationFactory,
-        string $baseUri
+        AuthTokenRetrieveInterface $authTokenRetrieve = null
     )
     {
+        $this->baseUri = $baseUri;
         $this->httpClient = $httpClient;
-        $this->authTokenManager = $authTokenManager;
         $this->signer = $signer;
         $this->validationFactory = $validationFactory;
-        $this->baseUri = $baseUri;
+        $this->authTokenRetrieve = $authTokenRetrieve;
     }
 
     /**
-     * @param string $uri
-     * @param array $data
-     * @param callable $requestRules
-     * @param callable $responseRules
-     * @return array
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
-     * @throws AuthTokenRetrievalFailure
+     * @return ApiRequestInterface
      */
-    public function post(string $uri, array $data, callable $requestRules, callable $responseRules): array
+    public function request(): ApiRequestInterface
     {
-        return $this->send(RequestMethods::POST, $uri, $data, $requestRules, $responseRules);
-    }
-
-    /**
-     * @param string $uri
-     * @param callable $requestRules
-     * @param callable $responseRules
-     * @return array
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
-     * @throws AuthTokenRetrievalFailure
-     */
-    public function get(string $uri, callable $requestRules, callable $responseRules): array
-    {
-        return $this->send(RequestMethods::GET, $uri, [], $requestRules, $responseRules);
+        return new ApiRequest($this);
     }
 
     /**
      * @param string $method
      * @param string $uri
      * @param array $data
-     * @param callable $requestRules
-     * @param callable $responseRules
+     * @param callable|null $requestRules
+     * @param callable|null $responseRules
      * @return array
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
-     * @throws AuthTokenRetrievalFailure
      */
-    public function send(string $method, string $uri, array $data, callable $requestRules, callable $responseRules): array
+    public function send(string $method, string $uri, array $data, callable $requestRules = null, callable $responseRules = null): array
     {
-        $validated = $this->validate($data, $requestRules($data), ApiRequestValidationException::class);
+        if ($requestRules) {
+            $data = $this->validate($data, $requestRules($data), ApiRequestValidationException::class);
+        }
 
-        $request = $this->createRequest($method, $uri, $validated);
-
-        $response = $this->sendRequest($request);
+        $request = $this->createRequest($method, $uri, $data);
+        $response = $this->sendHttpRequest($request);
 
         $this->validateResponseStatus($response);
-
         $responseData = $this->getResponseData($response);
 
-        return $this->validate(
-            $responseData,
-            $responseRules($responseData),
-            ApiResponseValidationException::class
-        );
+        if ($responseRules) {
+            $responseData = $this->validate($responseData, $responseRules($responseData), ApiResponseValidationException::class);
+        }
+
+        return $responseData;
     }
 
     /**
@@ -142,12 +123,11 @@ class ApiClient implements ApiClientInterface
      * @return ResponseInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestJsonSerializationException
-     * @throws AuthTokenRetrievalFailure
      * @throws ApiResponseValidationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      */
-    private function sendRequest(RequestInterface $request, int $retry = 0): ResponseInterface
+    private function sendHttpRequest(RequestInterface $request, int $retry = 0): ResponseInterface
     {
         try {
             return $this->httpClient->sendRequest($request);
@@ -161,18 +141,22 @@ class ApiClient implements ApiClientInterface
     /**
      * @param string $method
      * @param string $uri
-     * @param array|null $data
+     * @param array $data
      * @return Request
      * @throws ApiRequestJsonSerializationException
-     * @throws AuthTokenRetrievalFailure
      * @throws ApiRequestValidationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ApiResponseValidationException
      */
     private function createRequest(string $method, string $uri, array $data = []): Request
     {
         $headers = [
             'Content-Type' => 'application/json',
-            'Authorization' => "Bearer {$this->authTokenManager->getAccessToken()}",
         ];
+
+        if ($token = $this->getAccessToken()) {
+            $headers['Authorization'] = "Bearer {$token}";
+        }
 
         $endpoint = $this->baseUri . $uri;
         $body = $this->jsonEncode($data);
@@ -184,6 +168,27 @@ class ApiClient implements ApiClientInterface
         }
 
         return $request;
+    }
+
+    /**
+     * @return string|null
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiRequestValidationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ApiResponseValidationException
+     */
+    private function getAccessToken(): ?string
+    {
+        if (!$this->authTokenRetrieve) {
+            return null;
+        }
+
+        if (!$this->authToken || $this->authToken->isExpired()) {
+            $this->authToken = $this->authTokenRetrieve->execute();
+        }
+
+        return $this->authToken->getAccessToken();
+
     }
 
     /**

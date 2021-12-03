@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models;
 
+use TrueLayer\Constants\BeneficiaryTypes;
+use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Models\BeneficiaryInterface;
 use TrueLayer\Contracts\Models\PaymentInterface;
@@ -11,6 +13,11 @@ use TrueLayer\Contracts\Models\UserInterface;
 
 class Payment implements PaymentInterface
 {
+    /**
+     * @var string|null
+     */
+    private ?string $id = null;
+
     /**
      * @var int|null
      */
@@ -37,6 +44,24 @@ class Payment implements PaymentInterface
     private ?UserInterface $user = null;
 
     /**
+     * @return string|null
+     */
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string|null $id
+     * @return $this
+     */
+    public function id(string $id = null): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return int|null
      */
     public function getAmountInMinor(): ?int
@@ -45,11 +70,11 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param int $amount
+     * @param int|null $amount
      *
      * @return $this
      */
-    public function amountInMinor(int $amount): self
+    public function amountInMinor(int $amount = null): self
     {
         $this->amount = $amount;
 
@@ -65,11 +90,11 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param string $currency
+     * @param string|null $currency
      *
      * @return $this
      */
-    public function currency(string $currency): self
+    public function currency(string $currency = null): self
     {
         $this->currency = $currency;
 
@@ -85,11 +110,11 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param string $statementReference
+     * @param string|null $statementReference
      *
      * @return $this
      */
-    public function statementReference(string $statementReference): self
+    public function statementReference(string $statementReference = null): self
     {
         $this->statementReference = $statementReference;
 
@@ -105,11 +130,11 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param BeneficiaryInterface $beneficiary
+     * @param BeneficiaryInterface|null $beneficiary
      *
      * @return $this
      */
-    public function beneficiary(BeneficiaryInterface $beneficiary): self
+    public function beneficiary(BeneficiaryInterface $beneficiary = null): self
     {
         $this->beneficiary = $beneficiary;
 
@@ -125,11 +150,11 @@ class Payment implements PaymentInterface
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return $this
      */
-    public function user(UserInterface $user): self
+    public function user(UserInterface $user = null): self
     {
         $this->user = $user;
 
@@ -151,5 +176,46 @@ class Payment implements PaymentInterface
             'user' => $this->getUser()->toArray() ?? null,
             'beneficiary' => $this->getBeneficiary()->toArray() ?? null,
         ];
+    }
+
+    /**
+     * @param array $data
+     * @return PaymentInterface
+     */
+    public static function fromArray(array $data): PaymentInterface
+    {
+        $instance = (new static());
+
+        if (empty($data)) {
+            return $instance;
+        }
+
+        $beneficiary = null;
+        $beneficiaryData = $data['beneficiary'] ?? null;
+        $beneficiaryType = $beneficiaryData['type'] ?? null;
+
+        if ($beneficiaryType === BeneficiaryTypes::EXTERNAL_ACCOUNT) {
+            $schemeType = $beneficiaryData['scheme_identifier']['type'];
+
+            if ($schemeType === ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER) {
+                $beneficiary = SortCodeAccountNumber::fromArray($beneficiaryData);
+            } elseif ($schemeType === ExternalAccountTypes::IBAN) {
+                $beneficiary = IbanAccountBeneficiary::fromArray($beneficiaryData);
+            }
+        } elseif($beneficiaryType === BeneficiaryTypes::MERCHANT_ACCOUNT) {
+            $beneficiary = MerchantAccountBeneficiary::fromArray($beneficiaryData);
+        }
+
+        $user = empty($data['user'])
+            ? null
+            : User::fromArray($data['user']);
+
+        return $instance
+            ->id($data['id'] ?? null)
+            ->beneficiary($beneficiary)
+            ->user($user)
+            ->amountInMinor($data['amount_in_minor'] ?? null)
+            ->currency($data['currency'] ?? null)
+            ->statementReference($data['payment_method']['statement_reference'] ?? null);
     }
 }

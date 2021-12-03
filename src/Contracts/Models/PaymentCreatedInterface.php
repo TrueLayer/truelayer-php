@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Models;
 
-interface PaymentCreatedInterface
+use TrueLayer\Contracts\ArrayableInterface;
+use TrueLayer\Contracts\ArrayFactoryInterface;
+
+interface PaymentCreatedInterface extends ArrayableInterface, ArrayFactoryInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPaymentId(): string;
+    public function getPaymentId(): ?string;
 
     /**
      * @return string
@@ -20,9 +23,4 @@ interface PaymentCreatedInterface
      * @return string
      */
     public function getUserId(): string;
-
-    /**
-     * @return array
-     */
-    public function toArray(): array;
 }

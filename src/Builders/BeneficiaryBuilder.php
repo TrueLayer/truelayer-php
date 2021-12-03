@@ -12,26 +12,29 @@ use TrueLayer\Models\SortCodeAccountNumber;
 class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 {
     /**
+     * @param array $data
      * @return SortCodeAccountNumber
      */
-    public function sortCodeAccountNumber(): SortCodeAccountNumber
+    public function sortCodeAccountNumber(array $data = []): SortCodeAccountNumber
     {
-        return new SortCodeAccountNumber();
+        return SortCodeAccountNumber::fromArray($data);
     }
 
     /**
+     * @param array $data
      * @return IbanAccountBeneficiary
      */
-    public function ibanAccount(): IbanAccountBeneficiary
+    public function ibanAccount(array $data = []): IbanAccountBeneficiary
     {
-        return new IbanAccountBeneficiary();
+        return IbanAccountBeneficiary::fromArray($data);
     }
 
     /**
+     * @param array $data
      * @return MerchantAccountBeneficiary
      */
-    public function merchantAccount(): MerchantAccountBeneficiary
+    public function merchantAccount(array $data = []): MerchantAccountBeneficiary
     {
-        return new MerchantAccountBeneficiary();
+        return MerchantAccountBeneficiary::fromArray($data);
     }
 }

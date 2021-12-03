@@ -28,11 +28,11 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      *
      * @return MerchantAccountBeneficiary
      */
-    public function id(string $id): MerchantAccountBeneficiary
+    public function id(string $id = null): MerchantAccountBeneficiary
     {
         $this->id = $id;
 
@@ -48,11 +48,11 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return MerchantAccountBeneficiary
      */
-    public function name(string $name): MerchantAccountBeneficiary
+    public function name(string $name = null): MerchantAccountBeneficiary
     {
         $this->name = $name;
 
@@ -77,5 +77,16 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
             'id' => $this->getId(),
             'name' => $this->getName(),
         ];
+    }
+
+    /**
+     * @param array $data
+     * @return static
+     */
+    public static function fromArray(array $data): self
+    {
+        return (new self())
+            ->id($data['id'])
+            ->name($data['name']);
     }
 }

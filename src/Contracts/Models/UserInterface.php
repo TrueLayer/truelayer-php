@@ -2,7 +2,10 @@
 
 namespace TrueLayer\Contracts\Models;
 
-interface UserInterface
+use TrueLayer\Contracts\ArrayableInterface;
+use TrueLayer\Contracts\ArrayFactoryInterface;
+
+interface UserInterface extends ArrayableInterface, ArrayFactoryInterface
 {
     /**
      * @return string|null
@@ -50,9 +53,4 @@ interface UserInterface
      * @return UserInterface
      */
     public function phone(string $phone): UserInterface;
-
-    /**
-     * @return array
-     */
-    public function toArray(): array;
 }

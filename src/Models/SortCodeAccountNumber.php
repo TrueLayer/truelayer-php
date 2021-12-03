@@ -27,11 +27,11 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
     }
 
     /**
-     * @param string $sortCode
+     * @param string|null $sortCode
      *
      * @return SortCodeAccountNumber
      */
-    public function sortCode(string $sortCode): SortCodeAccountNumber
+    public function sortCode(string $sortCode = null): SortCodeAccountNumber
     {
         $this->sortCode = $sortCode;
 
@@ -47,11 +47,11 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
     }
 
     /**
-     * @param string $accountNumber
+     * @param string|null $accountNumber
      *
      * @return SortCodeAccountNumber
      */
-    public function accountNumber(string $accountNumber): SortCodeAccountNumber
+    public function accountNumber(string $accountNumber = null): SortCodeAccountNumber
     {
         $this->accountNumber = $accountNumber;
 
@@ -76,5 +76,18 @@ class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
             'sort_code' => $this->getSortCode(),
             'account_number' => $this->getAccountNumber(),
         ]);
+    }
+
+    /**
+     * @param array $data
+     * @return static
+     */
+    public static function fromArray(array $data): self
+    {
+        return (new static())
+            ->name($data['name'] ?? null)
+            ->reference($data['reference'] ?? null)
+            ->sortCode($data['scheme_identifier']['sort_code'] ?? null)
+            ->accountNumber($data['scheme_identifier']['account_number'] ?? null);
     }
 }

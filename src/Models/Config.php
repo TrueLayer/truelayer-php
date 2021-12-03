@@ -6,6 +6,7 @@ namespace TrueLayer\Models;
 
 use Psr\Http\Client\ClientInterface;
 use TrueLayer\Contracts\Models\ConfigInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 
 class Config implements ConfigInterface
 {
@@ -28,6 +29,11 @@ class Config implements ConfigInterface
      * @var string|null
      */
     private ?string $pem = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $passphrase = null;
 
     /**
      * @var bool
@@ -117,6 +123,40 @@ class Config implements ConfigInterface
         $this->pem = $pem;
 
         return $this;
+    }
+
+    /**
+     * @param string $path
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    public function pemFile(string $path): self
+    {
+        $pem = file_get_contents($path);
+
+        if (!is_string($pem)) {
+            throw new InvalidArgumentException('Unable to load the key from the file.');
+        }
+
+        return $this->pem($pem);
+    }
+
+    /**
+     * @param string $passphrase
+     * @return $this
+     */
+    public function passphrase(string $passphrase): self
+    {
+        $this->passphrase = $passphrase;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPassphrase(): ?string
+    {
+        return $this->passphrase;
     }
 
     /**

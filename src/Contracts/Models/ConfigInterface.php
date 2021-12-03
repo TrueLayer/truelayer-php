@@ -3,6 +3,7 @@
 namespace TrueLayer\Contracts\Models;
 
 use Psr\Http\Client\ClientInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 
 interface ConfigInterface
 {
@@ -53,6 +54,24 @@ interface ConfigInterface
      * @return $this
      */
     public function pem(string $pem): self;
+
+    /**
+     * @param string $path
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    public function pemFile(string $path): self;
+
+    /**
+     * @param string $passphrase
+     * @return $this
+     */
+    public function passphrase(string $passphrase): self;
+
+    /**
+     * @return string|null
+     */
+    public function getPassphrase(): ?string;
 
     /**
      * @return bool

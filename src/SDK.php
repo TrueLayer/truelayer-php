@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace TrueLayer;
 
 use GuzzleHttp\Client;
-use TrueLayer\Api\ApiClient;
-use TrueLayer\Api\PaymentCreate;
+use TrueLayer\Api;
 use TrueLayer\Builders\BeneficiaryBuilder;
-use TrueLayer\Builders\PaymentRequestBuilder;
 use TrueLayer\Builders\SDKBuilder;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Builders\BeneficiaryBuilderInterface;
-use TrueLayer\Contracts\Builders\PaymentRequestBuilderInterface;
-use TrueLayer\Contracts\Builders\PayoutRequestBuilderInterface;
 use TrueLayer\Contracts\Builders\SDKBuilderInterface;
+use TrueLayer\Contracts\Models\PaymentCreatedInterface;
+use TrueLayer\Contracts\Models\PaymentInterface;
 use TrueLayer\Contracts\Models\UserInterface;
 use TrueLayer\Contracts\SDKInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Models\Payment;
 use TrueLayer\Models\User;
-use TrueLayer\Services\AuthTokenManager;
-use TrueLayer\Services\HttpClient;
 
 class SDK implements SDKInterface
 {
@@ -38,11 +36,12 @@ class SDK implements SDKInterface
     }
 
     /**
+     * @param array $data
      * @return UserInterface
      */
-    public function user(): UserInterface
+    public function user(array $data = []): UserInterface
     {
-        return new User();
+        return User::fromArray($data);
     }
 
     /**
@@ -54,20 +53,39 @@ class SDK implements SDKInterface
     }
 
     /**
-     * @return PaymentRequestBuilderInterface
+     * @param array $data
+     * @return PaymentInterface
      */
-    public function payment(): PaymentRequestBuilderInterface
+    public function payment(array $data = []): PaymentInterface
     {
-        return new PaymentRequestBuilder(
-            new PaymentCreate($this->apiClient)
-        );
+        return Payment::fromArray($data);
     }
 
     /**
-     * @return PayoutRequestBuilderInterface
+     * @param PaymentInterface $payment
+     * @return PaymentCreatedInterface
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiRequestValidationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\ApiResponseValidationException
      */
-    public function payout(): PayoutRequestBuilderInterface
+    public function createPayment(PaymentInterface $payment): PaymentCreatedInterface
     {
+        return (new Api\Handlers\PaymentCreate)->execute($this->apiClient, $payment);
+    }
+
+    /**
+     * @param string $id
+     * @return PaymentInterface
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiRequestValidationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\ApiResponseValidationException
+     * @throws InvalidArgumentException
+     */
+    public function getPayment(string $id): PaymentInterface
+    {
+        return (new Api\Handlers\PaymentRetrieve)->execute($this->apiClient, $id);
     }
 
     /**
@@ -81,34 +99,17 @@ class SDK implements SDKInterface
     /**
      * @param SDKBuilderInterface $builder
      *
-     * @throws Exceptions\AuthTokenRetrievalFailure
-     *
      * @return SDKInterface
      */
     public static function make(SDKBuilderInterface $builder): SDKInterface
     {
         $client = $builder->getHttpClient() ?: new Client();
 
-        $authBaseUri = $builder->shouldUseProduction()
-            ? Endpoints::AUTH_PROD_BASE
-            : Endpoints::AUTH_SANDBOX_URL;
-
-        $authTokenManager = new AuthTokenManager(
-            new HttpClient($client, $authBaseUri),
-            $builder->getClientId(),
-            $builder->getClientSecret()
-        );
-
-        $authTokenManager->fetchAuthToken();
-
         $signer = \TrueLayer\Signing\Signer::signWithPem(
             $builder->getKeyId(),
-            $builder->getPem()
+            $builder->getPem(),
+            $builder->getPassphrase()
         );
-
-        $apiBaseUri = $builder->shouldUseProduction()
-            ? Endpoints::API_PROD_URL
-            : Endpoints::API_SANDBOX_URL;
 
         $filesystem = new \Illuminate\Filesystem\Filesystem();
         $loader = new \Illuminate\Translation\FileLoader($filesystem, dirname(__FILE__, 2) . '/lang');
@@ -117,7 +118,25 @@ class SDK implements SDKInterface
         $translationFactory = new \Illuminate\Translation\Translator($loader, 'en');
         $validatorFactory = new \Illuminate\Validation\Factory($translationFactory);
 
-        $apiClient = new ApiClient($client, $authTokenManager, $signer, $validatorFactory, $apiBaseUri);
+        $authBaseUri = $builder->shouldUseProduction()
+            ? Endpoints::AUTH_PROD_BASE
+            : Endpoints::AUTH_SANDBOX_URL;
+
+        $authApiClient = new Api\ApiClient($authBaseUri, $client, $signer, $validatorFactory);
+
+        $authTokenRetrieve = new Api\Handlers\AuthTokenRetrieve(
+            $authApiClient,
+            $builder->getClientId(),
+            $builder->getClientSecret()
+        );
+
+        $authTokenRetrieve->execute();
+
+        $apiBaseUri = $builder->shouldUseProduction()
+            ? Endpoints::API_PROD_URL
+            : Endpoints::API_SANDBOX_URL;
+
+        $apiClient = new Api\ApiClient($apiBaseUri, $client, $signer, $validatorFactory, $authTokenRetrieve);
 
         return new static($apiClient);
     }

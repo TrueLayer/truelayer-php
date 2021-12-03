@@ -2,15 +2,25 @@
 
 namespace TrueLayer\Contracts\Models;
 
-interface BeneficiaryInterface
+use TrueLayer\Contracts\ArrayableInterface;
+use TrueLayer\Contracts\ArrayFactory;
+use TrueLayer\Contracts\ArrayFactoryInterface;
+
+interface BeneficiaryInterface extends ArrayableInterface, ArrayFactoryInterface
 {
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string;
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function name(string $name): self;
+
     /**
      * @return string
      */
     public function getType(): string;
-
-    /**
-     * @return array
-     */
-    public function toArray(): array;
 }

@@ -28,11 +28,11 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      *
      * @return $this
      */
-    public function name(string $name): self
+    public function name(string $name = null): self
     {
         $this->name = $name;
 
@@ -48,11 +48,11 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     }
 
     /**
-     * @param string $reference
+     * @param string|null $reference
      *
      * @return $this
      */
-    public function reference(string $reference): self
+    public function reference(string $reference = null): self
     {
         $this->reference = $reference;
 
@@ -86,4 +86,6 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
             'scheme_identifier' => $schemeIdentifier,
         ];
     }
+
+
 }

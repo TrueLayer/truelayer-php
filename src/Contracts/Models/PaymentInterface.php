@@ -2,8 +2,16 @@
 
 namespace TrueLayer\Contracts\Models;
 
-interface PaymentInterface
+use TrueLayer\Contracts\ArrayableInterface;
+use TrueLayer\Contracts\ArrayFactoryInterface;
+
+interface PaymentInterface extends ArrayableInterface, ArrayFactoryInterface
 {
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string;
+
     /**
      * @return int|null
      */
@@ -63,9 +71,4 @@ interface PaymentInterface
      * @return $this
      */
     public function user(UserInterface $user): self;
-
-    /**
-     * @return array
-     */
-    public function toArray(): array;
 }

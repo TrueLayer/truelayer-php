@@ -52,4 +52,13 @@ class PaymentCreated implements PaymentCreatedInterface
     {
         return $this->data;
     }
+
+    /**
+     * @param array $data
+     * @return PaymentCreatedInterface
+     */
+    public static function fromArray(array $data = []): PaymentCreatedInterface
+    {
+        return new static($data);
+    }
 }
