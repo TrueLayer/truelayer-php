@@ -38,11 +38,13 @@ class User implements UserInterface
 
     /**
      * @param string|null $id
+     *
      * @return UserInterface
      */
     public function id(string $id = null): UserInterface
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -121,6 +123,7 @@ class User implements UserInterface
 
     /**
      * @param array $data
+     *
      * @return UserInterface
      */
     public static function fromArray(array $data): UserInterface

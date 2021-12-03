@@ -24,8 +24,9 @@ class ApiResponseUnsuccessfulException extends \Exception
     {
         $this->statusCode = $statusCode;
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             parent::__construct((string) $data);
+
             return;
         }
 

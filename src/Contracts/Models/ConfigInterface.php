@@ -57,13 +57,16 @@ interface ConfigInterface
 
     /**
      * @param string $path
-     * @return $this
+     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function pemFile(string $path): self;
 
     /**
      * @param string $passphrase
+     *
      * @return $this
      */
     public function passphrase(string $passphrase): self;

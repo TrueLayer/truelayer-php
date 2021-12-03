@@ -53,11 +53,13 @@ class Payment implements PaymentInterface
 
     /**
      * @param string|null $id
+     *
      * @return $this
      */
     public function id(string $id = null): self
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -180,6 +182,7 @@ class Payment implements PaymentInterface
 
     /**
      * @param array $data
+     *
      * @return PaymentInterface
      */
     public static function fromArray(array $data): PaymentInterface
@@ -202,7 +205,7 @@ class Payment implements PaymentInterface
             } elseif ($schemeType === ExternalAccountTypes::IBAN) {
                 $beneficiary = IbanAccountBeneficiary::fromArray($beneficiaryData);
             }
-        } elseif($beneficiaryType === BeneficiaryTypes::MERCHANT_ACCOUNT) {
+        } elseif ($beneficiaryType === BeneficiaryTypes::MERCHANT_ACCOUNT) {
             $beneficiary = MerchantAccountBeneficiary::fromArray($beneficiaryData);
         }
 

@@ -55,6 +55,7 @@ class PaymentCreated implements PaymentCreatedInterface
 
     /**
      * @param array $data
+     *
      * @return PaymentCreatedInterface
      */
     public static function fromArray(array $data = []): PaymentCreatedInterface

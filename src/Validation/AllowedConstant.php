@@ -23,14 +23,17 @@ class AllowedConstant implements Rule
 
     /**
      * @param string $attribute
-     * @param mixed $value
-     * @return bool
+     * @param mixed  $value
+     *
      * @throws \ReflectionException
+     *
+     * @return bool
      */
     public function passes($attribute, $value): bool
     {
         $constants = (new \ReflectionClass($this->class))->getConstants();
-        return in_array($value, array_values($constants));
+
+        return \in_array($value, \array_values($constants));
     }
 
     /**
@@ -43,6 +46,7 @@ class AllowedConstant implements Rule
 
     /**
      * @param string $class
+     *
      * @return AllowedConstant
      */
     public static function in(string $class): AllowedConstant

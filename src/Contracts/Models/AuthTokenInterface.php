@@ -13,6 +13,7 @@ interface AuthTokenInterface extends ArrayFactoryInterface
 
     /**
      * @param string $token
+     *
      * @return AuthTokenInterface
      */
     public function accessToken(string $token): AuthTokenInterface;
@@ -24,6 +25,7 @@ interface AuthTokenInterface extends ArrayFactoryInterface
 
     /**
      * @param int $retrievedAt
+     *
      * @return AuthTokenInterface
      */
     public function retrievedAt(int $retrievedAt): AuthTokenInterface;
@@ -35,12 +37,14 @@ interface AuthTokenInterface extends ArrayFactoryInterface
 
     /**
      * @param int $expiresIn
+     *
      * @return AuthTokenInterface
      */
     public function expiresIn(int $expiresIn): AuthTokenInterface;
 
     /**
      * @param int $safetyMargin
+     *
      * @return bool
      */
     public function isExpired(int $safetyMargin = 10): bool;

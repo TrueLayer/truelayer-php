@@ -3,7 +3,6 @@
 namespace TrueLayer\Contracts\Models;
 
 use TrueLayer\Contracts\ArrayableInterface;
-use TrueLayer\Contracts\ArrayFactory;
 use TrueLayer\Contracts\ArrayFactoryInterface;
 
 interface BeneficiaryInterface extends ArrayableInterface, ArrayFactoryInterface
@@ -15,6 +14,7 @@ interface BeneficiaryInterface extends ArrayableInterface, ArrayFactoryInterface
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function name(string $name): self;

@@ -7,8 +7,8 @@ namespace TrueLayer\Api\Handlers;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\UserTypes;
 use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Models\PaymentInterface;
 use TrueLayer\Contracts\Models\PaymentCreatedInterface;
+use TrueLayer\Contracts\Models\PaymentInterface;
 use TrueLayer\Models\PaymentCreated;
 use TrueLayer\Validation\BeneficiaryRules;
 use TrueLayer\Validation\PaymentRules;
@@ -17,12 +17,14 @@ class PaymentCreate
 {
     /**
      * @param ApiClientInterface $client
-     * @param PaymentInterface $model
-     * @return PaymentCreatedInterface
+     * @param PaymentInterface   $model
+     *
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function execute(ApiClientInterface $api, PaymentInterface $model): PaymentCreatedInterface
     {
@@ -38,6 +40,7 @@ class PaymentCreate
 
     /**
      * @param PaymentInterface $model
+     *
      * @return array
      */
     private function getPayload(PaymentInterface $model): array
@@ -46,7 +49,7 @@ class PaymentCreate
 
         if ($user = $model->getUser()) {
             $payload['user']['type'] = $user->getId() ? UserTypes::EXISTING : UserTypes::NEW;
-            $payload['user'] = array_filter($payload['user']);
+            $payload['user'] = \array_filter($payload['user']);
         }
 
         return $payload;
@@ -54,6 +57,7 @@ class PaymentCreate
 
     /**
      * @param array $data
+     *
      * @return array
      */
     private function getRequestRules(array $data): array
@@ -68,7 +72,7 @@ class PaymentCreate
                 'user.id' => 'required|string',
             ];
 
-        return array_merge(
+        return \array_merge(
             PaymentRules::rules($data),
             BeneficiaryRules::rules($data),
             $userRules,
@@ -77,6 +81,7 @@ class PaymentCreate
 
     /**
      * @param array $data
+     *
      * @return string[]
      */
     private function getResponseRules(array $data): array

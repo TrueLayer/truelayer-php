@@ -54,6 +54,7 @@ class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
 
     /**
      * @param array $data
+     *
      * @return static
      */
     public static function fromArray(array $data): self

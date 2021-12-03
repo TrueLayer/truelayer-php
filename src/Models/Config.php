@@ -127,14 +127,16 @@ class Config implements ConfigInterface
 
     /**
      * @param string $path
-     * @return $this
+     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function pemFile(string $path): self
     {
-        $pem = file_get_contents($path);
+        $pem = \file_get_contents($path);
 
-        if (!is_string($pem)) {
+        if (!\is_string($pem)) {
             throw new InvalidArgumentException('Unable to load the key from the file.');
         }
 
@@ -143,11 +145,13 @@ class Config implements ConfigInterface
 
     /**
      * @param string $passphrase
+     *
      * @return $this
      */
     public function passphrase(string $passphrase): self
     {
         $this->passphrase = $passphrase;
+
         return $this;
     }
 

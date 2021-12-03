@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer;
 
 use GuzzleHttp\Client;
-use TrueLayer\Api;
 use TrueLayer\Builders\BeneficiaryBuilder;
 use TrueLayer\Builders\SDKBuilder;
 use TrueLayer\Constants\Endpoints;
@@ -37,6 +36,7 @@ class SDK implements SDKInterface
 
     /**
      * @param array $data
+     *
      * @return UserInterface
      */
     public function user(array $data = []): UserInterface
@@ -54,6 +54,7 @@ class SDK implements SDKInterface
 
     /**
      * @param array $data
+     *
      * @return PaymentInterface
      */
     public function payment(array $data = []): PaymentInterface
@@ -63,29 +64,33 @@ class SDK implements SDKInterface
 
     /**
      * @param PaymentInterface $payment
-     * @return PaymentCreatedInterface
+     *
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiRequestValidationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\ApiResponseValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function createPayment(PaymentInterface $payment): PaymentCreatedInterface
     {
-        return (new Api\Handlers\PaymentCreate)->execute($this->apiClient, $payment);
+        return (new Api\Handlers\PaymentCreate())->execute($this->apiClient, $payment);
     }
 
     /**
      * @param string $id
-     * @return PaymentInterface
+     *
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiRequestValidationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\ApiResponseValidationException
      * @throws InvalidArgumentException
+     *
+     * @return PaymentInterface
      */
     public function getPayment(string $id): PaymentInterface
     {
-        return (new Api\Handlers\PaymentRetrieve)->execute($this->apiClient, $id);
+        return (new Api\Handlers\PaymentRetrieve())->execute($this->apiClient, $id);
     }
 
     /**
@@ -112,8 +117,8 @@ class SDK implements SDKInterface
         );
 
         $filesystem = new \Illuminate\Filesystem\Filesystem();
-        $loader = new \Illuminate\Translation\FileLoader($filesystem, dirname(__FILE__, 2) . '/lang');
-        $loader->addNamespace('lang', dirname(__FILE__, 2) . '/lang');
+        $loader = new \Illuminate\Translation\FileLoader($filesystem, \dirname(__FILE__, 2) . '/lang');
+        $loader->addNamespace('lang', \dirname(__FILE__, 2) . '/lang');
         $loader->load('en', 'validation', 'lang');
         $translationFactory = new \Illuminate\Translation\Translator($loader, 'en');
         $validatorFactory = new \Illuminate\Validation\Factory($translationFactory);

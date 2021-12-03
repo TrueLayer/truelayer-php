@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Api;
 
+use Closure;
 use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
@@ -11,7 +12,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
-use Closure;
 
 class ApiRequest implements ApiRequestInterface
 {
@@ -50,50 +50,59 @@ class ApiRequest implements ApiRequestInterface
 
     /**
      * @param string $uri
+     *
      * @return ApiRequestInterface
      */
     public function uri(string $uri): ApiRequestInterface
     {
         $this->uri = $uri;
+
         return $this;
     }
 
     /**
      * @param array $payload
+     *
      * @return ApiRequestInterface
      */
     public function payload(array $payload): ApiRequestInterface
     {
         $this->payload = $payload;
+
         return $this;
     }
 
     /**
      * @param callable $factory
+     *
      * @return ApiRequestInterface
      */
     public function requestRules(callable $factory): ApiRequestInterface
     {
         $this->requestRulesFactory = Closure::fromCallable($factory);
+
         return $this;
     }
 
     /**
      * @param callable $factory
+     *
      * @return ApiRequestInterface
      */
     public function responseRules(callable $factory): ApiRequestInterface
     {
         $this->responseRulesFactory = Closure::fromCallable($factory);
+
         return $this;
     }
 
     /**
-     * @return array
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function post(): array
     {
@@ -101,11 +110,12 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return array
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function get(): array
     {
@@ -114,11 +124,13 @@ class ApiRequest implements ApiRequestInterface
 
     /**
      * @param string $method
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(string $method): array
     {

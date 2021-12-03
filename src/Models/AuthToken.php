@@ -33,11 +33,13 @@ class AuthToken implements AuthTokenInterface
 
     /**
      * @param string $token
+     *
      * @return AuthTokenInterface
      */
     public function accessToken(string $token): AuthTokenInterface
     {
         $this->accessToken = $token;
+
         return $this;
     }
 
@@ -51,11 +53,13 @@ class AuthToken implements AuthTokenInterface
 
     /**
      * @param int $retrievedAt
+     *
      * @return AuthTokenInterface
      */
     public function retrievedAt(int $retrievedAt): AuthTokenInterface
     {
         $this->retrievedAt = $retrievedAt;
+
         return $this;
     }
 
@@ -69,16 +73,19 @@ class AuthToken implements AuthTokenInterface
 
     /**
      * @param int $expiresIn
+     *
      * @return AuthTokenInterface
      */
     public function expiresIn(int $expiresIn): AuthTokenInterface
     {
         $this->expiresIn = $expiresIn;
+
         return $this;
     }
 
     /**
      * @param int $safetyMargin
+     *
      * @return bool
      */
     public function isExpired(int $safetyMargin = 10): bool
@@ -88,11 +95,12 @@ class AuthToken implements AuthTokenInterface
 
     /**
      * @param array $data
+     *
      * @return AuthTokenInterface
      */
     public static function fromArray(array $data): AuthTokenInterface
     {
-        return (new static)
+        return (new static())
             ->accessToken($data['access_token'] ?? null)
             ->retrievedAt($data['retrieved_at'] ?? null)
             ->expiresIn($data['expires_in'] ?? null);

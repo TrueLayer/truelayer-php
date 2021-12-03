@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace TrueLayer\Api;
 
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Contracts\Validation;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
-use Illuminate\Contracts\Validation;
 use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
@@ -24,7 +24,7 @@ use TrueLayer\Signing\Contracts\Signer;
 
 class ApiClient implements ApiClientInterface
 {
-    const MAX_RETRIES = 1;
+    public const MAX_RETRIES = 1;
 
     /**
      * @var HttpClientInterface
@@ -57,10 +57,10 @@ class ApiClient implements ApiClientInterface
     private ?AuthTokenInterface $authToken = null;
 
     /**
-     * @param string $baseUri
-     * @param HttpClientInterface $httpClient
-     * @param Signer $signer
-     * @param Validation\Factory $validationFactory
+     * @param string                          $baseUri
+     * @param HttpClientInterface             $httpClient
+     * @param Signer                          $signer
+     * @param Validation\Factory              $validationFactory
      * @param AuthTokenRetrieveInterface|null $authTokenRetrieve
      */
     public function __construct(
@@ -69,8 +69,7 @@ class ApiClient implements ApiClientInterface
         Signer $signer,
         Validation\Factory $validationFactory,
         AuthTokenRetrieveInterface $authTokenRetrieve = null
-    )
-    {
+    ) {
         $this->baseUri = $baseUri;
         $this->httpClient = $httpClient;
         $this->signer = $signer;
@@ -87,16 +86,18 @@ class ApiClient implements ApiClientInterface
     }
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param array $data
+     * @param string        $method
+     * @param string        $uri
+     * @param array         $data
      * @param callable|null $requestRules
      * @param callable|null $responseRules
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(string $method, string $uri, array $data, callable $requestRules = null, callable $responseRules = null): array
     {
@@ -119,13 +120,15 @@ class ApiClient implements ApiClientInterface
 
     /**
      * @param RequestInterface $request
-     * @param int $retry
-     * @return ResponseInterface
+     * @param int              $retry
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseValidationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return ResponseInterface
      */
     private function sendHttpRequest(RequestInterface $request, int $retry = 0): ResponseInterface
     {
@@ -141,12 +144,14 @@ class ApiClient implements ApiClientInterface
     /**
      * @param string $method
      * @param string $uri
-     * @param array $data
-     * @return Request
+     * @param array  $data
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return Request
      */
     private function createRequest(string $method, string $uri, array $data = []): Request
     {
@@ -171,11 +176,12 @@ class ApiClient implements ApiClientInterface
     }
 
     /**
-     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return string|null
      */
     private function getAccessToken(): ?string
     {
@@ -188,20 +194,20 @@ class ApiClient implements ApiClientInterface
         }
 
         return $this->authToken->getAccessToken();
-
     }
 
     /**
      * @param string $method
+     *
      * @return bool
      */
     private function modifiesResources(string $method): bool
     {
-        return in_array($method, [
+        return \in_array($method, [
             RequestMethods::POST,
             RequestMethods::PUT,
             RequestMethods::PATCH,
-            RequestMethods::DELETE
+            RequestMethods::DELETE,
         ]);
     }
 
@@ -213,10 +219,7 @@ class ApiClient implements ApiClientInterface
         $statusCode = $response->getStatusCode();
 
         if ($statusCode >= 400) {
-            throw new ApiResponseUnsuccessfulException(
-                $statusCode,
-                $this->getResponseData($response)
-            );
+            throw new ApiResponseUnsuccessfulException($statusCode, $this->getResponseData($response));
         }
     }
 
@@ -226,9 +229,9 @@ class ApiClient implements ApiClientInterface
     private function getResponseData(ResponseInterface $response)
     {
         $encoded = $response->getBody()->getContents();
-        $decoded = json_decode($encoded, true);
+        $decoded = \json_decode($encoded, true);
 
-        if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
+        if ($decoded === null && \json_last_error() !== JSON_ERROR_NONE) {
             return $encoded;
         }
 
@@ -237,8 +240,10 @@ class ApiClient implements ApiClientInterface
 
     /**
      * @param array $data
-     * @return string
+     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return string
      */
     private function jsonEncode(array $data): string
     {
@@ -252,12 +257,14 @@ class ApiClient implements ApiClientInterface
     }
 
     /**
-     * @param array $data
-     * @param array $rules
+     * @param array  $data
+     * @param array  $rules
      * @param string $throwable
-     * @return array
+     *
      * @throws ApiResponseValidationException
      * @throws ApiRequestValidationException
+     *
+     * @return array
      */
     private function validate(array $data, array $rules, string $throwable): array
     {

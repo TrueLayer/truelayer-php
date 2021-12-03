@@ -13,6 +13,7 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 {
     /**
      * @param array $data
+     *
      * @return SortCodeAccountNumber
      */
     public function sortCodeAccountNumber(array $data = []): SortCodeAccountNumber
@@ -22,6 +23,7 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param array $data
+     *
      * @return IbanAccountBeneficiary
      */
     public function ibanAccount(array $data = []): IbanAccountBeneficiary
@@ -31,6 +33,7 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param array $data
+     *
      * @return MerchantAccountBeneficiary
      */
     public function merchantAccount(array $data = []): MerchantAccountBeneficiary

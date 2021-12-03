@@ -19,12 +19,14 @@ class PaymentRetrieve
 {
     /**
      * @param ApiClientInterface $api
-     * @param string $id
-     * @return PaymentInterface
+     * @param string             $id
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return PaymentInterface
      */
     public function execute(ApiClientInterface $api, string $id): PaymentInterface
     {
@@ -38,11 +40,12 @@ class PaymentRetrieve
 
     /**
      * @param array $data
+     *
      * @return array
      */
     private function getResponseRules(array $data): array
     {
-        return array_merge(
+        return \array_merge(
             PaymentRules::rules($data),
             BeneficiaryRules::rules($data),
             [

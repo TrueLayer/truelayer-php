@@ -86,6 +86,4 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
             'scheme_identifier' => $schemeIdentifier,
         ];
     }
-
-
 }

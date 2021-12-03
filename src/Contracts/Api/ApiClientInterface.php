@@ -15,16 +15,18 @@ interface ApiClientInterface
     public function request(): ApiRequestInterface;
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param array $data
+     * @param string        $method
+     * @param string        $uri
+     * @param array         $data
      * @param callable|null $requestRules
      * @param callable|null $responseRules
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(string $method, string $uri, array $data, callable $requestRules = null, callable $responseRules = null): array;
 }

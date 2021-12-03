@@ -6,5 +6,4 @@ namespace TrueLayer\Exceptions;
 
 class ApiRequestJsonSerializationException extends \Exception
 {
-
 }

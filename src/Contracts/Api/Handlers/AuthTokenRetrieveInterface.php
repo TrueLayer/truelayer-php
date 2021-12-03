@@ -11,11 +11,12 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 interface AuthTokenRetrieveInterface
 {
     /**
-     * @return AuthTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return AuthTokenInterface
      */
     public function execute(): AuthTokenInterface;
 }

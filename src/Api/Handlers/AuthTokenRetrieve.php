@@ -33,8 +33,8 @@ class AuthTokenRetrieve implements AuthTokenRetrieveInterface
 
     /**
      * @param ApiClientInterface $api
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param string             $clientId
+     * @param string             $clientSecret
      */
     public function __construct(ApiClientInterface $api, string $clientId, string $clientSecret)
     {
@@ -44,11 +44,12 @@ class AuthTokenRetrieve implements AuthTokenRetrieveInterface
     }
 
     /**
-     * @return AuthTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return AuthTokenInterface
      */
     public function execute(): AuthTokenInterface
     {
@@ -62,7 +63,7 @@ class AuthTokenRetrieve implements AuthTokenRetrieveInterface
             ])
             ->responseRules(fn ($data) => [
                 'access_token' => 'required|string',
-                'expires_in' => 'required|int'
+                'expires_in' => 'required|int',
             ])
             ->post();
 

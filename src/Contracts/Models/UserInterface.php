@@ -14,6 +14,7 @@ interface UserInterface extends ArrayableInterface, ArrayFactoryInterface
 
     /**
      * @param string $id
+     *
      * @return UserInterface
      */
     public function id(string $id): UserInterface;
