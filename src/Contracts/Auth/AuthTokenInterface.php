@@ -1,28 +1,38 @@
 <?php
 
-namespace TrueLayer\Contracts\Api;
+namespace TrueLayer\Contracts\Auth;
 
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 
-interface ApiClientInterface
+interface AuthTokenInterface
 {
     /**
-     * @return ApiRequestInterface
-     */
-    public function request(): ApiRequestInterface;
-
-    /**
-     * @param ApiRequestInterface $apiRequest
-     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return string
      */
-    public function send(ApiRequestInterface $apiRequest): array;
+    public function getAccessToken(): string;
+
+    /**
+     * @return int|null
+     */
+    public function getRetrievedAt(): ?int;
+
+    /**
+     * @return int|null
+     */
+    public function getExpiresIn(): ?int;
+
+    /**
+     * @param int $safetyMargin
+     *
+     * @return bool
+     */
+    public function isExpired(int $safetyMargin = 10): bool;
 }

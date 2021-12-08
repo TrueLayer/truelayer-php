@@ -35,7 +35,7 @@ class BeneficiaryRules
 
             if ($schemeType === ExternalAccountTypes::IBAN) {
                 $rules['beneficiary.scheme_identifier.type'] = 'required|string';
-                $rules['beneficiary.scheme_identifier.iban'] = 'required|string';
+                $rules['beneficiary.scheme_identifier.iban'] = 'required|alpha_num|max:39|min:4';
 
                 return $rules;
             }
