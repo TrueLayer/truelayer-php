@@ -30,6 +30,7 @@ interface SdkInterface
 
     /**
      * @param array $data
+     *
      * @return PaymentRequestInterface
      */
     public function payment(array $data = []): PaymentRequestInterface;

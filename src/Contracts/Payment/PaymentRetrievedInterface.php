@@ -43,8 +43,9 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getUser(): ?UserInterface;
 
     /**
-     * @return DateTime
      * @throws Exception
+     *
+     * @return DateTime
      */
     public function getCreatedAt(): DateTime;
 

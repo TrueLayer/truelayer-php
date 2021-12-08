@@ -18,7 +18,8 @@ abstract class BaseApiClientDecorator implements ApiClientInterface
     /**
      * @param ApiClientInterface $next
      */
-    public function __construct(ApiClientInterface $next) {
+    public function __construct(ApiClientInterface $next)
+    {
         $this->next = $next;
     }
 

@@ -2,9 +2,6 @@
 
 namespace TrueLayer\Contracts;
 
-use TrueLayer\Contracts\ArrayableInterface;
-use TrueLayer\Contracts\ArrayFillableInterface;
-
 interface UserInterface extends ArrayableInterface, ArrayFillableInterface
 {
     /**

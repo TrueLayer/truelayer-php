@@ -57,13 +57,16 @@ interface SdkConfigInterface
 
     /**
      * @param string $path
-     * @return $this
+     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function pemFile(string $path): self;
 
     /**
      * @param string $passphrase
+     *
      * @return $this
      */
     public function passphrase(string $passphrase): self;
@@ -98,11 +101,12 @@ interface SdkConfigInterface
     public function httpClient(ClientInterface $client): self;
 
     /**
-     * @return SdkInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return SdkInterface
      */
     public function create(): SdkInterface;
 }

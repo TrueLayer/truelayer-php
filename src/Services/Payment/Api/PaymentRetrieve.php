@@ -19,11 +19,13 @@ class PaymentRetrieve
 
     /**
      * @param string $id
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function execute(string $id): array
     {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Hpp;
 
-use Illuminate\Support\Str;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Support\Str;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
-use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Traits\HasAttributes;
 
 class HppHelper implements HppHelperInterface
 {
@@ -26,7 +26,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param ValidatorFactory $validatorFactory
-     * @param string $baseUrl
+     * @param string           $baseUrl
      */
     public function __construct(ValidatorFactory $validatorFactory, string $baseUrl)
     {
@@ -35,8 +35,9 @@ class HppHelper implements HppHelperInterface
     }
 
     /**
-     * @return string
      * @throws ValidationException
+     *
+     * @return string
      */
     public function __toString(): string
     {
@@ -44,8 +45,9 @@ class HppHelper implements HppHelperInterface
     }
 
     /**
-     * @return string
      * @throws ValidationException
+     *
+     * @return string
      */
     public function toString(): string
     {
@@ -54,6 +56,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $paymentId
+     *
      * @return HppHelperInterface
      */
     public function paymentId(string $paymentId): HppHelperInterface
@@ -63,6 +66,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $resourceToken
+     *
      * @return HppHelperInterface
      */
     public function resourceToken(string $resourceToken): HppHelperInterface
@@ -72,6 +76,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $returnUri
+     *
      * @return HppHelperInterface
      */
     public function returnUri(string $returnUri): HppHelperInterface
@@ -81,6 +86,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $hex
+     *
      * @return HppHelperInterface
      */
     public function primary(string $hex): HppHelperInterface
@@ -90,6 +96,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $hex
+     *
      * @return HppHelperInterface
      */
     public function secondary(string $hex): HppHelperInterface
@@ -99,6 +106,7 @@ class HppHelper implements HppHelperInterface
 
     /**
      * @param string $hex
+     *
      * @return HppHelperInterface
      */
     public function tertiary(string $hex): HppHelperInterface
@@ -107,38 +115,41 @@ class HppHelper implements HppHelperInterface
     }
 
     /**
-     * Redirect the user to the Hosted Payments Page
+     * Redirect the user to the Hosted Payments Page.
      */
     public function redirect(): void
     {
-        header("Location: {$this->__toString()}");
-        die();
+        \header("Location: {$this->__toString()}");
+        exit();
     }
 
     /**
      * @param string $key
      * @param string $hex
+     *
      * @return HppHelperInterface
      */
     private function color(string $key, string $hex): HppHelperInterface
     {
-        return $this->set($key, Str::after($hex,'#'));
+        return $this->set($key, Str::after($hex, '#'));
     }
 
     /**
-     * @return string
      * @throws ValidationException
+     *
+     * @return string
      */
     private function getHashQuery(): string
     {
-        return '#' . http_build_query(
+        return '#' . \http_build_query(
             $this->getValidatedHashParams(), '', '&', PHP_QUERY_RFC3986
         );
     }
 
     /**
-     * @return array
      * @throws ValidationException
+     *
+     * @return array
      */
     private function getValidatedHashParams(): array
     {

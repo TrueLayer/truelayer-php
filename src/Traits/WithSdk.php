@@ -28,6 +28,7 @@ trait WithSdk
 
     /**
      * @param SdkInterface $sdk
+     *
      * @return static
      */
     public static function make(SdkInterface $sdk): self

@@ -31,11 +31,13 @@ class AccessTokenDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(ApiRequestInterface $apiRequest): array
     {

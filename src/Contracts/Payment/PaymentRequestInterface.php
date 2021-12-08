@@ -12,6 +12,7 @@ interface PaymentRequestInterface extends ArrayableInterface
 {
     /**
      * @param int $amount
+     *
      * @return PaymentRequestInterface
      */
     public function amountInMinor(int $amount): PaymentRequestInterface;

@@ -6,6 +6,7 @@ interface SdkFactoryInterface
 {
     /**
      * @param SdkConfigInterface $config
+     *
      * @return SdkInterface
      */
     public function make(SdkConfigInterface $config): SdkInterface;

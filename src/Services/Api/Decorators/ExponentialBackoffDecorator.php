@@ -13,16 +13,18 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 
 class ExponentialBackoffDecorator extends BaseApiClientDecorator
 {
-    const MAX_RETRIES = 5;
+    public const MAX_RETRIES = 5;
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      * @throws ClientExceptionInterface
+     *
+     * @return array
      */
     public function send(ApiRequestInterface $apiRequest): array
     {
@@ -31,36 +33,39 @@ class ExponentialBackoffDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @param int $attempt
-     * @return array
+     * @param int                 $attempt
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      * @throws ClientExceptionInterface
+     *
+     * @return array
      */
     private function try(ApiRequestInterface $apiRequest, int $attempt = 0): array
     {
-        var_dump('trying ' . $attempt . ' ' . $apiRequest->getUri());
+        \var_dump('trying ' . $attempt . ' ' . $apiRequest->getUri());
 
         try {
             return $this->next->send($apiRequest);
         } catch (\Exception $e) {
             $this->checkAllowRetry($e, $attempt);
             $this->delay($attempt);
+
             return $this->try($apiRequest, $attempt + 1);
         }
     }
 
     /**
      * @param \Exception $e
-     * @param int $attempt
+     * @param int        $attempt
+     *
      * @throws \Exception
      */
     private function checkAllowRetry(\Exception $e, int $attempt): void
     {
-
-        $isServerError =  ($e instanceof ApiResponseUnsuccessfulException) &&
+        $isServerError = ($e instanceof ApiResponseUnsuccessfulException) &&
             $e->getStatusCode() >= 500;
 
         $isClientError = $e instanceof ClientExceptionInterface;
@@ -77,8 +82,8 @@ class ExponentialBackoffDecorator extends BaseApiClientDecorator
      */
     private function delay(int $attempt): void
     {
-        $delay = mt_rand(0, 1000000) + (pow(2, $attempt) * 1000000);
-        var_dump('delaying '. $delay);
-        usleep($delay);
+        $delay = \mt_rand(0, 1000000) + (\pow(2, $attempt) * 1000000);
+        \var_dump('delaying ' . $delay);
+        \usleep($delay);
     }
 }

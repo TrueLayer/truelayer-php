@@ -62,7 +62,7 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
      */
     public function toArray(): array
     {
-        return array_merge($this->data, [
+        return \array_merge($this->data, [
             'type' => $this->getType(),
         ]);
     }

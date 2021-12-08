@@ -90,7 +90,7 @@ class User implements UserInterface
      */
     public function toArray(): array
     {
-        return array_merge($this->data, [
+        return \array_merge($this->data, [
             'type' => $this->getId() ? UserTypes::EXISTING : UserTypes::NEW,
         ]);
     }

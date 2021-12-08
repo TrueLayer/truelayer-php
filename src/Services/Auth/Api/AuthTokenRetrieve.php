@@ -15,13 +15,15 @@ class AuthTokenRetrieve
 {
     /**
      * @param ApiClientInterface $api
-     * @param string $clientId
-     * @param string $clientSecret
-     * @return array
+     * @param string             $clientId
+     * @param string             $clientSecret
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function execute(ApiClientInterface $api, string $clientId, string $clientSecret): array
     {

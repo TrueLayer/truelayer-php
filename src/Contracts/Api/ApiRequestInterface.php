@@ -40,14 +40,16 @@ interface ApiRequestInterface
     public function getPayload(): array;
 
     /**
-     * @return string
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return string
      */
     public function getJsonPayload(): string;
 
     /**
      * @param $key
      * @param $value
+     *
      * @return ApiRequestInterface
      */
     public function addHeader($key, $value): ApiRequestInterface;

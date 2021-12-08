@@ -25,7 +25,7 @@ class HppHelperFactory implements HppHelperFactoryInterface
 
     /**
      * @param ValidatorFactory $validatorFactory
-     * @param string $baseUrl
+     * @param string           $baseUrl
      */
     public function __construct(ValidatorFactory $validatorFactory, string $baseUrl)
     {

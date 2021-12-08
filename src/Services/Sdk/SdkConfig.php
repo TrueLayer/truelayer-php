@@ -6,9 +6,9 @@ namespace TrueLayer\Services\Sdk;
 
 use Psr\Http\Client\ClientInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
+use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 
 class SdkConfig implements SdkConfigInterface
 {
@@ -214,15 +214,17 @@ class SdkConfig implements SdkConfigInterface
     public function httpClient(ClientInterface $httpClient): self
     {
         $this->httpClient = $httpClient;
+
         return $this;
     }
 
     /**
-     * @return SdkInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return SdkInterface
      */
     public function create(): SdkInterface
     {

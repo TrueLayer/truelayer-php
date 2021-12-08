@@ -67,11 +67,11 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
      */
     public function toArray(): array
     {
-        return array_merge_recursive($this->data, [
+        return \array_merge_recursive($this->data, [
             'type' => $this->getType(),
             'scheme_identifier' => [
                 'type' => $this->getSchemeType(),
-            ]
+            ],
         ]);
     }
 }

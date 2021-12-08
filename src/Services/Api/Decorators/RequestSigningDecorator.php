@@ -24,7 +24,7 @@ class RequestSigningDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiClientInterface $next
-     * @param Signer $signer
+     * @param Signer             $signer
      */
     public function __construct(ApiClientInterface $next, Signer $signer)
     {
@@ -34,11 +34,13 @@ class RequestSigningDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(ApiRequestInterface $apiRequest): array
     {

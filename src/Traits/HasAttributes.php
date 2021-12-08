@@ -20,17 +20,20 @@ trait HasAttributes
 
     /**
      * @param array $data
+     *
      * @return $this
      */
     public function fill(array $data = []): self
     {
         $this->data = $data;
+
         return $this;
     }
 
     /**
      * @param $key
      * @param null $default
+     *
      * @return mixed|null
      */
     protected function get($key, $default = null)
@@ -41,11 +44,13 @@ trait HasAttributes
     /**
      * @param $key
      * @param $value
+     *
      * @return $this
      */
     protected function set($key, $value): self
     {
         Arr::set($this->data, $key, $value);
+
         return $this;
     }
 }

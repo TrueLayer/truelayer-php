@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer;
 
+use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
@@ -12,12 +13,11 @@ use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
 use TrueLayer\Services\Payment\Api\PaymentRetrieve;
 use TrueLayer\Services\Payment\PaymentRequest;
 use TrueLayer\Services\Payment\PaymentRetrieved;
-use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Services\Sdk\SdkFactory;
 use TrueLayer\Services\User;
@@ -35,7 +35,7 @@ class Sdk implements SdkInterface
     private HppHelperFactoryInterface $hppHelperFactory;
 
     /**
-     * @param ApiClientInterface $apiClient
+     * @param ApiClientInterface        $apiClient
      * @param HppHelperFactoryInterface $hppHelperFactory
      */
     public function __construct(ApiClientInterface $apiClient, HppHelperFactoryInterface $hppHelperFactory)
@@ -72,6 +72,7 @@ class Sdk implements SdkInterface
 
     /**
      * @param array $data
+     *
      * @return PaymentRequestInterface
      */
     public function payment(array $data = []): PaymentRequestInterface
@@ -93,6 +94,7 @@ class Sdk implements SdkInterface
     public function getPaymentDetails(string $id): PaymentRetrievedInterface
     {
         $data = PaymentRetrieve::make($this)->execute($id);
+
         return PaymentRetrieved::make($this)->fill($data);
     }
 

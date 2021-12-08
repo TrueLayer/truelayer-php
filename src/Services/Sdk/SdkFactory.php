@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use GuzzleHttp\Client;
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Psr\Http\Client\ClientInterface;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AuthTokenInterface;
 use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
-use TrueLayer\Contracts\HppHelperInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
@@ -18,9 +18,7 @@ use TrueLayer\Sdk;
 use TrueLayer\Services\Api\ApiClient;
 use TrueLayer\Services\Api\Decorators;
 use TrueLayer\Services\Auth\AuthToken;
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Services\Hpp\HppHelperFactory;
-use TrueLayer\Signing\Contracts\Signer;
 
 class SdkFactory implements SdkFactoryInterface
 {
@@ -51,11 +49,12 @@ class SdkFactory implements SdkFactoryInterface
 
     /**
      * @param SdkConfigInterface $config
+     *
      * @return SdkInterface
      */
     public function make(SdkConfigInterface $config): SdkInterface
     {
-        $this->makeValidatorFactory();;
+        $this->makeValidatorFactory();
         $this->makeHttpClient($config);
         $this->makeAuthToken($config);
         $this->makeApiClient($config);
@@ -68,6 +67,7 @@ class SdkFactory implements SdkFactoryInterface
      * Build the HTTP client
      * If the user provides a PSR client we can use that, otherwise
      * we fallback to the Guzzle implementation.
+     *
      * @param SdkConfigInterface $config
      */
     private function makeHttpClient(SdkConfigInterface $config): void
@@ -92,7 +92,8 @@ class SdkFactory implements SdkFactoryInterface
 
     /**
      * Build the auth token service
-     * Handles the auth token retrieval & manages expiration
+     * Handles the auth token retrieval & manages expiration.
+     *
      * @param SdkConfigInterface $config
      */
     private function makeAuthToken(SdkConfigInterface $config): void
@@ -115,6 +116,7 @@ class SdkFactory implements SdkFactoryInterface
     /**
      * Build the API client
      * Handles API calls, including signing, validation & error handling.
+     *
      * @param SdkConfigInterface $config
      */
     private function makeApiClient(SdkConfigInterface $config): void
@@ -139,6 +141,7 @@ class SdkFactory implements SdkFactoryInterface
     /**
      * Build the HPP helper factory
      * This allows the SDK to create new helper instances on every method call.
+     *
      * @param SdkConfigInterface $config
      */
     private function makeHppHelperFactory(SdkConfigInterface $config): void

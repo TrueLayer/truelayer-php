@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api\Decorators;
 
 use Closure;
+use Illuminate\Contracts\Validation;
 use Illuminate\Validation\ValidationException;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
@@ -12,7 +13,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
-use Illuminate\Contracts\Validation;
 
 class ValidationDecorator extends BaseApiClientDecorator
 {
@@ -30,11 +30,13 @@ class ValidationDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
+     *
+     * @return array
      */
     public function send(ApiRequestInterface $apiRequest): array
     {
@@ -55,9 +57,9 @@ class ValidationDecorator extends BaseApiClientDecorator
     }
 
     /**
-     * @param array  $data
-     * @param Closure  $rulesFactory
-     * @param string $throwable
+     * @param array   $data
+     * @param Closure $rulesFactory
+     * @param string  $throwable
      *
      * @throws ApiResponseValidationException
      * @throws ApiRequestValidationException

@@ -26,8 +26,8 @@ class ApiClient implements ApiClientInterface
     private string $baseUri;
 
     /**
-     * @param HttpClientInterface             $httpClient
-     * @param string                          $baseUri
+     * @param HttpClientInterface $httpClient
+     * @param string              $baseUri
      */
     public function __construct(HttpClientInterface $httpClient, string $baseUri)
     {
@@ -45,14 +45,16 @@ class ApiClient implements ApiClientInterface
 
     /**
      * @param ApiRequestInterface $apiRequest
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ClientExceptionInterface
+     *
+     * @return array
      */
     public function send(ApiRequestInterface $apiRequest): array
     {
-        $headers = array_merge($apiRequest->getHeaders(), [
+        $headers = \array_merge($apiRequest->getHeaders(), [
             'Content-Type' => 'application/json',
         ]);
 
@@ -76,6 +78,7 @@ class ApiClient implements ApiClientInterface
 
     /**
      * @param ResponseInterface $response
+     *
      * @return array
      */
     private function getResponseData(ResponseInterface $response): array

@@ -31,11 +31,12 @@ interface PaymentCreatedInterface extends ArrayableInterface, ArrayFillableInter
     public function hostedPaymentsPage(): HppHelperInterface;
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface;
 }

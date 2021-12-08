@@ -7,8 +7,8 @@ namespace TrueLayer\Services\Payment;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
-use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
+use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Services\Payment\Api\PaymentCreate;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
@@ -46,6 +46,7 @@ class PaymentRequest implements PaymentRequestInterface
     {
         $this->set('payment_method.type', PaymentMethods::BANK_TRANSFER);
         $this->set('payment_method.statement_reference', $statementReference);
+
         return $this;
     }
 
@@ -70,16 +71,18 @@ class PaymentRequest implements PaymentRequestInterface
     }
 
     /**
-     * @return PaymentCreatedInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {
         $sdk = $this->getSdk();
         $data = PaymentCreate::make($sdk)->execute($this->toArray());
+
         return PaymentCreated::make($sdk)->fill($data);
     }
 }

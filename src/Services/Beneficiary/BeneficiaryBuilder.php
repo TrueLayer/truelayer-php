@@ -6,11 +6,8 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
-use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
-use TrueLayer\Services\Beneficiary\IbanAccountBeneficiary;
-use TrueLayer\Services\Beneficiary\MerchantAccountBeneficiary;
-use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
+use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Traits\WithSdk;
 
 class BeneficiaryBuilder implements BeneficiaryBuilderInterface
@@ -49,6 +46,7 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param array $data
+     *
      * @return BeneficiaryInterface
      */
     public function fromArray(array $data): BeneficiaryInterface

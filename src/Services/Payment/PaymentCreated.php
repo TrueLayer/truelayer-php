@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Payment;
 
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
-use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
+use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
@@ -50,11 +50,12 @@ class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {

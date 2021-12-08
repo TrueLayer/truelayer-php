@@ -15,11 +15,13 @@ class PaymentCreate
 
     /**
      * @param array $data
-     * @return array
+     *
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     *
+     * @return array
      */
     public function execute(array $data): array
     {

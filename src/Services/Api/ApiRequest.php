@@ -107,8 +107,9 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return string
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return string
      */
     public function getJsonPayload(): string
     {
@@ -132,6 +133,7 @@ class ApiRequest implements ApiRequestInterface
     /**
      * @param $key
      * @param $value
+     *
      * @return ApiRequestInterface
      */
     public function addHeader($key, $value): ApiRequestInterface
@@ -192,6 +194,7 @@ class ApiRequest implements ApiRequestInterface
     public function post(): array
     {
         $this->method = RequestMethods::POST;
+
         return $this->apiClient->send($this);
     }
 
@@ -206,6 +209,7 @@ class ApiRequest implements ApiRequestInterface
     public function get(): array
     {
         $this->method = RequestMethods::GET;
+
         return $this->apiClient->send($this);
     }
 }

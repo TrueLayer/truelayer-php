@@ -74,8 +74,9 @@ class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return DateTime
      * @throws Exception
+     *
+     * @return DateTime
      */
     public function getCreatedAt(): DateTime
     {
