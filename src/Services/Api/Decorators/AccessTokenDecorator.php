@@ -42,6 +42,6 @@ class AccessTokenDecorator extends BaseApiClientDecorator
     public function send(ApiRequestInterface $apiRequest): array
     {
         $apiRequest->addHeader('Authorization', "Bearer {$this->authToken->getAccessToken()}");
-        $this->next->send($apiRequest);
+        return $this->next->send($apiRequest);
     }
 }

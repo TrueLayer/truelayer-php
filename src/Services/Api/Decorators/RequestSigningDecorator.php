@@ -57,7 +57,7 @@ class RequestSigningDecorator extends BaseApiClientDecorator
             $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
         }
 
-        $this->next->send($apiRequest);
+        return $this->next->send($apiRequest);
     }
 
     /**
