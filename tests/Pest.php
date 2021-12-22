@@ -2,34 +2,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "uses()" function to bind a different classes or traits.
-|
-*/
-
-// uses(Tests\TestCase::class)->in('Feature');
-
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
-
-\expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
-
-/*
-|--------------------------------------------------------------------------
 | Functions
 |--------------------------------------------------------------------------
 |
@@ -39,7 +11,69 @@
 |
 */
 
-function something()
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use TrueLayer\Sdk;
+use TrueLayer\Tests\Mocks\AuthResponse;
+
+$httpTransactions = [];
+
+/**
+ * @param $mockResponses The responses returned by the 'server'
+ * @return \TrueLayer\Contracts\Sdk\SdkInterface
+ */
+function sdk($mockResponses = [])
 {
-    // ..
+    global $httpTransactions;
+
+    $httpTransactions = [];
+
+    // For the first http call, we return the Auth token
+    // For subsequent calls we return the given response(s)
+    $responses = array_merge(
+        [AuthResponse::success()],
+        is_array($mockResponses) ? $mockResponses : [$mockResponses]
+    );
+
+    $handlerStack = HandlerStack::create(new MockHandler($responses));
+
+    $handlerStack->push(\GuzzleHttp\Middleware::history($httpTransactions));
+
+    $mockClient = new Client([ 'handler' => $handlerStack ]);
+
+    return Sdk::configure()
+        ->clientId('client_id')
+        ->clientSecret('client_secret')
+        ->keyId('123')
+        ->pemFile(__DIR__.'/Mocks/ec512-private.pem')
+        ->httpClient($mockClient)
+        ->create();
+}
+
+/**
+ * @param array $mockResponses
+ * @return \TrueLayer\Contracts\Api\ApiRequestInterface
+ */
+function request($mockResponses = []): \TrueLayer\Contracts\Api\ApiRequestInterface
+{
+    if (empty($mockResponses)) {
+        $mockResponses = new \GuzzleHttp\Psr7\Response(200, [], 'OK');
+    }
+
+    return sdk($mockResponses)->getApiClient()->request()
+        ->uri('/test');
+}
+
+/**
+ * @return \Psr\Http\Message\ServerRequestInterface[]
+ */
+function getSentHttpRequests(): array
+{
+    global $httpTransactions;
+
+    return \Illuminate\Support\Arr::pluck(
+        $httpTransactions,
+        'request'
+    );
 }

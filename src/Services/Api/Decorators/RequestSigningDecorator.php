@@ -45,13 +45,16 @@ class RequestSigningDecorator extends BaseApiClientDecorator
     public function send(ApiRequestInterface $apiRequest): array
     {
         if ($this->modifiesResources($apiRequest->getMethod())) {
-            $apiRequest->addHeader('Idempotency-Key', Uuid::uuid1()->toString());
+            $key = Uuid::uuid1()->toString();
+            $apiRequest->addHeader(CustomHeaders::IDEMPOTENCY_KEY, $key);
 
             $signature = $this->signer
                 ->method($apiRequest->getMethod())
                 ->path($apiRequest->getUri())
                 ->body($apiRequest->getJsonPayload())
-                ->headers($apiRequest->getHeaders())
+                ->headers([
+                    CustomHeaders::IDEMPOTENCY_KEY => $key
+                ])
                 ->sign();
 
             $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
