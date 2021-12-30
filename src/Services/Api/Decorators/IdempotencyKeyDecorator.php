@@ -12,8 +12,8 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
-use TrueLayer\Signing\Constants\CustomHeaders;
 use TrueLayer\Services\Util\Retry;
+use TrueLayer\Signing\Constants\CustomHeaders;
 
 class IdempotencyKeyDecorator extends BaseApiClientDecorator
 {
@@ -37,8 +37,9 @@ class IdempotencyKeyDecorator extends BaseApiClientDecorator
 
         return Retry::max(self::MAX_RETRIES)
             ->when(fn ($e) => $this->isIdempotencyKeyReuseError($e))
-            ->start(function() use ($apiRequest) {
+            ->start(function () use ($apiRequest) {
                 $this->addHeaders($apiRequest);
+
                 return $this->next->send($apiRequest);
             });
     }
@@ -58,11 +59,12 @@ class IdempotencyKeyDecorator extends BaseApiClientDecorator
 
     /**
      * @param \Exception $e
+     *
      * @return bool
      */
     private function isIdempotencyKeyReuseError(\Exception $e): bool
     {
-        return  ($e instanceof ApiResponseUnsuccessfulException) &&
+        return ($e instanceof ApiResponseUnsuccessfulException) &&
             $e->getStatusCode() === ResponseStatusCodes::UNPROCESSABLE_ENTITY &&
             $e->getMessage() === 'Idempotency-Key Reuse';
     }

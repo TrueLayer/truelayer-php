@@ -51,6 +51,7 @@ class SigningDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiRequestInterface $apiRequest
+     *
      * @throws ApiRequestJsonSerializationException
      */
     private function addHeaders(ApiRequestInterface $apiRequest): void

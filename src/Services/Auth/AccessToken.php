@@ -94,6 +94,7 @@ class AccessToken implements AccessTokenInterface
     public function clear(): AccessTokenInterface
     {
         $this->fill([]);
+
         return $this;
     }
 

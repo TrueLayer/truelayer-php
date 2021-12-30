@@ -3,7 +3,6 @@
 use GuzzleHttp\Psr7\Response;
 use TrueLayer\Exceptions;
 use TrueLayer\Services\Api\Decorators\ExponentialBackoffDecorator;
-use TrueLayer\Tests\Mocks;
 
 \it('retries requests until successful', function () {
     $serverErrorResponse = new Response(500, [], '');

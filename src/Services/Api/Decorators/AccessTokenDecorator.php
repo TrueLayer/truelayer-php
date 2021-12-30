@@ -24,7 +24,7 @@ class AccessTokenDecorator extends BaseApiClientDecorator
     private AccessTokenInterface $accessToken;
 
     /**
-     * @param ApiClientInterface $next
+     * @param ApiClientInterface   $next
      * @param AccessTokenInterface $accessToken
      */
     public function __construct(ApiClientInterface $next, AccessTokenInterface $accessToken)
@@ -46,8 +46,7 @@ class AccessTokenDecorator extends BaseApiClientDecorator
     public function send(ApiRequestInterface $apiRequest)
     {
         return Retry::max(self::MAX_RETRIES)
-            ->when(fn ($e) =>
-                ($e instanceof ApiResponseUnsuccessfulException) &&
+            ->when(fn ($e) => ($e instanceof ApiResponseUnsuccessfulException) &&
                 $e->getStatusCode() === ResponseStatusCodes::UNAUTHORIZED
             )
             ->start(function (int $attempt) use ($apiRequest) {
@@ -56,6 +55,7 @@ class AccessTokenDecorator extends BaseApiClientDecorator
                 }
 
                 $apiRequest->addHeader('Authorization', "Bearer {$this->accessToken->getAccessToken()}");
+
                 return $this->next->send($apiRequest);
             });
     }

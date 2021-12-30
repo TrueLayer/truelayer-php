@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Exceptions;
 
-use TrueLayer\Constants\ResponseStatusCodes;
-
 class ApiResponseUnsuccessfulException extends \Exception
 {
     /**

@@ -4,13 +4,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use TrueLayer\Sdk;
-use TrueLayer\Tests\Mocks\AuthResponse;
 use TrueLayer\Services\Util\Retry;
+use TrueLayer\Tests\Mocks\AuthResponse;
 
 $httpTransactions = [];
 $sleeps = [];
 
-uses()
+\uses()
     ->beforeEach(function () {
         global $sleeps;
         $sleeps = [];
@@ -22,14 +22,17 @@ uses()
     ->in(__DIR__);
 
 /**
- * Get an instance of the SDK with mocked http client
+ * Get an instance of the SDK with mocked http client.
+ *
  * @param array $mockResponses The responses returned by the 'server'
- * @return \TrueLayer\Contracts\Sdk\SdkInterface
+ *
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ *
+ * @return \TrueLayer\Contracts\Sdk\SdkInterface
  */
 function rawSdk(array $mockResponses = [])
 {
@@ -54,6 +57,7 @@ function rawSdk(array $mockResponses = [])
 
 /**
  * Get an instance of the SDK with mocked http client and access token call.
+ *
  * @param $mockResponses The responses returned by the 'server'
  *
  * @return \TrueLayer\Contracts\Sdk\SdkInterface
@@ -67,11 +71,12 @@ function sdk($mockResponses = [])
         \is_array($mockResponses) ? $mockResponses : [$mockResponses]
     );
 
-    return rawSdk($responses);
+    return \rawSdk($responses);
 }
 
 /**
- * Create a new request with a mocked successful response
+ * Create a new request with a mocked successful response.
+ *
  * @param array $mockResponses
  *
  * @return \TrueLayer\Contracts\Api\ApiRequestInterface
@@ -92,5 +97,6 @@ function request($mockResponses = []): TrueLayer\Contracts\Api\ApiRequestInterfa
 function getSentHttpRequests(): array
 {
     global $httpTransactions;
+
     return \Illuminate\Support\Arr::pluck($httpTransactions, 'request');
 }

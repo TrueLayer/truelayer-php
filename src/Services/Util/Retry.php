@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Util;
 
-use \Closure;
+use Closure;
 
 class Retry
 {
@@ -14,7 +14,7 @@ class Retry
     public static ?Closure $testSleeper = null;
 
     /**
-     * @var Closure |null
+     * @var Closure|null
      */
     private ?Closure $when = null;
 
@@ -25,39 +25,47 @@ class Retry
 
     /**
      * @param Closure $when
+     *
      * @return $this
      */
     public function when(Closure $when): self
     {
         $this->when = $when;
+
         return $this;
     }
 
     /**
      * @param int $maxRetries
+     *
      * @return $this
      */
     public function maxRetries(int $maxRetries): self
     {
         $this->maxRetries = $maxRetries;
+
         return $this;
     }
 
     /**
      * @param Closure $closure
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function start(Closure $closure)
     {
-       return $this->attempt($closure, 0);
+        return $this->attempt($closure, 0);
     }
 
     /**
      * @param Closure $closure
-     * @param int $attempt
-     * @return mixed|void
+     * @param int     $attempt
+     *
      * @throws \Exception
+     *
+     * @return mixed|void
      */
     private function attempt(Closure $closure, int $attempt)
     {
@@ -66,6 +74,7 @@ class Retry
         } catch (\Exception $e) {
             if ($this->allowRetry($e, $attempt)) {
                 $this->delay($attempt);
+
                 return $this->attempt($closure, $attempt + 1);
             }
 
@@ -75,7 +84,8 @@ class Retry
 
     /**
      * @param \Exception $e
-     * @param int $attempt
+     * @param int        $attempt
+     *
      * @return bool
      */
     private function allowRetry(\Exception $e, int $attempt): bool
@@ -102,6 +112,7 @@ class Retry
 
     /**
      * @param int $max
+     *
      * @return static
      */
     public static function max(int $max): self

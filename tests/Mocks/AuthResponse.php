@@ -12,6 +12,7 @@ class AuthResponse
 
     /**
      * @param string $append
+     *
      * @return Response
      */
     public static function success(string $append = ''): Response

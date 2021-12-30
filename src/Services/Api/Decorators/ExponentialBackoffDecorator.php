@@ -37,6 +37,7 @@ class ExponentialBackoffDecorator extends BaseApiClientDecorator
 
     /**
      * @param \Exception $e
+     *
      * @return bool
      */
     private function doesErrorAllowRetry(\Exception $e): bool

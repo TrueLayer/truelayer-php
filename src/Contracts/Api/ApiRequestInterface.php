@@ -3,7 +3,6 @@
 namespace TrueLayer\Contracts\Api;
 
 use Closure;
-use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
