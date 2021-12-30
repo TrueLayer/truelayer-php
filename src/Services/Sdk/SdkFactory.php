@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Psr\Http\Client\ClientInterface;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Auth\AuthTokenInterface;
+use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
@@ -17,7 +17,7 @@ use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Sdk;
 use TrueLayer\Services\Api\ApiClient;
 use TrueLayer\Services\Api\Decorators;
-use TrueLayer\Services\Auth\AuthToken;
+use TrueLayer\Services\Auth\AccessToken;
 use TrueLayer\Services\Hpp\HppHelperFactory;
 
 class SdkFactory implements SdkFactoryInterface
@@ -35,7 +35,7 @@ class SdkFactory implements SdkFactoryInterface
     /**
      * @var AuthTokenInterface
      */
-    private AuthTokenInterface $authToken;
+    private AccessTokenInterface $authToken;
 
     /**
      * @var ApiClientInterface
@@ -106,7 +106,7 @@ class SdkFactory implements SdkFactoryInterface
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
         $authClient = new Decorators\ValidationDecorator($authClient, $this->validatorFactory);
 
-        $this->authToken = new AuthToken(
+        $this->authToken = new AccessToken(
             $authClient,
             $config->getClientId(),
             $config->getClientSecret()
@@ -134,7 +134,8 @@ class SdkFactory implements SdkFactoryInterface
         $this->apiClient = new ApiClient($this->httpClient, $apiBaseUri);
         $this->apiClient = new Decorators\AccessTokenDecorator($this->apiClient, $this->authToken);
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
-        $this->apiClient = new Decorators\RequestSigningDecorator($this->apiClient, $signer);
+        $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);
+        $this->apiClient = new Decorators\IdempotencyKeyDecorator($this->apiClient);
         $this->apiClient = new Decorators\ValidationDecorator($this->apiClient, $this->validatorFactory);
     }
 

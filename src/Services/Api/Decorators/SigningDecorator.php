@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Api\Decorators;
 
-use Ramsey\Uuid\Uuid;
-use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -15,7 +13,7 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Signing\Constants\CustomHeaders;
 use TrueLayer\Signing\Contracts\Signer;
 
-class RequestSigningDecorator extends BaseApiClientDecorator
+class SigningDecorator extends BaseApiClientDecorator
 {
     /**
      * @var Signer
@@ -40,41 +38,34 @@ class RequestSigningDecorator extends BaseApiClientDecorator
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function send(ApiRequestInterface $apiRequest): array
+    public function send(ApiRequestInterface $apiRequest)
     {
-        if ($this->modifiesResources($apiRequest->getMethod())) {
-            $key = Uuid::uuid1()->toString();
-            $apiRequest->addHeader(CustomHeaders::IDEMPOTENCY_KEY, $key);
-
-            $signature = $this->signer
-                ->method($apiRequest->getMethod())
-                ->path($apiRequest->getUri())
-                ->body($apiRequest->getJsonPayload())
-                ->headers([
-                    CustomHeaders::IDEMPOTENCY_KEY => $key
-                ])
-                ->sign();
-
-            $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
+        if ($apiRequest->modifiesResources()) {
+            $this->addHeaders($apiRequest);
         }
 
         return $this->next->send($apiRequest);
     }
 
     /**
-     * @param string $method
-     *
-     * @return bool
+     * @param ApiRequestInterface $apiRequest
+     * @throws ApiRequestJsonSerializationException
      */
-    private function modifiesResources(string $method): bool
+    private function addHeaders(ApiRequestInterface $apiRequest): void
     {
-        return \in_array($method, [
-            RequestMethods::POST,
-            RequestMethods::PUT,
-            RequestMethods::PATCH,
-            RequestMethods::DELETE,
-        ]);
+        $idempotencyKey = $apiRequest->getHeaders()[CustomHeaders::IDEMPOTENCY_KEY];
+
+        $signature = $this->signer
+            ->method($apiRequest->getMethod())
+            ->path($apiRequest->getUri())
+            ->body($apiRequest->getJsonPayload())
+            ->headers([
+                CustomHeaders::IDEMPOTENCY_KEY => $idempotencyKey,
+            ])
+            ->sign();
+
+        $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
     }
 }

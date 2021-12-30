@@ -11,7 +11,7 @@ use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 
-class AuthTokenRetrieve
+class AccessTokenRetrieve
 {
     /**
      * @param ApiClientInterface $api

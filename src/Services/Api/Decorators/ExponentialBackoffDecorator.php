@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api\Decorators;
 
 use Psr\Http\Client\ClientExceptionInterface;
+use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
+use TrueLayer\Services\Util\Retry;
 
 class ExponentialBackoffDecorator extends BaseApiClientDecorator
 {
-    public const MAX_RETRIES = 5;
+    public const MAX_RETRIES = 4;
 
     /**
      * @param ApiRequestInterface $apiRequest
@@ -24,66 +26,30 @@ class ExponentialBackoffDecorator extends BaseApiClientDecorator
      * @throws ApiResponseValidationException
      * @throws ClientExceptionInterface
      *
-     * @return array
+     * @return mixed
      */
-    public function send(ApiRequestInterface $apiRequest): array
+    public function send(ApiRequestInterface $apiRequest)
     {
-        return $this->try($apiRequest);
-    }
-
-    /**
-     * @param ApiRequestInterface $apiRequest
-     * @param int                 $attempt
-     *
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
-     * @throws ClientExceptionInterface
-     *
-     * @return array
-     */
-    private function try(ApiRequestInterface $apiRequest, int $attempt = 0): array
-    {
-        \var_dump('trying ' . $attempt . ' ' . $apiRequest->getUri());
-
-        try {
-            return $this->next->send($apiRequest);
-        } catch (\Exception $e) {
-            $this->checkAllowRetry($e, $attempt);
-            $this->delay($attempt);
-
-            return $this->try($apiRequest, $attempt + 1);
-        }
+        return Retry::max(self::MAX_RETRIES)
+            ->when(fn ($e) => $this->doesErrorAllowRetry($e))
+            ->start(fn () => $this->next->send($apiRequest));
     }
 
     /**
      * @param \Exception $e
-     * @param int        $attempt
-     *
-     * @throws \Exception
+     * @return bool
      */
-    private function checkAllowRetry(\Exception $e, int $attempt): void
+    private function doesErrorAllowRetry(\Exception $e): bool
     {
-        $isServerError = ($e instanceof ApiResponseUnsuccessfulException) &&
-            $e->getStatusCode() >= 500;
-
-        $isClientError = $e instanceof ClientExceptionInterface;
-
-        $isRecoverable = $isClientError || $isServerError;
-
-        if (!$isRecoverable || $attempt >= self::MAX_RETRIES) {
-            throw $e;
+        // Allow retry on client errors, ex. caused by network issues
+        if ($e instanceof ClientExceptionInterface) {
+            return true;
         }
-    }
 
-    /**
-     * @param int $attempt
-     */
-    private function delay(int $attempt): void
-    {
-        $delay = \mt_rand(0, 1000000) + (\pow(2, $attempt) * 1000000);
-        \var_dump('delaying ' . $delay);
-        \usleep($delay);
+        // Allow retry on server errors or conflict errors
+        return ($e instanceof ApiResponseUnsuccessfulException) && (
+            $e->getStatusCode() >= ResponseStatusCodes::INTERNAL_SERVER_ERROR ||
+            $e->getStatusCode() === ResponseStatusCodes::CONFLICT
+        );
     }
 }

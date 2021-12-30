@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
+use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -50,18 +51,16 @@ class ApiClient implements ApiClientInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ClientExceptionInterface
      *
-     * @return array
+     * @return mixed
      */
-    public function send(ApiRequestInterface $apiRequest): array
+    public function send(ApiRequestInterface $apiRequest)
     {
-        $headers = \array_merge($apiRequest->getHeaders(), [
-            'Content-Type' => 'application/json',
-        ]);
+        $apiRequest->addHeader('Content-Type', 'application/json');
 
         $httpRequest = new Request(
             $apiRequest->getMethod(),
             $this->baseUri . $apiRequest->getUri(),
-            $headers,
+            $apiRequest->getHeaders(),
             $apiRequest->getJsonPayload()
         );
 
@@ -69,7 +68,7 @@ class ApiClient implements ApiClientInterface
 
         $data = $this->getResponseData($response);
 
-        if ($response->getStatusCode() >= 400) {
+        if ($response->getStatusCode() >= ResponseStatusCodes::BAD_REQUEST) {
             throw new ApiResponseUnsuccessfulException($response->getStatusCode(), $data);
         }
 
@@ -79,17 +78,14 @@ class ApiClient implements ApiClientInterface
     /**
      * @param ResponseInterface $response
      *
-     * @return array
+     * @return mixed
      */
-    private function getResponseData(ResponseInterface $response): array
+    private function getResponseData(ResponseInterface $response)
     {
         $encoded = $response->getBody()->getContents();
         $decoded = \json_decode($encoded, true);
+        $isError = $decoded === null && \json_last_error() !== JSON_ERROR_NONE;
 
-        if ($decoded === null && \json_last_error() !== JSON_ERROR_NONE) {
-            return (array) $encoded;
-        }
-
-        return (array) $decoded;
+        return $isError ? $encoded : $decoded;
     }
 }

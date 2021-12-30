@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Api\Decorators;
 
+use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
-use TrueLayer\Contracts\Auth\AuthTokenInterface;
+use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
+use TrueLayer\Services\Util\Retry;
 
 class AccessTokenDecorator extends BaseApiClientDecorator
 {
+    public const MAX_RETRIES = 1;
+
     /**
-     * @var AuthTokenInterface
+     * @var AccessTokenInterface
      */
-    private AuthTokenInterface $authToken;
+    private AccessTokenInterface $accessToken;
 
     /**
      * @param ApiClientInterface $next
-     * @param AuthTokenInterface $authToken
+     * @param AccessTokenInterface $accessToken
      */
-    public function __construct(ApiClientInterface $next, AuthTokenInterface $authToken)
+    public function __construct(ApiClientInterface $next, AccessTokenInterface $accessToken)
     {
         parent::__construct($next);
-        $this->authToken = $authToken;
+        $this->accessToken = $accessToken;
     }
 
     /**
@@ -37,11 +41,22 @@ class AccessTokenDecorator extends BaseApiClientDecorator
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function send(ApiRequestInterface $apiRequest): array
+    public function send(ApiRequestInterface $apiRequest)
     {
-        $apiRequest->addHeader('Authorization', "Bearer {$this->authToken->getAccessToken()}");
-        return $this->next->send($apiRequest);
+        return Retry::max(self::MAX_RETRIES)
+            ->when(fn ($e) =>
+                ($e instanceof ApiResponseUnsuccessfulException) &&
+                $e->getStatusCode() === ResponseStatusCodes::UNAUTHORIZED
+            )
+            ->start(function (int $attempt) use ($apiRequest) {
+                if ($attempt > 0) {
+                    $this->accessToken->clear();
+                }
+
+                $apiRequest->addHeader('Authorization', "Bearer {$this->accessToken->getAccessToken()}");
+                return $this->next->send($apiRequest);
+            });
     }
 }

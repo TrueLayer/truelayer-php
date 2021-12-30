@@ -22,7 +22,7 @@ interface ApiClientInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function send(ApiRequestInterface $apiRequest): array;
+    public function send(ApiRequestInterface $apiRequest);
 }

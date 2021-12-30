@@ -7,7 +7,7 @@ use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 
-interface AuthTokenInterface
+interface AccessTokenInterface
 {
     /**
      * @throws ApiRequestJsonSerializationException
@@ -35,4 +35,9 @@ interface AuthTokenInterface
      * @return bool
      */
     public function isExpired(int $safetyMargin = 10): bool;
+
+    /**
+     * @return AccessTokenInterface
+     */
+    public function clear(): AccessTokenInterface;
 }

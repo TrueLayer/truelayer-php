@@ -3,6 +3,7 @@
 namespace TrueLayer\Contracts\Api;
 
 use Closure;
+use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -89,9 +90,9 @@ interface ApiRequestInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function post(): array;
+    public function post();
 
     /**
      * @throws ApiRequestJsonSerializationException
@@ -99,7 +100,12 @@ interface ApiRequestInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function get(): array;
+    public function get();
+
+    /**
+     * @return bool
+     */
+    public function modifiesResources(): bool;
 }

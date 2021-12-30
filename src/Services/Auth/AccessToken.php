@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Auth;
 
+use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Auth\AuthTokenInterface;
+use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
-use TrueLayer\Services\Auth\Api\AuthTokenRetrieve;
+use TrueLayer\Services\Auth\Api\AccessTokenRetrieve;
 use TrueLayer\Traits\HasAttributes;
 
-class AuthToken implements AuthTokenInterface
+class AccessToken implements AccessTokenInterface
 {
     use HasAttributes;
 
@@ -84,7 +85,16 @@ class AuthToken implements AuthTokenInterface
      */
     public function isExpired(int $safetyMargin = 10): bool
     {
-        return $this->getRetrievedAt() + $this->getExpiresIn() - $safetyMargin <= \time();
+        return $this->getRetrievedAt() + $this->getExpiresIn() - $safetyMargin <= Carbon::now()->timestamp;
+    }
+
+    /**
+     * @return AccessTokenInterface
+     */
+    public function clear(): AccessTokenInterface
+    {
+        $this->fill([]);
+        return $this;
     }
 
     /**
@@ -95,8 +105,8 @@ class AuthToken implements AuthTokenInterface
      */
     private function retrieve(): void
     {
-        $data = (new AuthTokenRetrieve())->execute($this->api, $this->clientId, $this->clientSecret);
+        $data = (new AccessTokenRetrieve())->execute($this->api, $this->clientId, $this->clientSecret);
         $this->fill($data);
-        $this->set('retrieved_at', \time());
+        $this->set('retrieved_at', Carbon::now()->timestamp);
     }
 }

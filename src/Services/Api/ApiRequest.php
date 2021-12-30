@@ -189,9 +189,9 @@ class ApiRequest implements ApiRequestInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function post(): array
+    public function post()
     {
         $this->method = RequestMethods::POST;
 
@@ -204,12 +204,25 @@ class ApiRequest implements ApiRequestInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed
      */
-    public function get(): array
+    public function get()
     {
         $this->method = RequestMethods::GET;
 
         return $this->apiClient->send($this);
+    }
+
+    /**
+     * @return bool
+     */
+    public function modifiesResources(): bool
+    {
+        return \in_array($this->getMethod(), [
+            RequestMethods::POST,
+            RequestMethods::PUT,
+            RequestMethods::PATCH,
+            RequestMethods::DELETE,
+        ]);
     }
 }

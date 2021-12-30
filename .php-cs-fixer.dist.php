@@ -25,7 +25,7 @@ $fixers = [
     'method_chaining_indentation' => true,
     'multiline_comment_opening_closing' => true,
     'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
-    'native_function_invocation' => ['include' => ['@all']],
+    'native_function_invocation' => ['include' => ['@all'], 'exclude' => ['usleep']],
     'no_superfluous_phpdoc_tags' => false,
     'not_operator_with_successor_space' => false,
     'ordered_imports' => ['sort_algorithm' => 'alpha'],
