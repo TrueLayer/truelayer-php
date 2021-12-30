@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -10,14 +12,14 @@ use TrueLayer\Tests\Mocks\AuthResponse;
 $httpTransactions = [];
 $sleeps = [];
 
+Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
+    $sleeps[] = $microseconds;
+};
+
 \uses()
     ->beforeEach(function () {
         global $sleeps;
         $sleeps = [];
-
-        Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
-            $sleeps[] = $microseconds;
-        };
     })
     ->in(__DIR__);
 

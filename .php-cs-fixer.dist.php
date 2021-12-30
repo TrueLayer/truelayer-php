@@ -10,6 +10,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $fixers = [
     '@Symfony' => true,
+    'declare_strict_types' => true,
     'align_multiline_comment' => true,
     'array_indentation' => true,
     'array_syntax' => ['syntax' => 'short'],

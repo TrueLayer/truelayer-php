@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use TrueLayer\Constants\CustomHeaders;
@@ -32,7 +34,7 @@ use TrueLayer\Tests\Mocks\ErrorResponse;
     \expect($idempotencyKeys)->toBe(1);
 });
 
-\it('should regenerate idempotency key on reuse error', function () {
+\it('regenerates idempotency key on reuse error', function () {
     \request([ErrorResponse::idempotencyKeyReuse(), new Response(200)])->post();
 
     $sentRequests = Collection::make(\getSentHttpRequests());
@@ -46,7 +48,7 @@ use TrueLayer\Tests\Mocks\ErrorResponse;
     \expect($idempotencyKeys)->toBe(2);
 });
 
-\it('should regenerate idempotency key only once', function () {
+\it('regenerates idempotency key only once', function () {
     $error = ErrorResponse::idempotencyKeyReuse();
     \request([$error, $error, $error])->post();
 })->throws(ApiResponseUnsuccessfulException::class);

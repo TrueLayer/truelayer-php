@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use TrueLayer\Exceptions;
 use TrueLayer\Services\Api\Decorators\ExponentialBackoffDecorator;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Contracts\Sdk;
 
 use TrueLayer\Contracts\Api\ApiClientInterface;

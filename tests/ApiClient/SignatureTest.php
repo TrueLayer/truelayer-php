@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Signing\Verifier;
 
-\it('signs requests by verb', function () {
+\it('signs requests that modify resources', function () {
     \request()->post();
     \expect(\getSentHttpRequests()[1]->getHeaderLine(CustomHeaders::SIGNATURE))->not()->toBeEmpty();
 

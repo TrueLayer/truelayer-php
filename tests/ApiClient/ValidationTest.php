@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use GuzzleHttp\Psr7\Response;
 use TrueLayer\Exceptions;
 use TrueLayer\Tests\Mocks\ErrorResponse;
 
-\it('validates payload before sending', function () {
+\it('validates request payload', function () {
     $request = \request()
         ->payload([
             'param' => 123,
