@@ -64,15 +64,27 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     abstract public function getSchemeType(): string;
 
     /**
-     * @return array
+     * @return mixed[]
+     * @throws \TrueLayer\Exceptions\ValidationException
      */
     public function toArray(): array
     {
-        return \array_merge_recursive($this->data, [
+        return \array_merge_recursive($this->validate(), [
             'type' => $this->getType(),
             'scheme_identifier' => [
                 'type' => $this->getSchemeType(),
             ],
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'reference' => 'required|string',
+        ];
     }
 }

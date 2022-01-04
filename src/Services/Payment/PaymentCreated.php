@@ -7,6 +7,9 @@ namespace TrueLayer\Services\Payment;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
@@ -50,17 +53,28 @@ final class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
-     *
      * @return PaymentRetrievedInterface
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ValidationException
+     *
+     * @throws ApiRequestJsonSerializationException
      */
     public function getDetails(): PaymentRetrievedInterface
     {
         return $this->getSdk()->getPaymentDetails(
             $this->getId()
         );
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+            'user.id' => 'required|string',
+            'resource_token' => 'required|string',
+        ];
     }
 }

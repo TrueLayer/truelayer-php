@@ -6,9 +6,7 @@ namespace TrueLayer\Contracts\Api;
 
 use Closure;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 
 interface ApiRequestInterface
 {
@@ -87,9 +85,7 @@ interface ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */
@@ -97,9 +93,7 @@ interface ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */

@@ -59,11 +59,23 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
 
     /**
      * @return mixed[]
+     * @throws \TrueLayer\Exceptions\ValidationException
      */
     public function toArray(): array
     {
-        return \array_merge($this->data, [
+        return \array_merge($this->validate(), [
             'type' => $this->getType(),
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+            'name' => 'required|string'
+        ];
     }
 }

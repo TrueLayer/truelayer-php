@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Beneficiary;
 
+use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
+use TrueLayer\Validation\AllowedConstant;
 
 final class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
 {
@@ -50,5 +52,16 @@ final class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
     public function getSchemeType(): string
     {
         return ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return array_merge(parent::rules(), [
+            'scheme_identifier.sort_code' => 'required|numeric|digits:6',
+            'scheme_identifier.account_number' => 'required|numeric|digits:8'
+        ]);
     }
 }

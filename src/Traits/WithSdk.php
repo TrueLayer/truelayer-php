@@ -21,7 +21,7 @@ trait WithSdk
     /**
      * @return SdkInterface
      */
-    public function getSdk(): SdkInterface
+    protected function getSdk(): SdkInterface
     {
         return $this->sdk;
     }

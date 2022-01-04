@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Validation;
 
 use Illuminate\Contracts\Validation\Rule;
+use TrueLayer\Contracts\HasValidationInterface;
+use TrueLayer\Exceptions\ValidationException;
 
-final class AllowedConstant implements Rule
+final class ValidType implements Rule
 {
     /**
      * @var class-string
@@ -23,17 +25,21 @@ final class AllowedConstant implements Rule
 
     /**
      * @param string $attribute
-     * @param mixed  $value
-     *
-     * @throws \ReflectionException
-     *
+     * @param mixed $value
      * @return bool
+     * @throws ValidationException
      */
     public function passes($attribute, $value): bool
     {
-        $constants = (new \ReflectionClass($this->class))->getConstants();
+        if (!($value instanceof $this->class)) {
+            return false;
+        }
 
-        return \in_array($value, \array_values($constants));
+        if ($value instanceof HasValidationInterface) {
+            $value->validate();
+        }
+
+        return true;
     }
 
     /**
@@ -41,15 +47,15 @@ final class AllowedConstant implements Rule
      */
     public function message(): string
     {
-        return 'The provided :attribute value is not allowed.';
+        return 'The provided :attribute value is not valid.';
     }
 
     /**
      * @param class-string $class
      *
-     * @return AllowedConstant
+     * @return ValidType
      */
-    public static function in(string $class): AllowedConstant
+    public static function of(string $class): ValidType
     {
         return new self($class);
     }

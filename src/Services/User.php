@@ -87,11 +87,25 @@ final class User implements UserInterface
 
     /**
      * @return mixed[]
+     * @throws \TrueLayer\Exceptions\ValidationException
      */
     public function toArray(): array
     {
-        return \array_merge($this->data, [
+        return \array_merge($this->validate(), [
             'type' => $this->getId() ? UserTypes::EXISTING : UserTypes::NEW,
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'id' => 'string|nullable',
+            'name' => 'string|required_without:id',
+            'email' => 'string|nullable|required_without_all:phone,id',
+            'phone' => 'string|nullable|required_without_all:email,id',
+        ];
     }
 }

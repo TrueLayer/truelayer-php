@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Hpp;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Str;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
+use TrueLayer\Traits\WithSdk;
 
 final class HppHelper implements HppHelperInterface
 {
@@ -142,32 +144,35 @@ final class HppHelper implements HppHelperInterface
     private function getHashQuery(): string
     {
         return '#' . \http_build_query(
-            $this->getValidatedHashParams(), '', '&', PHP_QUERY_RFC3986
+            $this->toArray(), '', '&', PHP_QUERY_RFC3986
         );
     }
 
     /**
-     * @throws ValidationException
-     *
      * @return mixed[]
      */
-    private function getValidatedHashParams(): array
+    private function rules(): array
     {
-        $hexRules = 'regex:/^([0-9A-F]{3}){1,2}$/i';
+        $hex = 'regex:/^([0-9A-F]{3}){1,2}$/i';
 
-        $validator = $this->validatorFactory->make($this->toArray(), [
+        return [
             'payment_id' => 'required|string',
             'resource_token' => 'required|string',
             'return_uri' => 'required|url',
-            'c_primary' => $hexRules,
-            'c_secondary' => $hexRules,
-            'c_tertiary' => $hexRules,
-        ]);
+            'c_primary' => $hex,
+            'c_secondary' => $hex,
+            'c_tertiary' => $hex,
+        ];
+    }
 
-        try {
-            return $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            throw new ValidationException($validator);
-        }
+    /**
+     * @return Validator
+     */
+    private function validator(): Validator
+    {
+        return $this->validatorFactory->make(
+            $this->data,
+            $this->rules()
+        );
     }
 }

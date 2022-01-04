@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Payment;
 
+use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Services\Payment\Api\PaymentCreate;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
+use TrueLayer\Validation\AllowedConstant;
+use TrueLayer\Validation\ValidType;
 
 final class PaymentRequest implements PaymentRequestInterface
 {
@@ -57,7 +62,7 @@ final class PaymentRequest implements PaymentRequestInterface
      */
     public function beneficiary(BeneficiaryInterface $beneficiary): PaymentRequestInterface
     {
-        return $this->set('beneficiary', $beneficiary->toArray());
+        return $this->set('beneficiary', $beneficiary);
     }
 
     /**
@@ -67,22 +72,32 @@ final class PaymentRequest implements PaymentRequestInterface
      */
     public function user(UserInterface $user): PaymentRequestInterface
     {
-        return $this->set('user', $user->toArray());
+        return $this->set('user', $user);
     }
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
-     *
      * @return PaymentCreatedInterface
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ValidationException
      */
     public function create(): PaymentCreatedInterface
     {
-        $sdk = $this->getSdk();
-        $data = PaymentCreate::make($sdk)->execute($this);
+        return PaymentApi::make($this->getSdk())->create($this);
+    }
 
-        return PaymentCreated::make($sdk)->fill($data);
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'amount_in_minor' => 'required|int|min:1',
+            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'payment_method.type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
+            'payment_method.statement_reference' => 'required|string',
+            'user' => ['required', ValidType::of(UserInterface::class)],
+            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
+        ];
     }
 }

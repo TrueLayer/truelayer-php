@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer;
 
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
@@ -16,6 +17,7 @@ use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
 use TrueLayer\Services\Payment\Api\PaymentRetrieve;
+use TrueLayer\Services\Payment\PaymentApi;
 use TrueLayer\Services\Payment\PaymentRequest;
 use TrueLayer\Services\Payment\PaymentRetrieved;
 use TrueLayer\Services\Sdk\SdkConfig;
@@ -30,17 +32,24 @@ final class Sdk implements SdkInterface
     private ApiClientInterface $apiClient;
 
     /**
+     * @var ValidatorFactory
+     */
+    private ValidatorFactory $validatorFactory;
+
+    /**
      * @var HppHelperFactoryInterface
      */
     private HppHelperFactoryInterface $hppHelperFactory;
 
     /**
-     * @param ApiClientInterface        $apiClient
+     * @param ApiClientInterface $apiClient
+     * @param ValidatorFactory $validatorFactory
      * @param HppHelperFactoryInterface $hppHelperFactory
      */
-    public function __construct(ApiClientInterface $apiClient, HppHelperFactoryInterface $hppHelperFactory)
+    public function __construct(ApiClientInterface $apiClient, ValidatorFactory $validatorFactory, HppHelperFactoryInterface $hppHelperFactory)
     {
         $this->apiClient = $apiClient;
+        $this->validatorFactory = $validatorFactory;
         $this->hppHelperFactory = $hppHelperFactory;
     }
 
@@ -53,13 +62,19 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @param array $data
-     *
+     * @return ValidatorFactory
+     */
+    public function getValidatorFactory(): ValidatorFactory
+    {
+        return $this->validatorFactory;
+    }
+
+    /**
      * @return UserInterface
      */
-    public function user(array $data = []): UserInterface
+    public function user(): UserInterface
     {
-        return User::make($this)->fill($data);
+        return User::make($this);
     }
 
     /**
@@ -71,31 +86,25 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @param array $data
-     *
      * @return PaymentRequestInterface
      */
-    public function payment(array $data = []): PaymentRequestInterface
+    public function payment(): PaymentRequestInterface
     {
-        return PaymentRequest::make($this)->fill($data);
+        return PaymentRequest::make($this);
     }
 
     /**
      * @param string $id
      *
-     * @throws Exceptions\ApiRequestJsonSerializationException
-     * @throws Exceptions\ApiRequestValidationException
-     * @throws Exceptions\ApiResponseUnsuccessfulException
-     * @throws Exceptions\ApiResponseValidationException
-     * @throws InvalidArgumentException
-     *
      * @return PaymentRetrievedInterface
+     *
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\ValidationException
      */
     public function getPaymentDetails(string $id): PaymentRetrievedInterface
     {
-        $data = PaymentRetrieve::make($this)->execute($id);
-
-        return PaymentRetrieved::make($this)->fill($data);
+        return PaymentApi::make($this)->retrieve($id);
     }
 
     /**

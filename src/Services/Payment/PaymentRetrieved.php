@@ -6,14 +6,16 @@ namespace TrueLayer\Services\Payment;
 
 use DateTime;
 use Exception;
+use TrueLayer\Constants\Currencies;
+use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
-use TrueLayer\Services\User;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
+use TrueLayer\Validation\AllowedConstant;
+use TrueLayer\Validation\ValidType;
 
 final class PaymentRetrieved implements PaymentRetrievedInterface
 {
@@ -56,11 +58,7 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
      */
     public function getBeneficiary(): ?BeneficiaryInterface
     {
-        $data = $this->get('beneficiary');
-
-        return empty($data)
-            ? null
-            : BeneficiaryBuilder::make($this->getSdk())->fromArray($data);
+        return $this->get('beneficiary');
     }
 
     /**
@@ -68,9 +66,7 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
      */
     public function getUser(): ?UserInterface
     {
-        return User::make($this->getSdk())->fill(
-            $this->get('user', [])
-        );
+        return $this->get('user');
     }
 
     /**
@@ -139,5 +135,23 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     public function isSettled(): bool
     {
         return $this->getStatus() === PaymentStatus::SETTLED;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+            'status' => 'required|string',
+            'created_at' => 'required|date',
+            'amount_in_minor' => 'required|int|min:1',
+            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'payment_method.type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
+            'payment_method.statement_reference' => 'required|string',
+            'user' => ['required', ValidType::of(UserInterface::class)],
+            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
+        ];
     }
 }

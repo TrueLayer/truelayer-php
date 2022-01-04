@@ -8,9 +8,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Services\Util\Retry;
 
 final class ExponentialBackoffDecorator extends BaseApiClientDecorator
@@ -21,9 +19,7 @@ final class ExponentialBackoffDecorator extends BaseApiClientDecorator
      * @param ApiRequestInterface $apiRequest
      *
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      * @throws ClientExceptionInterface
      *
      * @return mixed

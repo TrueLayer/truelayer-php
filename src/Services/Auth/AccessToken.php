@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Auth;
 
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
-use TrueLayer\Services\Auth\Api\AccessTokenRetrieve;
+use TrueLayer\Services\Auth\AccessTokenApi;
 use TrueLayer\Traits\HasAttributes;
 
 final class AccessToken implements AccessTokenInterface
@@ -22,6 +22,11 @@ final class AccessToken implements AccessTokenInterface
      * @var ApiClientInterface
      */
     private ApiClientInterface $api;
+
+    /**
+     * @var ValidatorFactory
+     */
+    private ValidatorFactory $validatorFactory;
 
     /**
      * @var string
@@ -35,21 +40,21 @@ final class AccessToken implements AccessTokenInterface
 
     /**
      * @param ApiClientInterface $api
-     * @param string             $clientId
-     * @param string             $clientSecret
+     * @param ValidatorFactory $validatorFactory
+     * @param string $clientId
+     * @param string $clientSecret
      */
-    public function __construct(ApiClientInterface $api, string $clientId, string $clientSecret)
+    public function __construct(ApiClientInterface $api, ValidatorFactory $validatorFactory, string $clientId, string $clientSecret)
     {
         $this->api = $api;
+        $this->validatorFactory = $validatorFactory;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return string
      */
@@ -93,21 +98,38 @@ final class AccessToken implements AccessTokenInterface
      */
     public function clear(): AccessTokenInterface
     {
-        $this->fill([]);
-
+        $this->data = [];
         return $this;
     }
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      */
     private function retrieve(): void
     {
-        $data = (new AccessTokenRetrieve())->execute($this->api, $this->clientId, $this->clientSecret);
+        $data = (new AccessTokenApi())->fetch($this->api, $this->clientId, $this->clientSecret);
+        $data['retrieved_at'] = Carbon::now()->timestamp;
         $this->fill($data);
-        $this->set('retrieved_at', Carbon::now()->timestamp);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function rules(): array
+    {
+        return [
+            'access_token' => 'required|string',
+            'expires_in' => 'required|int',
+            'retrieved_at' => 'required|int'
+        ];
+    }
+
+    /**
+     * @return Validator
+     */
+    private function validator(): Validator
+    {
+        return $this->validatorFactory->make($this->data, $this->rules());
     }
 }

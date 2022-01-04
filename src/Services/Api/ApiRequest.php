@@ -9,9 +9,7 @@ use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 
 final class ApiRequest implements ApiRequestInterface
 {
@@ -185,9 +183,7 @@ final class ApiRequest implements ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */
@@ -200,9 +196,7 @@ final class ApiRequest implements ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */

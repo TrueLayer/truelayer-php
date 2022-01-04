@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Sdk;
 
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\ValidationException;
 
 interface SdkInterface
 {
@@ -19,11 +23,14 @@ interface SdkInterface
     public function getApiClient(): ApiClientInterface;
 
     /**
-     * @param array $data
-     *
+     * @return ValidatorFactory
+     */
+    public function getValidatorFactory(): ValidatorFactory;
+
+    /**
      * @return UserInterface
      */
-    public function user(array $data = []): UserInterface;
+    public function user(): UserInterface;
 
     /**
      * @return BeneficiaryBuilderInterface
@@ -31,19 +38,16 @@ interface SdkInterface
     public function beneficiary(): BeneficiaryBuilderInterface;
 
     /**
-     * @param array $data
-     *
      * @return PaymentRequestInterface
      */
-    public function payment(array $data = []): PaymentRequestInterface;
+    public function payment(): PaymentRequestInterface;
 
     /**
      * @param string $id
      *
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ValidationException
      *
      * @return PaymentRetrievedInterface
      */

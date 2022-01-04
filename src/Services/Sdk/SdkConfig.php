@@ -220,9 +220,7 @@ final class SdkConfig implements SdkConfigInterface
 
     /**
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
      *
      * @return SdkInterface
      */

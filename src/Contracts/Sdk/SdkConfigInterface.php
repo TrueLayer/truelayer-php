@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
 interface SdkConfigInterface
@@ -103,10 +105,8 @@ interface SdkConfigInterface
     public function httpClient(ClientInterface $client): self;
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return SdkInterface
      */
