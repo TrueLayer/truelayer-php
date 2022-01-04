@@ -11,9 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "php"
     strategy:
       matrix:
         dependencies:
@@ -39,7 +36,7 @@ jobs:
         with:
           path: |
             ~/.composer/cache
-            php/vendor
+            vendor
           key: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
           restore-keys: "php-${{ matrix.php-version }}-${{ matrix.dependencies }}"
       - name: "Install lowest dependencies"
