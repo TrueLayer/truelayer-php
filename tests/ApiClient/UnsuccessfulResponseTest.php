@@ -10,7 +10,7 @@ use TrueLayer\Tests\Mocks\ErrorResponse;
     \request(ErrorResponse::forbidden())->post();
 })->throws(Exceptions\ApiResponseUnsuccessfulException::class);
 
-\it('handles invalid parameters error response', function () {
+\it('handles invalid parameters response', function () {
     try {
         \request(ErrorResponse::invalidParameters())->post();
     } catch (Exceptions\ApiResponseUnsuccessfulException $e) {
