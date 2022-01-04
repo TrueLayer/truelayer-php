@@ -11,7 +11,7 @@ use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Services\Util\Retry;
-use TrueLayer\Signing\Constants\CustomHeaders;
+use TrueLayer\Constants\CustomHeaders;
 
 final class IdempotencyKeyDecorator extends BaseApiClientDecorator
 {

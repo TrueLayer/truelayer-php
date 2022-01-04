@@ -8,7 +8,7 @@ use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Signing\Constants\CustomHeaders;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Signing\Contracts\Signer;
 
 final class SigningDecorator extends BaseApiClientDecorator
