@@ -5,21 +5,15 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Payment;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
-use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
 use TrueLayer\Services\Payment\PaymentCreated;
-use TrueLayer\Services\User;
 use TrueLayer\Traits\WithSdk;
-use TrueLayer\Validation\BeneficiaryRules;
-use TrueLayer\Validation\PaymentRules;
 
 final class PaymentApi
 {

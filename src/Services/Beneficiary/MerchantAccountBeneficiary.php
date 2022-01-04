@@ -18,7 +18,7 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
      */
     public function getId(): ?string
     {
-        return $this->get('id');
+        return $this->getNullableString('id');
     }
 
     /**
@@ -36,7 +36,7 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
      */
     public function getName(): ?string
     {
-        return $this->get('name');
+        return $this->getNullableString('name');
     }
 
     /**

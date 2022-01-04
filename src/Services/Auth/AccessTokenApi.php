@@ -16,7 +16,7 @@ final class AccessTokenApi
      * @param string $clientId
      * @param string $clientSecret
      *
-     * @return array
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      */

@@ -7,7 +7,7 @@ namespace TrueLayer\Exceptions;
 class ValidationException extends \Illuminate\Validation\ValidationException
 {
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getErrors(): array
     {

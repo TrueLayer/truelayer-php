@@ -11,6 +11,7 @@ use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Services\Auth\AccessTokenApi;
 use TrueLayer\Traits\HasAttributes;
 
@@ -53,18 +54,18 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
+     * @return string
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
-     * @return string
+     * @throws InvalidArgumentException
      */
     public function getAccessToken(): string
     {
-        if (!$this->get('access_token') || $this->isExpired()) {
+        if (!$this->getNullableString('access_token') || $this->isExpired()) {
             $this->retrieve();
         }
 
-        return $this->get('access_token');
+        return $this->getString('access_token');
     }
 
     /**
@@ -72,7 +73,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getRetrievedAt(): ?int
     {
-        return $this->get('retrieved_at');
+        return $this->getNullableInt('retrieved_at');
     }
 
     /**
@@ -80,7 +81,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getExpiresIn(): ?int
     {
-        return $this->get('expires_in');
+        return $this->getNullableInt('expires_in');
     }
 
     /**

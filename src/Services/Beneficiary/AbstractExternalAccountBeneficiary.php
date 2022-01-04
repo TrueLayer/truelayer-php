@@ -19,7 +19,7 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
      */
     public function getName(): ?string
     {
-        return $this->get('name');
+        return $this->getNullableString('name');
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
      */
     public function getReference(): ?string
     {
-        return $this->get('reference');
+        return $this->getNullableString('reference');
     }
 
     /**

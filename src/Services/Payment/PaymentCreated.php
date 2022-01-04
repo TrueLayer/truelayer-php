@@ -9,6 +9,7 @@ use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
@@ -19,30 +20,34 @@ final class PaymentCreated implements PaymentCreatedInterface
 
     /**
      * @return string
+     * @throws InvalidArgumentException
      */
     public function getId(): string
     {
-        return $this->get('id');
+        return $this->getString('id');
     }
 
     /**
      * @return string
+     * @throws InvalidArgumentException
      */
     public function getResourceToken(): string
     {
-        return $this->get('resource_token');
+        return $this->getString('resource_token');
     }
 
     /**
      * @return string
+     * @throws InvalidArgumentException
      */
     public function getUserId(): string
     {
-        return $this->get('user.id');
+        return $this->getString('user.id');
     }
 
     /**
      * @return HppHelperInterface
+     * @throws InvalidArgumentException
      */
     public function hostedPaymentsPage(): HppHelperInterface
     {
@@ -58,6 +63,7 @@ final class PaymentCreated implements PaymentCreatedInterface
      * @throws ValidationException
      *
      * @throws ApiRequestJsonSerializationException
+     * @throws InvalidArgumentException
      */
     public function getDetails(): PaymentRetrievedInterface
     {

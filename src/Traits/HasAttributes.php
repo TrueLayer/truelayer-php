@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use TrueLayer\Contracts\ArrayableInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 
 trait HasAttributes
 {
@@ -82,6 +83,76 @@ trait HasAttributes
     protected function get($key, $default = null)
     {
         return Arr::get($this->data, $key, $default);
+    }
+
+    /**
+     * @param string|int|null $key
+     * @param null|string $default
+     *
+     * @return string|null
+     */
+    protected function getNullableString($key, string $default = null): ?string
+    {
+        $val = $this->get($key, $default);
+        return is_string($val) ? $val : null;
+    }
+
+    /**
+     * @param string|int|null $key
+     * @param string|null $default
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    protected function getString($key, string $default = null): string
+    {
+        $val = $this->get($key, $default);
+
+        if (!is_string($val)) {
+            throw new InvalidArgumentException("$key cannot be NULL");
+        }
+
+        return $val;
+    }
+
+    /**
+     * @param string|int|null $key
+     * @param null|int $default
+     *
+     * @return int|null
+     */
+    protected function getNullableInt($key, int $default = null): ?int
+    {
+        $val = $this->get($key, $default);
+        return is_int($val) ? $val : null;
+    }
+
+    /**
+     * @param string|int|null $key
+     * @param int|null $default
+     * @return int
+     * @throws InvalidArgumentException
+     */
+    protected function getInt($key, int $default = null): int
+    {
+        $val = $this->get($key, $default);
+
+        if (!is_int($val)) {
+            throw new InvalidArgumentException("$key cannot be NULL");
+        }
+
+        return $val;
+    }
+
+    /**
+     * @param string|int|null $key
+     * @param bool|null $default
+     * @return bool
+     */
+    protected function getBool($key, bool $default = null): bool
+    {
+        $val = $this->get($key, $default);
+
+        return is_bool($val) ? $val : false;
     }
 
     /**

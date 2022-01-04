@@ -28,14 +28,14 @@ interface ApiRequestInterface
     public function getMethod(): string;
 
     /**
-     * @param array $payload
+     * @param mixed[] $payload
      *
      * @return ApiRequestInterface
      */
     public function payload(array $payload): ApiRequestInterface;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getPayload(): array;
 
@@ -55,7 +55,7 @@ interface ApiRequestInterface
     public function addHeader(string $key, string $value): ApiRequestInterface;
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getHeaders(): array;
 

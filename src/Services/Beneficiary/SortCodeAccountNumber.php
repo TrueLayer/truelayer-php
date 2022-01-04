@@ -15,7 +15,7 @@ final class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
      */
     public function getSortCode(): ?string
     {
-        return $this->get('scheme_identifier.sort_code');
+        return $this->getNullableString('scheme_identifier.sort_code');
     }
 
     /**
@@ -33,7 +33,7 @@ final class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
      */
     public function getAccountNumber(): ?string
     {
-        return $this->get('scheme_identifier.account_number');
+        return $this->getNullableString('scheme_identifier.account_number');
     }
 
     /**

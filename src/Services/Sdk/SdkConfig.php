@@ -10,7 +10,7 @@ use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
-final class SdkConfig implements SdkConfigInterface
+class SdkConfig implements SdkConfigInterface
 {
     /**
      * @var SdkFactoryInterface
@@ -18,32 +18,24 @@ final class SdkConfig implements SdkConfigInterface
     private SdkFactoryInterface $factory;
 
     /**
-     * @param SdkFactoryInterface $factory
+     * @var string
      */
-    public function __construct(SdkFactoryInterface $factory)
-    {
-        $this->factory = $factory;
-    }
+    private string $clientId;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $clientId = null;
+    private string $clientSecret;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $clientSecret = null;
+    private string $keyId;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $keyId = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $pem = null;
+    private string $pem;
 
     /**
      * @var string|null
@@ -61,9 +53,17 @@ final class SdkConfig implements SdkConfigInterface
     private ?ClientInterface $httpClient = null;
 
     /**
-     * @return string|null
+     * @param SdkFactoryInterface $factory
      */
-    public function getClientId(): ?string
+    public function __construct(SdkFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId(): string
     {
         return $this->clientId;
     }
@@ -81,9 +81,9 @@ final class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getClientSecret(): ?string
+    public function getClientSecret(): string
     {
         return $this->clientSecret;
     }
@@ -101,9 +101,9 @@ final class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getKeyId(): ?string
+    public function getKeyId(): string
     {
         return $this->keyId;
     }
@@ -121,9 +121,9 @@ final class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPem(): ?string
+    public function getPem(): string
     {
         return $this->pem;
     }
@@ -219,9 +219,6 @@ final class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     *
      * @return SdkInterface
      */
     public function create(): SdkInterface

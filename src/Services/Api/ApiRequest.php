@@ -24,12 +24,12 @@ final class ApiRequest implements ApiRequestInterface
     private string $uri;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private array $payload = [];
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private array $headers = [];
 
@@ -85,7 +85,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @param array $payload
+     * @param mixed[] $payload
      *
      * @return ApiRequestInterface
      */
@@ -97,7 +97,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getPayload(): array
     {
@@ -113,7 +113,7 @@ final class ApiRequest implements ApiRequestInterface
     {
         $encoded = \json_encode($this->getPayload());
 
-        if (\JSON_ERROR_NONE !== \json_last_error()) {
+        if (\JSON_ERROR_NONE !== \json_last_error() || $encoded === false) {
             throw new ApiRequestJsonSerializationException(\json_last_error_msg());
         }
 
@@ -121,7 +121,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getHeaders(): array
     {

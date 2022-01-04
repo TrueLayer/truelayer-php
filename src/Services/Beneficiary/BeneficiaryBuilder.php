@@ -41,7 +41,7 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      * @return BeneficiaryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException

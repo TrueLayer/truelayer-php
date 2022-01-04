@@ -20,7 +20,7 @@ interface HasValidationInterface extends ArrayableInterface
     public function validate(): array;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function errors(): array;
 }

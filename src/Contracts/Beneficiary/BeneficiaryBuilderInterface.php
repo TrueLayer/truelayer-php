@@ -31,7 +31,7 @@ interface BeneficiaryBuilderInterface
     public function merchantAccount(): MerchantAccountBeneficiary;
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      * @return BeneficiaryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException

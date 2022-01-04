@@ -14,7 +14,7 @@ final class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
      */
     public function getIban(): ?string
     {
-        return $this->get('scheme_identifier.iban');
+        return $this->getNullableString('scheme_identifier.iban');
     }
 
     /**
