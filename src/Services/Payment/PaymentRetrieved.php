@@ -15,7 +15,7 @@ use TrueLayer\Services\User;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
-class PaymentRetrieved implements PaymentRetrievedInterface
+final class PaymentRetrieved implements PaymentRetrievedInterface
 {
     use WithSdk, HasAttributes;
 

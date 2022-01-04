@@ -6,15 +6,15 @@ namespace TrueLayer\Validation;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class AllowedConstant implements Rule
+final class AllowedConstant implements Rule
 {
     /**
-     * @var string
+     * @var class-string
      */
     private string $class;
 
     /**
-     * @param string $class
+     * @param class-string $class
      */
     public function __construct(string $class)
     {
@@ -45,7 +45,7 @@ class AllowedConstant implements Rule
     }
 
     /**
-     * @param string $class
+     * @param class-string $class
      *
      * @return AllowedConstant
      */

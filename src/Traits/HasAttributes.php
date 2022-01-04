@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace TrueLayer\Traits;
 
 use Illuminate\Support\Arr;
+use TrueLayer\Exceptions\InvalidArgumentException;
 
 trait HasAttributes
 {
+    /**
+     * @var mixed[]
+     */
     protected array $data = [];
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {
@@ -19,7 +23,7 @@ trait HasAttributes
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @return $this
      */
@@ -31,8 +35,8 @@ trait HasAttributes
     }
 
     /**
-     * @param $key
-     * @param null $default
+     * @param string|int|null $key
+     * @param null|mixed $default
      *
      * @return mixed|null
      */
@@ -42,8 +46,8 @@ trait HasAttributes
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string|null $key
+     * @param mixed $value
      *
      * @return $this
      */

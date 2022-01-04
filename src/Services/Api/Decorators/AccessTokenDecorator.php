@@ -14,7 +14,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Services\Util\Retry;
 
-class AccessTokenDecorator extends BaseApiClientDecorator
+final class AccessTokenDecorator extends BaseApiClientDecorator
 {
     public const MAX_RETRIES = 1;
 

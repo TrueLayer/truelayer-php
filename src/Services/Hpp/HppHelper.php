@@ -10,7 +10,7 @@ use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
 
-class HppHelper implements HppHelperInterface
+final class HppHelper implements HppHelperInterface
 {
     use HasAttributes;
 
@@ -149,11 +149,11 @@ class HppHelper implements HppHelperInterface
     /**
      * @throws ValidationException
      *
-     * @return array
+     * @return mixed[]
      */
     private function getValidatedHashParams(): array
     {
-        $hexRules = 'string|alpha_num|min:3|max:8';
+        $hexRules = 'regex:/^([0-9A-F]{3}){1,2}$/i';
 
         $validator = $this->validatorFactory->make($this->toArray(), [
             'payment_id' => 'required|string',

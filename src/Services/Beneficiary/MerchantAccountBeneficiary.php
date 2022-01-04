@@ -9,7 +9,7 @@ use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
-class MerchantAccountBeneficiary implements BeneficiaryInterface
+final class MerchantAccountBeneficiary implements BeneficiaryInterface
 {
     use WithSdk, HasAttributes;
 
@@ -58,7 +58,7 @@ class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

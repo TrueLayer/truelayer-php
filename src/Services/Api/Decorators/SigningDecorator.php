@@ -13,7 +13,7 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Signing\Constants\CustomHeaders;
 use TrueLayer\Signing\Contracts\Signer;
 
-class SigningDecorator extends BaseApiClientDecorator
+final class SigningDecorator extends BaseApiClientDecorator
 {
     /**
      * @var Signer

@@ -6,6 +6,7 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 

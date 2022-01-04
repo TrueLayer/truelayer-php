@@ -20,7 +20,7 @@ use TrueLayer\Services\Api\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
 use TrueLayer\Services\Hpp\HppHelperFactory;
 
-class SdkFactory implements SdkFactoryInterface
+final class SdkFactory implements SdkFactoryInterface
 {
     /**
      * @var ValidatorFactory
@@ -33,7 +33,7 @@ class SdkFactory implements SdkFactoryInterface
     private ClientInterface $httpClient;
 
     /**
-     * @var AuthTokenInterface
+     * @var AccessTokenInterface
      */
     private AccessTokenInterface $authToken;
 

@@ -18,7 +18,7 @@ class ApiResponseUnsuccessfulException extends \Exception
 
     /**
      * @param int $statusCode
-     * @param $data
+     * @param mixed $data
      */
     public function __construct(int $statusCode, $data)
     {

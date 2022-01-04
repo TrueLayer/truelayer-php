@@ -6,7 +6,7 @@ namespace TrueLayer\Services\Util;
 
 use Closure;
 
-class Retry
+final class Retry
 {
     /**
      * @var Closure|null

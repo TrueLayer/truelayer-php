@@ -7,12 +7,12 @@ namespace TrueLayer\Validation;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentMethods;
 
-class PaymentRules
+final class PaymentRules
 {
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
-     * @return array
+     * @return mixed[]
      */
     public static function rules(array $data): array
     {

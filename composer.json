@@ -5,6 +5,10 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Alexandru Lighezan",
+            "email": "alex.lighezan@truelayer.com"
+        },
+        {
             "name": "Stefan Adrian Danaita",
             "email": "me@dsa.io"
         },
@@ -37,7 +41,8 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.4",
         "ramsey/uuid": "^4.2",
-        "illuminate/validation": "^8.73"
+        "illuminate/validation": "^8.73",
+        "illuminate/support": "^8.77"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",

@@ -7,7 +7,7 @@ namespace TrueLayer\Contracts;
 interface ArrayFillableInterface
 {
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @return $this
      */

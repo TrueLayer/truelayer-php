@@ -8,9 +8,10 @@ use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Traits\WithSdk;
 
-class BeneficiaryBuilder implements BeneficiaryBuilderInterface
+final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 {
     use WithSdk;
 
@@ -67,5 +68,7 @@ class BeneficiaryBuilder implements BeneficiaryBuilderInterface
         if ($type === BeneficiaryTypes::MERCHANT_ACCOUNT) {
             return MerchantAccountBeneficiary::make($this->getSdk())->fill($data);
         }
+
+        throw new InvalidArgumentException('Unknown beneficiary type');
     }
 }

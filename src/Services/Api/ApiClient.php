@@ -14,7 +14,7 @@ use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
-class ApiClient implements ApiClientInterface
+final class ApiClient implements ApiClientInterface
 {
     /**
      * @var HttpClientInterface

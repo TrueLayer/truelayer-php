@@ -10,7 +10,7 @@ use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
-class PaymentCreated implements PaymentCreatedInterface
+final class PaymentCreated implements PaymentCreatedInterface
 {
     use WithSdk, HasAttributes;
 

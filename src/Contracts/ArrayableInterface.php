@@ -7,7 +7,7 @@ namespace TrueLayer\Contracts;
 interface ArrayableInterface
 {
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array;
 }

@@ -14,7 +14,7 @@ use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 
-class ValidationDecorator extends BaseApiClientDecorator
+final class ValidationDecorator extends BaseApiClientDecorator
 {
     private Validation\Factory $validatorFactory;
 

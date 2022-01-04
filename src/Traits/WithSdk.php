@@ -13,7 +13,7 @@ trait WithSdk
     /**
      * @param SdkInterface $sdk
      */
-    public function __construct(SdkInterface $sdk)
+    public final function __construct(SdkInterface $sdk)
     {
         $this->sdk = $sdk;
     }

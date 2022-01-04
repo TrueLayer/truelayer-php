@@ -13,7 +13,7 @@ use TrueLayer\Traits\WithSdk;
 use TrueLayer\Validation\BeneficiaryRules;
 use TrueLayer\Validation\PaymentRules;
 
-class PaymentRetrieve
+final class PaymentRetrieve
 {
     use WithSdk;
 
@@ -25,7 +25,7 @@ class PaymentRetrieve
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed[]
      */
     public function execute(string $id): array
     {
@@ -36,9 +36,9 @@ class PaymentRetrieve
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
-     * @return array
+     * @return mixed[]
      */
     private function getResponseRules(array $data): array
     {

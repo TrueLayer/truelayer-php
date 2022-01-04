@@ -14,7 +14,7 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Services\Auth\Api\AccessTokenRetrieve;
 use TrueLayer\Traits\HasAttributes;
 
-class AccessToken implements AccessTokenInterface
+final class AccessToken implements AccessTokenInterface
 {
     use HasAttributes;
 

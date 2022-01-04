@@ -49,12 +49,12 @@ interface ApiRequestInterface
     public function getJsonPayload(): string;
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param string $value
      *
      * @return ApiRequestInterface
      */
-    public function addHeader($key, $value): ApiRequestInterface;
+    public function addHeader(string $key, string $value): ApiRequestInterface;
 
     /**
      * @return array

@@ -13,7 +13,7 @@ use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 
-class ApiRequest implements ApiRequestInterface
+final class ApiRequest implements ApiRequestInterface
 {
     /**
      * @var ApiClientInterface
@@ -26,7 +26,7 @@ class ApiRequest implements ApiRequestInterface
     private string $uri;
 
     /**
-     * @var array|null
+     * @var array
      */
     private array $payload = [];
 
@@ -131,12 +131,12 @@ class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param string $value
      *
      * @return ApiRequestInterface
      */
-    public function addHeader($key, $value): ApiRequestInterface
+    public function addHeader(string $key, string $value): ApiRequestInterface
     {
         $this->headers[$key] = $value;
 

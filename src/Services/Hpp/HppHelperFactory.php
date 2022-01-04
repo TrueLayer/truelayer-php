@@ -9,7 +9,7 @@ use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Traits\HasAttributes;
 
-class HppHelperFactory implements HppHelperFactoryInterface
+final class HppHelperFactory implements HppHelperFactoryInterface
 {
     use HasAttributes;
 

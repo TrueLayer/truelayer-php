@@ -13,7 +13,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Services\Util\Retry;
 
-class ExponentialBackoffDecorator extends BaseApiClientDecorator
+final class ExponentialBackoffDecorator extends BaseApiClientDecorator
 {
     public const MAX_RETRIES = 4;
 

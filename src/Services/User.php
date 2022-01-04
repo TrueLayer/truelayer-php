@@ -9,7 +9,7 @@ use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
-class User implements UserInterface
+final class User implements UserInterface
 {
     use WithSdk, HasAttributes;
 
@@ -86,7 +86,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

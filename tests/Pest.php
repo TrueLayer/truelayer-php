@@ -102,3 +102,12 @@ function getSentHttpRequests(): array
 
     return \Illuminate\Support\Arr::pluck($httpTransactions, 'request');
 }
+
+/**
+ * @param int $requestIndex
+ * @return mixed
+ */
+function getRequestPayload(int $requestIndex)
+{
+    return json_decode(getSentHttpRequests()[$requestIndex]->getBody()->getContents(), true);
+}

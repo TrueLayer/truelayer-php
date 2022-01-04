@@ -13,7 +13,7 @@ use TrueLayer\Services\Payment\Api\PaymentCreate;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
-class PaymentRequest implements PaymentRequestInterface
+final class PaymentRequest implements PaymentRequestInterface
 {
     use WithSdk, HasAttributes;
 
@@ -81,7 +81,7 @@ class PaymentRequest implements PaymentRequestInterface
     public function create(): PaymentCreatedInterface
     {
         $sdk = $this->getSdk();
-        $data = PaymentCreate::make($sdk)->execute($this->toArray());
+        $data = PaymentCreate::make($sdk)->execute($this);
 
         return PaymentCreated::make($sdk)->fill($data);
     }

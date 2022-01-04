@@ -6,7 +6,7 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\ExternalAccountTypes;
 
-class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
+final class IbanAccountBeneficiary extends AbstractExternalAccountBeneficiary
 {
     /**
      * @return string|null

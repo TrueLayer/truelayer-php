@@ -10,7 +10,7 @@ use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
-class SdkConfig implements SdkConfigInterface
+final class SdkConfig implements SdkConfigInterface
 {
     /**
      * @var SdkFactoryInterface

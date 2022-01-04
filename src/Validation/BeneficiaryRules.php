@@ -7,12 +7,12 @@ namespace TrueLayer\Validation;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
 
-class BeneficiaryRules
+final class BeneficiaryRules
 {
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
-     * @return array
+     * @return mixed[]
      */
     public static function rules(array $data): array
     {

@@ -5,38 +5,39 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Payment\Api;
 
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Traits\WithSdk;
 use TrueLayer\Validation\BeneficiaryRules;
 use TrueLayer\Validation\PaymentRules;
 
-class PaymentCreate
+final class PaymentCreate
 {
     use WithSdk;
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
      * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
      * @throws \TrueLayer\Exceptions\ApiResponseValidationException
      *
-     * @return array
+     * @return mixed[]
      */
-    public function execute(array $data): array
+    public function execute(PaymentRequestInterface $paymentRequest): array
     {
         return $this->getSdk()->getApiClient()->request()
             ->uri(Endpoints::PAYMENTS)
-            ->payload($data)
+            ->payload($paymentRequest->toArray())
             ->requestRules(fn ($data) => $this->getRequestRules($data))
             ->responseRules(fn ($data) => $this->getResponseRules($data))
             ->post();
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
-     * @return array
+     * @return mixed[]
      */
     private function getRequestRules(array $data): array
     {
@@ -58,7 +59,7 @@ class PaymentCreate
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @return string[]
      */

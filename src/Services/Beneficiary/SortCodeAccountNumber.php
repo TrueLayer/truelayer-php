@@ -6,7 +6,7 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\ExternalAccountTypes;
 
-class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
+final class SortCodeAccountNumber extends AbstractExternalAccountBeneficiary
 {
     /**
      * @return string|null

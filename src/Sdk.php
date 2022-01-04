@@ -22,7 +22,7 @@ use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Services\Sdk\SdkFactory;
 use TrueLayer\Services\User;
 
-class Sdk implements SdkInterface
+final class Sdk implements SdkInterface
 {
     /**
      * @var ApiClientInterface

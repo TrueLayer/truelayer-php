@@ -15,7 +15,7 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 use TrueLayer\Services\Util\Retry;
 use TrueLayer\Signing\Constants\CustomHeaders;
 
-class IdempotencyKeyDecorator extends BaseApiClientDecorator
+final class IdempotencyKeyDecorator extends BaseApiClientDecorator
 {
     public const MAX_RETRIES = 2;
 
