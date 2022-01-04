@@ -28,16 +28,10 @@
         }
     },
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../truelayer-signing/php"
-        }
-    ],
     "require": {
         "php": "^7.4 || ^8.0",
         "psr/http-client-implementation": "^1.0",
-        "truelayer/signing": "@dev",
+        "truelayer/signing": "0.0.1",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^7.4",
         "ramsey/uuid": "^4.2",
