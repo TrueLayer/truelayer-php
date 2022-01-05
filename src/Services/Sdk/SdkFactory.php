@@ -107,6 +107,7 @@ final class SdkFactory implements SdkFactoryInterface
 
         $this->authToken = new AccessToken(
             $authClient,
+            $config->getCache(),
             $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret()

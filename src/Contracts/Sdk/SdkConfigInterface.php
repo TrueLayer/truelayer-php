@@ -106,4 +106,16 @@ interface SdkConfigInterface
      * @return SdkInterface
      */
     public function create(): SdkInterface;
+
+    /**
+     * @return SdkCacheInterface|null
+     */
+    public function getCache(): ?SdkCacheInterface;
+
+    /**
+     * @param SdkCacheInterface $cache
+     *
+     * @return $this
+     */
+    public function cache(SdkCacheInterface $cache): self;
 }
