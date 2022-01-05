@@ -12,6 +12,7 @@ use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
 
 final class AccessToken implements AccessTokenInterface
@@ -114,6 +115,7 @@ final class AccessToken implements AccessTokenInterface
     /**
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws ValidationException
      */
     private function retrieve(): void
     {
