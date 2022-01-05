@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 jobs:
-  php-cs-fixer:
+  code-style:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -42,7 +42,7 @@ jobs:
         with:
           commit_message: Apply php-cs-fixer changes
           
-  test:
+  code-quality:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
