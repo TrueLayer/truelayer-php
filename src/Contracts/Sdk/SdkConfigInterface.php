@@ -10,9 +10,9 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 interface SdkConfigInterface
 {
     /**
-     * @return string|null
+     * @return string
      */
-    public function getClientId(): ?string;
+    public function getClientId(): string;
 
     /**
      * @param string $clientId
@@ -22,9 +22,9 @@ interface SdkConfigInterface
     public function clientId(string $clientId): self;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getClientSecret(): ?string;
+    public function getClientSecret(): string;
 
     /**
      * @param string $clientSecret
@@ -34,9 +34,9 @@ interface SdkConfigInterface
     public function clientSecret(string $clientSecret): self;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getKeyId(): ?string;
+    public function getKeyId(): string;
 
     /**
      * @param string $keyId
@@ -46,9 +46,9 @@ interface SdkConfigInterface
     public function keyId(string $keyId): self;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPem(): ?string;
+    public function getPem(): string;
 
     /**
      * @param string $pem
@@ -96,18 +96,13 @@ interface SdkConfigInterface
     public function getHttpClient(): ?ClientInterface;
 
     /**
-     * @param ClientInterface $client
+     * @param ClientInterface $httpClient
      *
      * @return $this
      */
-    public function httpClient(ClientInterface $client): self;
+    public function httpClient(ClientInterface $httpClient): self;
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
-     *
      * @return SdkInterface
      */
     public function create(): SdkInterface;

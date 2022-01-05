@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts;
 
-interface ArrayFillableInterface
+interface HasAttributesInterface extends ArrayableInterface, HasValidationInterface
 {
     /**
      * @param mixed[] $data

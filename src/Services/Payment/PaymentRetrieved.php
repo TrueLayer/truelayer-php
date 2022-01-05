@@ -6,49 +6,60 @@ namespace TrueLayer\Services\Payment;
 
 use DateTime;
 use Exception;
+use TrueLayer\Constants\Currencies;
+use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
-use TrueLayer\Services\User;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
+use TrueLayer\Validation\AllowedConstant;
+use TrueLayer\Validation\ValidType;
 
 final class PaymentRetrieved implements PaymentRetrievedInterface
 {
     use WithSdk, HasAttributes;
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return string
      */
     public function getId(): string
     {
-        return $this->get('id');
+        return $this->getString('id');
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return int
      */
     public function getAmountInMinor(): int
     {
-        return $this->get('amount');
+        return $this->getInt('amount');
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return string
      */
     public function getCurrency(): string
     {
-        return $this->get('currency');
+        return $this->getString('currency');
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return string
      */
     public function getStatementReference(): string
     {
-        return $this->get('payment_method.statement_reference');
+        return $this->getString('payment_method.statement_reference');
     }
 
     /**
@@ -56,11 +67,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
      */
     public function getBeneficiary(): ?BeneficiaryInterface
     {
-        $data = $this->get('beneficiary');
+        $val = $this->get('beneficiary');
 
-        return empty($data)
-            ? null
-            : BeneficiaryBuilder::make($this->getSdk())->fromArray($data);
+        return $val instanceof BeneficiaryInterface ? $val : null;
     }
 
     /**
@@ -68,9 +77,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
      */
     public function getUser(): ?UserInterface
     {
-        return User::make($this->getSdk())->fill(
-            $this->get('user', [])
-        );
+        $val = $this->get('user');
+
+        return $val instanceof UserInterface ? $val : null;
     }
 
     /**
@@ -81,19 +90,23 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     public function getCreatedAt(): DateTime
     {
         return new DateTime(
-            $this->get('created_at')
+            $this->getString('created_at')
         );
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return string
      */
     public function getStatus(): string
     {
-        return $this->get('status');
+        return $this->getString('status');
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isAuthorizationRequired(): bool
@@ -102,6 +115,8 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isAuthorizing(): bool
@@ -110,6 +125,8 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isAuthorized(): bool
@@ -118,6 +135,8 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isExecuted(): bool
@@ -126,6 +145,8 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isFailed(): bool
@@ -134,10 +155,30 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function isSettled(): bool
     {
         return $this->getStatus() === PaymentStatus::SETTLED;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+            'status' => 'required|string',
+            'created_at' => 'required|date',
+            'amount_in_minor' => 'required|int|min:1',
+            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'payment_method.type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
+            'payment_method.statement_reference' => 'required|string',
+            'user' => ['required', ValidType::of(UserInterface::class)],
+            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
+        ];
     }
 }

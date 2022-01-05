@@ -6,9 +6,7 @@ namespace TrueLayer\Contracts\Api;
 
 use Closure;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 
 interface ApiRequestInterface
 {
@@ -30,14 +28,14 @@ interface ApiRequestInterface
     public function getMethod(): string;
 
     /**
-     * @param array $payload
+     * @param mixed[] $payload
      *
      * @return ApiRequestInterface
      */
     public function payload(array $payload): ApiRequestInterface;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getPayload(): array;
 
@@ -57,7 +55,7 @@ interface ApiRequestInterface
     public function addHeader(string $key, string $value): ApiRequestInterface;
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getHeaders(): array;
 
@@ -87,9 +85,7 @@ interface ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */
@@ -97,9 +93,7 @@ interface ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */

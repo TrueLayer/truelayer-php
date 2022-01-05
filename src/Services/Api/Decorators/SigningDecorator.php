@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Api\Decorators;
 
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
-use TrueLayer\Signing\Constants\CustomHeaders;
 use TrueLayer\Signing\Contracts\Signer;
 
 final class SigningDecorator extends BaseApiClientDecorator
@@ -34,9 +32,7 @@ final class SigningDecorator extends BaseApiClientDecorator
      * @param ApiRequestInterface $apiRequest
      *
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */

@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Auth\Api;
+namespace TrueLayer\Services\Auth;
 
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 
-final class AccessTokenRetrieve
+final class AccessTokenApi
 {
     protected ApiClientInterface $api;
 
@@ -26,13 +24,11 @@ final class AccessTokenRetrieve
      * @param string[] $scopes
      *
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
-     * @return array
+     * @return mixed[]
      */
-    public function execute(string $clientId, string $clientSecret, array $scopes): array
+    public function fetch(string $clientId, string $clientSecret, array $scopes): array
     {
         return $this->api->request()
             ->uri(Endpoints::TOKEN)
@@ -41,10 +37,6 @@ final class AccessTokenRetrieve
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
                 'scope' => implode(',', $scopes),
-            ])
-            ->responseRules(fn ($data) => [
-                'access_token' => 'required|string',
-                'expires_in' => 'required|int',
             ])
             ->post();
     }

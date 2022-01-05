@@ -59,7 +59,8 @@ class CreatePayment
 
     /**
      * @param BeneficiaryInterface $beneficiary
-     * @param UserInterface $user
+     * @param UserInterface        $user
+     *
      * @return \TrueLayer\Contracts\Payment\PaymentRequestInterface
      */
     public function payment(BeneficiaryInterface $beneficiary, UserInterface $user): PaymentRequestInterface
@@ -74,10 +75,11 @@ class CreatePayment
 
     /**
      * @param array $responses
+     *
      * @return static
      */
     public static function responses(array $responses): self
     {
-        return new static(sdk($responses));
+        return new static(\sdk($responses));
     }
 }

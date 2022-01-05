@@ -18,7 +18,7 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
      */
     public function getId(): ?string
     {
-        return $this->get('id');
+        return $this->getNullableString('id');
     }
 
     /**
@@ -36,7 +36,7 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
      */
     public function getName(): ?string
     {
-        return $this->get('name');
+        return $this->getNullableString('name');
     }
 
     /**
@@ -58,12 +58,25 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
+     * @throws \TrueLayer\Exceptions\ValidationException
+     *
      * @return mixed[]
      */
     public function toArray(): array
     {
-        return \array_merge($this->data, [
+        return \array_merge($this->validate(), [
             'type' => $this->getType(),
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+            'name' => 'required|string',
+        ];
     }
 }

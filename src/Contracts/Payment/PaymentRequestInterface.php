@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Payment;
 
-use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\HasAttributesInterface;
 use TrueLayer\Contracts\UserInterface;
 
-interface PaymentRequestInterface extends ArrayableInterface
+interface PaymentRequestInterface extends HasAttributesInterface
 {
     /**
      * @param int $amount

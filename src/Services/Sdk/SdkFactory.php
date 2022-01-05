@@ -60,7 +60,7 @@ final class SdkFactory implements SdkFactoryInterface
         $this->makeApiClient($config);
         $this->makeHppHelperFactory($config);
 
-        return new Sdk($this->apiClient, $this->hppHelperFactory);
+        return new Sdk($this->apiClient, $this->validatorFactory, $this->hppHelperFactory);
     }
 
     /**
@@ -104,10 +104,10 @@ final class SdkFactory implements SdkFactoryInterface
 
         $authClient = new ApiClient($this->httpClient, $authBaseUri);
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
-        $authClient = new Decorators\ValidationDecorator($authClient, $this->validatorFactory);
 
         $this->authToken = new AccessToken(
             $authClient,
+            $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret()
         );
@@ -136,7 +136,6 @@ final class SdkFactory implements SdkFactoryInterface
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
         $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);
         $this->apiClient = new Decorators\IdempotencyKeyDecorator($this->apiClient);
-        $this->apiClient = new Decorators\ValidationDecorator($this->apiClient, $this->validatorFactory);
     }
 
     /**

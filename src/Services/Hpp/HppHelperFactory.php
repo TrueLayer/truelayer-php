@@ -7,12 +7,9 @@ namespace TrueLayer\Services\Hpp;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
-use TrueLayer\Traits\HasAttributes;
 
 final class HppHelperFactory implements HppHelperFactoryInterface
 {
-    use HasAttributes;
-
     /**
      * @var ValidatorFactory
      */

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Beneficiary;
 
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Services\Beneficiary\IbanAccountBeneficiary;
 use TrueLayer\Services\Beneficiary\MerchantAccountBeneficiary;
 use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
@@ -11,23 +13,27 @@ use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
 interface BeneficiaryBuilderInterface
 {
     /**
-     * @param array $data
-     *
      * @return SortCodeAccountNumber
      */
-    public function sortCodeAccountNumber(array $data = []): SortCodeAccountNumber;
+    public function sortCodeAccountNumber(): SortCodeAccountNumber;
 
     /**
-     * @param array $data
-     *
      * @return IbanAccountBeneficiary
      */
-    public function ibanAccount(array $data = []): IbanAccountBeneficiary;
+    public function ibanAccount(): IbanAccountBeneficiary;
 
     /**
-     * @param array $data
-     *
      * @return MerchantAccountBeneficiary
      */
-    public function merchantAccount(array $data = []): MerchantAccountBeneficiary;
+    public function merchantAccount(): MerchantAccountBeneficiary;
+
+    /**
+     * @param mixed[] $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return BeneficiaryInterface
+     */
+    public function fill(array $data): BeneficiaryInterface;
 }

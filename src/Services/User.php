@@ -18,7 +18,7 @@ final class User implements UserInterface
      */
     public function getId(): ?string
     {
-        return $this->get('id');
+        return $this->getNullableString('id');
     }
 
     /**
@@ -36,7 +36,7 @@ final class User implements UserInterface
      */
     public function getName(): ?string
     {
-        return $this->get('name');
+        return $this->getNullableString('name');
     }
 
     /**
@@ -54,7 +54,7 @@ final class User implements UserInterface
      */
     public function getEmail(): ?string
     {
-        return $this->get('email');
+        return $this->getNullableString('email');
     }
 
     /**
@@ -72,7 +72,7 @@ final class User implements UserInterface
      */
     public function getPhone(): ?string
     {
-        return $this->get('phone');
+        return $this->getNullableString('phone');
     }
 
     /**
@@ -86,12 +86,27 @@ final class User implements UserInterface
     }
 
     /**
+     * @throws \TrueLayer\Exceptions\ValidationException
+     *
      * @return mixed[]
      */
     public function toArray(): array
     {
-        return \array_merge($this->data, [
+        return \array_merge($this->validate(), [
             'type' => $this->getId() ? UserTypes::EXISTING : UserTypes::NEW,
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function rules(): array
+    {
+        return [
+            'id' => 'string|nullable',
+            'name' => 'string|required_without:id',
+            'email' => 'string|nullable|required_without_all:phone,id',
+            'phone' => 'string|nullable|required_without_all:email,id',
+        ];
     }
 }

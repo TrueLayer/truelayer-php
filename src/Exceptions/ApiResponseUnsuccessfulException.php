@@ -12,12 +12,12 @@ class ApiResponseUnsuccessfulException extends \Exception
     private int $statusCode;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private array $data = [];
 
     /**
-     * @param int $statusCode
+     * @param int   $statusCode
      * @param mixed $data
      */
     public function __construct(int $statusCode, $data)
@@ -70,7 +70,7 @@ class ApiResponseUnsuccessfulException extends \Exception
     }
 
     /**
-     * @return array|null
+     * @return mixed[]|null
      */
     public function getErrors(): ?array
     {

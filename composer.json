@@ -42,7 +42,7 @@
         "pestphp/pest": "^1.20",
         "phpstan/phpstan": "^1.0",
         "friendsofphp/php-cs-fixer": "^3.3",
-        "symfony/http-client": "^6.0",
+        "symfony/http-client": "^v5.4",
         "nyholm/psr7": "^1.4"
     }
 }

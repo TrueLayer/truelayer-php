@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Payment;
 
 use TrueLayer\Contracts\ArrayableInterface;
-use TrueLayer\Contracts\ArrayFillableInterface;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 
-interface PaymentCreatedInterface extends ArrayableInterface, ArrayFillableInterface
+interface PaymentCreatedInterface extends ArrayableInterface
 {
     /**
      * @return string
@@ -32,9 +31,7 @@ interface PaymentCreatedInterface extends ArrayableInterface, ArrayFillableInter
 
     /**
      * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiRequestValidationException
      * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
-     * @throws \TrueLayer\Exceptions\ApiResponseValidationException
      *
      * @return PaymentRetrievedInterface
      */

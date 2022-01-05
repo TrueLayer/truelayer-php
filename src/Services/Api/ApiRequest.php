@@ -9,9 +9,7 @@ use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiRequestValidationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\ApiResponseValidationException;
 
 final class ApiRequest implements ApiRequestInterface
 {
@@ -26,12 +24,12 @@ final class ApiRequest implements ApiRequestInterface
     private string $uri;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private array $payload = [];
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private array $headers = [];
 
@@ -87,7 +85,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @param array $payload
+     * @param mixed[] $payload
      *
      * @return ApiRequestInterface
      */
@@ -99,7 +97,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getPayload(): array
     {
@@ -115,7 +113,7 @@ final class ApiRequest implements ApiRequestInterface
     {
         $encoded = \json_encode($this->getPayload());
 
-        if (\JSON_ERROR_NONE !== \json_last_error()) {
+        if (\JSON_ERROR_NONE !== \json_last_error() || $encoded === false) {
             throw new ApiRequestJsonSerializationException(\json_last_error_msg());
         }
 
@@ -123,7 +121,7 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getHeaders(): array
     {
@@ -185,9 +183,7 @@ final class ApiRequest implements ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */
@@ -200,9 +196,7 @@ final class ApiRequest implements ApiRequestInterface
 
     /**
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiRequestValidationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ApiResponseValidationException
      *
      * @return mixed
      */

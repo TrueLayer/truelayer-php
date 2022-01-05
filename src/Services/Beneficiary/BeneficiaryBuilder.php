@@ -9,6 +9,7 @@ use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\WithSdk;
 
 final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
@@ -16,57 +17,54 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     use WithSdk;
 
     /**
-     * @param array $data
-     *
      * @return SortCodeAccountNumber
      */
-    public function sortCodeAccountNumber(array $data = []): SortCodeAccountNumber
+    public function sortCodeAccountNumber(): SortCodeAccountNumber
     {
-        return SortCodeAccountNumber::make($this->getSdk())->fill($data);
+        return SortCodeAccountNumber::make($this->getSdk());
     }
 
     /**
-     * @param array $data
-     *
      * @return IbanAccountBeneficiary
      */
-    public function ibanAccount(array $data = []): IbanAccountBeneficiary
+    public function ibanAccount(): IbanAccountBeneficiary
     {
-        return IbanAccountBeneficiary::make($this->getSdk())->fill($data);
+        return IbanAccountBeneficiary::make($this->getSdk());
     }
 
     /**
-     * @param array $data
-     *
      * @return MerchantAccountBeneficiary
      */
-    public function merchantAccount(array $data = []): MerchantAccountBeneficiary
+    public function merchantAccount(): MerchantAccountBeneficiary
     {
-        return MerchantAccountBeneficiary::make($this->getSdk())->fill($data);
+        return MerchantAccountBeneficiary::make($this->getSdk());
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return BeneficiaryInterface
      */
-    public function fromArray(array $data): BeneficiaryInterface
+    public function fill(array $data): BeneficiaryInterface
     {
         $type = $data['type'] ?? null;
         $schemeType = $data['scheme_identifier']['type'] ?? null;
 
         if ($type === BeneficiaryTypes::EXTERNAL_ACCOUNT) {
             if ($schemeType === ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER) {
-                return SortCodeAccountNumber::make($this->getSdk())->fill($data);
+                return $this->sortCodeAccountNumber()->fill($data);
             }
 
             if ($schemeType === ExternalAccountTypes::IBAN) {
-                return IbanAccountBeneficiary::make($this->getSdk())->fill($data);
+                return $this->ibanAccount()->fill($data);
             }
         }
 
         if ($type === BeneficiaryTypes::MERCHANT_ACCOUNT) {
-            return MerchantAccountBeneficiary::make($this->getSdk())->fill($data);
+            return $this->merchantAccount()->fill($data);
         }
 
         throw new InvalidArgumentException('Unknown beneficiary type');

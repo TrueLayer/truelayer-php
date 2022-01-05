@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts;
 
-interface UserInterface extends ArrayableInterface, ArrayFillableInterface
+interface UserInterface extends ArrayableInterface, HasAttributesInterface
 {
     /**
      * @return string|null

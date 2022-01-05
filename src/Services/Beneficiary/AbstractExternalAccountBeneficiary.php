@@ -6,7 +6,6 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
@@ -19,7 +18,7 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
      */
     public function getName(): ?string
     {
-        return $this->get('name');
+        return $this->getNullableString('name');
     }
 
     /**
@@ -37,7 +36,7 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
      */
     public function getReference(): ?string
     {
-        return $this->get('reference');
+        return $this->getNullableString('reference');
     }
 
     /**
@@ -64,15 +63,28 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     abstract public function getSchemeType(): string;
 
     /**
-     * @return array
+     * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return mixed[]
      */
     public function toArray(): array
     {
-        return \array_merge_recursive($this->data, [
+        return \array_merge_recursive($this->validate(), [
             'type' => $this->getType(),
             'scheme_identifier' => [
                 'type' => $this->getSchemeType(),
             ],
         ]);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'reference' => 'required|string',
+        ];
     }
 }
