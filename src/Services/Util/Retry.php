@@ -106,7 +106,7 @@ final class Retry
      */
     private function delay(int $attempt): void
     {
-        $delay = \mt_rand(0, 1000000) + (\pow(2, $attempt) * 1000000);
+        $delay = mt_rand(0, 1000000) + (pow(2, $attempt) * 1000000);
         self::$testSleeper ? (self::$testSleeper)($delay) : usleep($delay);
     }
 
