@@ -13,24 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Install PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            coverage: none
-            php-version: "8.0"
-            ini-values: memory_limit=-1
-          env:
-            update: true
+        uses: shivammathur/setup-php@v2'
+        with:
+          coverage: none
+          php-version: "8.0"
+          ini-values: memory_limit=-1
+        env:
+          update: true
 
       - name: Cache dependencies
-          uses: actions/cache@v2
-          with:
-            path: |
-              ~/.composer/cache
-              vendor
-            key: php-cs-fixer
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: php-cs-fixer
 
       - name: Install
         run: composer install
