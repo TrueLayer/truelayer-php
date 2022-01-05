@@ -42,9 +42,11 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param mixed[] $data
-     * @return BeneficiaryInterface
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return BeneficiaryInterface
      */
     public function fill(array $data): BeneficiaryInterface
     {

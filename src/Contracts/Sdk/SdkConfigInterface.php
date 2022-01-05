@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
-use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
 interface SdkConfigInterface

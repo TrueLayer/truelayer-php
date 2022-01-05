@@ -25,9 +25,11 @@ final class ValidType implements Rule
 
     /**
      * @param string $attribute
-     * @param mixed $value
-     * @return bool
+     * @param mixed  $value
+     *
      * @throws ValidationException
+     *
+     * @return bool
      */
     public function passes($attribute, $value): bool
     {

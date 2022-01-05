@@ -19,8 +19,9 @@ final class PaymentCreated implements PaymentCreatedInterface
     use WithSdk, HasAttributes;
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getId(): string
     {
@@ -28,8 +29,9 @@ final class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getResourceToken(): string
     {
@@ -37,8 +39,9 @@ final class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getUserId(): string
     {
@@ -46,8 +49,9 @@ final class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @return HppHelperInterface
      * @throws InvalidArgumentException
+     *
+     * @return HppHelperInterface
      */
     public function hostedPaymentsPage(): HppHelperInterface
     {
@@ -58,12 +62,12 @@ final class PaymentCreated implements PaymentCreatedInterface
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
-     *
      * @throws ApiRequestJsonSerializationException
      * @throws InvalidArgumentException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {

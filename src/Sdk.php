@@ -14,12 +14,9 @@ use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
-use TrueLayer\Services\Payment\Api\PaymentRetrieve;
 use TrueLayer\Services\Payment\PaymentApi;
 use TrueLayer\Services\Payment\PaymentRequest;
-use TrueLayer\Services\Payment\PaymentRetrieved;
 use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Services\Sdk\SdkFactory;
 use TrueLayer\Services\User;
@@ -42,8 +39,8 @@ final class Sdk implements SdkInterface
     private HppHelperFactoryInterface $hppHelperFactory;
 
     /**
-     * @param ApiClientInterface $apiClient
-     * @param ValidatorFactory $validatorFactory
+     * @param ApiClientInterface        $apiClient
+     * @param ValidatorFactory          $validatorFactory
      * @param HppHelperFactoryInterface $hppHelperFactory
      */
     public function __construct(ApiClientInterface $apiClient, ValidatorFactory $validatorFactory, HppHelperFactoryInterface $hppHelperFactory)
@@ -96,11 +93,11 @@ final class Sdk implements SdkInterface
     /**
      * @param string $id
      *
-     * @return PaymentRetrievedInterface
-     *
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\ValidationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getPaymentDetails(string $id): PaymentRetrievedInterface
     {

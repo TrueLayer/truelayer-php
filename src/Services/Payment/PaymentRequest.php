@@ -76,10 +76,11 @@ final class PaymentRequest implements PaymentRequestInterface
     }
 
     /**
-     * @return PaymentCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {

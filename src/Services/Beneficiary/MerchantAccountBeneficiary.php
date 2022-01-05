@@ -58,8 +58,9 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
     }
 
     /**
-     * @return mixed[]
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return mixed[]
      */
     public function toArray(): array
     {
@@ -75,7 +76,7 @@ final class MerchantAccountBeneficiary implements BeneficiaryInterface
     {
         return [
             'id' => 'required|string',
-            'name' => 'required|string'
+            'name' => 'required|string',
         ];
     }
 }

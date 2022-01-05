@@ -12,7 +12,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Services\Payment\PaymentCreated;
 use TrueLayer\Traits\WithSdk;
 
 final class PaymentApi
@@ -21,9 +20,11 @@ final class PaymentApi
 
     /**
      * @param PaymentRequestInterface $paymentRequest
-     * @return PaymentCreatedInterface
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(PaymentRequestInterface $paymentRequest): PaymentCreatedInterface
     {
@@ -37,11 +38,13 @@ final class PaymentApi
 
     /**
      * @param string $id
-     * @return PaymentRetrievedInterface
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
      * @throws InvalidArgumentException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function retrieve(string $id): PaymentRetrievedInterface
     {
@@ -51,9 +54,9 @@ final class PaymentApi
             ->uri(Endpoints::PAYMENTS . '/' . $id)
             ->get();
 
-        $data = array_merge($response, [
+        $data = \array_merge($response, [
             'beneficiary' => $sdk->beneficiary()->fill($response['beneficiary'] ?? []),
-            'user' => $sdk->user()->fill($response['user'] ?? [])
+            'user' => $sdk->user()->fill($response['user'] ?? []),
         ]);
 
         return PaymentRetrieved::make($sdk)->fill($data);

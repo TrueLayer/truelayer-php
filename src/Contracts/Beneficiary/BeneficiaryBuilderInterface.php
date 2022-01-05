@@ -13,28 +13,27 @@ use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
 interface BeneficiaryBuilderInterface
 {
     /**
-     *
      * @return SortCodeAccountNumber
      */
     public function sortCodeAccountNumber(): SortCodeAccountNumber;
 
     /**
-     *
      * @return IbanAccountBeneficiary
      */
     public function ibanAccount(): IbanAccountBeneficiary;
 
     /**
-     *
      * @return MerchantAccountBeneficiary
      */
     public function merchantAccount(): MerchantAccountBeneficiary;
 
     /**
      * @param mixed[] $data
-     * @return BeneficiaryInterface
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return BeneficiaryInterface
      */
     public function fill(array $data): BeneficiaryInterface;
 }

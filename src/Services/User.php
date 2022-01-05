@@ -86,8 +86,9 @@ final class User implements UserInterface
     }
 
     /**
-     * @return mixed[]
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return mixed[]
      */
     public function toArray(): array
     {

@@ -17,7 +17,7 @@ class ApiResponseUnsuccessfulException extends \Exception
     private array $data = [];
 
     /**
-     * @param int $statusCode
+     * @param int   $statusCode
      * @param mixed $data
      */
     public function __construct(int $statusCode, $data)

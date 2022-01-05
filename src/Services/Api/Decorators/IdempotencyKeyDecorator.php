@@ -6,12 +6,12 @@ namespace TrueLayer\Services\Api\Decorators;
 
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Uuid;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Services\Util\Retry;
-use TrueLayer\Constants\CustomHeaders;
 
 final class IdempotencyKeyDecorator extends BaseApiClientDecorator
 {

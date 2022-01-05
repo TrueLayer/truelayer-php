@@ -13,12 +13,13 @@ final class AccessTokenApi
 {
     /**
      * @param ApiClientInterface $api
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param string             $clientId
+     * @param string             $clientSecret
      *
-     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
      */
     public function fetch(ApiClientInterface $api, string $clientId, string $clientSecret): array
     {

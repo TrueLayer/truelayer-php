@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Psr7\Response;
 use TrueLayer\Exceptions;
 use TrueLayer\Tests\Mocks\ErrorResponse;
 

@@ -6,7 +6,6 @@ namespace TrueLayer\Services\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Traits\WithSdk;
 
@@ -64,8 +63,9 @@ abstract class AbstractExternalAccountBeneficiary implements BeneficiaryInterfac
     abstract public function getSchemeType(): string;
 
     /**
-     * @return mixed[]
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return mixed[]
      */
     public function toArray(): array
     {

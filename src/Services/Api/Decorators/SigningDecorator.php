@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Api\Decorators;
 
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Api\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Signing\Contracts\Signer;
 
 final class SigningDecorator extends BaseApiClientDecorator

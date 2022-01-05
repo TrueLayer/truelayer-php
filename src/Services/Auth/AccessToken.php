@@ -12,7 +12,6 @@ use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Services\Auth\AccessTokenApi;
 use TrueLayer\Traits\HasAttributes;
 
 final class AccessToken implements AccessTokenInterface
@@ -41,9 +40,9 @@ final class AccessToken implements AccessTokenInterface
 
     /**
      * @param ApiClientInterface $api
-     * @param ValidatorFactory $validatorFactory
-     * @param string $clientId
-     * @param string $clientSecret
+     * @param ValidatorFactory   $validatorFactory
+     * @param string             $clientId
+     * @param string             $clientSecret
      */
     public function __construct(ApiClientInterface $api, ValidatorFactory $validatorFactory, string $clientId, string $clientSecret)
     {
@@ -54,10 +53,11 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getAccessToken(): string
     {
@@ -100,6 +100,7 @@ final class AccessToken implements AccessTokenInterface
     public function clear(): AccessTokenInterface
     {
         $this->data = [];
+
         return $this;
     }
 
@@ -122,7 +123,7 @@ final class AccessToken implements AccessTokenInterface
         return [
             'access_token' => 'required|string',
             'expires_in' => 'required|int',
-            'retrieved_at' => 'required|int'
+            'retrieved_at' => 'required|int',
         ];
     }
 

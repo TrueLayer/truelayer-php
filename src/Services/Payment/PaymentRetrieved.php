@@ -23,8 +23,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     use WithSdk, HasAttributes;
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getId(): string
     {
@@ -32,8 +33,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return int
      * @throws InvalidArgumentException
+     *
+     * @return int
      */
     public function getAmountInMinor(): int
     {
@@ -41,8 +43,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getCurrency(): string
     {
@@ -50,8 +53,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getStatementReference(): string
     {
@@ -64,6 +68,7 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     public function getBeneficiary(): ?BeneficiaryInterface
     {
         $val = $this->get('beneficiary');
+
         return $val instanceof BeneficiaryInterface ? $val : null;
     }
 
@@ -73,6 +78,7 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     public function getUser(): ?UserInterface
     {
         $val = $this->get('user');
+
         return $val instanceof UserInterface ? $val : null;
     }
 
@@ -89,8 +95,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getStatus(): string
     {
@@ -98,8 +105,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isAuthorizationRequired(): bool
     {
@@ -107,8 +115,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isAuthorizing(): bool
     {
@@ -116,8 +125,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isAuthorized(): bool
     {
@@ -125,8 +135,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isExecuted(): bool
     {
@@ -134,8 +145,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isFailed(): bool
     {
@@ -143,8 +155,9 @@ final class PaymentRetrieved implements PaymentRetrievedInterface
     }
 
     /**
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isSettled(): bool
     {

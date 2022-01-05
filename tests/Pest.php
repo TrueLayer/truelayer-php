@@ -105,9 +105,10 @@ function getSentHttpRequests(): array
 
 /**
  * @param int $requestIndex
+ *
  * @return mixed
  */
 function getRequestPayload(int $requestIndex)
 {
-    return json_decode(getSentHttpRequests()[$requestIndex]->getBody()->getContents(), true);
+    return \json_decode(\getSentHttpRequests()[$requestIndex]->getBody()->getContents(), true);
 }

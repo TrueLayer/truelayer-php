@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use TrueLayer\Contracts\Hpp\HppHelperInterface;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
-use TrueLayer\Traits\WithSdk;
 
 final class HppHelper implements HppHelperInterface
 {

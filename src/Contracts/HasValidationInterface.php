@@ -14,8 +14,9 @@ interface HasValidationInterface extends ArrayableInterface
     public function isValid(): bool;
 
     /**
-     * @return mixed[]
      * @throws ValidationException
+     *
+     * @return mixed[]
      */
     public function validate(): array;
 
