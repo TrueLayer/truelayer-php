@@ -64,6 +64,7 @@ final class AccessToken implements AccessTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return string
      */
