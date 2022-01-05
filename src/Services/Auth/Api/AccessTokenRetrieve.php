@@ -13,10 +13,17 @@ use TrueLayer\Exceptions\ApiResponseValidationException;
 
 final class AccessTokenRetrieve
 {
+    protected ApiClientInterface $api;
+
+    public function __construct(ApiClientInterface $api)
+    {
+        $this->api = $api;
+    }
+
     /**
-     * @param ApiClientInterface $api
-     * @param string             $clientId
-     * @param string             $clientSecret
+     * @param string   $clientId
+     * @param string   $clientSecret
+     * @param string[] $scopes
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiRequestValidationException
@@ -25,15 +32,15 @@ final class AccessTokenRetrieve
      *
      * @return array
      */
-    public function execute(ApiClientInterface $api, string $clientId, string $clientSecret): array
+    public function execute(string $clientId, string $clientSecret, array $scopes): array
     {
-        return $api->request()
+        return $this->api->request()
             ->uri(Endpoints::TOKEN)
             ->payload([
                 'grant_type' => 'client_credentials',
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
-                'scope' => 'payments',
+                'scope' => implode(',', $scopes),
             ])
             ->responseRules(fn ($data) => [
                 'access_token' => 'required|string',

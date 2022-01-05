@@ -34,15 +34,21 @@ final class AccessToken implements AccessTokenInterface
     private string $clientSecret;
 
     /**
+     * @var string[]
+     */
+    private array $scopes = [];
+
+    /**
      * @param ApiClientInterface $api
      * @param string             $clientId
      * @param string             $clientSecret
      */
-    public function __construct(ApiClientInterface $api, string $clientId, string $clientSecret)
+    public function __construct(ApiClientInterface $api, string $clientId, string $clientSecret, ?array $scopes = [])
     {
         $this->api = $api;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->scopes = $scopes;
     }
 
     /**
@@ -106,7 +112,7 @@ final class AccessToken implements AccessTokenInterface
      */
     private function retrieve(): void
     {
-        $data = (new AccessTokenRetrieve())->execute($this->api, $this->clientId, $this->clientSecret);
+        $data = (new AccessTokenRetrieve($this->api))->execute($this->clientId, $this->clientSecret, $this->scopes);
         $this->fill($data);
         $this->set('retrieved_at', Carbon::now()->timestamp);
     }
