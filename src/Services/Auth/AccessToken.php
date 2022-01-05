@@ -7,6 +7,7 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Carbon;
+use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Contracts\Sdk\SdkCacheInterface;
@@ -78,7 +79,15 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getAccessToken(): string
     {
-        if (!$this->getNullableString('access_token') || $this->isExpired()) {
+        if (!$this->getNullableString('access_token')) {
+            if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
+                $this->fill(unserialize($this->cache->get(CacheKeys::AUTH_TOKEN)));
+            } else {
+                $this->retrieve();
+            }
+        }
+
+        if ($this->isExpired()) {
             $this->retrieve();
         }
 
@@ -131,6 +140,10 @@ final class AccessToken implements AccessTokenInterface
         $data = (new AccessTokenApi($this->api))->fetch($this->clientId, $this->clientSecret, $this->scopes);
         $data['retrieved_at'] = Carbon::now()->timestamp;
         $this->fill($data);
+
+        if ($this->cache) {
+            $this->cache->put(CacheKeys::AUTH_TOKEN, serialize($data), $this->getExpiresIn());
+        }
     }
 
     /**
