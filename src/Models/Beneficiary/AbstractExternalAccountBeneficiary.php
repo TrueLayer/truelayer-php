@@ -36,6 +36,7 @@ abstract class AbstractExternalAccountBeneficiary extends Model implements Benef
     public function name(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -55,6 +56,7 @@ abstract class AbstractExternalAccountBeneficiary extends Model implements Benef
     public function reference(string $reference): self
     {
         $this->reference = $reference;
+
         return $this;
     }
 

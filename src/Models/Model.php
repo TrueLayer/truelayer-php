@@ -45,6 +45,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
         try {
             $validator->validate();
+
             return $this;
         } catch (ValidationException $e) {
             throw new \TrueLayer\Exceptions\ValidationException($validator);
@@ -79,12 +80,13 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
     }
 
     /**
-     * Convert to array
+     * Convert to array.
+     *
      * @return mixed[]
      */
     public function toArray(): array
     {
-        return array_map(
+        return \array_map(
             fn ($val) => $val instanceof ArrayableInterface ? $val->toArray() : $val,
             $this->all()
         );
@@ -92,18 +94,22 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param mixed[] $data
-     * @return $this
+     *
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
         $this->setValues($data);
         $this->validate();
+
         return $this;
     }
 
     /**
      * @param mixed[] $data
+     *
      * @return $this
      */
     protected function setValues(array $data): self
@@ -120,7 +126,8 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return Model
      */
     protected function set(string $key, $value): self
@@ -128,10 +135,10 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
         $property = Str::camel($key);
 
         if ($value !== null) {
-            if (method_exists($this, $property)) {
-                $this->$property($value);
-            } elseif (property_exists($this, $property)) {
-                $this->$property = $value;
+            if (\method_exists($this, $property)) {
+                $this->{$property}($value);
+            } elseif (\property_exists($this, $property)) {
+                $this->{$property} = $value;
             }
         }
 
@@ -146,14 +153,14 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
         $array = [];
 
         foreach ($this->arrayFields as $dotNotation => $propertyKey) {
-            $dotNotation = is_int($dotNotation) ? $propertyKey : $dotNotation;
+            $dotNotation = \is_int($dotNotation) ? $propertyKey : $dotNotation;
             $propertyKey = Str::camel($propertyKey);
-            $method = Str::camel("get_" . $propertyKey);
+            $method = Str::camel('get_' . $propertyKey);
 
-            $value = method_exists($this, $method)
-                ? $this->$method() : (
-                property_exists($this, $propertyKey)
-                    ? $this->$propertyKey
+            $value = \method_exists($this, $method)
+                ? $this->{$method}() : (
+                \property_exists($this, $propertyKey)
+                    ? $this->{$propertyKey}
                     : null
                 );
 

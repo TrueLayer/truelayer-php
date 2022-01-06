@@ -15,12 +15,12 @@ use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Models\Beneficiary\BeneficiaryBuilder;
-use TrueLayer\Services\Api\PaymentApi;
-use TrueLayer\Services\Sdk\SdkConfig;
-use TrueLayer\Services\Sdk\SdkFactory;
 use TrueLayer\Models\Hpp;
 use TrueLayer\Models\Payment\PaymentRequest;
 use TrueLayer\Models\User;
+use TrueLayer\Services\Api\PaymentApi;
+use TrueLayer\Services\Sdk\SdkConfig;
+use TrueLayer\Services\Sdk\SdkFactory;
 
 final class Sdk implements SdkInterface
 {
@@ -40,16 +40,15 @@ final class Sdk implements SdkInterface
     private SdkConfigInterface $config;
 
     /**
-     * @param ApiClientInterface        $apiClient
-     * @param ValidatorFactory          $validatorFactory
+     * @param ApiClientInterface $apiClient
+     * @param ValidatorFactory   $validatorFactory
      * @param SdkConfigInterface $config
      */
     public function __construct(
         ApiClientInterface $apiClient,
         ValidatorFactory $validatorFactory,
         SdkConfigInterface $config
-    )
-    {
+    ) {
         $this->apiClient = $apiClient;
         $this->validatorFactory = $validatorFactory;
         $this->config = $config;

@@ -139,8 +139,9 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     }
 
     /**
-     * @return DateTime
      * @throws Exception
+     *
+     * @return DateTime
      */
     public function getCreatedAt(): DateTime
     {
@@ -205,21 +206,23 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
 
     /**
      * @param mixed[] $data
-     * @return $this
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
-        if (isset($data['beneficiary']) && is_array($data['beneficiary'])) {
+        if (isset($data['beneficiary']) && \is_array($data['beneficiary'])) {
             $data['beneficiary'] = $this->getSdk()->beneficiary()->fill($data['beneficiary']);
         }
 
-        if (isset($data['user']) && is_array($data['user'])) {
+        if (isset($data['user']) && \is_array($data['user'])) {
             $data['user'] = $this->getSdk()->user()->fill($data['user']);
         }
 
-        if (isset($data['created_at']) && is_string($data['created_at'])) {
+        if (isset($data['created_at']) && \is_string($data['created_at'])) {
             $data['created_at'] = new DateTime($data['created_at']);
         }
 

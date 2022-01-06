@@ -81,6 +81,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     public function amountInMinor(int $amount): PaymentRequestInterface
     {
         $this->amountInMinor = $amount;
+
         return $this;
     }
 
@@ -92,6 +93,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     public function currency(string $currency): PaymentRequestInterface
     {
         $this->currency = $currency;
+
         return $this;
     }
 
@@ -138,6 +140,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     {
         $data = parent::all();
         Arr::set($data, 'payment_method.type', PaymentMethods::BANK_TRANSFER);
+
         return $data;
     }
 
@@ -155,19 +158,22 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
 
     /**
      * @param mixed[] $data
-     * @return $this
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
-        if (isset($data['beneficiary']) && is_array($data['beneficiary'])) {
+        if (isset($data['beneficiary']) && \is_array($data['beneficiary'])) {
             $data['beneficiary'] = $this->getSdk()->beneficiary()->fill($data['beneficiary']);
         }
 
-        if (isset($data['user']) && is_array($data['user'])) {
+        if (isset($data['user']) && \is_array($data['user'])) {
             $data['user'] = $this->getSdk()->user()->fill($data['user']);
         }
+
         return parent::fill($data);
     }
 }

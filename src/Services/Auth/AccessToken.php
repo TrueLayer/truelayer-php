@@ -10,7 +10,6 @@ use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Services\Api\AccessTokenApi;
 
@@ -66,10 +65,11 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
+     *
+     * @return string|null
      */
     public function getAccessToken(): ?string
     {
@@ -140,6 +140,7 @@ final class AccessToken implements AccessTokenInterface
 
     /**
      * @param mixed[] $data
+     *
      * @throws ValidationException
      */
     private function validate(array $data): void

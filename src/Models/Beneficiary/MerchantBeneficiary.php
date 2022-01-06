@@ -26,7 +26,7 @@ final class MerchantBeneficiary extends Model implements BeneficiaryInterface
     protected array $arrayFields = [
         'id',
         'name',
-        'type'
+        'type',
     ];
 
     /**
@@ -73,6 +73,7 @@ final class MerchantBeneficiary extends Model implements BeneficiaryInterface
     public function name(string $name): MerchantBeneficiary
     {
         $this->name = $name;
+
         return $this;
     }
 

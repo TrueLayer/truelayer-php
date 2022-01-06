@@ -12,9 +12,9 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Models\Payment\PaymentCreated;
 use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Traits\WithSdk;
-use TrueLayer\Models\Payment\PaymentCreated;
 
 final class PaymentApi
 {
@@ -23,12 +23,12 @@ final class PaymentApi
     /**
      * @param PaymentRequestInterface $paymentRequest
      *
-     * @return PaymentCreatedInterface
-     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(PaymentRequestInterface $paymentRequest): PaymentCreatedInterface
     {

@@ -35,7 +35,7 @@ final class PaymentCreated extends Model implements PaymentCreatedInterface
     protected array $arrayFields = [
         'id',
         'resource_token' => 'payment_token',
-        'user.id' => 'user_id'
+        'user.id' => 'user_id',
     ];
 
     /**

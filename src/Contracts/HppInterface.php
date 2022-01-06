@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts;
 
-use Illuminate\Support\Str;
 use TrueLayer\Exceptions\ValidationException;
 
 interface HppInterface extends ArrayableInterface
 {
     /**
      * @param string $baseUrl
+     *
      * @return HppInterface
      */
     public function baseUrl(string $baseUrl): HppInterface;
@@ -93,8 +93,9 @@ interface HppInterface extends ArrayableInterface
     public function getTertiaryColour(): ?string;
 
     /**
-     * @return string
      * @throws ValidationException
+     *
+     * @return string
      */
     public function toUrl(): string;
 

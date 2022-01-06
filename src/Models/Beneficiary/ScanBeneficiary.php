@@ -27,7 +27,7 @@ final class ScanBeneficiary extends AbstractExternalAccountBeneficiary
         'reference',
         'scheme_identifier.type' => 'scheme_type',
         'scheme_identifier.sort_code' => 'sort_code',
-        'scheme_identifier.account_number' => 'account_number'
+        'scheme_identifier.account_number' => 'account_number',
     ];
 
     /**
@@ -56,6 +56,7 @@ final class ScanBeneficiary extends AbstractExternalAccountBeneficiary
     public function sortCode(string $sortCode): ScanBeneficiary
     {
         $this->sortCode = $sortCode;
+
         return $this;
     }
 
@@ -75,6 +76,7 @@ final class ScanBeneficiary extends AbstractExternalAccountBeneficiary
     public function accountNumber(string $accountNumber): ScanBeneficiary
     {
         $this->accountNumber = $accountNumber;
+
         return $this;
     }
 

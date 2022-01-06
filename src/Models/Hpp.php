@@ -7,7 +7,6 @@ namespace TrueLayer\Models;
 use Illuminate\Support\Str;
 use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Model;
 
 final class Hpp extends Model implements HppInterface
 {
@@ -54,7 +53,7 @@ final class Hpp extends Model implements HppInterface
         'payment_id',
         'resource_token' => 'payment_token',
         'return_uri',
-        'c_primary' => 'primary_colour' ,
+        'c_primary' => 'primary_colour',
         'c_secondary' => 'secondary_colour',
         'c_tertiary' => 'tertiary_colour',
     ];
@@ -74,11 +73,13 @@ final class Hpp extends Model implements HppInterface
 
     /**
      * @param string $baseUrl
+     *
      * @return HppInterface
      */
     public function baseUrl(string $baseUrl): HppInterface
     {
         $this->baseUrl = $baseUrl;
+
         return $this;
     }
 
@@ -98,6 +99,7 @@ final class Hpp extends Model implements HppInterface
     public function paymentId(string $paymentId): HppInterface
     {
         $this->paymentId = $paymentId;
+
         return $this;
     }
 
@@ -117,6 +119,7 @@ final class Hpp extends Model implements HppInterface
     public function paymentToken(string $paymentToken): HppInterface
     {
         $this->paymentToken = $paymentToken;
+
         return $this;
     }
 
@@ -136,6 +139,7 @@ final class Hpp extends Model implements HppInterface
     public function returnUri(string $returnUri): HppInterface
     {
         $this->returnUri = $returnUri;
+
         return $this;
     }
 
@@ -155,6 +159,7 @@ final class Hpp extends Model implements HppInterface
     public function primaryColour(string $hex): HppInterface
     {
         $this->primaryColour = $this->colour($hex);
+
         return $this;
     }
 
@@ -174,6 +179,7 @@ final class Hpp extends Model implements HppInterface
     public function secondaryColour(string $hex): HppInterface
     {
         $this->secondaryColour = $this->colour($hex);
+
         return $this;
     }
 
@@ -193,6 +199,7 @@ final class Hpp extends Model implements HppInterface
     public function tertiaryColour(string $hex): HppInterface
     {
         $this->tertiaryColour = $this->colour($hex);
+
         return $this;
     }
 
@@ -205,8 +212,9 @@ final class Hpp extends Model implements HppInterface
     }
 
     /**
-     * @return string
      * @throws ValidationException
+     *
+     * @return string
      */
     public function toUrl(): string
     {

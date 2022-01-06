@@ -39,27 +39,27 @@ class ApiResponseUnsuccessfulException extends Exception
     {
         $this->statusCode = $statusCode;
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return;
         }
 
-        if (!empty($data['type']) && is_string($data['type'])) {
+        if (!empty($data['type']) && \is_string($data['type'])) {
             $this->type = $data['type'];
         }
 
-        if (!empty($data['detail']) && is_string($data['detail'])) {
+        if (!empty($data['detail']) && \is_string($data['detail'])) {
             $this->detail = $data['detail'];
         }
 
-        if (!empty($data['trace_id']) && is_string($data['trace_id'])) {
+        if (!empty($data['trace_id']) && \is_string($data['trace_id'])) {
             $this->traceId = $data['trace_id'];
         }
 
-        if (!empty($data['errors']) && is_array($data['errors'])) {
+        if (!empty($data['errors']) && \is_array($data['errors'])) {
             $this->errors = $data['errors'];
         }
 
-        if (!empty($data['title']) && is_string($data['title'])) {
+        if (!empty($data['title']) && \is_string($data['title'])) {
             parent::__construct($data['title']);
         }
     }

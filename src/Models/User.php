@@ -66,6 +66,7 @@ final class User extends Model implements UserInterface
     public function id(string $id): UserInterface
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -85,6 +86,7 @@ final class User extends Model implements UserInterface
     public function name(string $name): UserInterface
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -104,6 +106,7 @@ final class User extends Model implements UserInterface
     public function email(string $email): UserInterface
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -123,6 +126,7 @@ final class User extends Model implements UserInterface
     public function phone(string $phone): UserInterface
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -142,10 +146,10 @@ final class User extends Model implements UserInterface
         if ($this->getId()) {
             return [
                 'id' => $this->getId(),
-                'type' => UserTypes::EXISTING
+                'type' => UserTypes::EXISTING,
             ];
         }
 
-        return array_filter(parent::all());
+        return \array_filter(parent::all());
     }
 }
