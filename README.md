@@ -78,7 +78,37 @@ $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see belo
 $payment->toArray(); // Convert to array
 ```
 
-### 4. Redirecting to the Hosted Payments Page
+### 4. Working with arrays
+
+If you prefer, you can work directly with arrays by calling the `fill` method:
+
+```php
+$paymentData = [
+    'amount_in_minor' => 1,
+    'currency' => \TrueLayer\Constants\Currencies::GBP,
+    'user' => [
+        'name' => 'Jane Doe',
+        'email' => 'jane@doe.com'
+    ],
+    'beneficiary' => [
+        'type' => \TrueLayer\Constants\BeneficiaryTypes::EXTERNAL_ACCOUNT,
+        'name' => 'John Doe',
+        'reference' => 'Payment',
+        'scheme_identifier' => [
+            'type' => \TrueLayer\Constants\ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER,
+            'sort_code' => '010203',
+            'account_number' => '12345678',
+        ]
+    ],
+    'payment_method' => [
+        'statement_reference' => 'Reference',
+    ],
+];
+
+$payment = $sdk->payment()->fill($paymentData)->create();
+```
+
+### 5. Redirecting to the Hosted Payments Page
 
 TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box, all action types.
 You can easily get the URL to redirect to after creating your payment:
