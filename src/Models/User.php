@@ -137,19 +137,4 @@ final class User extends Model implements UserInterface
     {
         return $this->getId() ? UserTypes::EXISTING : UserTypes::NEW;
     }
-
-    /**
-     * @return mixed[]
-     */
-    public function all(): array
-    {
-        if ($this->getId()) {
-            return [
-                'id' => $this->getId(),
-                'type' => UserTypes::EXISTING,
-            ];
-        }
-
-        return \array_filter(parent::all());
-    }
 }

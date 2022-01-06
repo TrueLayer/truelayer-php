@@ -22,42 +22,42 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @var string
      */
-    private string $id;
+    protected string $id;
 
     /**
      * @var int
      */
-    private int $amountInMinor;
+    protected int $amountInMinor;
 
     /**
      * @var string
      */
-    private string $currency;
+    protected string $currency;
 
     /**
      * @var string
      */
-    private string $statementReference;
+    protected string $statementReference;
 
     /**
      * @var string
      */
-    private string $status;
+    protected string $status;
 
     /**
      * @var BeneficiaryInterface
      */
-    private BeneficiaryInterface $beneficiary;
+    protected BeneficiaryInterface $beneficiary;
 
     /**
      * @var UserInterface
      */
-    private UserInterface $user;
+    protected UserInterface $user;
 
     /**
      * @var DateTime
      */
-    private DateTime $createdAt;
+    protected DateTime $createdAt;
 
     /**
      * @var string[]

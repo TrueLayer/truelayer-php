@@ -159,7 +159,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
             $value = \method_exists($this, $method)
                 ? $this->{$method}() : (
-                \property_exists($this, $propertyKey)
+                \property_exists($this, $propertyKey) && isset($this->{$propertyKey})
                     ? $this->{$propertyKey}
                     : null
                 );
