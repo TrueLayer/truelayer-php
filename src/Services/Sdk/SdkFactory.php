@@ -110,7 +110,8 @@ final class SdkFactory implements SdkFactoryInterface
             $config->getCache(),
             $this->validatorFactory,
             $config->getClientId(),
-            $config->getClientSecret()
+            $config->getClientSecret(),
+            [ 'payments' ],
         );
     }
 
