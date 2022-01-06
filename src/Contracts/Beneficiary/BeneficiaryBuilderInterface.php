@@ -6,26 +6,26 @@ namespace TrueLayer\Contracts\Beneficiary;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Services\Beneficiary\IbanAccountBeneficiary;
-use TrueLayer\Services\Beneficiary\MerchantAccountBeneficiary;
-use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
+use TrueLayer\Models\Beneficiary\IbanBeneficiary;
+use TrueLayer\Models\Beneficiary\MerchantBeneficiary;
+use TrueLayer\Models\Beneficiary\ScanBeneficiary;
 
 interface BeneficiaryBuilderInterface
 {
     /**
-     * @return SortCodeAccountNumber
+     * @return ScanBeneficiary
      */
-    public function sortCodeAccountNumber(): SortCodeAccountNumber;
+    public function sortCodeAccountNumber(): ScanBeneficiary;
 
     /**
-     * @return IbanAccountBeneficiary
+     * @return IbanBeneficiary
      */
-    public function ibanAccount(): IbanAccountBeneficiary;
+    public function ibanAccount(): IbanBeneficiary;
 
     /**
-     * @return MerchantAccountBeneficiary
+     * @return MerchantBeneficiary
      */
-    public function merchantAccount(): MerchantAccountBeneficiary;
+    public function merchantAccount(): MerchantBeneficiary;
 
     /**
      * @param mixed[] $data

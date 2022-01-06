@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Api\Decorators;
+namespace TrueLayer\Services\ApiClient\Decorators;
 
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Contracts\Api\ApiClientInterface;

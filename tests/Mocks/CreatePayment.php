@@ -9,7 +9,7 @@ use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Services\Beneficiary\SortCodeAccountNumber;
+use TrueLayer\Models\Beneficiary\ScanBeneficiary;
 
 class CreatePayment
 {
@@ -24,9 +24,9 @@ class CreatePayment
     }
 
     /**
-     * @return SortCodeAccountNumber
+     * @return ScanBeneficiary
      */
-    public function sortCodeBeneficiary(): SortCodeAccountNumber
+    public function sortCodeBeneficiary(): ScanBeneficiary
     {
         return $this->sdk
             ->beneficiary()
@@ -38,7 +38,7 @@ class CreatePayment
     }
 
     /**
-     * @return \TrueLayer\Contracts\UserInterface
+     * @return UserInterface
      */
     public function newUser(): UserInterface
     {
@@ -61,7 +61,7 @@ class CreatePayment
      * @param BeneficiaryInterface $beneficiary
      * @param UserInterface        $user
      *
-     * @return \TrueLayer\Contracts\Payment\PaymentRequestInterface
+     * @return PaymentRequestInterface
      */
     public function payment(BeneficiaryInterface $beneficiary, UserInterface $user): PaymentRequestInterface
     {

@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Auth;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Traits\HasAttributes;
+use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Services\Api\AccessTokenApi;
 
 final class AccessToken implements AccessTokenInterface
 {
-    use HasAttributes;
-
     /**
      * @var ApiClientInterface
      */
@@ -39,6 +37,21 @@ final class AccessToken implements AccessTokenInterface
     private string $clientSecret;
 
     /**
+     * @var string|null
+     */
+    private ?string $accessToken = null;
+
+    /**
+     * @var int|null
+     */
+    private ?int $expiresIn = null;
+
+    /**
+     * @var int|null
+     */
+    private ?int $retrievedAt = null;
+
+    /**
      * @param ApiClientInterface $api
      * @param ValidatorFactory   $validatorFactory
      * @param string             $clientId
@@ -53,19 +66,18 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
+     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
-     *
-     * @return string
+     * @throws ValidationException
      */
-    public function getAccessToken(): string
+    public function getAccessToken(): ?string
     {
-        if (!$this->getNullableString('access_token') || $this->isExpired()) {
+        if (!$this->accessToken || $this->isExpired()) {
             $this->retrieve();
         }
 
-        return $this->getString('access_token');
+        return $this->accessToken;
     }
 
     /**
@@ -73,7 +85,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getRetrievedAt(): ?int
     {
-        return $this->getNullableInt('retrieved_at');
+        return $this->retrievedAt ?? null;
     }
 
     /**
@@ -81,7 +93,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getExpiresIn(): ?int
     {
-        return $this->getNullableInt('expires_in');
+        return $this->expiresIn ?? null;
     }
 
     /**
@@ -91,6 +103,10 @@ final class AccessToken implements AccessTokenInterface
      */
     public function isExpired(int $safetyMargin = 10): bool
     {
+        if (!$this->getRetrievedAt() || !$this->getExpiresIn()) {
+            return true;
+        }
+
         return $this->getRetrievedAt() + $this->getExpiresIn() - $safetyMargin <= Carbon::now()->timestamp;
     }
 
@@ -99,7 +115,9 @@ final class AccessToken implements AccessTokenInterface
      */
     public function clear(): AccessTokenInterface
     {
-        $this->data = [];
+        $this->accessToken = null;
+        $this->expiresIn = null;
+        $this->retrievedAt = null;
 
         return $this;
     }
@@ -107,31 +125,34 @@ final class AccessToken implements AccessTokenInterface
     /**
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws ValidationException
      */
     private function retrieve(): void
     {
+        /** @var array{access_token: string, expires_in: int} $data */
         $data = (new AccessTokenApi())->fetch($this->api, $this->clientId, $this->clientSecret);
-        $data['retrieved_at'] = Carbon::now()->timestamp;
-        $this->fill($data);
+        $this->validate($data);
+
+        $this->accessToken = $data['access_token'];
+        $this->expiresIn = $data['expires_in'];
+        $this->retrievedAt = (int) Carbon::now()->timestamp;
     }
 
     /**
-     * @return string[]
+     * @param mixed[] $data
+     * @throws ValidationException
      */
-    private function rules(): array
+    private function validate(array $data): void
     {
-        return [
+        $validator = $this->validatorFactory->make($data, [
             'access_token' => 'required|string',
             'expires_in' => 'required|int',
-            'retrieved_at' => 'required|int',
-        ];
-    }
+        ]);
 
-    /**
-     * @return Validator
-     */
-    private function validator(): Validator
-    {
-        return $this->validatorFactory->make($this->data, $this->rules());
+        try {
+            $validator->validate();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw new ValidationException($validator);
+        }
     }
 }

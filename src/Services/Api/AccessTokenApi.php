@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Auth;
+namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
@@ -23,7 +23,7 @@ final class AccessTokenApi
      */
     public function fetch(ApiClientInterface $api, string $clientId, string $clientSecret): array
     {
-        return $api->request()
+        return (array) $api->request()
             ->uri(Endpoints::TOKEN)
             ->payload([
                 'grant_type' => 'client_credentials',

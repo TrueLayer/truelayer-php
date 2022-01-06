@@ -1,4 +1,6 @@
 parameters:
-    level: 8
+    level: 9
+    ignoreErrors:
+    		- '#is never written, only read.#'
     paths:
         - src

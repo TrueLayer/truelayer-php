@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Exceptions;
 
-class ApiResponseUnsuccessfulException extends \Exception
+class ApiResponseUnsuccessfulException extends Exception
 {
     /**
      * @var int
@@ -12,9 +12,24 @@ class ApiResponseUnsuccessfulException extends \Exception
     private int $statusCode;
 
     /**
+     * @var string
+     */
+    private string $type;
+
+    /**
+     * @var string
+     */
+    private string $detail;
+
+    /**
+     * @var string
+     */
+    private string $traceId;
+
+    /**
      * @var mixed[]
      */
-    private array $data = [];
+    private array $errors;
 
     /**
      * @param int   $statusCode
@@ -24,17 +39,29 @@ class ApiResponseUnsuccessfulException extends \Exception
     {
         $this->statusCode = $statusCode;
 
-        if (!\is_array($data)) {
-            parent::__construct((string) $data);
-
+        if (!is_array($data)) {
             return;
         }
 
-        if (!empty($data['title'])) {
-            parent::__construct((string) $data['title']);
+        if (!empty($data['type']) && is_string($data['type'])) {
+            $this->type = $data['type'];
         }
 
-        $this->data = $data;
+        if (!empty($data['detail']) && is_string($data['detail'])) {
+            $this->detail = $data['detail'];
+        }
+
+        if (!empty($data['trace_id']) && is_string($data['trace_id'])) {
+            $this->traceId = $data['trace_id'];
+        }
+
+        if (!empty($data['errors']) && is_array($data['errors'])) {
+            $this->errors = $data['errors'];
+        }
+
+        if (!empty($data['title']) && is_string($data['title'])) {
+            parent::__construct($data['title']);
+        }
     }
 
     /**
@@ -50,7 +77,7 @@ class ApiResponseUnsuccessfulException extends \Exception
      */
     public function getType(): ?string
     {
-        return $this->data['type'] ?? null;
+        return $this->type ?? null;
     }
 
     /**
@@ -58,7 +85,7 @@ class ApiResponseUnsuccessfulException extends \Exception
      */
     public function getDetail(): ?string
     {
-        return $this->data['detail'] ?? null;
+        return $this->detail ?? null;
     }
 
     /**
@@ -66,7 +93,7 @@ class ApiResponseUnsuccessfulException extends \Exception
      */
     public function getTraceId(): ?string
     {
-        return $this->data['trace_id'] ?? null;
+        return $this->traceId ?? null;
     }
 
     /**
@@ -74,6 +101,6 @@ class ApiResponseUnsuccessfulException extends \Exception
      */
     public function getErrors(): ?array
     {
-        return $this->data['errors'] ?? null;
+        return $this->errors ?? null;
     }
 }

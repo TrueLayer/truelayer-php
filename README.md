@@ -1,3 +1,13 @@
+## Why use this package?
+
+This package simplifies working with the TrueLayer API, by:
+1. Handling authentication, including token expiry, invalidation and caching
+2. Signing requests
+3. Managing idempotency keys, including retrying on conflicts
+4. Retrying failed requests, where it makes sense to do so
+5. Validating your data
+6. Providing type-hinted methods and classes to work with
+
 ## Installing with composer
 
 ```
@@ -13,7 +23,7 @@ $sdk = \TrueLayer\Sdk::configure()
     ->clientId($clientId)
     ->clientSecret($clientSecret)
     ->keyId($kid)
-    ->pemFile($pemFilePath)
+    ->pemFile($pemFilePath) // Or ->pem($contents)
     ->create();
 ```
 
@@ -71,29 +81,18 @@ $payment->toArray(); // Convert to array
 ### 4. Redirecting to the Hosted Payments Page
 
 TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box, all action types.
-You can easily redirect to it after creating your payment:
+You can easily get the URL to redirect to after creating your payment:
 
 ```php
-$sdk->payment()
+$url = $sdk->payment()
     ...
     ->create()
     ->hostedPaymentsPage()
     ->returnUri('http://www.mymerchantwebsite.com')
-    ->primaryColor('#000000')
-    ->secondaryColor('#e53935')
-    ->tertiaryColor('#32329f')
-    ->redirect();
-```
-
-You can also just get the URL if you'd like to manually redirect:
-
-```php
-$sdk->payment()
-    ...
-    ->create()
-    ->hostedPaymentsPage()
-    ->returnUri('http://www.mymerchantwebsite.com')
-    ->toString();
+    ->primaryColour('#000000')
+    ->secondaryColour('#e53935')
+    ->tertiaryColour('#32329f')
+    ->toUrl();
 ```
 
 # Retrieving a payment's details
@@ -133,7 +132,7 @@ $beneficiary->toArray();
 Depending on the beneficiary type, you can then access specific methods:
 
 ```php
-if ($beneficiary instanceof \TrueLayer\Services\Beneficiary\SortCodeAccountNumber) {
+if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\ScanBeneficiary) {
     $beneficiary->getReference();
     $beneficiary->getAccountNumber();
     $beneficiary->getSortCode();
@@ -141,14 +140,14 @@ if ($beneficiary instanceof \TrueLayer\Services\Beneficiary\SortCodeAccountNumbe
 ```
 
 ```php
-if ($beneficiary instanceof \TrueLayer\Services\Beneficiary\IbanAccountBeneficiary) {
+if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\IbanBeneficiary) {
     $beneficiary->getReference();
     $beneficiary->getIban();
 }
 ```
 
 ```php
-if ($beneficiary instanceof \TrueLayer\Services\Beneficiary\MerchantAccountBeneficiary) {
+if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\MerchantBeneficiary) {
     $beneficiary->getId();
 }
 ```
@@ -175,4 +174,52 @@ $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQU
 
 # Error Handling
 
-TODO: List of exceptions
+The SDK throws the following exceptions:
+
+## ClientExceptionInterface
+
+Thrown according to the PSR-18 specification, if it is unable to send the HTTP request at all or if the HTTP response could not be parsed into a PSR-7 response object.
+
+```php
+Psr\Http\Client\ClientExceptionInterface
+```
+
+## ApiResponseUnsuccessfulException
+Thrown if the API response is not a 2xx status.
+
+```php
+\TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+
+$e->getErrors(); // Get the errors provided by the API, as an array
+$e->getStatusCode(); // The response status code
+$e->getType(); // The error type, as a link to the TrueLayer docs
+$e->getDetail(); // A description of the error message
+$e->getTraceId(); // The TrueLayer error trace id
+```
+
+## ApiRequestJsonSerializationException
+
+Thrown if the request data cannot be json encoded prior to calling the APIs.
+
+```php
+\TrueLayer\Exceptions\ApiRequestJsonSerializationException
+```
+
+## ValidationException
+
+Thrown if the data you provide to the SDK or the API response data is invalid.
+
+```php
+\TrueLayer\Exceptions\ValidationException
+
+$e->getErrors(); // Get the validation errors as an array
+```
+
+## InvalidArgumentException
+
+Thrown when a provided argument is invalid, for example an invalid pem file path.
+
+```php
+\TrueLayer\Exceptions\InvalidArgumentException
+```
+

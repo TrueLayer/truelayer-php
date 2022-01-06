@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Beneficiary;
+namespace TrueLayer\Models\Beneficiary;
 
+use Illuminate\Support\Arr;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
@@ -17,27 +18,27 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     use WithSdk;
 
     /**
-     * @return SortCodeAccountNumber
+     * @return ScanBeneficiary
      */
-    public function sortCodeAccountNumber(): SortCodeAccountNumber
+    public function sortCodeAccountNumber(): ScanBeneficiary
     {
-        return SortCodeAccountNumber::make($this->getSdk());
+        return ScanBeneficiary::make($this->getSdk());
     }
 
     /**
-     * @return IbanAccountBeneficiary
+     * @return IbanBeneficiary
      */
-    public function ibanAccount(): IbanAccountBeneficiary
+    public function ibanAccount(): IbanBeneficiary
     {
-        return IbanAccountBeneficiary::make($this->getSdk());
+        return IbanBeneficiary::make($this->getSdk());
     }
 
     /**
-     * @return MerchantAccountBeneficiary
+     * @return MerchantBeneficiary
      */
-    public function merchantAccount(): MerchantAccountBeneficiary
+    public function merchantAccount(): MerchantBeneficiary
     {
-        return MerchantAccountBeneficiary::make($this->getSdk());
+        return MerchantBeneficiary::make($this->getSdk());
     }
 
     /**
@@ -50,8 +51,8 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
      */
     public function fill(array $data): BeneficiaryInterface
     {
-        $type = $data['type'] ?? null;
-        $schemeType = $data['scheme_identifier']['type'] ?? null;
+        $type = Arr::get($data, 'type');
+        $schemeType = Arr::get($data, 'scheme_identifier.type');
 
         if ($type === BeneficiaryTypes::EXTERNAL_ACCOUNT) {
             if ($schemeType === ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER) {
