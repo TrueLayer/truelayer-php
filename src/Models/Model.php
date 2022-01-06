@@ -41,15 +41,8 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
      */
     public function validate(): self
     {
-        $validator = $this->validator();
-
-        try {
-            $validator->validate();
-
-            return $this;
-        } catch (ValidationException $e) {
-            throw new \TrueLayer\Exceptions\ValidationException($validator);
-        }
+        $this->validateData();
+        return $this;
     }
 
     /**
@@ -66,17 +59,6 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
     public function errors(): array
     {
         return $this->validator()->errors()->toArray();
-    }
-
-    /**
-     * @return Validator
-     */
-    protected function validator(): Validator
-    {
-        return $this->getSdk()->getValidatorFactory()->make(
-            $this->all(),
-            $this->rules()
-        );
     }
 
     /**
@@ -101,10 +83,40 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
      */
     public function fill(array $data): self
     {
+        $this->validateData($data);
         $this->setValues($data);
-        $this->validate();
 
         return $this;
+    }
+
+    /**
+     * @param mixed[]|null $data
+     * @return $this
+     * @throws \TrueLayer\Exceptions\ValidationException
+     */
+    protected function validateData(array $data = null): self
+    {
+        $validator = $this->validator($data);
+
+        try {
+            $validator->validate();
+
+            return $this;
+        } catch (ValidationException $e) {
+            throw new \TrueLayer\Exceptions\ValidationException($validator);
+        }
+    }
+
+    /**
+     * @param mixed[]|null $data
+     * @return Validator
+     */
+    protected function validator(array $data = null): Validator
+    {
+        return $this->getSdk()->getValidatorFactory()->make(
+            $data ?: $this->all(),
+            $this->rules()
+        );
     }
 
     /**

@@ -48,6 +48,11 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     protected UserInterface $user;
 
     /**
+     * @var string
+     */
+    protected $paymentMethodType = PaymentMethods::BANK_TRANSFER;
+
+    /**
      * @var string[]
      */
     protected array $arrayFields = [
@@ -56,6 +61,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
         'user',
         'beneficiary',
         'payment_method.statement_reference' => 'statement_reference',
+        'payment_method.type' => 'payment_method_type',
     ];
 
     /**
@@ -66,8 +72,8 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
         return [
             'amount_in_minor' => 'required|int|min:1',
             'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
-            'payment_method.type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
             'payment_method.statement_reference' => 'required|string',
+            'payment_method.type' => ['string', AllowedConstant::in(PaymentMethods::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
             'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
@@ -134,22 +140,11 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     }
 
     /**
-     * @return mixed[]
-     */
-    public function all(): array
-    {
-        $data = parent::all();
-        Arr::set($data, 'payment_method.type', PaymentMethods::BANK_TRANSFER);
-
-        return $data;
-    }
-
-    /**
+     * @return PaymentCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      * @throws ValidationException
-     *
-     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {
