@@ -45,7 +45,7 @@ final class User extends Model implements UserInterface
      */
     protected array $rules = [
         'id' => 'string|nullable',
-        'name' => 'string|required_without:id',
+        'name' => 'string|nullable|required_without:id',
         'email' => 'string|nullable|required_without_all:phone,id',
         'phone' => 'string|nullable|required_without_all:email,id',
     ];
