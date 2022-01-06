@@ -143,6 +143,6 @@ final class User extends Model implements UserInterface
      */
     public function all(): array
     {
-        return array_filter(parent::all());
+        return \array_filter(parent::all());
     }
 }
