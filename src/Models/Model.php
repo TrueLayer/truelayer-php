@@ -42,6 +42,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
     public function validate(): self
     {
         $this->validateData();
+
         return $this;
     }
 
@@ -91,8 +92,10 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param mixed[]|null $data
-     * @return $this
+     *
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return $this
      */
     protected function validateData(array $data = null): self
     {
@@ -109,6 +112,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param mixed[]|null $data
+     *
      * @return Validator
      */
     protected function validator(array $data = null): Validator

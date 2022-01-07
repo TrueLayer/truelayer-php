@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models\Payment;
 
-use Illuminate\Support\Arr;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
@@ -140,11 +139,12 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     }
 
     /**
-     * @return PaymentCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {
