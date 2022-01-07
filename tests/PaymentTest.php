@@ -60,7 +60,3 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
     \expect($payment->getId())->toBe(PaymentResponse::CREATED['id']);
     \expect($payment->getUserId())->toBe(PaymentResponse::CREATED['user']['id']);
 });
-
-//it('parses payment retrieval response correctly', function () {
-//
-//});
