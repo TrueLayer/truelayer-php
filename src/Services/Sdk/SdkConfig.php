@@ -147,6 +147,18 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
+     * @param string $pem64
+     *
+     * @return $this
+     */
+    public function pem64(string $pem64): self
+    {
+        $this->pem = base64_decode($pem64, true);
+
+        return $this;
+    }
+
+    /**
      * @param string $path
      *
      * @throws InvalidArgumentException

@@ -58,6 +58,13 @@ interface SdkConfigInterface
     public function pem(string $pem): self;
 
     /**
+     * @param string $pem64
+     *
+     * @return $this
+     */
+    public function pem64(string $pem64): self;
+
+    /**
      * @param string $path
      *
      * @throws InvalidArgumentException
