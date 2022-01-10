@@ -9,9 +9,9 @@ interface SdkCacheInterface
     /**
      * @param string $key
      *
-     * @return string
+     * @return string|null
      */
-    public function get(string $key): string;
+    public function get(string $key): ?string;
 
     /**
      * @param string $key
