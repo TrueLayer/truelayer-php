@@ -7,10 +7,10 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Carbon;
+use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
-use TrueLayer\Contracts\Sdk\SdkCacheInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -27,9 +27,9 @@ final class AccessToken implements AccessTokenInterface
     private ApiClientInterface $api;
 
     /**
-     * @var SdkCacheInterface|null
+     * @var CacheInterface|null
      */
-    private ?SdkCacheInterface $cache;
+    private ?CacheInterface $cache;
 
     /**
      * @var ValidatorFactory
@@ -53,13 +53,13 @@ final class AccessToken implements AccessTokenInterface
 
     /**
      * @param ApiClientInterface $api
-     * @param ?SdkCacheInterface $cache
+     * @param ?CacheInterface $cache
      * @param ValidatorFactory   $validatorFactory
      * @param string             $clientId
      * @param string             $clientSecret
      * @param array<string>      $scopes
      */
-    public function __construct(ApiClientInterface $api, ?SdkCacheInterface $cache, ValidatorFactory $validatorFactory, string $clientId, string $clientSecret, ?array $scopes = [])
+    public function __construct(ApiClientInterface $api, ?CacheInterface $cache, ValidatorFactory $validatorFactory, string $clientId, string $clientSecret, ?array $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;

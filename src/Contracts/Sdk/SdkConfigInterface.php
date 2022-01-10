@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
 interface SdkConfigInterface
@@ -115,14 +116,14 @@ interface SdkConfigInterface
     public function create(): SdkInterface;
 
     /**
-     * @return SdkCacheInterface|null
+     * @return CacheInterface|null
      */
-    public function getCache(): ?SdkCacheInterface;
+    public function getCache(): ?CacheInterface;
 
     /**
-     * @param SdkCacheInterface $cache
+     * @param CacheInterface $cache
      *
      * @return $this
      */
-    public function cache(SdkCacheInterface $cache): self;
+    public function cache(CacheInterface $cache): self;
 }

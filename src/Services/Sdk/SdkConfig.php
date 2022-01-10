@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use Psr\Http\Client\ClientInterface;
-use TrueLayer\Contracts\Sdk\SdkCacheInterface;
+use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
@@ -54,9 +54,9 @@ class SdkConfig implements SdkConfigInterface
     private ?ClientInterface $httpClient = null;
 
     /**
-     * @var SdkCacheInterface|null
+     * @var CacheInterface|null
      */
-    private ?SdkCacheInterface $cache = null;
+    private ?CacheInterface $cache = null;
 
     /**
      * @param SdkFactoryInterface $factory
@@ -237,18 +237,18 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return SdkCacheInterface|null
+     * @return CacheInterface|null
      */
-    public function getCache(): ?SdkCacheInterface
+    public function getCache(): ?CacheInterface
     {
         return $this->cache;
     }
 
     /**
-     * @param SdkCacheInterface $cache
+     * @param CacheInterface $cache
      * @return SdkConfigInterface
      */
-    public function cache(SdkCacheInterface $cache): SdkConfigInterface
+    public function cache(CacheInterface $cache): SdkConfigInterface
     {
         $this->cache = $cache;
 
