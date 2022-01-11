@@ -82,12 +82,12 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string|null
-     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return string|null
      */
     public function getAccessToken(): ?string
     {
