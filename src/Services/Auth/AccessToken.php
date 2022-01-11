@@ -7,6 +7,7 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
@@ -77,7 +78,7 @@ final class AccessToken implements AccessTokenInterface
         $this->validatorFactory = $validatorFactory;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->scopes = $scopes;
+        $this->scopes = $scopes ?? [];
     }
 
     /**
@@ -85,7 +86,7 @@ final class AccessToken implements AccessTokenInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @return string|null
      */
@@ -93,6 +94,7 @@ final class AccessToken implements AccessTokenInterface
     {
         if (!$this->accessToken) {
             if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
+                /** @var array{access_token: string, expires_in: int, retrieved_at: int} $data */
                 $data = \unserialize($this->cache->get(CacheKeys::AUTH_TOKEN));
 
                 $this->accessToken = $data['access_token'];
@@ -156,7 +158,7 @@ final class AccessToken implements AccessTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function retrieve(): void
     {

@@ -175,7 +175,7 @@ class SdkConfig implements SdkConfigInterface
     {
         $decoded = \base64_decode($pemBase64);
 
-        if ($decoded === false) {
+        if ($decoded == false) {
             throw new InvalidArgumentException('Could not decode base64 pem');
         }
 
