@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
@@ -51,6 +52,11 @@ class SdkConfig implements SdkConfigInterface
      * @var ClientInterface|null
      */
     private ?ClientInterface $httpClient = null;
+
+    /**
+     * @var CacheInterface|null
+     */
+    private ?CacheInterface $cache = null;
 
     /**
      * @param SdkFactoryInterface $factory
@@ -159,17 +165,17 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @param string $pem
+     * @param string $pemBase64
      *
      * @throws InvalidArgumentException
      *
      * @return SdkConfigInterface
      */
-    public function pemBase64(string $pem): SdkConfigInterface
+    public function pemBase64(string $pemBase64): SdkConfigInterface
     {
-        $decoded = \base64_decode($pem);
+        $decoded = \base64_decode($pemBase64);
 
-        if ($decoded === false) {
+        if ($decoded == false) {
             throw new InvalidArgumentException('Could not decode base64 pem');
         }
 
@@ -232,6 +238,26 @@ class SdkConfig implements SdkConfigInterface
     public function httpClient(ClientInterface $httpClient): self
     {
         $this->httpClient = $httpClient;
+
+        return $this;
+    }
+
+    /**
+     * @return CacheInterface|null
+     */
+    public function getCache(): ?CacheInterface
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param CacheInterface $cache
+     *
+     * @return SdkConfigInterface
+     */
+    public function cache(CacheInterface $cache): SdkConfigInterface
+    {
+        $this->cache = $cache;
 
         return $this;
     }

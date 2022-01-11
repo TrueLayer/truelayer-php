@@ -34,7 +34,7 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  *
- * @return \TrueLayer\Contracts\Sdk\SdkInterface
+ * @return \TrueLayer\Contracts\Sdk\SdkConfigInterface
  */
 function rawSdk(array $mockResponses = [])
 {
@@ -53,8 +53,7 @@ function rawSdk(array $mockResponses = [])
         ->clientSecret('client_secret')
         ->keyId('123')
         ->pemFile(__DIR__ . '/Mocks/ec512-private.pem')
-        ->httpClient($mockClient)
-        ->create();
+        ->httpClient($mockClient);
 }
 
 /**
@@ -73,7 +72,7 @@ function sdk($mockResponses = [])
         \is_array($mockResponses) ? $mockResponses : [$mockResponses]
     );
 
-    return \rawSdk($responses);
+    return \rawSdk($responses)->create();
 }
 
 /**

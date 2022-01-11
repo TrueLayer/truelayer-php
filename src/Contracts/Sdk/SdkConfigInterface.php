@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 
 interface SdkConfigInterface
@@ -58,6 +59,13 @@ interface SdkConfigInterface
     public function pem(string $pem): self;
 
     /**
+     * @param string $pemBase64
+     *
+     * @return $this
+     */
+    public function pemBase64(string $pemBase64): self;
+
+    /**
      * @param string $path
      *
      * @throws InvalidArgumentException
@@ -65,13 +73,6 @@ interface SdkConfigInterface
      * @return $this
      */
     public function pemFile(string $path): self;
-
-    /**
-     * @param string $pem
-     *
-     * @return $this
-     */
-    public function pemBase64(string $pem): self;
 
     /**
      * @param string $passphrase
@@ -113,4 +114,16 @@ interface SdkConfigInterface
      * @return SdkInterface
      */
     public function create(): SdkInterface;
+
+    /**
+     * @return CacheInterface|null
+     */
+    public function getCache(): ?CacheInterface;
+
+    /**
+     * @param CacheInterface $cache
+     *
+     * @return $this
+     */
+    public function cache(CacheInterface $cache): self;
 }

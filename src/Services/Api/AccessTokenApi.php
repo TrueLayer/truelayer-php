@@ -11,25 +11,32 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
 final class AccessTokenApi
 {
+    private ApiClientInterface $api;
+
+    public function __construct(ApiClientInterface $api)
+    {
+        $this->api = $api;
+    }
+
     /**
-     * @param ApiClientInterface $api
-     * @param string             $clientId
-     * @param string             $clientSecret
+     * @param string   $clientId
+     * @param string   $clientSecret
+     * @param string[] $scopes
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
-    public function fetch(ApiClientInterface $api, string $clientId, string $clientSecret): array
+    public function fetch(string $clientId, string $clientSecret, array $scopes): array
     {
-        return (array) $api->request()
+        return (array) $this->api->request()
             ->uri(Endpoints::TOKEN)
             ->payload([
                 'grant_type' => 'client_credentials',
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
-                'scope' => 'payments',
+                'scope' => \implode(',', $scopes),
             ])
             ->post();
     }
