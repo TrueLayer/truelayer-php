@@ -80,11 +80,11 @@ use TrueLayer\Tests\Mocks;
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
     $cacheMock->shouldReceive('set')->andReturnTrue();
-    $cacheMock->shouldReceive('get')->andReturn(\serialize([
+    $cacheMock->shouldReceive('get')->andReturn([
         'access_token' => Mocks\AuthResponse::ACCESS_TOKEN,
         'expires_in' => 3600,
         'retrieved_at' => (int) Carbon::now()->timestamp,
-    ]));
+    ]);
 
     $client1 = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
         ->cache($cacheMock)
@@ -111,11 +111,11 @@ use TrueLayer\Tests\Mocks;
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
     $cacheMock->shouldReceive('set')->andReturnTrue();
-    $cacheMock->shouldReceive('get')->andReturn(\serialize([
+    $cacheMock->shouldReceive('get')->andReturn([
         'access_token' => 'expired-token',
         'expires_in' => 3600,
         'retrieved_at' => (int) Carbon::now()->timestamp - 5000,
-    ]));
+    ]);
 
     $client = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
         ->cache($cacheMock)

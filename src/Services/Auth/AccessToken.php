@@ -95,7 +95,7 @@ final class AccessToken implements AccessTokenInterface
         if (!$this->accessToken) {
             if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
                 /** @var array{access_token: string, expires_in: int, retrieved_at: int} $data */
-                $data = \unserialize($this->cache->get(CacheKeys::AUTH_TOKEN));
+                $data = $this->cache->get(CacheKeys::AUTH_TOKEN);
 
                 $this->accessToken = $data['access_token'];
                 $this->expiresIn = $data['expires_in'];
@@ -171,7 +171,7 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->set(CacheKeys::AUTH_TOKEN, \serialize($this->toArray()), $this->getExpiresIn());
+            $this->cache->set(CacheKeys::AUTH_TOKEN, $this->toArray(), $this->getExpiresIn());
         }
     }
 
