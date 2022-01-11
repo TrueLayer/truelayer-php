@@ -12,9 +12,7 @@ use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Traits\HasAttributes;
 use TrueLayer\Services\Api\AccessTokenApi;
 
 final class AccessToken implements AccessTokenInterface
@@ -66,7 +64,7 @@ final class AccessToken implements AccessTokenInterface
 
     /**
      * @param ApiClientInterface $api
-     * @param ?CacheInterface $cache
+     * @param ?CacheInterface    $cache
      * @param ValidatorFactory   $validatorFactory
      * @param string             $clientId
      * @param string             $clientSecret
@@ -83,18 +81,19 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return string|null
      */
     public function getAccessToken(): ?string
     {
         if (!$this->accessToken) {
             if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
-                $data = unserialize($this->cache->get(CacheKeys::AUTH_TOKEN));
+                $data = \unserialize($this->cache->get(CacheKeys::AUTH_TOKEN));
 
                 $this->accessToken = $data['access_token'];
                 $this->expiresIn = $data['expires_in'];
@@ -170,7 +169,7 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->set(CacheKeys::AUTH_TOKEN, serialize($this->toArray()), $this->getExpiresIn());
+            $this->cache->set(CacheKeys::AUTH_TOKEN, \serialize($this->toArray()), $this->getExpiresIn());
         }
     }
 
@@ -200,9 +199,9 @@ final class AccessToken implements AccessTokenInterface
     {
         return [
             'access_token' => $this->accessToken,
-            'expires_in'   => $this->expiresIn,
+            'expires_in' => $this->expiresIn,
             'retrieved_at' => $this->retrievedAt,
-            'scopes'       => $this->scopes,
+            'scopes' => $this->scopes,
         ];
     }
 }

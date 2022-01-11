@@ -63,7 +63,7 @@ use TrueLayer\Tests\Mocks;
         Mocks\AuthResponse::success('_SECOND_'), // Retrieve new access token
         new Response(200), ] // Accept the access token in the api call
     )
-    ->create();
+        ->create();
 
     $client->getApiClient()->request()->uri('/foo')->post();
 
@@ -80,7 +80,7 @@ use TrueLayer\Tests\Mocks;
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
     $cacheMock->shouldReceive('set')->andReturnTrue();
-    $cacheMock->shouldReceive('get')->andReturn(serialize([
+    $cacheMock->shouldReceive('get')->andReturn(\serialize([
         'access_token' => Mocks\AuthResponse::ACCESS_TOKEN,
         'expires_in' => 3600,
         'retrieved_at' => (int) Carbon::now()->timestamp,
@@ -111,7 +111,7 @@ use TrueLayer\Tests\Mocks;
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
     $cacheMock->shouldReceive('set')->andReturnTrue();
-    $cacheMock->shouldReceive('get')->andReturn(serialize([
+    $cacheMock->shouldReceive('get')->andReturn(\serialize([
         'access_token' => 'expired-token',
         'expires_in' => 3600,
         'retrieved_at' => (int) Carbon::now()->timestamp - 5000,

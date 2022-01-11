@@ -153,7 +153,7 @@ class SdkConfig implements SdkConfigInterface
      */
     public function pem64(string $pem64): self
     {
-        $this->pem = base64_decode($pem64, true);
+        $this->pem = \base64_decode($pem64, true);
 
         return $this;
     }
@@ -264,6 +264,7 @@ class SdkConfig implements SdkConfigInterface
 
     /**
      * @param CacheInterface $cache
+     *
      * @return SdkConfigInterface
      */
     public function cache(CacheInterface $cache): SdkConfigInterface

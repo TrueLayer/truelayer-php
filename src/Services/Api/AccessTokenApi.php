@@ -11,7 +11,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
 final class AccessTokenApi
 {
-    protected ApiClientInterface $api;
+    private ApiClientInterface $api;
 
     public function __construct(ApiClientInterface $api)
     {
@@ -36,7 +36,7 @@ final class AccessTokenApi
                 'grant_type' => 'client_credentials',
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
-                'scope' => implode(',', $scopes),
+                'scope' => \implode(',', $scopes),
             ])
             ->post();
     }
