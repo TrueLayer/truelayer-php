@@ -147,18 +147,6 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @param string $pem64
-     *
-     * @return $this
-     */
-    public function pem64(string $pem64): self
-    {
-        $this->pem = \base64_decode($pem64, true);
-
-        return $this;
-    }
-
-    /**
      * @param string $path
      *
      * @throws InvalidArgumentException
@@ -177,15 +165,15 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @param string $pem
+     * @param string $pemBase64
      *
      * @throws InvalidArgumentException
      *
      * @return SdkConfigInterface
      */
-    public function pemBase64(string $pem): SdkConfigInterface
+    public function pemBase64(string $pemBase64): SdkConfigInterface
     {
-        $decoded = \base64_decode($pem);
+        $decoded = \base64_decode($pemBase64);
 
         if ($decoded === false) {
             throw new InvalidArgumentException('Could not decode base64 pem');
