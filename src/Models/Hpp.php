@@ -51,7 +51,7 @@ final class Hpp extends Model implements HppInterface
     protected array $arrayFields = [
         'base_url',
         'payment_id',
-        'resource_token' => 'payment_token',
+        'payment_token' => 'payment_token',
         'return_uri',
         'c_primary' => 'primary_colour',
         'c_secondary' => 'secondary_colour',
@@ -64,7 +64,7 @@ final class Hpp extends Model implements HppInterface
     protected array $rules = [
         'base_url' => 'required|url',
         'payment_id' => 'required|string',
-        'resource_token' => 'required|string',
+        'payment_token' => 'required|string',
         'return_uri' => 'required|url',
         'c_primary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
         'c_secondary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',

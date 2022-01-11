@@ -75,6 +75,13 @@ interface SdkConfigInterface
     public function pemFile(string $path): self;
 
     /**
+     * @param string $pem
+     *
+     * @return $this
+     */
+    public function pemBase64(string $pem): self;
+
+    /**
      * @param string $passphrase
      *
      * @return $this
