@@ -7,7 +7,7 @@ namespace TrueLayer\Contracts\Sdk;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
-use TrueLayer\Contracts\Hpp\HppHelperInterface;
+use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
@@ -54,7 +54,7 @@ interface SdkInterface
     public function getPaymentDetails(string $id): PaymentRetrievedInterface;
 
     /**
-     * @return HppHelperInterface
+     * @return HppInterface
      */
-    public function hostedPaymentsPage(): HppHelperInterface;
+    public function hostedPaymentsPage(): HppInterface;
 }

@@ -10,15 +10,13 @@ use Psr\Http\Client\ClientInterface;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
-use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Sdk;
-use TrueLayer\Services\Api\ApiClient;
-use TrueLayer\Services\Api\Decorators;
+use TrueLayer\Services\ApiClient\ApiClient;
+use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
-use TrueLayer\Services\Hpp\HppHelperFactory;
 
 final class SdkFactory implements SdkFactoryInterface
 {
@@ -43,11 +41,6 @@ final class SdkFactory implements SdkFactoryInterface
     private ApiClientInterface $apiClient;
 
     /**
-     * @var HppHelperFactoryInterface
-     */
-    private HppHelperFactoryInterface $hppHelperFactory;
-
-    /**
      * @param SdkConfigInterface $config
      *
      * @return SdkInterface
@@ -58,9 +51,8 @@ final class SdkFactory implements SdkFactoryInterface
         $this->makeHttpClient($config);
         $this->makeAuthToken($config);
         $this->makeApiClient($config);
-        $this->makeHppHelperFactory($config);
 
-        return new Sdk($this->apiClient, $this->validatorFactory, $this->hppHelperFactory);
+        return new Sdk($this->apiClient, $this->validatorFactory, $config);
     }
 
     /**
@@ -138,23 +130,5 @@ final class SdkFactory implements SdkFactoryInterface
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
         $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);
         $this->apiClient = new Decorators\IdempotencyKeyDecorator($this->apiClient);
-    }
-
-    /**
-     * Build the HPP helper factory
-     * This allows the SDK to create new helper instances on every method call.
-     *
-     * @param SdkConfigInterface $config
-     */
-    private function makeHppHelperFactory(SdkConfigInterface $config): void
-    {
-        $hppBaseUrl = $config->shouldUseProduction()
-            ? Endpoints::HPP_PROD_URL
-            : Endpoints::HPP_SANDBOX_URL;
-
-        $this->hppHelperFactory = new HppHelperFactory(
-            $this->validatorFactory,
-            $hppBaseUrl
-        );
     }
 }

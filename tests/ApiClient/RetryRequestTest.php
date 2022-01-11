@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use GuzzleHttp\Psr7\Response;
 use TrueLayer\Exceptions;
-use TrueLayer\Services\Api\Decorators\ExponentialBackoffDecorator;
+use TrueLayer\Services\ApiClient\Decorators\ExponentialBackoffDecorator;
 
 \it('retries requests until successful', function () {
     $serverErrorResponse = new Response(500, [], '');

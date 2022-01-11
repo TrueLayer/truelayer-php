@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Api\Decorators;
+namespace TrueLayer\Services\ApiClient\Decorators;
 
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Uuid;

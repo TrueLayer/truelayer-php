@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Auth;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Carbon;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\CacheKeys;
@@ -16,11 +15,10 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\HasAttributes;
+use TrueLayer\Services\Api\AccessTokenApi;
 
 final class AccessToken implements AccessTokenInterface
 {
-    use HasAttributes;
-
     /**
      * @var ApiClientInterface
      */
@@ -52,6 +50,21 @@ final class AccessToken implements AccessTokenInterface
     private array $scopes = [];
 
     /**
+     * @var string|null
+     */
+    private ?string $accessToken = null;
+
+    /**
+     * @var int|null
+     */
+    private ?int $expiresIn = null;
+
+    /**
+     * @var int|null
+     */
+    private ?int $retrievedAt = null;
+
+    /**
      * @param ApiClientInterface $api
      * @param ?CacheInterface $cache
      * @param ValidatorFactory   $validatorFactory
@@ -70,18 +83,22 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
+     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
      * @throws ValidationException
-     *
-     * @return string
+     * @throws ApiRequestJsonSerializationException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function getAccessToken(): string
+    public function getAccessToken(): ?string
     {
-        if (!$this->getNullableString('access_token')) {
+        if (!$this->accessToken) {
             if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
-                $this->fill(unserialize($this->cache->get(CacheKeys::AUTH_TOKEN)));
+                $data = unserialize($this->cache->get(CacheKeys::AUTH_TOKEN));
+
+                $this->accessToken = $data['access_token'];
+                $this->expiresIn = $data['expires_in'];
+                $this->retrievedAt = $data['retrieved_at'];
             } else {
                 $this->retrieve();
             }
@@ -91,7 +108,7 @@ final class AccessToken implements AccessTokenInterface
             $this->retrieve();
         }
 
-        return $this->getString('access_token');
+        return $this->accessToken;
     }
 
     /**
@@ -99,7 +116,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getRetrievedAt(): ?int
     {
-        return $this->getNullableInt('retrieved_at');
+        return $this->retrievedAt ?? null;
     }
 
     /**
@@ -107,7 +124,7 @@ final class AccessToken implements AccessTokenInterface
      */
     public function getExpiresIn(): ?int
     {
-        return $this->getNullableInt('expires_in');
+        return $this->expiresIn ?? null;
     }
 
     /**
@@ -117,6 +134,10 @@ final class AccessToken implements AccessTokenInterface
      */
     public function isExpired(int $safetyMargin = 10): bool
     {
+        if (!$this->getRetrievedAt() || !$this->getExpiresIn()) {
+            return true;
+        }
+
         return $this->getRetrievedAt() + $this->getExpiresIn() - $safetyMargin <= Carbon::now()->timestamp;
     }
 
@@ -125,7 +146,9 @@ final class AccessToken implements AccessTokenInterface
      */
     public function clear(): AccessTokenInterface
     {
-        $this->data = [];
+        $this->accessToken = null;
+        $this->expiresIn = null;
+        $this->retrievedAt = null;
 
         return $this;
     }
@@ -137,32 +160,48 @@ final class AccessToken implements AccessTokenInterface
      */
     private function retrieve(): void
     {
+        /** @var array{access_token: string, expires_in: int} $data */
         $data = (new AccessTokenApi($this->api))->fetch($this->clientId, $this->clientSecret, $this->scopes);
-        $data['retrieved_at'] = Carbon::now()->timestamp;
-        $this->fill($data);
+        $this->validate($data);
+
+        $this->accessToken = $data['access_token'];
+        $this->expiresIn = $data['expires_in'];
+        $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->put(CacheKeys::AUTH_TOKEN, serialize($data), $this->getExpiresIn());
+            $this->cache->put(CacheKeys::AUTH_TOKEN, serialize($this->toArray()), $this->getExpiresIn());
         }
     }
 
     /**
-     * @return string[]
+     * @param mixed[] $data
+     *
+     * @throws ValidationException
      */
-    private function rules(): array
+    private function validate(array $data): void
     {
-        return [
+        $validator = $this->validatorFactory->make($data, [
             'access_token' => 'required|string',
             'expires_in' => 'required|int',
-            'retrieved_at' => 'required|int',
-        ];
+        ]);
+
+        try {
+            $validator->validate();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw new ValidationException($validator);
+        }
     }
 
     /**
-     * @return Validator
+     * @return mixed[]
      */
-    private function validator(): Validator
+    private function toArray(): array
     {
-        return $this->validatorFactory->make($this->data, $this->rules());
+        return [
+            'access_token' => $this->accessToken,
+            'expires_in'   => $this->expiresIn,
+            'retrieved_at' => $this->retrievedAt,
+            'scopes'       => $this->scopes,
+        ];
     }
 }

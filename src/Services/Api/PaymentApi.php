@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Payment;
+namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
@@ -12,6 +12,8 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Models\Payment\PaymentCreated;
+use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Traits\WithSdk;
 
 final class PaymentApi
@@ -22,15 +24,17 @@ final class PaymentApi
      * @param PaymentRequestInterface $paymentRequest
      *
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      * @throws ValidationException
      *
      * @return PaymentCreatedInterface
      */
     public function create(PaymentRequestInterface $paymentRequest): PaymentCreatedInterface
     {
-        $response = $this->getSdk()->getApiClient()->request()
+        $response = (array) $this->getSdk()->getApiClient()->request()
             ->uri(Endpoints::PAYMENTS)
-            ->payload($paymentRequest->toArray())
+            ->payload($paymentRequest->validate()->toArray())
             ->post();
 
         return PaymentCreated::make($this->getSdk())->fill($response);
@@ -50,15 +54,10 @@ final class PaymentApi
     {
         $sdk = $this->getSdk();
 
-        $response = $sdk->getApiClient()->request()
+        $response = (array) $sdk->getApiClient()->request()
             ->uri(Endpoints::PAYMENTS . '/' . $id)
             ->get();
 
-        $data = \array_merge($response, [
-            'beneficiary' => $sdk->beneficiary()->fill($response['beneficiary'] ?? []),
-            'user' => $sdk->user()->fill($response['user'] ?? []),
-        ]);
-
-        return PaymentRetrieved::make($sdk)->fill($data);
+        return PaymentRetrieved::make($sdk)->fill($response);
     }
 }

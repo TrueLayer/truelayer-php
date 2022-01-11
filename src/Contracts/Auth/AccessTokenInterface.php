@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Auth;
 
-use TrueLayer\Contracts\HasAttributesInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
-interface AccessTokenInterface extends HasAttributesInterface
+interface AccessTokenInterface
 {
     /**
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return string
+     * @return string|null
      */
-    public function getAccessToken(): string;
+    public function getAccessToken(): ?string;
 
     /**
      * @return int|null

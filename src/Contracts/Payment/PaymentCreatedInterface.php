@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Payment;
 
 use TrueLayer\Contracts\ArrayableInterface;
-use TrueLayer\Contracts\Hpp\HppHelperInterface;
+use TrueLayer\Contracts\HppInterface;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
 interface PaymentCreatedInterface extends ArrayableInterface
 {
@@ -17,7 +19,7 @@ interface PaymentCreatedInterface extends ArrayableInterface
     /**
      * @return string
      */
-    public function getResourceToken(): string;
+    public function getPaymentToken(): string;
 
     /**
      * @return string
@@ -25,13 +27,13 @@ interface PaymentCreatedInterface extends ArrayableInterface
     public function getUserId(): string;
 
     /**
-     * @return HppHelperInterface
+     * @return HppInterface
      */
-    public function hostedPaymentsPage(): HppHelperInterface;
+    public function hostedPaymentsPage(): HppInterface;
 
     /**
-     * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-     * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentRetrievedInterface
      */

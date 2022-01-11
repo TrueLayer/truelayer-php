@@ -32,6 +32,7 @@ $fixers = [
     'ordered_imports' => ['sort_algorithm' => 'alpha'],
     'phpdoc_no_empty_return' => false,
     'phpdoc_order' => true,
+    'phpdoc_single_line_var_spacing' => true,
     'simple_to_complex_string_variable' => true,
     'single_trait_insert_per_statement' => false,
     'ternary_to_null_coalescing' => true,
@@ -41,7 +42,7 @@ $fixers = [
 return (new PhpCsFixer\Config())
     ->setRules($fixers)
     ->setFinder($finder)
-    ->setUsingCache(true)
     ->setRiskyAllowed(true)
+    ->setUsingCache(true)
     ->setIndent('    ')
     ->setLineEnding("\n");

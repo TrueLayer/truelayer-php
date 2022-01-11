@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace TrueLayer;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
-use TrueLayer\Contracts\Hpp\HppHelperFactoryInterface;
-use TrueLayer\Contracts\Hpp\HppHelperInterface;
+use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Services\Beneficiary\BeneficiaryBuilder;
-use TrueLayer\Services\Payment\PaymentApi;
-use TrueLayer\Services\Payment\PaymentRequest;
+use TrueLayer\Models\Beneficiary\BeneficiaryBuilder;
+use TrueLayer\Models\Hpp;
+use TrueLayer\Models\Payment\PaymentRequest;
+use TrueLayer\Models\User;
+use TrueLayer\Services\Api\PaymentApi;
 use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Services\Sdk\SdkFactory;
-use TrueLayer\Services\User;
 
 final class Sdk implements SdkInterface
 {
@@ -34,20 +35,23 @@ final class Sdk implements SdkInterface
     private ValidatorFactory $validatorFactory;
 
     /**
-     * @var HppHelperFactoryInterface
+     * @var SdkConfigInterface
      */
-    private HppHelperFactoryInterface $hppHelperFactory;
+    private SdkConfigInterface $config;
 
     /**
-     * @param ApiClientInterface        $apiClient
-     * @param ValidatorFactory          $validatorFactory
-     * @param HppHelperFactoryInterface $hppHelperFactory
+     * @param ApiClientInterface $apiClient
+     * @param ValidatorFactory   $validatorFactory
+     * @param SdkConfigInterface $config
      */
-    public function __construct(ApiClientInterface $apiClient, ValidatorFactory $validatorFactory, HppHelperFactoryInterface $hppHelperFactory)
-    {
+    public function __construct(
+        ApiClientInterface $apiClient,
+        ValidatorFactory $validatorFactory,
+        SdkConfigInterface $config
+    ) {
         $this->apiClient = $apiClient;
         $this->validatorFactory = $validatorFactory;
-        $this->hppHelperFactory = $hppHelperFactory;
+        $this->config = $config;
     }
 
     /**
@@ -105,11 +109,15 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return HppHelperInterface
+     * @return HppInterface
      */
-    public function hostedPaymentsPage(): HppHelperInterface
+    public function hostedPaymentsPage(): HppInterface
     {
-        return $this->hppHelperFactory->make();
+        $baseUrl = $this->config->shouldUseProduction()
+            ? Endpoints::HPP_PROD_URL
+            : Endpoints::HPP_SANDBOX_URL;
+
+        return Hpp::make($this)->baseUrl($baseUrl);
     }
 
     /**
