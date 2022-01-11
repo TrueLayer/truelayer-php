@@ -104,3 +104,27 @@ use TrueLayer\Tests\Mocks;
     \expect($fooRequest->getHeaderLine('Authorization'))->toBe('Bearer ' . Mocks\AuthResponse::ACCESS_TOKEN);
     \expect($barRequest->getHeaderLine('Authorization'))->toBe('Bearer ' . Mocks\AuthResponse::ACCESS_TOKEN);
 });
+
+\it('fetches a new token if the cached one is expired', function () {
+    $okResponse = new Response(200);
+
+    $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cacheMock->shouldReceive('has')->andReturnTrue();
+    $cacheMock->shouldReceive('set')->andReturnTrue();
+    $cacheMock->shouldReceive('get')->andReturn(serialize([
+        'access_token' => 'expired-token',
+        'expires_in' => 3600,
+        'retrieved_at' => (int) Carbon::now()->timestamp - 5000,
+    ]));
+
+    $client = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+        ->cache($cacheMock)
+        ->create()
+        ->getApiClient();
+
+    $client->request()->uri('/foo')->post();
+    $fooRequest = \getSentHttpRequests()[1];
+
+    \expect($fooRequest->getHeaderLine('Authorization'))->toBe('Bearer ' . Mocks\AuthResponse::ACCESS_TOKEN);
+    \expect($fooRequest->getHeaderLine('Authorization'))->not()->toBe('Bearer expired-token');
+});
