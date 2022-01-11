@@ -68,6 +68,7 @@ interface SdkConfigInterface
 
     /**
      * @param string $pem
+     *
      * @return $this
      */
     public function pemBase64(string $pem): self;

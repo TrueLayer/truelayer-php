@@ -160,8 +160,10 @@ class SdkConfig implements SdkConfigInterface
 
     /**
      * @param string $pem
-     * @return SdkConfigInterface
+     *
      * @throws InvalidArgumentException
+     *
+     * @return SdkConfigInterface
      */
     public function pemBase64(string $pem): SdkConfigInterface
     {
