@@ -36,12 +36,12 @@ jobs:
         run: composer install
 
       - name: Run php-cs-fixer
-        run: ./vendor/bin/php-cs-fixer fix
+        run: composer cs-fix
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply php-cs-fixer changes
-          
+
   code-quality:
     runs-on: ubuntu-latest
     strategy:
@@ -84,7 +84,7 @@ jobs:
         run: composer update --no-interaction --no-progress
 
       - name: PHPStan
-        run: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1
+        run: composer analyse
 
       - name: Tests
-        run: vendor/bin/pest
+        run: composer test

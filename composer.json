@@ -44,5 +44,10 @@
         "friendsofphp/php-cs-fixer": "^3.3",
         "symfony/http-client": "^v5.4",
         "nyholm/psr7": "^1.4"
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=-1",
+        "test": "vendor/bin/pest",
+        "cs-fix": "vendor/bin/php-cs-fixer fix"
     }
 }
