@@ -157,6 +157,7 @@ final class AccessToken implements AccessTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function retrieve(): void
     {
@@ -169,7 +170,7 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->put(CacheKeys::AUTH_TOKEN, serialize($this->toArray()), $this->getExpiresIn());
+            $this->cache->set(CacheKeys::AUTH_TOKEN, serialize($this->toArray()), $this->getExpiresIn());
         }
     }
 
