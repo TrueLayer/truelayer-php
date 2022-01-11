@@ -7,12 +7,12 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\InvalidArgumentException;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Services\Api\AccessTokenApi;
 
@@ -82,13 +82,12 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
+     * @return string|null
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws ValidationException
-     * @throws ApiRequestJsonSerializationException
      * @throws InvalidArgumentException
-     *
-     * @return string|null
+     * @throws ValidationException
      */
     public function getAccessToken(): ?string
     {
