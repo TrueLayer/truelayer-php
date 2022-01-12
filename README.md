@@ -210,7 +210,7 @@ You can use the SDK to make your own API calls without worrying about authentica
 $responseData = $sdk->getApiClient()->request()->uri('/merchant-accounts')->get();
 
 $responseData = $sdk->getApiClient()->request()
-    ->uri('/merchant-accounts')
+    ->uri('/payments')
     ->payload($myData)
     ->addHeader('My Header', 'value')
     ->post();
