@@ -17,6 +17,7 @@ use TrueLayer\Sdk;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
+use TrueLayer\Services\Util\EncryptedCache;
 
 final class SdkFactory implements SdkFactoryInterface
 {
@@ -97,9 +98,13 @@ final class SdkFactory implements SdkFactoryInterface
         $authClient = new ApiClient($this->httpClient, $authBaseUri);
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
 
+        $encryptedCache = $config->getCache()
+            ? new EncryptedCache($config->getCache(), $config->getClientSecret())
+            : null;
+
         $this->authToken = new AccessToken(
             $authClient,
-            $config->getCache(),
+            $encryptedCache,
             $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret(),
