@@ -6,17 +6,14 @@ namespace TrueLayer\Services\Auth;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
-use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Services\Api\AccessTokenApi;
-use TrueLayer\Services\Util\EncryptedCache;
 
 final class AccessToken implements AccessTokenInterface
 {
@@ -66,19 +63,19 @@ final class AccessToken implements AccessTokenInterface
     private ?int $retrievedAt = null;
 
     /**
-     * @param ApiClientInterface $api
+     * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
-     * @param ValidatorFactory $validatorFactory
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param array|null $scopes
+     * @param ValidatorFactory             $validatorFactory
+     * @param string                       $clientId
+     * @param string                       $clientSecret
+     * @param array|null                   $scopes
      */
-    public function __construct(ApiClientInterface       $api,
+    public function __construct(ApiClientInterface $api,
                                 ?EncryptedCacheInterface $cache,
-                                ValidatorFactory         $validatorFactory,
-                                string                   $clientId,
-                                string                   $clientSecret,
-                                ?array                   $scopes = [])
+                                ValidatorFactory $validatorFactory,
+                                string $clientId,
+                                string $clientSecret,
+                                ?array $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -89,10 +86,11 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string|null
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
+     *
+     * @return string|null
      */
     public function getAccessToken(): ?string
     {
@@ -174,7 +172,7 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->set(CacheKeys::AUTH_TOKEN, serialize($this->toArray()), $this->getExpiresIn());
+            $this->cache->set(CacheKeys::AUTH_TOKEN, \serialize($this->toArray()), $this->getExpiresIn());
         }
     }
 

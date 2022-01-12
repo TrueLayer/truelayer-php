@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Services\Util;
 
 use Illuminate\Encryption\Encrypter;
@@ -24,20 +26,22 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param CacheInterface $cache
-     * @param string $key
+     * @param string         $key
      */
     public function __construct(CacheInterface $cache, string $key)
     {
         $this->cache = $cache;
-        $this->encrypter = new Encrypter(hash('md5', $key), Encryption::ALGORITHM);
+        $this->encrypter = new Encrypter(\hash('md5', $key), Encryption::ALGORITHM);
     }
 
     /**
      * @param string $key
-     * @param null $default
-     * @return mixed
+     * @param null   $default
+     *
      * @throws InvalidArgumentException
      * @throws DecryptException
+     *
+     * @return mixed
      */
     public function get(string $key, $default = null)
     {
@@ -54,9 +58,11 @@ final class EncryptedCache implements EncryptedCacheInterface
      * @param string $key
      * @param $value
      * @param null $ttl
-     * @return bool
+     *
      * @throws InvalidArgumentException
      * @throws EncryptException
+     *
+     * @return bool
      */
     public function set(string $key, $value, $ttl = null): bool
     {
@@ -71,8 +77,10 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param string $key
-     * @return bool
+     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function delete(string $key): bool
     {
