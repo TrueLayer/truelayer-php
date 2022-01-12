@@ -20,7 +20,7 @@ interface BeneficiaryBuilderInterface
     /**
      * @return IbanBeneficiary
      */
-    public function ibanAccount(): IbanBeneficiary;
+//    public function ibanAccount(): IbanBeneficiary;
 
     /**
      * @return MerchantBeneficiary

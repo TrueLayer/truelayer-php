@@ -28,10 +28,10 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     /**
      * @return IbanBeneficiary
      */
-    public function ibanAccount(): IbanBeneficiary
-    {
-        return IbanBeneficiary::make($this->getSdk());
-    }
+//    public function ibanAccount(): IbanBeneficiary
+//    {
+//        return IbanBeneficiary::make($this->getSdk());
+//    }
 
     /**
      * @return MerchantBeneficiary

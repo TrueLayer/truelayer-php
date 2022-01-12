@@ -34,7 +34,7 @@ final class MerchantBeneficiary extends Model implements BeneficiaryInterface
      */
     protected array $rules = [
         'id' => 'required|string',
-        'name' => 'required|string',
+        'name' => 'nullable|string',
     ];
 
     /**
