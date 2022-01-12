@@ -16,12 +16,12 @@ interface EncryptedCacheInterface
 
     /**
      * @param string   $key
-     * @param string   $value
+     * @param mixed    $value
      * @param int|null $ttl
      *
      * @return mixed
      */
-    public function set(string $key, string $value, ?int $ttl = null);
+    public function set(string $key, $value, ?int $ttl = null);
 
     /**
      * @param string $key

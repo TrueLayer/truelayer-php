@@ -172,7 +172,7 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->set(CacheKeys::AUTH_TOKEN, \serialize($this->toArray()), $this->getExpiresIn());
+            $this->cache->set(CacheKeys::AUTH_TOKEN, $this->toArray(), $this->getExpiresIn());
         }
     }
 
