@@ -47,8 +47,8 @@ final class EncryptedCache implements EncryptedCacheInterface
     {
         $encryptedValue = $this->cache->get($key, $default);
 
-        if (!is_string($encryptedValue)) {
-            throw new InvalidArgumentException("The cached value must be string.");
+        if (!\is_string($encryptedValue)) {
+            throw new InvalidArgumentException('The cached value must be string.');
         }
 
         try {
@@ -59,8 +59,8 @@ final class EncryptedCache implements EncryptedCacheInterface
     }
 
     /**
-     * @param string $key
-     * @param $value
+     * @param string   $key
+     * @param mixed    $value
      * @param int|null $ttl
      *
      * @throws InvalidArgumentException
