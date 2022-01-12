@@ -77,7 +77,7 @@ use TrueLayer\Tests\Mocks;
 \it('reuses cached access token across requests',
     function () {
         $okResponse = new Response(200);
-        $encrypter = new \Illuminate\Encryption\Encrypter(hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
+        $encrypter = new \Illuminate\Encryption\Encrypter(\hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
 
         $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
         $cacheMock->shouldReceive('has')->andReturnTrue();
@@ -108,7 +108,7 @@ use TrueLayer\Tests\Mocks;
 
 \it('fetches a new token if the cached one is expired', function () {
     $okResponse = new Response(200);
-    $encrypter = new \Illuminate\Encryption\Encrypter(hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
+    $encrypter = new \Illuminate\Encryption\Encrypter(\hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
 
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
