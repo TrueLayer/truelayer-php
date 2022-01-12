@@ -59,9 +59,9 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
                 return $this->sortCodeAccountNumber()->fill($data);
             }
 
-            if ($schemeType === ExternalAccountTypes::IBAN) {
-                return $this->ibanAccount()->fill($data);
-            }
+//            if ($schemeType === ExternalAccountTypes::IBAN) {
+//                return $this->ibanAccount()->fill($data);
+//            }
         }
 
         if ($type === BeneficiaryTypes::MERCHANT_ACCOUNT) {

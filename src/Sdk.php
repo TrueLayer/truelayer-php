@@ -6,7 +6,7 @@ namespace TrueLayer;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Contracts\Api\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
@@ -99,6 +99,8 @@ final class Sdk implements SdkInterface
      *
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      *
      * @return PaymentRetrievedInterface

@@ -9,7 +9,7 @@ use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
 
 class SdkConfig implements SdkConfigInterface
 {
@@ -149,7 +149,7 @@ class SdkConfig implements SdkConfigInterface
     /**
      * @param string $path
      *
-     * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return $this
      */
@@ -158,7 +158,7 @@ class SdkConfig implements SdkConfigInterface
         $pem = \file_get_contents($path);
 
         if (!\is_string($pem)) {
-            throw new InvalidArgumentException('Unable to load the key from the file.');
+            throw new SignerException('Unable to load the key from the file.');
         }
 
         return $this->pem($pem);
@@ -167,7 +167,7 @@ class SdkConfig implements SdkConfigInterface
     /**
      * @param string $pemBase64
      *
-     * @throws InvalidArgumentException
+     *@throws SignerException
      *
      * @return SdkConfigInterface
      */
@@ -176,7 +176,7 @@ class SdkConfig implements SdkConfigInterface
         $decoded = \base64_decode($pemBase64);
 
         if ($decoded == false) {
-            throw new InvalidArgumentException('Could not decode base64 pem');
+            throw new SignerException('Could not decode base64 pem');
         }
 
         return $this->pem($decoded);
@@ -263,6 +263,8 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
+     *@throws SignerException
+     *
      * @return SdkInterface
      */
     public function create(): SdkInterface

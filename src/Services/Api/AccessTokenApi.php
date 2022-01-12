@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Contracts\Api\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 
 final class AccessTokenApi
 {
@@ -23,8 +24,9 @@ final class AccessTokenApi
      * @param string   $clientSecret
      * @param string[] $scopes
      *
+     *@throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
@@ -36,7 +38,7 @@ final class AccessTokenApi
                 'grant_type' => 'client_credentials',
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
-                'scope' => \implode(',', $scopes),
+                'scope' => \implode(' ', $scopes),
             ])
             ->post();
     }

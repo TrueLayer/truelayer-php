@@ -13,6 +13,7 @@ use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
 use TrueLayer\Services\Api\PaymentApi;
@@ -139,10 +140,11 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
+     *@throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentCreatedInterface
      */

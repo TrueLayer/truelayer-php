@@ -80,9 +80,9 @@ function sdk($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @return \TrueLayer\Contracts\Api\ApiRequestInterface
+ * @return \TrueLayer\Contracts\ApiClient\ApiRequestInterface
  */
-function request($mockResponses = []): TrueLayer\Contracts\Api\ApiRequestInterface
+function request($mockResponses = []): TrueLayer\Contracts\ApiClient\ApiRequestInterface
 {
     if (empty($mockResponses)) {
         $mockResponses = new \GuzzleHttp\Psr7\Response(200, [], 'OK');

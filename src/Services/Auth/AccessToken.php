@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\CacheKeys;
-use TrueLayer\Contracts\Api\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;

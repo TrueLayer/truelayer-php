@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace TrueLayer\Services\ApiClient\Decorators;
 
 use TrueLayer\Constants\CustomHeaders;
-use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Api\ApiRequestInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Signing\Contracts\Signer;
 
 final class SigningDecorator extends BaseApiClientDecorator
@@ -33,6 +34,7 @@ final class SigningDecorator extends BaseApiClientDecorator
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      *
      * @return mixed
      */
@@ -49,19 +51,25 @@ final class SigningDecorator extends BaseApiClientDecorator
      * @param ApiRequestInterface $apiRequest
      *
      * @throws ApiRequestJsonSerializationException
+     * @throws SignerException
      */
     private function addHeaders(ApiRequestInterface $apiRequest): void
     {
         $idempotencyKey = $apiRequest->getHeaders()[CustomHeaders::IDEMPOTENCY_KEY];
 
-        $signature = $this->signer
+        $signer = $this->signer
             ->method($apiRequest->getMethod())
             ->path($apiRequest->getUri())
             ->body($apiRequest->getJsonPayload())
             ->headers([
                 CustomHeaders::IDEMPOTENCY_KEY => $idempotencyKey,
-            ])
-            ->sign();
+            ]);
+
+        try {
+            $signature = $signer->sign();
+        } catch (\Exception $e) {
+            throw new SignerException($e->getMessage(), $e->getCode(), $e);
+        }
 
         $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
     }

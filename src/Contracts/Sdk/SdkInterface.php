@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Sdk;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use TrueLayer\Contracts\Api\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
@@ -13,6 +13,7 @@ use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 
 interface SdkInterface
@@ -45,9 +46,10 @@ interface SdkInterface
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
+     *@throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentRetrievedInterface
      */

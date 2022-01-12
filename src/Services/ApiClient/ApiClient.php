@@ -9,8 +9,8 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use TrueLayer\Constants\ResponseStatusCodes;
-use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Api\ApiRequestInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 
@@ -82,6 +82,7 @@ final class ApiClient implements ApiClientInterface
      */
     private function getResponseData(ResponseInterface $response)
     {
+        $response->getBody()->rewind();
         $encoded = $response->getBody()->getContents();
         $decoded = \json_decode($encoded, true);
         $isError = $decoded === null && \json_last_error() !== JSON_ERROR_NONE;

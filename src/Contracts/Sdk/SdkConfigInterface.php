@@ -6,7 +6,7 @@ namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
 
 interface SdkConfigInterface
 {
@@ -61,6 +61,8 @@ interface SdkConfigInterface
     /**
      * @param string $pemBase64
      *
+     * @throws SignerException
+     *
      * @return $this
      */
     public function pemBase64(string $pemBase64): self;
@@ -68,7 +70,7 @@ interface SdkConfigInterface
     /**
      * @param string $path
      *
-     * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return $this
      */
@@ -111,11 +113,6 @@ interface SdkConfigInterface
     public function httpClient(ClientInterface $httpClient): self;
 
     /**
-     * @return SdkInterface
-     */
-    public function create(): SdkInterface;
-
-    /**
      * @return CacheInterface|null
      */
     public function getCache(): ?CacheInterface;
@@ -126,4 +123,11 @@ interface SdkConfigInterface
      * @return $this
      */
     public function cache(CacheInterface $cache): self;
+
+    /**
+     * @throws SignerException
+     *
+     * @return SdkInterface
+     */
+    public function create(): SdkInterface;
 }

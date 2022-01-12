@@ -6,10 +6,11 @@ namespace TrueLayer\Services\ApiClient;
 
 use Closure;
 use TrueLayer\Constants\RequestMethods;
-use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Api\ApiRequestInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 
 final class ApiRequest implements ApiRequestInterface
 {
@@ -182,8 +183,9 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
+     *@throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed
      */
@@ -195,8 +197,9 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
+     *@throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed
      */

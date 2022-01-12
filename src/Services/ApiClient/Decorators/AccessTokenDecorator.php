@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Services\ApiClient\Decorators;
 
 use TrueLayer\Constants\ResponseStatusCodes;
-use TrueLayer\Contracts\Api\ApiClientInterface;
-use TrueLayer\Contracts\Api\ApiRequestInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;

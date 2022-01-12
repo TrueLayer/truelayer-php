@@ -8,11 +8,12 @@ use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Psr\Http\Client\ClientInterface;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Contracts\Api\ApiClientInterface;
+use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Sdk;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
@@ -42,6 +43,8 @@ final class SdkFactory implements SdkFactoryInterface
 
     /**
      * @param SdkConfigInterface $config
+     *
+     * @throws SignerException
      *
      * @return SdkInterface
      */
@@ -103,7 +106,7 @@ final class SdkFactory implements SdkFactoryInterface
             $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret(),
-            ['payments'],
+            ['payments', 'paydirect'],
         );
     }
 
@@ -112,14 +115,20 @@ final class SdkFactory implements SdkFactoryInterface
      * Handles API calls, including signing, validation & error handling.
      *
      * @param SdkConfigInterface $config
+     *
+     * @throws SignerException
      */
     private function makeApiClient(SdkConfigInterface $config): void
     {
-        $signer = \TrueLayer\Signing\Signer::signWithPem(
-            $config->getKeyId(),
-            $config->getPem(),
-            $config->getPassphrase()
-        );
+        try {
+            $signer = \TrueLayer\Signing\Signer::signWithPem(
+                $config->getKeyId(),
+                $config->getPem(),
+                $config->getPassphrase()
+            );
+        } catch (\Exception $e) {
+            throw new SignerException($e->getMessage(), $e->getCode(), $e);
+        }
 
         $apiBaseUri = $config->shouldUseProduction()
             ? Endpoints::API_PROD_URL

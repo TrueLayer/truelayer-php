@@ -11,6 +11,7 @@ use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Payment\PaymentCreated;
 use TrueLayer\Models\Payment\PaymentRetrieved;
@@ -23,10 +24,11 @@ final class PaymentApi
     /**
      * @param PaymentRequestInterface $paymentRequest
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentCreatedInterface
      */
@@ -43,10 +45,11 @@ final class PaymentApi
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws ValidationException
+     *@throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws ValidationException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentRetrievedInterface
      */

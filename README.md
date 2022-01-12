@@ -206,15 +206,21 @@ $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQU
 
 The SDK throws the following exceptions:
 
-## ClientExceptionInterface
+## PSR Exceptions
 
-Thrown according to the PSR-18 specification, if it is unable to send the HTTP request at all or if the HTTP response could not be parsed into a PSR-7 response object.
+### ClientExceptionInterface
+
+Thrown according to the PSR-18 specification, if the HTTP client is unable to send the request at all or if the response could not be parsed into a PSR-7 response object.
 
 ```php
 Psr\Http\Client\ClientExceptionInterface
 ```
 
-## ApiResponseUnsuccessfulException
+## Custom Exceptions
+
+All custom exceptions will extend from the base `TrueLayer\Exceptions\Exception` class.
+
+### ApiResponseUnsuccessfulException
 Thrown if the API response is not a 2xx status.
 
 ```php
@@ -227,7 +233,7 @@ $e->getDetail(); // A description of the error message
 $e->getTraceId(); // The TrueLayer error trace id
 ```
 
-## ApiRequestJsonSerializationException
+### ApiRequestJsonSerializationException
 
 Thrown if the request data cannot be json encoded prior to calling the APIs.
 
@@ -235,7 +241,7 @@ Thrown if the request data cannot be json encoded prior to calling the APIs.
 \TrueLayer\Exceptions\ApiRequestJsonSerializationException
 ```
 
-## ValidationException
+### ValidationException
 
 Thrown if the data you provide to the SDK or the API response data is invalid.
 
@@ -245,11 +251,18 @@ Thrown if the data you provide to the SDK or the API response data is invalid.
 $e->getErrors(); // Get the validation errors as an array
 ```
 
-## InvalidArgumentException
+### InvalidArgumentException
 
-Thrown when a provided argument is invalid, for example an invalid pem file path.
+Thrown when a provided argument is invalid, for example an invalid beneficiary type
 
 ```php
 \TrueLayer\Exceptions\InvalidArgumentException
 ```
 
+### SignerException
+
+Thrown if the request signer cannot be initialised or signing fails.
+
+```php
+\TrueLayer\Exceptions\SignerException
+```

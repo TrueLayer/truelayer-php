@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Contracts\Api;
+namespace TrueLayer\Contracts\ApiClient;
 
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 
 interface ApiClientInterface
 {
@@ -19,6 +20,7 @@ interface ApiClientInterface
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      *
      * @return mixed
      */
