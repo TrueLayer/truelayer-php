@@ -124,7 +124,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return ApiRequestInterface
      */
-    public function addHeader(string $key, string $value): ApiRequestInterface
+    public function header(string $key, string $value): ApiRequestInterface
     {
         $this->headers[$key] = $value;
 

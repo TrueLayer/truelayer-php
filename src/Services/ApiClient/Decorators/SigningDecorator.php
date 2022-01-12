@@ -71,6 +71,6 @@ final class SigningDecorator extends BaseApiClientDecorator
             throw new SignerException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $apiRequest->addHeader(CustomHeaders::SIGNATURE, $signature);
+        $apiRequest->header(CustomHeaders::SIGNATURE, $signature);
     }
 }

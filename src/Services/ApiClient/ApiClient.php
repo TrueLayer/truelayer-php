@@ -55,7 +55,7 @@ final class ApiClient implements ApiClientInterface
      */
     public function send(ApiRequestInterface $apiRequest)
     {
-        $apiRequest->addHeader('Content-Type', 'application/json');
+        $apiRequest->header('Content-Type', 'application/json');
 
         $httpRequest = new Request(
             $apiRequest->getMethod(),

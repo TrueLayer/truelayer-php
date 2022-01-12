@@ -212,7 +212,7 @@ $responseData = $sdk->getApiClient()->request()->uri('/merchant-accounts')->get(
 $responseData = $sdk->getApiClient()->request()
     ->uri('/payments')
     ->payload($myData)
-    ->addHeader('My Header', 'value')
+    ->header('My Header', 'value')
     ->post();
 ```
 

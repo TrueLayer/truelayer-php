@@ -52,7 +52,7 @@ interface ApiRequestInterface
      *
      * @return ApiRequestInterface
      */
-    public function addHeader(string $key, string $value): ApiRequestInterface;
+    public function header(string $key, string $value): ApiRequestInterface;
 
     /**
      * @return array<string, string>

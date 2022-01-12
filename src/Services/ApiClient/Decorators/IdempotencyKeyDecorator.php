@@ -47,7 +47,7 @@ final class IdempotencyKeyDecorator extends BaseApiClientDecorator
     {
         $nodeProvider = new RandomNodeProvider();
 
-        $apiRequest->addHeader(
+        $apiRequest->header(
             CustomHeaders::IDEMPOTENCY_KEY,
             Uuid::uuid1($nodeProvider->getNode())->toString()
         );

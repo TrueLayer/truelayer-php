@@ -50,7 +50,7 @@ final class AccessTokenDecorator extends BaseApiClientDecorator
                     $this->accessToken->clear();
                 }
 
-                $apiRequest->addHeader('Authorization', "Bearer {$this->accessToken->getAccessToken()}");
+                $apiRequest->header('Authorization', "Bearer {$this->accessToken->getAccessToken()}");
 
                 return $this->next->send($apiRequest);
             });
