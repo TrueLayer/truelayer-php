@@ -4,11 +4,11 @@ namespace TrueLayer\Services\Util;
 
 use Illuminate\Encryption\Encrypter;
 use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\InvalidArgumentException;
 use TrueLayer\Constants\Encryption;
 use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\DecryptException;
 use TrueLayer\Exceptions\EncryptException;
+use TrueLayer\Exceptions\InvalidArgumentException;
 
 final class EncryptedCache implements EncryptedCacheInterface
 {
@@ -43,6 +43,10 @@ final class EncryptedCache implements EncryptedCacheInterface
     {
         $encryptedValue = $this->cache->get($key, $default);
 
+        if (!is_string($encryptedValue)) {
+            throw new InvalidArgumentException("The cached value must be string.");
+        }
+
         try {
             return $this->encrypter->decrypt($encryptedValue);
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
@@ -52,13 +56,13 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param string $key
-     * @param $value
-     * @param null $ttl
+     * @param mixed $value
+     * @param int|null $ttl
      * @return bool
-     * @throws InvalidArgumentException
      * @throws EncryptException
+     * @throws InvalidArgumentException
      */
-    public function set(string $key, $value, $ttl = null): bool
+    public function set(string $key, $value, ?int $ttl = null): bool
     {
         try {
             $encryptedValue = $this->encrypter->encrypt($value);
@@ -66,6 +70,8 @@ final class EncryptedCache implements EncryptedCacheInterface
             return $this->cache->set($key, $encryptedValue, $ttl);
         } catch (\Illuminate\Contracts\Encryption\EncryptException $e) {
             throw new EncryptException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
     }
 
