@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\ApiClient;
 
-use Closure;
 use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\ApiClient\ApiRequestInterface;

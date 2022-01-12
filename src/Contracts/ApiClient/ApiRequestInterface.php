@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\ApiClient;
 
-use Closure;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
