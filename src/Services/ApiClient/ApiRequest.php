@@ -35,16 +35,6 @@ final class ApiRequest implements ApiRequestInterface
     private array $headers = [];
 
     /**
-     * @var Closure|null
-     */
-    private ?Closure $requestRulesFactory = null;
-
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $responseRulesFactory = null;
-
-    /**
      * @var string
      */
     private string $method = RequestMethods::GET;
@@ -138,46 +128,6 @@ final class ApiRequest implements ApiRequestInterface
     public function addHeader(string $key, string $value): ApiRequestInterface
     {
         $this->headers[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return Closure
-     */
-    public function getRequestRules(): ?Closure
-    {
-        return $this->requestRulesFactory;
-    }
-
-    /**
-     * @param callable $factory
-     *
-     * @return ApiRequestInterface
-     */
-    public function requestRules(callable $factory): ApiRequestInterface
-    {
-        $this->requestRulesFactory = Closure::fromCallable($factory);
-
-        return $this;
-    }
-
-    /**
-     * @return Closure|null
-     */
-    public function getResponseRules(): ?Closure
-    {
-        return $this->responseRulesFactory;
-    }
-
-    /**
-     * @param callable $factory
-     *
-     * @return ApiRequestInterface
-     */
-    public function responseRules(callable $factory): ApiRequestInterface
-    {
-        $this->responseRulesFactory = Closure::fromCallable($factory);
 
         return $this;
     }

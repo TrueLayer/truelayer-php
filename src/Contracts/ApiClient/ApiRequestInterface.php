@@ -61,30 +61,6 @@ interface ApiRequestInterface
     public function getHeaders(): array;
 
     /**
-     * @param callable $factory
-     *
-     * @return ApiRequestInterface
-     */
-    public function requestRules(callable $factory): ApiRequestInterface;
-
-    /**
-     * @return Closure
-     */
-    public function getRequestRules(): ?Closure;
-
-    /**
-     * @param callable $factory
-     *
-     * @return ApiRequestInterface
-     */
-    public function responseRules(callable $factory): ApiRequestInterface;
-
-    /**
-     * @return Closure
-     */
-    public function getResponseRules(): ?Closure;
-
-    /**
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException

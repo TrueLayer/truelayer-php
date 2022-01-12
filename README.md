@@ -202,6 +202,20 @@ $payment = $sdk->getPaymentDetails($paymentId);
 $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQUIRED;
 ```
 
+# Custom API calls
+
+You can use the SDK to make your own API calls without worrying about authentication or request signing:
+
+```php
+$responseData = $sdk->getApiClient()->request()->uri('/merchant-accounts')->get();
+
+$responseData = $sdk->getApiClient()->request()
+    ->uri('/merchant-accounts')
+    ->payload($myData)
+    ->addHeader('My Header', 'value')
+    ->post();
+```
+
 # Error Handling
 
 The SDK throws the following exceptions:
