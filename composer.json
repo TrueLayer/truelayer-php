@@ -36,7 +36,9 @@
         "guzzlehttp/guzzle": "^7.4",
         "ramsey/uuid": "^4.2",
         "illuminate/validation": "^8.73",
-        "illuminate/support": "^8.77"
+        "illuminate/support": "^8.77",
+        "ext-openssl": "*",
+        "illuminate/encryption": "^8.79"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",
