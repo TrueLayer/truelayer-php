@@ -9,6 +9,7 @@ use Exception;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -45,6 +46,11 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     protected string $status;
 
     /**
+     * @var PaymentMethodInterface
+     */
+    protected PaymentMethodInterface $paymentMethod;
+
+    /**
      * @var BeneficiaryInterface
      */
     protected BeneficiaryInterface $beneficiary;
@@ -70,7 +76,7 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
         'currency',
         'user',
         'beneficiary',
-        'payment_method.statement_reference' => 'statement_reference',
+        'payment_method',
     ];
 
     /**
@@ -84,7 +90,7 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
             'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
-            'payment_method.statement_reference' => 'required|string',
+            'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
             'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
@@ -115,11 +121,11 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     }
 
     /**
-     * @return string
+     * @return PaymentMethodInterface
      */
-    public function getStatementReference(): string
+    public function getPaymentMethod(): PaymentMethodInterface
     {
-        return $this->statementReference;
+        return $this->paymentMethod;
     }
 
     /**
@@ -220,6 +226,10 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
 
         if (isset($data['user']) && \is_array($data['user'])) {
             $data['user'] = $this->getSdk()->user()->fill($data['user']);
+        }
+
+        if (isset($data['payment_method']) && \is_array($data['payment_method'])) {
+            $data['payment_method'] = $this->getSdk()->paymentMethod()->fill($data['payment_method']);
         }
 
         if (isset($data['created_at']) && \is_string($data['created_at'])) {

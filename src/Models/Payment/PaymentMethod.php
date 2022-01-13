@@ -7,6 +7,7 @@ namespace TrueLayer\Models\Payment;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Provider\ProviderFilterInterface;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
@@ -83,5 +84,21 @@ class PaymentMethod extends Model implements PaymentMethodInterface
         $this->providerFilter = $providerFilter;
 
         return $this;
+    }
+
+    /**
+     * @param mixed[] $data
+     *
+     * @throws ValidationException
+     *
+     * @return Model
+     */
+    public function fill(array $data): Model
+    {
+        if (isset($data['provider_filter']) && \is_array($data['provider_filter'])) {
+            $data['provider_filter'] = $this->getSdk()->providerFilter()->fill($data['provider_filter']);
+        }
+
+        return parent::fill($data);
     }
 }
