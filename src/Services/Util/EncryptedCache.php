@@ -6,7 +6,6 @@ namespace TrueLayer\Services\Util;
 
 use Illuminate\Encryption\Encrypter;
 use Psr\SimpleCache\CacheInterface;
-use TrueLayer\Constants\Encryption;
 use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\DecryptException;
 use TrueLayer\Exceptions\EncryptException;
@@ -26,12 +25,12 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param CacheInterface $cache
-     * @param string         $key
+     * @param Encrypter      $encrypter
      */
-    public function __construct(CacheInterface $cache, string $key)
+    public function __construct(CacheInterface $cache, Encrypter $encrypter)
     {
         $this->cache = $cache;
-        $this->encrypter = new Encrypter(\hash('md5', $key), Encryption::ALGORITHM);
+        $this->encrypter = $encrypter;
     }
 
     /**

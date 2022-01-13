@@ -6,7 +6,9 @@ namespace TrueLayer\Services\Sdk;
 
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface;
+use TrueLayer\Constants\Encryption;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\Api\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
@@ -98,8 +100,9 @@ final class SdkFactory implements SdkFactoryInterface
         $authClient = new ApiClient($this->httpClient, $authBaseUri);
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
 
+        $encrypter = new Encrypter(\hash('md5', $config->getClientSecret()), Encryption::ALGORITHM);
         $encryptedCache = $config->getCache()
-            ? new EncryptedCache($config->getCache(), $config->getClientSecret())
+            ? new EncryptedCache($config->getCache(), $encrypter)
             : null;
 
         $this->authToken = new AccessToken(
