@@ -124,16 +124,24 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
     }
 
     /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return $this->arrayFields;
+    }
+
+    /**
      * @param mixed[] $data
      *
      * @return $this
      */
     protected function setValues(array $data): self
     {
-        $data = Arr::dot($data);
+        $data = $this->flatten($data);
 
         foreach ($data as $key => $value) {
-            $key = $this->arrayFields[$key] ?? $key;
+            $key = $this->arrayFields()[$key] ?? $key;
             $this->set($key, $value);
         }
 
@@ -168,7 +176,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
     {
         $array = [];
 
-        foreach ($this->arrayFields as $dotNotation => $propertyKey) {
+        foreach ($this->arrayFields() as $dotNotation => $propertyKey) {
             $dotNotation = \is_int($dotNotation) ? $propertyKey : $dotNotation;
             $propertyKey = Str::camel($propertyKey);
             $method = Str::camel('get_' . $propertyKey);
@@ -184,5 +192,25 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
         }
 
         return $array;
+    }
+
+    /**
+     * @param mixed[] $array
+     * @param string $prepend
+     * @return mixed[]
+     */
+    private function flatten(array $array, string $prepend = ''): array
+    {
+        $results = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value) && !empty($value) && !Arr::isList($value)) {
+                $results = array_merge($results, $this->flatten($value, $prepend.$key.'.'));
+            } else {
+                $results[$prepend.$key] = $value;
+            }
+        }
+
+        return $results;
     }
 }

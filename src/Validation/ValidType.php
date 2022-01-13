@@ -11,16 +11,16 @@ use TrueLayer\Exceptions\ValidationException;
 final class ValidType implements Rule
 {
     /**
-     * @var class-string
+     * @var class-string[]
      */
-    private string $class;
+    private array $classes;
 
     /**
-     * @param class-string $class
+     * @param class-string[] $classes
      */
-    public function __construct(string $class)
+    public function __construct(array $classes)
     {
-        $this->class = $class;
+        $this->classes = $classes;
     }
 
     /**
@@ -33,7 +33,7 @@ final class ValidType implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        if (!($value instanceof $this->class)) {
+        if (!$this->instanceOf($value)) {
             return false;
         }
 
@@ -53,11 +53,25 @@ final class ValidType implements Rule
     }
 
     /**
-     * @param class-string $class
-     *
+     * @param mixed $value
+     * @return bool
+     */
+    private function instanceOf($value): bool
+    {
+        foreach ($this->classes as $class) {
+            if ($value instanceof $class) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param class-string ...$class
      * @return ValidType
      */
-    public static function of(string $class): ValidType
+    public static function of(string ...$class): ValidType
     {
         return new self($class);
     }

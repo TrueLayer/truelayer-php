@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
@@ -61,6 +62,19 @@ final class PaymentApi
             ->uri(Endpoints::PAYMENTS . '/' . $id)
             ->get();
 
-        return PaymentRetrieved::make($sdk)->fill($response);
+        $states = [
+            PaymentStatus::AUTHORIZATION_REQUIRED => PaymentRetrieved\PaymentAuthorizationRequired::class,
+            PaymentStatus::AUTHORIZING => PaymentRetrieved\PaymentAuthorizing::class,
+            PaymentStatus::AUTHORIZED => PaymentRetrieved\PaymentAuthorized::class,
+            PaymentStatus::EXECUTED => PaymentRetrieved\PaymentExecuted::class,
+            PaymentStatus::SETTLED => PaymentRetrieved\PaymentSettled::class,
+            PaymentStatus::FAILED => PaymentRetrieved\PaymentFailed::class,
+        ];
+
+        $model = isset($response['status']) && isset($states[$response['status']])
+            ? $states[$response['status']]
+            : PaymentRetrieved::class;
+
+        return $model::make($sdk)->fill($response);
     }
 }

@@ -105,7 +105,7 @@ final class Sdk implements SdkInterface
      *
      * @return PaymentRetrievedInterface
      */
-    public function getPaymentDetails(string $id): PaymentRetrievedInterface
+    public function getPayment(string $id): PaymentRetrievedInterface
     {
         return PaymentApi::make($this)->retrieve($id);
     }

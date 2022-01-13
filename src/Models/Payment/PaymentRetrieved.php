@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models\Payment;
 
-use DateTime;
 use Exception;
+use Illuminate\Support\Carbon;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
@@ -14,10 +14,11 @@ use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
+use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
-final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
+abstract class PaymentRetrieved extends Model implements PaymentRetrievedInterface
 {
     /**
      * @var string
@@ -55,23 +56,26 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     protected UserInterface $user;
 
     /**
-     * @var DateTime
+     * @var Carbon
      */
-    protected DateTime $createdAt;
+    protected Carbon $createdAt;
 
     /**
-     * @var string[]
+     * @return string[]
      */
-    protected array $arrayFields = [
-        'id',
-        'status',
-        'created_at',
-        'amount_in_minor',
-        'currency',
-        'user',
-        'beneficiary',
-        'payment_method.statement_reference' => 'statement_reference',
-    ];
+    protected function arrayFields(): array
+    {
+        return [
+            'id',
+            'status',
+            'created_at',
+            'amount_in_minor',
+            'currency',
+            'user',
+            'beneficiary',
+            'payment_method.statement_reference' => 'statement_reference',
+        ];
+    }
 
     /**
      * @return mixed[]
@@ -83,7 +87,7 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
             'status' => 'required|string',
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
-            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'currency' => ['required', AllowedConstant::in(Currencies::class)],
             'payment_method.statement_reference' => 'required|string',
             'user' => ['required', ValidType::of(UserInterface::class)],
             'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
@@ -139,11 +143,11 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     }
 
     /**
+     * @return Carbon
      * @throws Exception
      *
-     * @return DateTime
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
     }
@@ -207,23 +211,25 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @param mixed[] $data
      *
-     * @throws InvalidArgumentException
+     * @return $this
      * @throws ValidationException
      *
-     * @return $this
+     * @throws InvalidArgumentException
      */
     public function fill(array $data): self
     {
-        if (isset($data['beneficiary']) && \is_array($data['beneficiary'])) {
-            $data['beneficiary'] = $this->getSdk()->beneficiary()->fill($data['beneficiary']);
+        $sdk = $this->getSdk();
+
+        if ($beneficiaryData = Type::getNullableArray($data, 'beneficiary')) {
+            $data['beneficiary'] = $sdk->beneficiary()->fill($beneficiaryData);
         }
 
-        if (isset($data['user']) && \is_array($data['user'])) {
-            $data['user'] = $this->getSdk()->user()->fill($data['user']);
+        if ($userData = Type::getNullableArray($data, 'user')) {
+            $data['user'] = $sdk->user()->fill($userData);
         }
 
-        if (isset($data['created_at']) && \is_string($data['created_at'])) {
-            $data['created_at'] = new DateTime($data['created_at']);
+        if ($createdAt = Type::getNullableDate($data, 'created_at')) {
+            $data['created_at'] = $createdAt;
         }
 
         return parent::fill($data);

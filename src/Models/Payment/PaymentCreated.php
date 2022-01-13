@@ -91,7 +91,7 @@ final class PaymentCreated extends Model implements PaymentCreatedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {
-        return $this->getSdk()->getPaymentDetails(
+        return $this->getSdk()->getPayment(
             $this->getId()
         );
     }
