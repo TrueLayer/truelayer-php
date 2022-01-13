@@ -18,7 +18,7 @@ use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
-abstract class PaymentRetrieved extends Model implements PaymentRetrievedInterface
+class PaymentRetrieved extends Model implements PaymentRetrievedInterface
 {
     /**
      * @var string

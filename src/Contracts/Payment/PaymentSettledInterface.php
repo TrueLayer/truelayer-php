@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 
-interface PaymentSettledInterface extends ArrayableInterface
+interface PaymentSettledInterface extends PaymentRetrievedInterface
 {
     /**
      * @return Carbon

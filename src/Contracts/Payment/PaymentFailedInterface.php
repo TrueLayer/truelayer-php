@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 
-interface PaymentFailedInterface extends ArrayableInterface
+interface PaymentFailedInterface extends PaymentRetrievedInterface
 {
     /**
      * @return Carbon
@@ -21,9 +21,9 @@ interface PaymentFailedInterface extends ArrayableInterface
     public function getFailureStage(): string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFailureReason(): string;
+    public function getFailureReason(): ?string;
 
     /**
      * @return ConfigurationInterface

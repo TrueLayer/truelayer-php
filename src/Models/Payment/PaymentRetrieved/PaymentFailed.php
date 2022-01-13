@@ -72,11 +72,11 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFailureReason(): string
+    public function getFailureReason(): ?string
     {
-        return $this->failureReason;
+        return $this->failureReason ?? null;
     }
 
     /**
