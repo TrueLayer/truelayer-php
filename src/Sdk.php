@@ -91,14 +91,6 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return PaymentMethodInterface
-     */
-    public function paymentMethod(): PaymentMethodInterface
-    {
-        return PaymentMethod::make($this);
-    }
-
-    /**
      * @return ProviderFilterInterface
      */
     public function providerFilter(): ProviderFilterInterface

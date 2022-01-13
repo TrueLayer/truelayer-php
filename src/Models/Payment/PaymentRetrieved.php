@@ -229,7 +229,7 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
         }
 
         if (isset($data['payment_method']) && \is_array($data['payment_method'])) {
-            $data['payment_method'] = $this->getSdk()->paymentMethod()->fill($data['payment_method']);
+            $data['payment_method'] = PaymentMethod::make($this->getSdk())->fill($data['payment_method']);
         }
 
         if (isset($data['created_at']) && \is_string($data['created_at'])) {

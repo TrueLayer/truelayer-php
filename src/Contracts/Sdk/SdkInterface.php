@@ -41,11 +41,6 @@ interface SdkInterface
     public function beneficiary(): BeneficiaryBuilderInterface;
 
     /**
-     * @return PaymentMethodInterface
-     */
-    public function paymentMethod(): PaymentMethodInterface;
-
-    /**
      * @return ProviderFilterInterface
      */
     public function providerFilter(): ProviderFilterInterface;

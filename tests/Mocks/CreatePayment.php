@@ -15,6 +15,7 @@ use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Models\Beneficiary\ScanBeneficiary;
+use TrueLayer\Models\Payment\PaymentMethod;
 
 class CreatePayment
 {
@@ -74,8 +75,7 @@ class CreatePayment
             ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
             ->providerIds(['mock-payments-gb-redirect']);
 
-        return $this->sdk
-            ->paymentMethod()
+        return PaymentMethod::make($this->sdk)
             ->type(PaymentMethods::BANK_TRANSFER)
             ->statementReference('Statement ref')
             ->providerFilter($filter);
