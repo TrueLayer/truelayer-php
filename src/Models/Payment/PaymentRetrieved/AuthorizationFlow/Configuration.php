@@ -39,7 +39,7 @@ class Configuration extends Model implements ConfigurationInterface
     protected array $rules = [
         'provider_selection.status' => 'required|in:supported,not_supported',
         'redirect.status' => 'required|in:supported,not_supported',
-        'redirect.return_uri' => 'required_if:redirect.status,supported'
+        'redirect.return_uri' => 'required_if:redirect.status,supported',
     ];
 
     /**

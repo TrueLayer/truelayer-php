@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Contracts\Payment;
 
 use Illuminate\Support\Carbon;
-use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 
 interface PaymentFailedInterface extends PaymentRetrievedInterface

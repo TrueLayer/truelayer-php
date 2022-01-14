@@ -8,5 +8,4 @@ use TrueLayer\Contracts\ArrayableInterface;
 
 interface ActionInterface extends ArrayableInterface
 {
-
 }

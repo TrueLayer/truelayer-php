@@ -63,5 +63,4 @@ class PaymentResponse
     {
         return new Response(200, [], '{"id":"3bb10530-28c6-4b77-8d07-904110a4a17c","amount_in_minor":1,"currency":"GBP","beneficiary":{"type":"merchant_account","name":"Test","id":"82b98c1a-8dd9-49c2-b23b-666457e415b2"},"user":{"id":"706934f7-95df-4224-9a7d-f6f48b05009e","name":"Alex","email":"aaaa@a.com"},"payment_method":{"type":"bank_transfer","statement_reference":"Statement ref"},"created_at":"2022-01-13T20:13:07.991551Z","status":"failed","authorization_flow":{"configuration":{"provider_selection":{"status":"supported"},"redirect":{"status":"supported","return_uri":"https://penny.t7r.dev/redirect/v3"}}},"failed_at":"2022-01-13T20:22:25.645589Z","failure_stage":"authorizing","failure_reason":"authorization_failed"}');
     }
-
 }

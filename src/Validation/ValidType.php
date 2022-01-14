@@ -54,6 +54,7 @@ final class ValidType implements Rule
 
     /**
      * @param mixed $value
+     *
      * @return bool
      */
     private function instanceOf($value): bool
@@ -69,6 +70,7 @@ final class ValidType implements Rule
 
     /**
      * @param class-string ...$class
+     *
      * @return ValidType
      */
     public static function of(string ...$class): ValidType

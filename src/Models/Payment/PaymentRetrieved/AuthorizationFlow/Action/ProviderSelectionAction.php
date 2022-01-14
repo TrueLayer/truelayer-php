@@ -9,7 +9,6 @@ use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\ProviderSelectionAction
 use TrueLayer\Contracts\ProviderInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Model;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action;
 use TrueLayer\Models\Provider;
 use TrueLayer\Services\Util\Type;
@@ -27,7 +26,7 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
      */
     protected array $arrayFields = [
         'type',
-        'providers'
+        'providers',
     ];
 
     /**
@@ -36,7 +35,7 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
     protected function rules(): array
     {
         return [
-            'providers.*' => [ ValidType::of(Provider::class) ]
+            'providers.*' => [ValidType::of(Provider::class)],
         ];
     }
 
@@ -57,16 +56,20 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
     }
 
     /**
-     * @param array $data
-     * @return $this
+     * @param mixed[] $data
+     *
      * @throws ValidationException
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
         if ($providers = Type::getNullableArray($data, 'providers')) {
-            $data['providers'] = array_map(
-                fn ($provider) => Provider::make($this->getSdk())->fill($provider),
+            $data['providers'] = \array_map(
+                fn ($provider) => Provider::make($this->getSdk())->fill(
+                    \is_array($provider) ? $provider : []
+                ),
                 $providers
             );
         }
@@ -74,4 +77,3 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
         return parent::fill($data);
     }
 }
-

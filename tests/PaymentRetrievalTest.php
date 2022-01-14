@@ -17,142 +17,140 @@ use TrueLayer\Contracts\ProviderInterface;
 use TrueLayer\Tests\Mocks\PaymentResponse;
 
 \it('handles payment authorization required', function () {
-    $payment = sdk(PaymentResponse::authorizationRequired())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorizationRequired())->getPayment('1');
 
-    expect($payment)->toBeInstanceOf(PaymentAuthorizationRequiredInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(true);
-    expect($payment->isAuthorizing())->toBe(false);
-    expect($payment->isAuthorized())->toBe(false);
-    expect($payment->isExecuted())->toBe(false);
-    expect($payment->isSettled())->toBe(false);
-    expect($payment->isFailed())->toBe(false);
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizationRequiredInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(true);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(false);
 });
 
-it('handles payment authorizing - provider selection', function () {
+\it('handles payment authorizing - provider selection', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
 
-    expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(false);
-    expect($payment->isAuthorizing())->toBe(true);
-    expect($payment->isAuthorized())->toBe(false);
-    expect($payment->isExecuted())->toBe(false);
-    expect($payment->isSettled())->toBe(false);
-    expect($payment->isFailed())->toBe(false);
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(true);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(false);
 
-    expect($next)->toBeInstanceOf(ProviderSelectionActionInterface::class);
-    expect($next->getType())->toBe(AuthorizationFlowActionTypes::PROVIDER_SELECTION);
-    expect(count($next->getProviders()) > 0)->toBe(true);
+    \expect($next)->toBeInstanceOf(ProviderSelectionActionInterface::class);
+    \expect($next->getType())->toBe(AuthorizationFlowActionTypes::PROVIDER_SELECTION);
+    \expect(\count($next->getProviders()) > 0)->toBe(true);
 
-    expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
-    expect($next->getProviders()[0]->getProviderId())->toBe('mock-payments-gb-redirect');
-    expect($next->getProviders()[0]->getDisplayName())->toBe('Mock UK Payments - Redirect Flow');
-    expect($next->getProviders()[0]->getIconUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/icons/mock-payments-gb-redirect.svg');
-    expect($next->getProviders()[0]->getLogoUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/logos/mock-payments-gb-redirect.svg');
-    expect($next->getProviders()[0]->getBgColor())->toBe('#FFFFFF');
-    expect($next->getProviders()[0]->getCountryCode())->toBe('GB');
-
+    \expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
+    \expect($next->getProviders()[0]->getProviderId())->toBe('mock-payments-gb-redirect');
+    \expect($next->getProviders()[0]->getDisplayName())->toBe('Mock UK Payments - Redirect Flow');
+    \expect($next->getProviders()[0]->getIconUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/icons/mock-payments-gb-redirect.svg');
+    \expect($next->getProviders()[0]->getLogoUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/logos/mock-payments-gb-redirect.svg');
+    \expect($next->getProviders()[0]->getBgColor())->toBe('#FFFFFF');
+    \expect($next->getProviders()[0]->getCountryCode())->toBe('GB');
 });
 
-it('handles payment authorization flow config', function () {
+\it('handles payment authorization flow config', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
 
-    expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    expect($payment->getAuthorizationFlowConfig()->isRedirectSupported())->toBe(true);
-    expect($payment->getAuthorizationFlowConfig()->isProviderSelectionSupported())->toBe(true);
-    expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBe('https://penny.t7r.dev/redirect/v3');
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->getAuthorizationFlowConfig()->isRedirectSupported())->toBe(true);
+    \expect($payment->getAuthorizationFlowConfig()->isProviderSelectionSupported())->toBe(true);
+    \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBe('https://penny.t7r.dev/redirect/v3');
 });
 
-it('handles payment authorizing - redirect', function () {
+\it('handles payment authorizing - redirect', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = sdk(PaymentResponse::authorizingRedirect())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorizingRedirect())->getPayment('1');
 
     /** @var RedirectActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
 
-    expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
-    expect($next)->toBeInstanceOf(RedirectActionInterface::class);
-    expect($next->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
-    expect($next->getUri())->toBe('https://foo.com');
-    expect($next->getMetadataType())->toBe('provider');
-    expect($next->getProvider())->toBeNull();
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
+    \expect($next)->toBeInstanceOf(RedirectActionInterface::class);
+    \expect($next->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
+    \expect($next->getUri())->toBe('https://foo.com');
+    \expect($next->getMetadataType())->toBe('provider');
+    \expect($next->getProvider())->toBeNull();
 });
 
-it('handles payment authorizing - wait', function () {
+\it('handles payment authorizing - wait', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = sdk(PaymentResponse::authorizingWait())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorizingWait())->getPayment('1');
 
     /** @var WaitActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
 
-    expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
-    expect($next)->toBeInstanceOf(WaitActionInterface::class);
-    expect($next->getType())->toBe(AuthorizationFlowActionTypes::WAIT);
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
+    \expect($next)->toBeInstanceOf(WaitActionInterface::class);
+    \expect($next->getType())->toBe(AuthorizationFlowActionTypes::WAIT);
 });
 
-
-it('handles payment authorized', function () {
+\it('handles payment authorized', function () {
     /** @var PaymentAuthorizedInterface $payment */
-    $payment = sdk(PaymentResponse::authorized())->getPayment('1');
+    $payment = \sdk(PaymentResponse::authorized())->getPayment('1');
 
-    expect($payment)->toBeInstanceOf(PaymentAuthorizedInterface::class);
-    expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(false);
-    expect($payment->isAuthorizing())->toBe(false);
-    expect($payment->isAuthorized())->toBe(true);
-    expect($payment->isExecuted())->toBe(false);
-    expect($payment->isSettled())->toBe(false);
-    expect($payment->isFailed())->toBe(false);
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizedInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(true);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(false);
 });
 
-it('handles payment executed', function () {
+\it('handles payment executed', function () {
     /** @var PaymentExecutedInterface $payment */
-    $payment = sdk(PaymentResponse::executed())->getPayment('1');
+    $payment = \sdk(PaymentResponse::executed())->getPayment('1');
 
-    expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
-    expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(false);
-    expect($payment->isAuthorizing())->toBe(false);
-    expect($payment->isAuthorized())->toBe(false);
-    expect($payment->isExecuted())->toBe(true);
-    expect($payment->isSettled())->toBe(false);
-    expect($payment->isFailed())->toBe(false);
-    expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(true);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
 });
 
-it('handles payment settled', function () {
+\it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
-    $payment = sdk(PaymentResponse::settled())->getPayment('1');
+    $payment = \sdk(PaymentResponse::settled())->getPayment('1');
 
-    expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
-    expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(false);
-    expect($payment->isAuthorizing())->toBe(false);
-    expect($payment->isAuthorized())->toBe(false);
-    expect($payment->isExecuted())->toBe(false);
-    expect($payment->isSettled())->toBe(true);
-    expect($payment->isFailed())->toBe(false);
-    expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
-    expect($payment->getSettledAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(true);
+    \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getSettledAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
 });
 
-it('handles payment failed', function () {
+\it('handles payment failed', function () {
     /** @var PaymentFailedInterface $payment */
-    $payment = sdk(PaymentResponse::failed())->getPayment('1');
+    $payment = \sdk(PaymentResponse::failed())->getPayment('1');
 
-    expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
-    expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    expect($payment->isAuthorizationRequired())->toBe(false);
-    expect($payment->isAuthorizing())->toBe(false);
-    expect($payment->isAuthorized())->toBe(false);
-    expect($payment->isExecuted())->toBe(false);
-    expect($payment->isSettled())->toBe(false);
-    expect($payment->isFailed())->toBe(true);
-    expect($payment->getFailedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T20:22:25.645589Z');
-    expect($payment->getFailureStage())->toBe('authorizing');
-    expect($payment->getFailureReason())->toBe('authorization_failed');
+    \expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(true);
+    \expect($payment->getFailedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T20:22:25.645589Z');
+    \expect($payment->getFailureStage())->toBe('authorizing');
+    \expect($payment->getFailureReason())->toBe('authorization_failed');
 });

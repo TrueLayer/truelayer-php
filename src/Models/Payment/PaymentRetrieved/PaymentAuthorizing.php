@@ -11,11 +11,9 @@ use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Contracts\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action\ProviderSelectionAction;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action\RedirectAction;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action\WaitAction;
-use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Configuration;
 use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\ValidType;
 
@@ -27,7 +25,7 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
     private array $actionTypes = [
         AuthorizationFlowActionTypes::PROVIDER_SELECTION => ProviderSelectionAction::class,
         AuthorizationFlowActionTypes::REDIRECT => RedirectAction::class,
-        AuthorizationFlowActionTypes::WAIT => WaitAction::class
+        AuthorizationFlowActionTypes::WAIT => WaitAction::class,
     ];
 
     /**
@@ -45,8 +43,8 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
-            'authorization_flow.actions.next' => 'next_action'
+        return \array_merge(parent::arrayFields(), [
+            'authorization_flow.actions.next' => 'next_action',
         ]);
     }
 
@@ -55,9 +53,9 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'authorization_flow' => 'required|array',
-            'authorization_flow.actions.next' => ['nullable', ValidType::of(...$this->actionTypes)]
+            'authorization_flow.actions.next' => ['nullable', ValidType::of(...$this->actionTypes)],
         ]);
     }
 
@@ -71,9 +69,11 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
 
     /**
      * @param mixed[] $data
-     * @return $this
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {

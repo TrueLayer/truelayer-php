@@ -8,7 +8,6 @@ use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Services\Util\Type;
 
 final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements PaymentExecutedInterface
@@ -23,8 +22,8 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
-            'executed_at'
+        return \array_merge(parent::arrayFields(), [
+            'executed_at',
         ]);
     }
 
@@ -33,7 +32,7 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'executed_at' => 'required|date',
         ]);
     }
@@ -48,9 +47,11 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
 
     /**
      * @param mixed[] $data
-     * @return PaymentExecuted
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return PaymentExecuted
      */
     public function fill(array $data): self
     {

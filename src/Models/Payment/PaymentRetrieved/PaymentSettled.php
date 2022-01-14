@@ -27,7 +27,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'executed_at' => 'required|date',
             'settled_at' => 'required|date',
         ]);
@@ -38,9 +38,9 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'executed_at',
-            'settled_at'
+            'settled_at',
         ]);
     }
 

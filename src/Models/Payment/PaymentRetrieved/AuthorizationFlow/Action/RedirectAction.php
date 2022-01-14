@@ -7,7 +7,6 @@ namespace TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Contracts\ProviderInterface;
-use TrueLayer\Models\Model;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action;
 use TrueLayer\Models\Provider;
 use TrueLayer\Validation\ValidType;
@@ -30,7 +29,7 @@ class RedirectAction extends Action implements RedirectActionInterface
     protected array $arrayFields = [
         'type',
         'uri',
-        'metadata' => 'provider'
+        'metadata' => 'provider',
     ];
 
     /**
@@ -40,7 +39,7 @@ class RedirectAction extends Action implements RedirectActionInterface
     {
         return [
             'uri' => 'required|url',
-            'metadata' => [ 'nullable', ValidType::of(Provider::class) ]
+            'metadata' => ['nullable', ValidType::of(Provider::class)],
         ];
     }
 
@@ -76,4 +75,3 @@ class RedirectAction extends Action implements RedirectActionInterface
         return $this->provider ?? null;
     }
 }
-

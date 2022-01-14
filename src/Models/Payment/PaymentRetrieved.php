@@ -146,9 +146,9 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     }
 
     /**
-     * @return Carbon
      * @throws Exception
      *
+     * @return Carbon
      */
     public function getCreatedAt(): Carbon
     {
@@ -214,10 +214,10 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @param mixed[] $data
      *
-     * @return $this
      * @throws ValidationException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {

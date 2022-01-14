@@ -25,6 +25,7 @@ interface ProviderInterface extends ArrayableInterface
      * @return string|null
      */
     public function getLogoUri(): ?string;
+
     /**
      * @return string|null
      */

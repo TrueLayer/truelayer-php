@@ -6,7 +6,6 @@ namespace TrueLayer\Models;
 
 use TrueLayer\Constants\Countries;
 use TrueLayer\Contracts\ProviderInterface;
-use TrueLayer\Models\Model;
 use TrueLayer\Validation\AllowedConstant;
 
 final class Provider extends Model implements ProviderInterface
@@ -50,7 +49,7 @@ final class Provider extends Model implements ProviderInterface
         'icon_uri',
         'logo_uri',
         'bg_color',
-        'country_code'
+        'country_code',
     ];
 
     /**

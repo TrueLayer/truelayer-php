@@ -14,7 +14,7 @@ class WaitAction extends Action implements WaitActionInterface
      * @var string[]
      */
     protected array $arrayFields = [
-        'type'
+        'type',
     ];
 
     /**
@@ -25,4 +25,3 @@ class WaitAction extends Action implements WaitActionInterface
         return AuthorizationFlowActionTypes::WAIT;
     }
 }
-

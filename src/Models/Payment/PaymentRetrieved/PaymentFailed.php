@@ -9,8 +9,6 @@ use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Payment\PaymentFailedInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Model;
-use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\AllowedConstant;
 
@@ -36,10 +34,10 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'failed_at',
             'failure_stage',
-            'failure_reason'
+            'failure_reason',
         ]);
     }
 
@@ -48,7 +46,7 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'failed_at' => 'required|date',
             'failure_stage' => ['required', AllowedConstant::in(PaymentStatus::class)],
             'failure_reason' => 'nullable|string',

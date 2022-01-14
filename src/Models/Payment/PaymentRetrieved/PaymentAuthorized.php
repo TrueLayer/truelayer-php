@@ -8,5 +8,4 @@ use TrueLayer\Contracts\Payment\PaymentAuthorizedInterface;
 
 final class PaymentAuthorized extends _PaymentWithAuthorizationConfig implements PaymentAuthorizedInterface
 {
-
 }
