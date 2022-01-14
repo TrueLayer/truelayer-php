@@ -6,12 +6,10 @@ namespace TrueLayer\Models;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\HasAttributesInterface;
-use TrueLayer\Sdk;
 use TrueLayer\Traits\WithSdk;
 
 abstract class Model implements ArrayableInterface, HasAttributesInterface
@@ -74,7 +72,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
         $convert = fn ($v) => $v instanceof ArrayableInterface ? $v->toArray() : $v;
 
         return \array_map(
-            fn ($v) => is_array($v) ? \array_map($convert, $v) : $convert($v),
+            fn ($v) => \is_array($v) ? \array_map($convert, $v) : $convert($v),
             $this->all()
         );
     }
