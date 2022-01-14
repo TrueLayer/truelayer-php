@@ -59,7 +59,7 @@ interface SdkInterface
      *
      * @return PaymentRetrievedInterface
      */
-    public function getPaymentDetails(string $id): PaymentRetrievedInterface;
+    public function getPayment(string $id): PaymentRetrievedInterface;
 
     /**
      * @return HppInterface

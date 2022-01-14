@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Payment;
 
-use DateTime;
 use Exception;
+use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\ArrayableInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\UserInterface;
@@ -45,9 +45,9 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     /**
      * @throws Exception
      *
-     * @return DateTime
+     * @return Carbon
      */
-    public function getCreatedAt(): DateTime;
+    public function getCreatedAt(): Carbon;
 
     /**
      * @return string

@@ -73,7 +73,7 @@ You then get access to the following methods:
 ```php
 $payment->getId(); // The payment id
 $payment->getResourceToken(); // The resource token 
-$payment->getDetails(); // Get the payment details, same as $sdk->getPaymentDetails($paymentId)
+$payment->getDetails(); // Get the payment details, same as $sdk->getPayment($paymentId)
 $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see below.
 $payment->toArray(); // Convert to array
 ```
@@ -142,7 +142,7 @@ $url = $sdk->payment()
 # Retrieving a payment's details
 
 ```php
-$payment = $sdk->getPaymentDetails($paymentId);
+$payment = $sdk->getPayment($paymentId);
 $payment->getId();
 $payment->getAmountInMinor();
 $payment->getCreatedAt();
@@ -154,7 +154,7 @@ $payment->toArray();
 ## Get a payment's user
 
 ```php
-$user = $sdk->getPaymentDetails($paymentId)->getUser();
+$user = $sdk->getPayment($paymentId)->getUser();
 $user->getId();
 $user->getName();
 $user->getEmail();
@@ -167,7 +167,7 @@ $user->toArray();
 There are multiple types of payment beneficiaries. They all implement `BeneficiaryInterface` so you can access:
 
 ```php
-$beneficiary = $sdk->getPaymentDetails($paymentId)->getBeneficiary();
+$beneficiary = $sdk->getPayment($paymentId)->getBeneficiary();
 $beneficiary->getName();
 $beneficiary->getType();
 $beneficiary->toArray();
@@ -201,7 +201,7 @@ if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\MerchantBeneficiary) {
 You can check for the status by using one of the following helper methods:
 
 ```php
-$payment = $sdk->getPaymentDetails($paymentId);
+$payment = $sdk->getPayment($paymentId);
 $payment->isAuthorizationRequired();
 $payment->isAuthorizing();
 $payment->isAuthorized();
@@ -212,7 +212,7 @@ $payment->isSettled();
 
 Or you can get the status as a string and compare it to the provided constants in `PaymentStatus`:
 ```php
-$payment = $sdk->getPaymentDetails($paymentId);
+$payment = $sdk->getPayment($paymentId);
 $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQUIRED;
 ```
 

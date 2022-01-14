@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models\Payment;
 
-use DateTime;
 use Exception;
+use Illuminate\Support\Carbon;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
@@ -15,10 +15,11 @@ use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
+use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
-final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
+class PaymentRetrieved extends Model implements PaymentRetrievedInterface
 {
     /**
      * @var string
@@ -61,12 +62,12 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     protected UserInterface $user;
 
     /**
-     * @var DateTime
+     * @var Carbon
      */
-    protected DateTime $createdAt;
+    protected Carbon $createdAt;
 
     /**
-     * @var string[]
+     * @return string[]
      */
     protected array $arrayFields = [
         'id',
@@ -147,9 +148,9 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @throws Exception
      *
-     * @return DateTime
+     * @return Carbon
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): Carbon
     {
         return $this->createdAt;
     }
@@ -213,19 +214,21 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @param mixed[] $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return $this
      */
     public function fill(array $data): self
     {
-        if (isset($data['beneficiary']) && \is_array($data['beneficiary'])) {
-            $data['beneficiary'] = $this->getSdk()->beneficiary()->fill($data['beneficiary']);
+        $sdk = $this->getSdk();
+
+        if ($beneficiaryData = Type::getNullableArray($data, 'beneficiary')) {
+            $data['beneficiary'] = $sdk->beneficiary()->fill($beneficiaryData);
         }
 
-        if (isset($data['user']) && \is_array($data['user'])) {
-            $data['user'] = $this->getSdk()->user()->fill($data['user']);
+        if ($userData = Type::getNullableArray($data, 'user')) {
+            $data['user'] = $sdk->user()->fill($userData);
         }
 
         if (isset($data['payment_method']) && \is_array($data['payment_method'])) {
@@ -233,7 +236,7 @@ final class PaymentRetrieved extends Model implements PaymentRetrievedInterface
         }
 
         if (isset($data['created_at']) && \is_string($data['created_at'])) {
-            $data['created_at'] = new DateTime($data['created_at']);
+            $data['created_at'] = Carbon::parse($data['created_at']);
         }
 
         return parent::fill($data);

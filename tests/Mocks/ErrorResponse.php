@@ -26,6 +26,20 @@ class ErrorResponse
     /**
      * @return ResponseInterface
      */
+    public static function serverError(): ResponseInterface
+    {
+        return self::toResponse([
+            'type' => 'https://docs.truelayer.com/docs/error-types#unknown-error',
+            'title' => 'Unknown Error',
+            'status' => 500,
+            'trace_id' => '96ce50247f87f540bb2d86771b3728b8',
+            'detail' => 'An error occurred. Please contact customer support.',
+        ]);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
     public static function forbidden(): ResponseInterface
     {
         return self::toResponse([

@@ -46,7 +46,7 @@ class PaymentMethod extends Model implements PaymentMethodInterface
         return [
             'type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
             'statement_reference' => ['string'],
-            'provider_filter' => [ValidType::of(ProviderFilterInterface::class)],
+            'provider_filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)],
         ];
     }
 
