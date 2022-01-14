@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts;
 
-interface ArrayableInterface
+use Illuminate\Contracts\Support\Arrayable;
+
+interface ArrayableInterface extends Arrayable
 {
-    /**
-     * @return mixed[]
-     */
-    public function toArray(): array;
+
 }
