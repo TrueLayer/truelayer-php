@@ -236,7 +236,7 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
         }
 
         if (isset($data['created_at']) && \is_string($data['created_at'])) {
-            $data['created_at'] = new DateTime($data['created_at']);
+            $data['created_at'] = Carbon::parse($data['created_at']);
         }
 
         return parent::fill($data);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Contracts\Payment;
 
-use DateTime;
 use Exception;
 use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\ArrayableInterface;
