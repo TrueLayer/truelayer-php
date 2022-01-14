@@ -10,6 +10,7 @@ use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
+use TrueLayer\Contracts\Provider\ProviderFilterInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -37,6 +38,11 @@ interface SdkInterface
      * @return BeneficiaryBuilderInterface
      */
     public function beneficiary(): BeneficiaryBuilderInterface;
+
+    /**
+     * @return ProviderFilterInterface
+     */
+    public function providerFilter(): ProviderFilterInterface;
 
     /**
      * @return PaymentRequestInterface

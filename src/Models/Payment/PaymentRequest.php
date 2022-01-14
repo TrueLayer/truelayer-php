@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TrueLayer\Models\Payment;
 
 use TrueLayer\Constants\Currencies;
-use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
+use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -33,9 +33,9 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     protected string $currency;
 
     /**
-     * @var string
+     * @var PaymentMethodInterface
      */
-    protected string $statementReference;
+    protected PaymentMethodInterface $paymentMethod;
 
     /**
      * @var BeneficiaryInterface
@@ -48,11 +48,6 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     protected UserInterface $user;
 
     /**
-     * @var string
-     */
-    protected $paymentMethodType = PaymentMethods::BANK_TRANSFER;
-
-    /**
      * @var string[]
      */
     protected array $arrayFields = [
@@ -60,8 +55,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
         'currency',
         'user',
         'beneficiary',
-        'payment_method.statement_reference' => 'statement_reference',
-        'payment_method.type' => 'payment_method_type',
+        'payment_method',
     ];
 
     /**
@@ -72,8 +66,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
         return [
             'amount_in_minor' => 'required|int|min:1',
             'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
-            'payment_method.statement_reference' => 'required|string',
-            'payment_method.type' => ['string', AllowedConstant::in(PaymentMethods::class)],
+            'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
             'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
@@ -104,13 +97,13 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
     }
 
     /**
-     * @param string $statementReference
+     * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface
      */
-    public function statementReference(string $statementReference): PaymentRequestInterface
+    public function paymentMethod(PaymentMethodInterface $paymentMethod): PaymentRequestInterface
     {
-        $this->statementReference = $statementReference;
+        $this->paymentMethod = $paymentMethod;
 
         return $this;
     }

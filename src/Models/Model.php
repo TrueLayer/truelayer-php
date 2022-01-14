@@ -196,7 +196,8 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param mixed[] $array
-     * @param string $prepend
+     * @param string  $prepend
+     *
      * @return mixed[]
      */
     private function flatten(array $array, string $prepend = ''): array

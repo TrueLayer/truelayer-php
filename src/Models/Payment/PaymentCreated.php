@@ -9,6 +9,7 @@ use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
 
@@ -83,9 +84,10 @@ final class PaymentCreated extends Model implements PaymentCreatedInterface
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws SignerException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentRetrievedInterface
      */

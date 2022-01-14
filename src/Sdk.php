@@ -11,12 +11,14 @@ use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
+use TrueLayer\Contracts\Provider\ProviderFilterInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Models\Beneficiary\BeneficiaryBuilder;
 use TrueLayer\Models\Hpp;
 use TrueLayer\Models\Payment\PaymentRequest;
+use TrueLayer\Models\Provider\ProviderFilter;
 use TrueLayer\Models\User;
 use TrueLayer\Services\Api\PaymentApi;
 use TrueLayer\Services\Sdk\SdkConfig;
@@ -84,6 +86,14 @@ final class Sdk implements SdkInterface
     public function beneficiary(): BeneficiaryBuilderInterface
     {
         return BeneficiaryBuilder::make($this);
+    }
+
+    /**
+     * @return ProviderFilterInterface
+     */
+    public function providerFilter(): ProviderFilterInterface
+    {
+        return ProviderFilter::make($this);
     }
 
     /**

@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -46,6 +47,11 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     protected string $status;
 
     /**
+     * @var PaymentMethodInterface
+     */
+    protected PaymentMethodInterface $paymentMethod;
+
+    /**
      * @var BeneficiaryInterface
      */
     protected BeneficiaryInterface $beneficiary;
@@ -63,19 +69,16 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     /**
      * @return string[]
      */
-    protected function arrayFields(): array
-    {
-        return [
-            'id',
-            'status',
-            'created_at',
-            'amount_in_minor',
-            'currency',
-            'user',
-            'beneficiary',
-            'payment_method.statement_reference' => 'statement_reference',
-        ];
-    }
+    protected array $arrayFields = [
+        'id',
+        'status',
+        'created_at',
+        'amount_in_minor',
+        'currency',
+        'user',
+        'beneficiary',
+        'payment_method',
+    ];
 
     /**
      * @return mixed[]
@@ -87,8 +90,8 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
             'status' => 'required|string',
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
-            'currency' => ['required', AllowedConstant::in(Currencies::class)],
-            'payment_method.statement_reference' => 'required|string',
+            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
             'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
@@ -119,11 +122,11 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
     }
 
     /**
-     * @return string
+     * @return PaymentMethodInterface
      */
-    public function getStatementReference(): string
+    public function getPaymentMethod(): PaymentMethodInterface
     {
-        return $this->statementReference;
+        return $this->paymentMethod;
     }
 
     /**
@@ -228,8 +231,12 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
             $data['user'] = $sdk->user()->fill($userData);
         }
 
-        if ($createdAt = Type::getNullableDate($data, 'created_at')) {
-            $data['created_at'] = $createdAt;
+        if (isset($data['payment_method']) && \is_array($data['payment_method'])) {
+            $data['payment_method'] = PaymentMethod::make($this->getSdk())->fill($data['payment_method']);
+        }
+
+        if (isset($data['created_at']) && \is_string($data['created_at'])) {
+            $data['created_at'] = new DateTime($data['created_at']);
         }
 
         return parent::fill($data);
