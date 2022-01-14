@@ -53,9 +53,11 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
      */
     protected function rules(): array
     {
+        $types = array_values($this->actionTypes);
+
         return \array_merge(parent::rules(), [
             'authorization_flow' => 'required|array',
-            'authorization_flow.actions.next' => ['nullable', ValidType::of(...$this->actionTypes)],
+            'authorization_flow.actions.next' => ['nullable', ValidType::of(...$types)],
         ]);
     }
 
