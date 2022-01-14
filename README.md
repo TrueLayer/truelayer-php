@@ -11,7 +11,7 @@ This package simplifies working with the TrueLayer API, by:
 ## Installing with composer
 
 ```
-composer require @truelayer/php-sdk
+composer require truelayer/sdk
 ```
 
 ## Initialising the SDK
@@ -23,7 +23,7 @@ $sdk = \TrueLayer\Sdk::configure()
     ->clientId($clientId)
     ->clientSecret($clientSecret)
     ->keyId($kid)
-    ->pemFile($pemFilePath) // Or ->pem($contents)
+    ->pemFile($pemFilePath) // Or ->pem($contents) Or ->pemBase64($contents)
     ->create();
 ```
 
@@ -101,7 +101,21 @@ $paymentData = [
         ]
     ],
     'payment_method' => [
+        'type' => \TrueLayer\Constants\PaymentMethods::BANK_TRANSFER,
         'statement_reference' => 'Reference',
+        'provider_filter' => [
+            'countries' => [
+                \TrueLayer\Constants\Countries::GB,
+            ],
+            'release_channel' => \TrueLayer\Constants\ReleaseChannels::GENERAL_AVAILABILITY,
+            'customer_segments' => [
+                \TrueLayer\Constants\CustomerSegments::RETAIL,
+                \TrueLayer\Constants\CustomerSegments::BUSINESS,
+            ],
+            'provider_ids' => [
+                'mock-payments-gb-redirect',
+            ],
+        ],
     ],
 ];
 
@@ -133,7 +147,7 @@ $payment->getId();
 $payment->getAmountInMinor();
 $payment->getCreatedAt();
 $payment->getCurrency();
-$payment->getStatementReference();
+$payment->getPaymentMethod();
 $payment->toArray();
 ```
 

@@ -25,11 +25,11 @@ interface PaymentRequestInterface extends HasAttributesInterface
     public function currency(string $currency): PaymentRequestInterface;
 
     /**
-     * @param string $statementReference
+     * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface
      */
-    public function statementReference(string $statementReference): PaymentRequestInterface;
+    public function paymentMethod(PaymentMethodInterface $paymentMethod): PaymentRequestInterface;
 
     /**
      * @param BeneficiaryInterface $beneficiary

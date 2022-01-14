@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace TrueLayer\Tests\Mocks;
 
+use TrueLayer\Constants\Countries;
 use TrueLayer\Constants\Currencies;
+use TrueLayer\Constants\CustomerSegments;
+use TrueLayer\Constants\PaymentMethods;
+use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Models\Beneficiary\ScanBeneficiary;
+use TrueLayer\Models\Payment\PaymentMethod;
 
 class CreatePayment
 {
@@ -58,19 +64,38 @@ class CreatePayment
     }
 
     /**
-     * @param BeneficiaryInterface $beneficiary
-     * @param UserInterface        $user
+     * @return PaymentMethodInterface
+     */
+    public function paymentMethod(): PaymentMethodInterface
+    {
+        $filter = $this->sdk
+            ->providerFilter()
+            ->countries([Countries::GB])
+            ->customerSegments([CustomerSegments::RETAIL])
+            ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
+            ->providerIds(['mock-payments-gb-redirect']);
+
+        return PaymentMethod::make($this->sdk)
+            ->type(PaymentMethods::BANK_TRANSFER)
+            ->statementReference('Statement ref')
+            ->providerFilter($filter);
+    }
+
+    /**
+     * @param BeneficiaryInterface   $beneficiary
+     * @param UserInterface          $user
+     * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface
      */
-    public function payment(BeneficiaryInterface $beneficiary, UserInterface $user): PaymentRequestInterface
+    public function payment(BeneficiaryInterface $beneficiary, UserInterface $user, PaymentMethodInterface $paymentMethod): PaymentRequestInterface
     {
         return $this->sdk->payment()
             ->beneficiary($beneficiary)
             ->user($user)
             ->amountInMinor(1)
             ->currency(Currencies::GBP)
-            ->statementReference('Statement ref');
+            ->paymentMethod($paymentMethod);
     }
 
     /**

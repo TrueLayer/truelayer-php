@@ -28,9 +28,9 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getCurrency(): string;
 
     /**
-     * @return string
+     * @return PaymentMethodInterface
      */
-    public function getStatementReference(): string;
+    public function getPaymentMethod(): PaymentMethodInterface;
 
     /**
      * @return BeneficiaryInterface|null
