@@ -1,15 +1,16 @@
 ## Quick Links
 1. [Why use this package?](#why)
 2. [Getting started](#getting-started)
-3. [Converting to and from arrays](#arrays)
-4. [Creating a payment](#creating-a-payment)
+3. [Caching](#caching)
+4. [Converting to and from arrays](#arrays)
+5. [Creating a payment](#creating-a-payment)
    1. [Creating a beneficiary](#creating-a-beneficiary)
    2. [Creating a user](#creating-a-user)
    3. [Creating a payment method](#creating-a-payment-method)
    4. [Creating the payment](#creating-the-payment)
    5. [Creating a payment from an array](#creating-a-payment-from-array)
    6. [Redirecting to the Hosted Payments Page](#redirect-to-hpp)
-5. [Retrieving a payment's details](#retrieving-a-payment)
+6. [Retrieving a payment's details](#retrieving-a-payment)
    1. [Get the user](#get-the-user)
    2. [Get the beneficiary](#get-the-beneficiary)
    3. [Check a payment's status](#check-payment-status)
@@ -24,8 +25,8 @@
       5. [Settled Status](#status-settled)
       6. [Failed Status](#status-failed)
       7. [Authorization flow config](#auth-flow-config)
-6. [Custom API calls](#custom-api-calls)
-7. [Error Handling](#error-handling)
+7. [Custom API calls](#custom-api-calls)
+8. [Error Handling](#error-handling)
 
 <a name="why"></a>
 ## Why use this package?
@@ -78,6 +79,23 @@ $sdk = \TrueLayer\Sdk::configure()
     ->useProduction() // optionally, pass a boolean flag to toggle between production/sandbox mode.
     ->create(); 
 ```
+
+<a name="caching"></a>
+## Caching
+
+The SDK supports caching the `client_credentials` grant access token needed to access, create and modify resources on TrueLayer's systems.
+In order to enable it, you need to provide an implementation of the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
+
+You can generate a random encryption key by running `openssl rand -hex 16`. This key must be considered secret and stored next to the client secrets obtained from TrueLayer's console.
+
+```php
+$sdk = \TrueLayer\Sdk::configure()
+    ...
+    ->cache(\Illuminate\Support\Facades\App::make('cache')->driver(), $encryptionKey)
+    ->create();
+```
+
+A good example of a caching library that implements PSR-16 is [illuminate/cache](https://github.com/illuminate/cache).
 
 <a name="arrays"></a>
 ## Converting to and from arrays
@@ -541,4 +559,18 @@ Thrown if the request signer cannot be initialised or signing fails.
 \TrueLayer\Exceptions\SignerException
 ```
 
+### EncryptException
 
+Thrown when the SDK fails to encrypt a payload that needs to be cached.
+ 
+```php
+\TrueLayer\Exceptions\EncryptException
+```
+
+### DecryptException
+
+Thrown if the SDK fails to decrypt the value of a cached key.
+
+```php
+\TrueLayer\Exceptions\DecryptException
+```
