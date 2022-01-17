@@ -21,13 +21,13 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
 function assertCommon(PaymentRetrievedInterface $payment)
 {
-    expect($payment->getId())->toBeString();
-    expect($payment->getStatus())->toBeString();
-    expect($payment->getBeneficiary())->toBeInstanceOf(BeneficiaryInterface::class);
-    expect($payment->getUser())->toBeInstanceOf(UserInterface::class);
-    expect($payment->getCurrency())->toBeString();
-    expect($payment->getAmountInMinor())->toBeInt();
-    expect($payment->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
+    \expect($payment->getId())->toBeString();
+    \expect($payment->getStatus())->toBeString();
+    \expect($payment->getBeneficiary())->toBeInstanceOf(BeneficiaryInterface::class);
+    \expect($payment->getUser())->toBeInstanceOf(UserInterface::class);
+    \expect($payment->getCurrency())->toBeString();
+    \expect($payment->getAmountInMinor())->toBeInt();
+    \expect($payment->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
 }
 
 \it('handles payment authorization required', function () {
@@ -41,7 +41,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment authorizing - provider selection', function () {
@@ -71,7 +71,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next->getProviders()[0]->getBgColor())->toBe('#FFFFFF');
     \expect($next->getProviders()[0]->getCountryCode())->toBe('GB');
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment authorization flow config', function () {
@@ -83,7 +83,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getAuthorizationFlowConfig()->isProviderSelectionSupported())->toBe(true);
     \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBe('https://penny.t7r.dev/redirect/v3');
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment authorizing - redirect', function () {
@@ -100,7 +100,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next->getMetadataType())->toBe('provider');
     \expect($next->getProvider())->toBeNull();
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment authorizing - wait', function () {
@@ -114,7 +114,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next)->toBeInstanceOf(WaitActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::WAIT);
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment authorized', function () {
@@ -130,7 +130,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment executed', function () {
@@ -147,7 +147,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment settled', function () {
@@ -165,7 +165,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
     \expect($payment->getSettledAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment failed', function () {
@@ -184,7 +184,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
 
-    assertCommon($payment);
+    \assertCommon($payment);
 });
 
 \it('handles payment with no auth flow config', function () {
