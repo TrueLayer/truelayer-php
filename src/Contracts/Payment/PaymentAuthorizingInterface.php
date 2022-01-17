@@ -15,7 +15,7 @@ interface PaymentAuthorizingInterface extends PaymentRetrievedInterface
     public function getAuthorizationFlowNextAction(): ?ActionInterface;
 
     /**
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function getAuthorizationFlowConfig(): ConfigurationInterface;
+    public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
 }

@@ -9,6 +9,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
+use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Provider\ProviderFilterInterface;
@@ -17,6 +18,7 @@ use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Models\Beneficiary\BeneficiaryBuilder;
 use TrueLayer\Models\Hpp;
+use TrueLayer\Models\Payment\PaymentMethod;
 use TrueLayer\Models\Payment\PaymentRequest;
 use TrueLayer\Models\Provider\ProviderFilter;
 use TrueLayer\Models\User;
@@ -94,6 +96,14 @@ final class Sdk implements SdkInterface
     public function providerFilter(): ProviderFilterInterface
     {
         return ProviderFilter::make($this);
+    }
+
+    /**
+     * @return PaymentMethodInterface
+     */
+    public function paymentMethod(): PaymentMethodInterface
+    {
+        return PaymentMethod::make($this);
     }
 
     /**

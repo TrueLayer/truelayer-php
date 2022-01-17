@@ -9,7 +9,7 @@ use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 interface PaymentAuthorizedInterface extends PaymentRetrievedInterface
 {
     /**
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function getAuthorizationFlowConfig(): ConfigurationInterface;
+    public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
 }

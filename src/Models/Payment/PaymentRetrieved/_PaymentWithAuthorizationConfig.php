@@ -36,17 +36,17 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'authorization_flow' => 'required|array',
+            'authorization_flow' => ['nullable', 'array'],
             'authorization_flow.configuration' => ['required', ValidType::of(Configuration::class)],
         ]);
     }
 
     /**
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function getAuthorizationFlowConfig(): ConfigurationInterface
+    public function getAuthorizationFlowConfig(): ?ConfigurationInterface
     {
-        return $this->configuration;
+        return $this->configuration ?? null;
     }
 
     /**

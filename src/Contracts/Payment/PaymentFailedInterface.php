@@ -25,7 +25,7 @@ interface PaymentFailedInterface extends PaymentRetrievedInterface
     public function getFailureReason(): ?string;
 
     /**
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function getAuthorizationFlowConfig(): ConfigurationInterface;
+    public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
 }

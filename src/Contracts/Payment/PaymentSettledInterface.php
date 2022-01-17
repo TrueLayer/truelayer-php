@@ -20,7 +20,7 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
     public function getExecutedAt(): Carbon;
 
     /**
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
-    public function getAuthorizationFlowConfig(): ConfigurationInterface;
+    public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
 }
