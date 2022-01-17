@@ -6,6 +6,7 @@ namespace TrueLayer\Contracts\Sdk;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
+use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\SignerException;
 
 interface SdkConfigInterface
@@ -113,16 +114,17 @@ interface SdkConfigInterface
     public function httpClient(ClientInterface $httpClient): self;
 
     /**
-     * @return CacheInterface|null
+     * @return EncryptedCacheInterface|null
      */
-    public function getCache(): ?CacheInterface;
+    public function getCache(): ?EncryptedCacheInterface;
 
     /**
      * @param CacheInterface $cache
+     * @param string         $encryptionKey
      *
      * @return $this
      */
-    public function cache(CacheInterface $cache): self;
+    public function cache(CacheInterface $cache, string $encryptionKey): self;
 
     /**
      * @throws SignerException

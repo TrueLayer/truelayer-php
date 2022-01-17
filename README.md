@@ -79,6 +79,23 @@ $sdk = \TrueLayer\Sdk::configure()
     ->create(); 
 ```
 
+<a name="caching"></a>
+### Caching
+
+The SDK supports caching the `client_credentials` grant access token needed to access, create and modify resources on TrueLayer's systems.
+In order to enable it, you need to provide an implementation of the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
+
+You can generate a random encryption key by running `openssl rand -hex 16`. This key must be considered secret and stored next to the client secrets obtained from TrueLayer's console.
+
+```php
+$sdk = \TrueLayer\Sdk::configure()
+    ...
+    ->cache(\Illuminate\Support\Facades\App::make('cache')->driver(), $encryptionKey)
+    ->create();
+```
+
+A good example of a caching library that implements PSR-16 is [illuminate/cache](https://github.com/illuminate/cache).
+
 <a name="arrays"></a>
 ## Converting to and from arrays
 
