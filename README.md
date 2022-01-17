@@ -559,4 +559,18 @@ Thrown if the request signer cannot be initialised or signing fails.
 \TrueLayer\Exceptions\SignerException
 ```
 
+### EncryptException
 
+Thrown when the SDK fails to encrypt a payload that needs to be cached.
+ 
+```php
+\TrueLayer\Exceptions\EncryptException
+```
+
+### DecryptException
+
+Thrown if the SDK fails to decrypt the value of a cached key.
+
+```php
+\TrueLayer\Exceptions\DecryptException
+```
