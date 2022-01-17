@@ -37,7 +37,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     {
         return \array_merge(parent::rules(), [
             'authorization_flow' => ['nullable', 'array'],
-            'authorization_flow.configuration' => ['required', ValidType::of(Configuration::class)],
+            'authorization_flow.configuration' => ['nullable', ValidType::of(Configuration::class)],
         ]);
     }
 
