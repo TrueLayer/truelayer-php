@@ -16,7 +16,8 @@ composer require truelayer/sdk
 
 ## Initialising the SDK
 
-You will need to go to the TrueLayer console and create your credentials. You can then pass them to the SDK configurator:
+You will need to go to the TrueLayer console and create your credentials which tou can then to the SDK configurator. 
+You will also need to provide an HTTP client that implements [PSR-18](https://www.php-fig.org/psr/psr-18/):
 
 ```php
 $sdk = \TrueLayer\Sdk::configure()
@@ -24,6 +25,7 @@ $sdk = \TrueLayer\Sdk::configure()
     ->clientSecret($clientSecret)
     ->keyId($kid)
     ->pemFile($pemFilePath) // Or ->pem($contents) Or ->pemBase64($contents)
+    ->httpClient(new \GuzzleHttp\Client())
     ->create();
 ```
 
@@ -32,7 +34,8 @@ By default, the SDK will initialise in `sandbox` mode. To switch to production c
 ```php
 $sdk = \TrueLayer\Sdk::configure()
     ...
-    ->useProduction(); // optionally, pass a boolean flag to toggle between production/sandbox mode.
+    ->useProduction() // optionally, pass a boolean flag to toggle between production/sandbox mode.
+    ->create(); 
 ```
 
 ## Creating a payment
@@ -56,7 +59,16 @@ $user = $sdk->user()
     ->email('jane.doe@truelayer.com');
 ```
 
-### 3. Creating the payment
+### 3. Creating a payment method
+
+```php
+$paymentMethod = \TrueLayer\Models\Payment\PaymentMethod::make($sdk)->fill([
+    'type' => \TrueLayer\Constants\PaymentMethods::BANK_TRANSFER,
+    'statement_reference' => 'Reference',
+]);
+```
+
+### 4. Creating the payment
 
 ```php
 $payment = $sdk->payment()
@@ -64,7 +76,7 @@ $payment = $sdk->payment()
     ->user($user)
     ->amountInMinor(1)
     ->currency(\TrueLayer\Constants\Currencies::GBP) // You can use other currencies defined in this class.
-    ->statementReference('Statement reference')
+    ->paymentMethod($paymentMethod)
     ->create();
 ```
 
@@ -78,7 +90,7 @@ $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see belo
 $payment->toArray(); // Convert to array
 ```
 
-### 4. Working with arrays
+### 5. Working with arrays
 
 If you prefer, you can work directly with arrays by calling the `fill` method:
 
@@ -122,7 +134,7 @@ $paymentData = [
 $payment = $sdk->payment()->fill($paymentData)->create();
 ```
 
-### 5. Redirecting to the Hosted Payments Page
+### 6. Redirecting to the Hosted Payments Page
 
 TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box, all action types.
 You can easily get the URL to redirect to after creating your payment:
@@ -204,10 +216,10 @@ You can check for the status by using one of the following helper methods:
 $payment = $sdk->getPayment($paymentId);
 $payment->isAuthorizationRequired();
 $payment->isAuthorizing();
-$payment->isAuthorized();
-$payment->isExecuted();
+$payment->isAuthorized(); // Will also return false when the payment has progressed to executed, failed or settled states.
+$payment->isExecuted(); // Will also return false when the payment has progressed to failed or settled states.
+$payment->isSettled(); 
 $payment->isFailed();
-$payment->isSettled();
 ```
 
 Or you can get the status as a string and compare it to the provided constants in `PaymentStatus`:

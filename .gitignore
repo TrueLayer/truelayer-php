@@ -6,3 +6,4 @@ example/client-secret.txt
 example/private-key.pem
 .php-cs-fixer.cache
 example/
+composer.lock

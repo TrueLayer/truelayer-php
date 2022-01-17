@@ -207,7 +207,7 @@ abstract class Model implements ArrayableInterface, HasAttributesInterface
         $results = [];
 
         foreach ($array as $key => $value) {
-            if (\is_array($value) && !empty($value) && !Arr::isList($value)) {
+            if (\is_array($value) && !empty($value) && Arr::isAssoc($value)) {
                 $results = \array_merge($results, $this->flatten($value, $prepend . $key . '.'));
             } else {
                 $results[$prepend . $key] = $value;

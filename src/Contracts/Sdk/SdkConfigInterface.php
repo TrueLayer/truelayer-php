@@ -101,9 +101,9 @@ interface SdkConfigInterface
     public function useProduction(bool $useProduction): self;
 
     /**
-     * @return ClientInterface|null
+     * @return ClientInterface
      */
-    public function getHttpClient(): ?ClientInterface;
+    public function getHttpClient(): ClientInterface;
 
     /**
      * @param ClientInterface $httpClient

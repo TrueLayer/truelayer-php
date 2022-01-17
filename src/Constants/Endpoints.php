@@ -6,7 +6,7 @@ namespace TrueLayer\Constants;
 
 class Endpoints
 {
-    public const AUTH_PROD_BASE = 'https://auth.truelayer.com';
+    public const AUTH_PROD_URL = 'https://auth.truelayer.com';
     public const AUTH_SANDBOX_URL = 'https://auth.truelayer-sandbox.com';
 
     public const API_PROD_URL = 'https://api.truelayer.com';

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Sdk;
 
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface;
@@ -62,15 +61,13 @@ final class SdkFactory implements SdkFactoryInterface
     }
 
     /**
-     * Build the HTTP client
-     * If the user provides a PSR client we can use that, otherwise
-     * we fallback to the Guzzle implementation.
+     * Build the HTTP client.
      *
      * @param SdkConfigInterface $config
      */
     private function makeHttpClient(SdkConfigInterface $config): void
     {
-        $this->httpClient = $config->getHttpClient() ?: new Client();
+        $this->httpClient = $config->getHttpClient();
     }
 
     /**
@@ -97,7 +94,7 @@ final class SdkFactory implements SdkFactoryInterface
     private function makeAuthToken(SdkConfigInterface $config): void
     {
         $authBaseUri = $config->shouldUseProduction()
-            ? Endpoints::AUTH_PROD_BASE
+            ? Endpoints::AUTH_PROD_URL
             : Endpoints::AUTH_SANDBOX_URL;
 
         $authClient = new ApiClient($this->httpClient, $authBaseUri);

@@ -49,9 +49,9 @@ class SdkConfig implements SdkConfigInterface
     private bool $useProduction = false;
 
     /**
-     * @var ClientInterface|null
+     * @var ClientInterface
      */
-    private ?ClientInterface $httpClient = null;
+    private ClientInterface $httpClient;
 
     /**
      * @var CacheInterface|null
@@ -223,9 +223,9 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return ClientInterface|null
+     * @return ClientInterface
      */
-    public function getHttpClient(): ?ClientInterface
+    public function getHttpClient(): ClientInterface
     {
         return $this->httpClient;
     }
