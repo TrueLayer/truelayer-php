@@ -234,7 +234,7 @@ $url = $sdk->payment()
     ->toUrl();
 ```
 
-<a name="retrieving-a-payment"></>
+<a name="retrieving-a-payment"></a>
 # Retrieving a payment's details
 
 ```php
