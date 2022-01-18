@@ -8,5 +8,4 @@ use TrueLayer\Contracts\ArrayableInterface;
 
 interface SchemeIdentifierInterface extends ArrayableInterface
 {
-
 }

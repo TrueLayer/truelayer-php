@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models\Payment\PaymentRetrieved;
 
-use Illuminate\Support\Carbon;
 use TrueLayer\Constants\ExternalAccountTypes;
-use TrueLayer\Contracts\Payment\PaymentSettledInterface;
 use TrueLayer\Contracts\Payment\SourceOfFundsInterface;
 use TrueLayer\Contracts\SchemeIdentifier\SchemeIdentifierInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -52,7 +50,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
     protected array $arrayFields = [
         'scheme_identifiers',
         'external_account_id',
-        'account_holder_name'
+        'account_holder_name',
     ];
 
     /**
@@ -64,7 +62,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
             'external_account_id' => 'nullable|string',
             'account_holder_name' => 'nullable|string',
             'scheme_identifiers' => 'array',
-            'scheme_identifiers.*' => ValidType::of(Scan::class, Iban::class, Bban::class, Nrb::class)
+            'scheme_identifiers.*' => ValidType::of(Scan::class, Iban::class, Bban::class, Nrb::class),
         ];
     }
 
@@ -78,6 +76,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
 
     /**
      * @param SchemeIdentifierInterface[] $schemeIdentifiers
+     *
      * @return SourceOfFundsInterface
      */
     public function schemeIdentifiers(array $schemeIdentifiers): SourceOfFundsInterface
@@ -97,6 +96,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
 
     /**
      * @param string $externalAccountId
+     *
      * @return SourceOfFundsInterface
      */
     public function externalAccountId(string $externalAccountId): SourceOfFundsInterface
@@ -116,6 +116,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
 
     /**
      * @param string $accountHolderName
+     *
      * @return SourceOfFundsInterface
      */
     public function accountHolderName(string $accountHolderName): SourceOfFundsInterface
@@ -136,9 +137,8 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
     public function fill(array $data): self
     {
         if ($schemeIdentifiers = Type::getNullableArray($data, 'scheme_identifiers')) {
-
-            $data['scheme_identifiers'] = array_map(function ($data) {
-                if (!is_array($data)) {
+            $data['scheme_identifiers'] = \array_map(function ($data) {
+                if (!\is_array($data)) {
                     throw new InvalidArgumentException('Scheme identifiers should be array.');
                 }
 
@@ -149,7 +149,6 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
                 }
 
                 return $this->schemeIdentifierTypes[$type]::make($this->getSdk())->fill($data);
-
             }, $schemeIdentifiers);
         }
 

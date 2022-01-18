@@ -35,7 +35,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'source_of_funds' => [ 'required', ValidType::of(SourceOfFunds::class)],
+            'source_of_funds' => ['required', ValidType::of(SourceOfFunds::class)],
             'executed_at' => 'required|date',
             'settled_at' => 'required|date',
         ]);

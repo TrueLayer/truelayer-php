@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Sdk;
 
+use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
+use TrueLayer\Constants\Encryption;
+use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Services\Util\EncryptedCache;
 
 class SdkConfig implements SdkConfigInterface
 {
@@ -54,9 +58,9 @@ class SdkConfig implements SdkConfigInterface
     private ClientInterface $httpClient;
 
     /**
-     * @var CacheInterface|null
+     * @var EncryptedCacheInterface|null
      */
-    private ?CacheInterface $cache = null;
+    private ?EncryptedCacheInterface $cache = null;
 
     /**
      * @param SdkFactoryInterface $factory
@@ -243,21 +247,24 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return CacheInterface|null
+     * @return EncryptedCacheInterface|null
      */
-    public function getCache(): ?CacheInterface
+    public function getCache(): ?EncryptedCacheInterface
     {
         return $this->cache;
     }
 
     /**
      * @param CacheInterface $cache
+     * @param string         $encryptionKey
      *
      * @return SdkConfigInterface
      */
-    public function cache(CacheInterface $cache): SdkConfigInterface
+    public function cache(CacheInterface $cache, string $encryptionKey): SdkConfigInterface
     {
-        $this->cache = $cache;
+        //TODO validate key length
+        $encrypter = new Encrypter($encryptionKey, Encryption::ALGORITHM);
+        $this->cache = new EncryptedCache($cache, $encrypter);
 
         return $this;
     }

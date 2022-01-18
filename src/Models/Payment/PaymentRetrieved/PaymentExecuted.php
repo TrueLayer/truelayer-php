@@ -42,7 +42,7 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     {
         return \array_merge(parent::rules(), [
             'executed_at' => 'required|date',
-            'source_of_funds' => [ 'required', ValidType::of(SourceOfFunds::class)]
+            'source_of_funds' => ['required', ValidType::of(SourceOfFunds::class)],
         ]);
     }
 

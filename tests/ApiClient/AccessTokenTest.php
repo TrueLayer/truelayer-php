@@ -77,7 +77,7 @@ use TrueLayer\Tests\Mocks;
 \it('reuses cached access token across requests',
     function () {
         $okResponse = new Response(200);
-        $encrypter = new \Illuminate\Encryption\Encrypter(\hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
+        $encrypter = new \Illuminate\Encryption\Encrypter('715c31b88a56954634c2e15c77c9caaa', \TrueLayer\Constants\Encryption::ALGORITHM);
 
         $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
         $cacheMock->shouldReceive('has')->andReturnTrue();
@@ -88,11 +88,11 @@ use TrueLayer\Tests\Mocks;
             'retrieved_at' => (int) Carbon::now()->timestamp,
         ]));
         $client1 = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
-            ->cache($cacheMock)
+            ->cache($cacheMock, '715c31b88a56954634c2e15c77c9caaa')
             ->create()
             ->getApiClient();
         $client2 = \rawSdk([$okResponse, $okResponse])
-            ->cache($cacheMock)
+            ->cache($cacheMock, '715c31b88a56954634c2e15c77c9caaa')
             ->create()
             ->getApiClient();
 
@@ -108,7 +108,7 @@ use TrueLayer\Tests\Mocks;
 
 \it('fetches a new token if the cached one is expired', function () {
     $okResponse = new Response(200);
-    $encrypter = new \Illuminate\Encryption\Encrypter(\hash('md5', 'client_secret'), \TrueLayer\Constants\Encryption::ALGORITHM);
+    $encrypter = new \Illuminate\Encryption\Encrypter('715c31b88a56954634c2e15c77c9caaa', \TrueLayer\Constants\Encryption::ALGORITHM);
 
     $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
@@ -120,7 +120,7 @@ use TrueLayer\Tests\Mocks;
     ]));
 
     $client = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
-        ->cache($cacheMock)
+        ->cache($cacheMock, '715c31b88a56954634c2e15c77c9caaa')
         ->create()
         ->getApiClient();
 

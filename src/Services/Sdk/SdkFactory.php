@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface;
-use TrueLayer\Constants\Encryption;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Auth\AccessTokenInterface;
@@ -19,7 +17,6 @@ use TrueLayer\Sdk;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
-use TrueLayer\Services\Util\EncryptedCache;
 
 final class SdkFactory implements SdkFactoryInterface
 {
@@ -100,14 +97,9 @@ final class SdkFactory implements SdkFactoryInterface
         $authClient = new ApiClient($this->httpClient, $authBaseUri);
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
 
-        $encrypter = new Encrypter(\hash('md5', $config->getClientSecret()), Encryption::ALGORITHM);
-        $encryptedCache = $config->getCache()
-            ? new EncryptedCache($config->getCache(), $encrypter)
-            : null;
-
         $this->authToken = new AccessToken(
             $authClient,
-            $encryptedCache,
+            $config->getCache(),
             $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret(),
