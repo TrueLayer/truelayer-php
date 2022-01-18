@@ -6,5 +6,5 @@ namespace TrueLayer\Constants;
 
 class Encryption
 {
-    public const ALGORITHM = 'AES-256-GCM';
+    public const ALGORITHM = 'AES-256-CBC';
 }

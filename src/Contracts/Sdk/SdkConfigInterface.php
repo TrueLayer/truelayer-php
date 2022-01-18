@@ -7,6 +7,7 @@ namespace TrueLayer\Contracts\Sdk;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Contracts\EncryptedCacheInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 
 interface SdkConfigInterface
@@ -123,6 +124,8 @@ interface SdkConfigInterface
      * @param string         $encryptionKey
      *
      * @return $this
+     *
+     * @throws InvalidArgumentException
      */
     public function cache(CacheInterface $cache, string $encryptionKey): self;
 
