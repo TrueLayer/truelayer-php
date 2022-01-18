@@ -45,8 +45,12 @@ final class Type
     {
         $value = Arr::get($data, $key);
 
-        if (\is_string($value) || $value instanceof \DateTimeInterface) {
+        if (\is_string($value)) {
             return Carbon::parse($value);
+        }
+
+        if ($value instanceof \DateTimeInterface) {
+            return Carbon::instance($value);
         }
 
         return null;
