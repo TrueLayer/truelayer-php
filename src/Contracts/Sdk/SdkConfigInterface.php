@@ -123,9 +123,9 @@ interface SdkConfigInterface
      * @param CacheInterface $cache
      * @param string         $encryptionKey
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function cache(CacheInterface $cache, string $encryptionKey): self;
 
