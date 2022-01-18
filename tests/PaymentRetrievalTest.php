@@ -15,7 +15,12 @@ use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
 use TrueLayer\Contracts\Payment\PaymentFailedInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Contracts\Payment\PaymentSettledInterface;
+use TrueLayer\Contracts\Payment\SourceOfFundsInterface;
 use TrueLayer\Contracts\ProviderInterface;
+use TrueLayer\Contracts\SchemeIdentifier\BbanDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\IbanDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\NrbDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\ScanDetailsInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Tests\Mocks\PaymentResponse;
 
@@ -147,6 +152,11 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
 
+    expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
+    expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
+    expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeArray();
+    expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeEmpty();
+
     assertCommon($payment);
 });
 
@@ -164,6 +174,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
     \expect($payment->getSettledAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    expect($payment->getSourceOfFunds())->toBeInstanceOf(SourceOfFundsInterface::class);
+
+    expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
+    expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
+    expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeArray();
+    expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeEmpty();
 
     assertCommon($payment);
 });
@@ -193,4 +209,34 @@ function assertCommon(PaymentRetrievedInterface $payment)
 
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeNull();
+});
+
+it('handles payment source of funds', function () {
+    /** @var PaymentExecutedInterface $payment */
+    $payment = sdk(PaymentResponse::executedWithSourceOfFundsData())->getPayment('1');
+
+    $sourceOfFunds = $payment->getSourceOfFunds();
+    expect($sourceOfFunds->getAccountHolderName())->toBe('John Doe');
+    expect($sourceOfFunds->getExternalAccountId())->toBe('123');
+    
+    /** @var ScanDetailsInterface $scan */
+    $scan = $sourceOfFunds->getSchemeIdentifiers()[0];
+    expect($scan)->toBeInstanceOf(ScanDetailsInterface::class);
+    expect($scan->getAccountNumber())->toBe('12345678');
+    expect($scan->getSortCode())->toBe('010203');
+
+    /** @var IbanDetailsInterface $iban */
+    $iban = $sourceOfFunds->getSchemeIdentifiers()[1];
+    expect($iban)->toBeInstanceOf(IbanDetailsInterface::class);
+    expect($iban->getIban())->toBe('AT483200000012345864');
+
+    /** @var BbanDetailsInterface $bban */
+    $bban = $sourceOfFunds->getSchemeIdentifiers()[2];
+    expect($bban)->toBeInstanceOf(BbanDetailsInterface::class);
+    expect($bban->getBban())->toBe('539007547034');
+
+    /** @var NrbDetailsInterface $nrb */
+    $nrb = $sourceOfFunds->getSchemeIdentifiers()[3];
+    expect($nrb)->toBeInstanceOf(NrbDetailsInterface::class);
+    expect($nrb->getNrb())->toBe('61109010140000071219812874');
 });

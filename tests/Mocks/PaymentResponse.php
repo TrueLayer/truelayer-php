@@ -59,6 +59,12 @@ class PaymentResponse
         return new Response(200, [], '{"id":"6a582c5f-ec17-443c-9edb-141e9f8ab1ce","amount_in_minor":1,"currency":"GBP","beneficiary":{"type":"merchant_account","name":"Test","id":"82b98c1a-8dd9-49c2-b23b-666457e415b2"},"user":{"id":"2ac7b0af-a329-4eff-a3db-10a4d7263d24","name":"Alex","email":"aaaa@a.com"},"payment_method":{"type":"bank_transfer","statement_reference":"Statement ref"},"created_at":"2022-01-13T22:12:48.935404Z","status":"executed","authorization_flow":null,"executed_at":"2022-01-13T22:13:09.914177Z","source_of_funds":{"type":"external_account","scheme_identifiers":[]}}');
     }
 
+    public static function executedWithSourceOfFundsData(): Response
+    {
+        return new Response(200, [], '{"id":"6a582c5f-ec17-443c-9edb-141e9f8ab1ce","amount_in_minor":1,"currency":"GBP","beneficiary":{"type":"merchant_account","name":"Test","id":"82b98c1a-8dd9-49c2-b23b-666457e415b2"},"user":{"id":"2ac7b0af-a329-4eff-a3db-10a4d7263d24","name":"Alex","email":"aaaa@a.com"},"payment_method":{"type":"bank_transfer","statement_reference":"Statement ref"},"created_at":"2022-01-13T22:12:48.935404Z","status":"executed","authorization_flow":null,"executed_at":"2022-01-13T22:13:09.914177Z","source_of_funds":{"type":"external_account","scheme_identifiers":[{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},{"type":"iban","iban":"AT483200000012345864"},{"type":"bban","bban":"539007547034"},{"type":"nrb","nrb":"61109010140000071219812874"}]
+,"external_account_id":"123","account_holder_name":"John Doe"}}');
+    }
+
     public static function settled(): Response
     {
         return new Response(200, [], '{"id":"6a582c5f-ec17-443c-9edb-141e9f8ab1ce","amount_in_minor":1,"currency":"GBP","beneficiary":{"type":"merchant_account","name":"Test","id":"82b98c1a-8dd9-49c2-b23b-666457e415b2"},"user":{"id":"2ac7b0af-a329-4eff-a3db-10a4d7263d24","name":"Alex","email":"aaaa@a.com"},"payment_method":{"type":"bank_transfer","statement_reference":"Statement ref"},"created_at":"2022-01-13T22:12:48.935404Z","status":"settled","authorization_flow":{"configuration":{"provider_selection":{"status":"supported"},"redirect":{"status":"supported","return_uri":"https://penny.t7r.dev/redirect/v3"}}},"executed_at":"2022-01-13T22:13:09.914177Z","settled_at":"2022-01-13T22:13:09.914177Z","source_of_funds":{"type":"external_account","scheme_identifiers":[]}}');

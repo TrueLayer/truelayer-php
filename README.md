@@ -24,6 +24,7 @@
       5. [Settled Status](#status-settled)
       6. [Failed Status](#status-failed)
       7. [Authorization flow config](#auth-flow-config)
+      8. [Source of funds](#source-of-funds)
 6. [Custom API calls](#custom-api-calls)
 7. [Error Handling](#error-handling)
 
@@ -409,7 +410,8 @@ use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
 
 if ($payment instanceof PaymentExecutedInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
-    $payment->getAuthorizationFlowConfig(); // see authorization flow config
+    $payment->getAuthorizationFlowConfig(); // See authorization flow config
+    $payment->getSourceOfFunds(); // See source of funds
 }
 ```
 
@@ -424,7 +426,8 @@ use TrueLayer\Contracts\Payment\PaymentSettledInterface;
 if ($payment instanceof PaymentSettledInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
     $payment->getSettledAt(); // The date and time the payment was settled at
-    $payment->getAuthorizationFlowConfig(); // see authorization flow config
+    $payment->getAuthorizationFlowConfig(); // See authorization flow config
+    $payment->getSourceOfFunds(); // See source of funds
 }
 ```
 
@@ -457,6 +460,41 @@ if ($payment instanceof PaymentExecutedInterface) {
     $config->isRedirectSupported() // Is redirect supported or not
     $config->getRedirectReturnUri(); // The URL the user will be redirected back once the flow on the third-party's website is completed
     $config->isProviderSelectionSupported(); // Is provider selection supported or not
+}
+```
+
+<a name="source-of-funds"></a>
+### Source of funds
+
+```php
+use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
+use TrueLayer\Contracts\Payment\PaymentSettledInterface;
+use TrueLayer\Contracts\SchemeIdentifier\ScanDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\IbanDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\BbanDetailsInterface;
+use TrueLayer\Contracts\SchemeIdentifier\NrbDetailsInterface;
+
+if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentSettledInterface) {
+    $sourceOfFunds = $payment->getSourceOfFunds();
+    $sourceOfFunds->getAccountHolderName(); // The unique ID for the external account
+    $sourceOfFunds->getExternalAccountId(); // The account holder name for the external account
+    $sourceOfFunds->toArray();
+    
+    foreach ($sourceOfFunds->getSchemeIdentifiers() as $schemeIdentifier) {
+        if ($schemeIdentifier instanceof ScanDetailsInterface) {
+            $schemeIdentifier->getSortCode();
+            $schemeIdentifier->getAccountNumber();
+        }
+        if ($schemeIdentifier instanceof IbanDetailsInterface) {
+            $schemeIdentifier->getIban();
+        }
+        if ($schemeIdentifier instanceof BbanDetailsInterface) {
+            $schemeIdentifier->getBban();
+        }
+        if ($schemeIdentifier instanceof NrbDetailsInterface) {
+            $schemeIdentifier->getNrb();
+        }
+    }
 }
 ```
 

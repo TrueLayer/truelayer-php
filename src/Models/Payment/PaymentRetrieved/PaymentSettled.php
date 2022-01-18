@@ -6,9 +6,11 @@ namespace TrueLayer\Models\Payment\PaymentRetrieved;
 
 use Illuminate\Support\Carbon;
 use TrueLayer\Contracts\Payment\PaymentSettledInterface;
+use TrueLayer\Contracts\Payment\SourceOfFundsInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Services\Util\Type;
+use TrueLayer\Validation\ValidType;
 
 final class PaymentSettled extends _PaymentWithAuthorizationConfig implements PaymentSettledInterface
 {
@@ -16,6 +18,11 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
      * @var Carbon
      */
     protected Carbon $executedAt;
+
+    /**
+     * @var SourceOfFundsInterface
+     */
+    protected SourceOfFundsInterface $sourceOfFunds;
 
     /**
      * @var Carbon
@@ -28,6 +35,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
+            'source_of_funds' => [ 'required', ValidType::of(SourceOfFunds::class)],
             'executed_at' => 'required|date',
             'settled_at' => 'required|date',
         ]);
@@ -39,6 +47,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function arrayFields(): array
     {
         return \array_merge(parent::arrayFields(), [
+            'source_of_funds',
             'executed_at',
             'settled_at',
         ]);
@@ -50,6 +59,14 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     public function getExecutedAt(): Carbon
     {
         return $this->executedAt;
+    }
+
+    /**
+     * @return SourceOfFundsInterface
+     */
+    public function getSourceOfFunds(): SourceOfFundsInterface
+    {
+        return $this->sourceOfFunds;
     }
 
     /**
@@ -72,6 +89,10 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     {
         $data['executed_at'] = Type::getNullableDate($data, 'executed_at');
         $data['settled_at'] = Type::getNullableDate($data, 'settled_at');
+
+        if ($sourceOfFunds = Type::getNullableArray($data, 'source_of_funds')) {
+            $data['source_of_funds'] = SourceOfFunds::make($this->getSdk())->fill($sourceOfFunds);
+        }
 
         return parent::fill($data);
     }

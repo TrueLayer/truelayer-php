@@ -10,6 +10,11 @@ use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
 interface PaymentSettledInterface extends PaymentRetrievedInterface
 {
     /**
+     * @return SourceOfFundsInterface
+     */
+    public function getSourceOfFunds(): SourceOfFundsInterface;
+
+    /**
      * @return Carbon
      */
     public function getSettledAt(): Carbon;
