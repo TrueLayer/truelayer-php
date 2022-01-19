@@ -12,6 +12,7 @@ use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Contracts\Sdk\SdkConfigInterface;
 use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
 use TrueLayer\Contracts\Sdk\SdkInterface;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Services\Util\EncryptedCache;
 
@@ -258,12 +259,19 @@ class SdkConfig implements SdkConfigInterface
      * @param CacheInterface $cache
      * @param string         $encryptionKey
      *
+     * @throws InvalidArgumentException
+     *
      * @return SdkConfigInterface
      */
     public function cache(CacheInterface $cache, string $encryptionKey): SdkConfigInterface
     {
         //TODO validate key length
-        $encrypter = new Encrypter($encryptionKey, Encryption::ALGORITHM);
+        $binEncryptionKey = \hex2bin($encryptionKey);
+        if (!$binEncryptionKey) {
+            throw new InvalidArgumentException('Invalid encryption key. Please use `openssl rand -hex 32` to generate a valid one.');
+        }
+
+        $encrypter = new Encrypter($binEncryptionKey, Encryption::ALGORITHM);
         $this->cache = new EncryptedCache($cache, $encrypter);
 
         return $this;
