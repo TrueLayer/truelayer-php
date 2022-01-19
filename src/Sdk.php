@@ -9,6 +9,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
+use TrueLayer\Contracts\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
@@ -22,7 +23,8 @@ use TrueLayer\Models\Payment\PaymentMethod;
 use TrueLayer\Models\Payment\PaymentRequest;
 use TrueLayer\Models\Provider\ProviderFilter;
 use TrueLayer\Models\User;
-use TrueLayer\Services\Api\PaymentApi;
+use TrueLayer\Services\Api\MerchantAccountsApi;
+use TrueLayer\Services\Api\PaymentsApi;
 use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Services\Sdk\SdkFactory;
 
@@ -127,7 +129,7 @@ final class Sdk implements SdkInterface
      */
     public function getPayment(string $id): PaymentRetrievedInterface
     {
-        return PaymentApi::make($this)->retrieve($id);
+        return PaymentsApi::make($this)->retrieve($id);
     }
 
     /**
@@ -140,6 +142,33 @@ final class Sdk implements SdkInterface
             : Endpoints::HPP_SANDBOX_URL;
 
         return Hpp::make($this)->baseUrl($baseUrl);
+    }
+
+    /**
+     * @return MerchantAccountInterface[]
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
+     * @throws Exceptions\ValidationException
+     */
+    public function getMerchantAccounts(): array
+    {
+        return MerchantAccountsApi::make($this)->list();
+    }
+
+    /**
+     * @param string $id
+     * @return MerchantAccountInterface
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
+     * @throws Exceptions\ValidationException
+     */
+    public function getMerchantAccount(string $id): MerchantAccountInterface
+    {
+        return MerchantAccountsApi::make($this)->retrieve($id);
     }
 
     /**

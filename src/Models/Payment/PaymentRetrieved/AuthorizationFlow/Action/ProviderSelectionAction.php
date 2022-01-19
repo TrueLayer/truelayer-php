@@ -10,7 +10,7 @@ use TrueLayer\Contracts\ProviderInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action;
-use TrueLayer\Models\Provider;
+use TrueLayer\Models\Provider\Provider;
 use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\ValidType;
 

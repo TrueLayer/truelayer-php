@@ -4,31 +4,17 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models\Payment\PaymentRetrieved;
 
-use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Contracts\Payment\SourceOfFundsInterface;
 use TrueLayer\Contracts\SchemeIdentifier\SchemeIdentifierInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Factories\SchemeIdentifierFactory;
 use TrueLayer\Models\Model;
-use TrueLayer\Models\SchemeIdentifier\Bban;
-use TrueLayer\Models\SchemeIdentifier\Iban;
-use TrueLayer\Models\SchemeIdentifier\Nrb;
-use TrueLayer\Models\SchemeIdentifier\Scan;
 use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\ValidType;
 
 final class SourceOfFunds extends Model implements SourceOfFundsInterface
 {
-    /**
-     * @var string[]
-     */
-    private array $schemeIdentifierTypes = [
-        ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER => Scan::class,
-        ExternalAccountTypes::IBAN => Iban::class,
-        ExternalAccountTypes::BBAN => Bban::class,
-        ExternalAccountTypes::NRB => Nrb::class,
-    ];
-
     /**
      * @var SchemeIdentifierInterface[]
      */
@@ -62,7 +48,7 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
             'external_account_id' => 'nullable|string',
             'account_holder_name' => 'nullable|string',
             'scheme_identifiers' => 'array',
-            'scheme_identifiers.*' => ValidType::of(Scan::class, Iban::class, Bban::class, Nrb::class),
+            'scheme_identifiers.*' => ValidType::of(SchemeIdentifierInterface::class),
         ];
     }
 
@@ -137,19 +123,8 @@ final class SourceOfFunds extends Model implements SourceOfFundsInterface
     public function fill(array $data): self
     {
         if ($schemeIdentifiers = Type::getNullableArray($data, 'scheme_identifiers')) {
-            $data['scheme_identifiers'] = \array_map(function ($data) {
-                if (!\is_array($data)) {
-                    throw new InvalidArgumentException('Scheme identifiers should be array.');
-                }
-
-                $type = Type::getNullableString($data, 'type');
-
-                if (!isset($this->schemeIdentifierTypes[$type])) {
-                    throw new InvalidArgumentException('Unknown scheme identifier type');
-                }
-
-                return $this->schemeIdentifierTypes[$type]::make($this->getSdk())->fill($data);
-            }, $schemeIdentifiers);
+            $data['scheme_identifiers'] = SchemeIdentifierFactory::make($this->getSdk())
+                ->makeManyFromArray($schemeIdentifiers);
         }
 
         return parent::fill($data);

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Contracts\ApiClient\ApiClientInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\HppInterface;
+use TrueLayer\Contracts\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Contracts\Payment\PaymentMethodInterface;
 use TrueLayer\Contracts\Payment\PaymentRequestInterface;
 use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
@@ -15,8 +16,10 @@ use TrueLayer\Contracts\Provider\ProviderFilterInterface;
 use TrueLayer\Contracts\UserInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Services\Api\MerchantAccountsApi;
 
 interface SdkInterface
 {
@@ -66,6 +69,27 @@ interface SdkInterface
      * @return PaymentRetrievedInterface
      */
     public function getPayment(string $id): PaymentRetrievedInterface;
+
+    /**
+     * @return MerchantAccountInterface[]
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     */
+    public function getMerchantAccounts(): array;
+
+    /**
+     * @param string $id
+     * @return MerchantAccountInterface
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     */
+    public function getMerchantAccount(string $id): MerchantAccountInterface;
 
     /**
      * @return HppInterface

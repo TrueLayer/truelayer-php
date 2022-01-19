@@ -18,7 +18,7 @@ use TrueLayer\Models\Payment\PaymentCreated;
 use TrueLayer\Models\Payment\PaymentRetrieved;
 use TrueLayer\Traits\WithSdk;
 
-final class PaymentApi
+final class PaymentsApi
 {
     use WithSdk;
 

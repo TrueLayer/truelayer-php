@@ -231,12 +231,12 @@ class PaymentRetrieved extends Model implements PaymentRetrievedInterface
             $data['user'] = $sdk->user()->fill($userData);
         }
 
-        if (isset($data['payment_method']) && \is_array($data['payment_method'])) {
-            $data['payment_method'] = PaymentMethod::make($this->getSdk())->fill($data['payment_method']);
+        if ($paymentMethod = Type::getNullableArray($data, 'payment_method')) {
+            $data['payment_method'] = $sdk->paymentMethod()->fill($paymentMethod);
         }
 
-        if (isset($data['created_at']) && \is_string($data['created_at'])) {
-            $data['created_at'] = Carbon::parse($data['created_at']);
+        if ($createdAt = Type::getNullableDate($data, 'created_at')) {
+            $data['created_at'] = $createdAt;
         }
 
         return parent::fill($data);

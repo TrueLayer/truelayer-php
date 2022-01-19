@@ -9,6 +9,7 @@ use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Contracts\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Traits\WithSdk;
@@ -34,11 +35,18 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 //    }
 
     /**
+     * @param MerchantAccountInterface|null $merchantAccount
      * @return MerchantBeneficiary
      */
-    public function merchantAccount(): MerchantBeneficiary
+    public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiary
     {
-        return MerchantBeneficiary::make($this->getSdk());
+        $beneficiary = MerchantBeneficiary::make($this->getSdk());
+
+        if ($merchantAccount) {
+            $beneficiary->id($merchantAccount->getId());
+        }
+
+        return $beneficiary;
     }
 
     /**

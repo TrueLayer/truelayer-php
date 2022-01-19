@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Models;
+namespace TrueLayer\Models\Provider\Provider;
 
 use TrueLayer\Constants\Countries;
 use TrueLayer\Contracts\ProviderInterface;
+use TrueLayer\Models\Model;
 use TrueLayer\Validation\AllowedConstant;
 
 final class Provider extends Model implements ProviderInterface

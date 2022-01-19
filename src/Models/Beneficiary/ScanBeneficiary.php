@@ -9,16 +9,6 @@ use TrueLayer\Constants\ExternalAccountTypes;
 final class ScanBeneficiary extends AbstractExternalAccountBeneficiary
 {
     /**
-     * @var string
-     */
-    protected string $sortCode;
-
-    /**
-     * @var string
-     */
-    protected string $accountNumber;
-
-    /**
      * @var string[]
      */
     protected array $arrayFields = [
@@ -45,7 +35,7 @@ final class ScanBeneficiary extends AbstractExternalAccountBeneficiary
      */
     public function getSortCode(): ?string
     {
-        return $this->sortCode ?? null;
+        return $this->schemeIdentifier->getSortCode() ?? null;
     }
 
     /**

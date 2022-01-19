@@ -8,7 +8,7 @@ use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Contracts\ProviderInterface;
 use TrueLayer\Models\Payment\PaymentRetrieved\AuthorizationFlow\Action;
-use TrueLayer\Models\Provider;
+use TrueLayer\Models\Provider\Provider;
 use TrueLayer\Validation\ValidType;
 
 class RedirectAction extends Action implements RedirectActionInterface

@@ -16,7 +16,7 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Models\Model;
-use TrueLayer\Services\Api\PaymentApi;
+use TrueLayer\Services\Api\PaymentsApi;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
@@ -143,7 +143,7 @@ final class PaymentRequest extends Model implements PaymentRequestInterface
      */
     public function create(): PaymentCreatedInterface
     {
-        return PaymentApi::make($this->getSdk())->create($this);
+        return PaymentsApi::make($this->getSdk())->create($this);
     }
 
     /**
