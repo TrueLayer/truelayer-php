@@ -53,17 +53,19 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'user' => [
+            'id' => null,
             'name' => 'Alice',
             'phone' => '+447837485713',
             'email' => 'alice@truelayer.com',
-            'type' => 'new',
         ],
     ]);
 
     \expect(\getRequestPayload(2))->toMatchArray([
         'user' => [
             'id' => '64f800c1-ff48-411f-af78-464725376059',
-            'type' => 'existing',
+            'name' => null,
+            'phone' => null,
+            'email' => null,
         ],
     ]);
 });

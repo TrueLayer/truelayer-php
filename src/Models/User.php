@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Models;
 
-use TrueLayer\Constants\UserTypes;
 use TrueLayer\Contracts\UserInterface;
 
 final class User extends Model implements UserInterface
@@ -37,7 +36,6 @@ final class User extends Model implements UserInterface
         'name',
         'email',
         'phone',
-        'type',
     ];
 
     /**
@@ -128,21 +126,5 @@ final class User extends Model implements UserInterface
         $this->phone = $phone;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->getId() ? UserTypes::EXISTING : UserTypes::NEW;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function all(): array
-    {
-        return \array_filter(parent::all());
     }
 }
