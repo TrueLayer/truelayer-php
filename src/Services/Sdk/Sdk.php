@@ -15,7 +15,6 @@ use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
-use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
@@ -37,26 +36,18 @@ final class Sdk implements SdkInterface
     private EntityFactoryInterface $entityFactory;
 
     /**
-     * @var SdkConfigInterface
-     */
-    private SdkConfigInterface $config;
-
-    /**
      * @param ApiClientInterface     $apiClient
      * @param ApiFactoryInterface    $apiFactory
      * @param EntityFactoryInterface $entityFactory
-     * @param SdkConfigInterface     $config
      */
     public function __construct(
         ApiClientInterface $apiClient,
         ApiFactoryInterface $apiFactory,
-        EntityFactoryInterface $entityFactory,
-        SdkConfigInterface $config
+        EntityFactoryInterface $entityFactory
     ) {
         $this->apiClient = $apiClient;
         $this->apiFactory = $apiFactory;
         $this->entityFactory = $entityFactory;
-        $this->config = $config;
     }
 
     /**

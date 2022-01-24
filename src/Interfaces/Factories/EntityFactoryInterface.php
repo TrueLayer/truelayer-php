@@ -13,22 +13,25 @@ interface EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
+     * @param mixed[]|null    $data
      *
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
      * @return T
      */
-    public function make(string $abstract);
+    public function make(string $abstract, array $data = null);
 
     /**
-     * @param string $abstract
-     * @param array  $data
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     * @param mixed[]         $data
      *
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
-     * @return array
+     * @return T[]
      */
     public function makeMany(string $abstract, array $data): array;
 }

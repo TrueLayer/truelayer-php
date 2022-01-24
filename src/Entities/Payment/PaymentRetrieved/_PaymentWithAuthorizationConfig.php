@@ -16,7 +16,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected ConfigurationInterface $configuration;
 
     /**
-     * @return string[]
+     * @return mixed[]
      */
     protected function casts(): array
     {

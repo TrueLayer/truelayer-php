@@ -17,7 +17,7 @@ interface PaymentsApiInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return array
+     * @return mixed[]
      */
     public function create(array $paymentRequest): array;
 
@@ -28,7 +28,7 @@ interface PaymentsApiInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return array
+     * @return mixed[]
      */
     public function retrieve(string $id): array;
 }

@@ -50,9 +50,6 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         $this->sdkConfig = $sdkConfig;
     }
 
-    /**
-     * @var string[]
-     */
     private const BINDINGS = [
         Interfaces\UserInterface::class => User::class,
         Interfaces\HppInterface::class => 'makeHpp',
@@ -131,7 +128,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param array|null      $data
+     * @param mixed[]|null    $data
      *
      * @throws InvalidArgumentException
      * @throws ValidationException
@@ -151,23 +148,27 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             return $this->{$concrete}($data);
         }
 
+        // @phpstan-ignore-next-line
         $instance = $this->makeConcrete($concrete);
 
         if ($data && $instance instanceof Interfaces\HasAttributesInterface) {
             $instance->fill($data);
         }
 
+        // @phpstan-ignore-next-line
         return $instance;
     }
 
     /**
-     * @param string $abstract
-     * @param array  $data
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     * @param mixed[]         $data
      *
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
-     * @return array
+     * @return T[]
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -216,7 +217,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * Recursively look in the TYPES array to find an abstract based on the provided data.
      *
      * @param class-string $abstract
-     * @param array|null   $data
+     * @param mixed[]|null $data
      *
      * @return class-string
      */
@@ -231,8 +232,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
             if (\is_string($type) && isset($typeConfig[$type])) {
                 $typeAbstract = $typeConfig[$type];
-
-                return $this->getTypeAbstract($typeAbstract, $data);
+                if (\interface_exists($typeAbstract) || \class_exists($typeAbstract)) {
+                    return $this->getTypeAbstract($typeAbstract, $data);
+                }
             }
         }
 

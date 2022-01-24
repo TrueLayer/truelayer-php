@@ -40,14 +40,6 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     }
 
     /**
-     * @return IbanBeneficiary
-     */
-//    public function ibanAccount(): IbanBeneficiary
-//    {
-//        return IbanBeneficiary::make($this->getValidatorFactory());
-//    }
-
-    /**
      * @param MerchantAccountInterface|null $merchantAccount
      *
      * @throws InvalidArgumentException
@@ -59,7 +51,7 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     {
         $beneficiary = $this->entityFactory->make(MerchantBeneficiaryInterface::class);
 
-        if ($merchantAccount) {
+        if ($merchantAccount && $merchantAccount->getId()) {
             $beneficiary->id($merchantAccount->getId());
         }
 
@@ -67,7 +59,7 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @throws InvalidArgumentException
      * @throws ValidationException

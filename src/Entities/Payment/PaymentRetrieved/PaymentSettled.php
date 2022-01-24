@@ -27,7 +27,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected DateTimeInterface $settledAt;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function casts(): array
     {

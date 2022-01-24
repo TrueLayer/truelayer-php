@@ -22,7 +22,7 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
     protected ActionInterface $nextAction;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function casts(): array
     {

@@ -27,7 +27,7 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
     protected string $failureReason;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function casts(): array
     {

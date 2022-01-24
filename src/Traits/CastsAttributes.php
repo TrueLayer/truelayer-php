@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
+use DateTimeInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 
+// TODO: Refactor castData
 trait CastsAttributes
 {
     /**
@@ -24,13 +27,13 @@ trait CastsAttributes
     }
 
     /**
-     * @param array      $data
-     * @param array|null $casts
+     * @param mixed[]      $data
+     * @param mixed[]|null $casts
      *
      * @throws InvalidArgumentException
-     * @throws \TrueLayer\Exceptions\ValidationException
+     * @throws ValidationException
      *
-     * @return array
+     * @return mixed[]
      */
     protected function castData(array $data, array $casts = null): array
     {
@@ -66,9 +69,12 @@ trait CastsAttributes
 
                 Arr::set($data, $initialPartPath, $partArr);
             } elseif ($partData = Arr::get($data, $path)) {
-                if ($abstract === \DateTimeInterface::class) {
-                    $partData = $this->toDateTime($partData);
-                } else {
+                if ($abstract === DateTimeInterface::class) {
+                    if (\is_string($partData)) {
+                        $partData = $this->toDateTime($partData);
+                    }
+                } elseif (\is_array($partData) && \is_string($abstract) && (\interface_exists($abstract) || \class_exists($abstract))) {
+                    // @phpstan-ignore-next-line
                     $partData = $this->make($abstract, $partData);
                 }
                 Arr::set($data, $path, $partData);
@@ -81,9 +87,9 @@ trait CastsAttributes
     /**
      * @param string $dateTime
      *
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    protected function toDateTime(string $dateTime): ?\DateTimeInterface
+    protected function toDateTime(string $dateTime): ?DateTimeInterface
     {
         try {
             return new \DateTime($dateTime);
@@ -91,4 +97,17 @@ trait CastsAttributes
             return null;
         }
     }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return T
+     */
+    abstract protected function make(string $abstract, array $data = null);
 }

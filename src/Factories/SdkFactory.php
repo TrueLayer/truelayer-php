@@ -58,7 +58,7 @@ final class SdkFactory implements SdkFactoryInterface
         $apiFactory = new ApiFactory($this->apiClient);
         $entityFactory = new EntityFactory($this->validatorFactory, $apiFactory, $config);
 
-        return new Sdk($this->apiClient, $apiFactory, $entityFactory, $config);
+        return new Sdk($this->apiClient, $apiFactory, $entityFactory);
     }
 
     /**

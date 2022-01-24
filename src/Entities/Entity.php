@@ -24,7 +24,7 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     /**
      * @var EntityFactoryInterface
      */
-    private EntityFactoryInterface $modelFactory;
+    private EntityFactoryInterface $entityFactory;
 
     /**
      * @var ApiFactoryInterface
@@ -33,16 +33,16 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @param ValidatorFactory       $validatorFactory
-     * @param EntityFactoryInterface $modelFactory
+     * @param EntityFactoryInterface $entityFactory
      * @param ApiFactoryInterface    $apiFactory
      */
     public function __construct(
         ValidatorFactory $validatorFactory,
-        EntityFactoryInterface $modelFactory,
+        EntityFactoryInterface $entityFactory,
         ApiFactoryInterface $apiFactory
     ) {
         $this->validatorFactory = $validatorFactory;
-        $this->modelFactory = $modelFactory;
+        $this->entityFactory = $entityFactory;
         $this->apiFactory = $apiFactory;
     }
 
@@ -64,25 +64,26 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     }
 
     /**
-     * @template T
-     *
-     * @param class-string<T> $abstract
-     *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
-     * @return T|null
-     */
-    protected function make(string $abstract, array $data = null)
-    {
-        return $this->modelFactory->make($abstract, $data);
-    }
-
-    /**
      * @return ApiFactoryInterface
      */
     protected function apiFactory(): ApiFactoryInterface
     {
         return $this->apiFactory;
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return T
+     */
+    protected function make(string $abstract, array $data = null)
+    {
+        return $this->entityFactory->make($abstract, $data);
     }
 }

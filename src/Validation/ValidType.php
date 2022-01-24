@@ -36,7 +36,7 @@ final class ValidType implements Rule
             return false;
         }
 
-        if (\method_exists($value, 'validate')) {
+        if (\is_object($value) && \method_exists($value, 'validate')) {
             $value->validate();
         }
 

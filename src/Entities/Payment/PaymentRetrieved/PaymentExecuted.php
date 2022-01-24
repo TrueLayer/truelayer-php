@@ -22,7 +22,7 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     protected SourceOfFundsInterface $sourceOfFunds;
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function casts(): array
     {

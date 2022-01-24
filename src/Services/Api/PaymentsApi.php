@@ -19,7 +19,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return array
+     * @return mixed[]
      */
     public function create(array $paymentRequest): array
     {
@@ -36,7 +36,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return array
+     * @return mixed[]
      */
     public function retrieve(string $id): array
     {
