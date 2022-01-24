@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Validation;
 
 use Illuminate\Contracts\Validation\Rule;
-use TrueLayer\Contracts\HasValidationInterface;
+use TrueLayer\Entities\Provider\ProviderFilter;
+use TrueLayer\Interfaces\HasValidationInterface;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 
 final class ValidType implements Rule
 {
@@ -37,7 +39,7 @@ final class ValidType implements Rule
             return false;
         }
 
-        if ($value instanceof HasValidationInterface) {
+        if (method_exists($value, 'validate')) {
             $value->validate();
         }
 

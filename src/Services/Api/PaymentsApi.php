@@ -5,76 +5,44 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Constants\PaymentStatus;
-use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
-use TrueLayer\Contracts\Payment\PaymentRequestInterface;
-use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Api\PaymentsApiInterface;
+use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\Payment\PaymentCreated;
-use TrueLayer\Models\Payment\PaymentRetrieved;
-use TrueLayer\Traits\WithSdk;
 
-final class PaymentsApi
+final class PaymentsApi extends Api implements PaymentsApiInterface
 {
-    use WithSdk;
-
     /**
-     * @param PaymentRequestInterface $paymentRequest
+     * @param mixed[] $paymentRequest
      *
      * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
+
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return PaymentCreatedInterface
+     * @return array
      */
-    public function create(PaymentRequestInterface $paymentRequest): PaymentCreatedInterface
+    public function create(array $paymentRequest): array
     {
-        $response = (array) $this->getSdk()->getApiClient()->request()
+        return (array) $this->request()
             ->uri(Endpoints::PAYMENTS)
-            ->payload($paymentRequest->validate()->toArray())
+            ->payload($paymentRequest)
             ->post();
-
-        return PaymentCreated::make($this->getSdk())->fill($response);
     }
 
     /**
      * @param string $id
-     *
-     *@throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     * @throws SignerException
+     * @return array
      * @throws ApiRequestJsonSerializationException
-     *
-     * @return PaymentRetrievedInterface
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      */
-    public function retrieve(string $id): PaymentRetrievedInterface
+    public function retrieve(string $id): array
     {
-        $sdk = $this->getSdk();
-
-        $response = (array) $sdk->getApiClient()->request()
+        return (array) $this->request()
             ->uri(Endpoints::PAYMENTS . '/' . $id)
             ->get();
-
-        $states = [
-            PaymentStatus::AUTHORIZATION_REQUIRED => PaymentRetrieved\PaymentAuthorizationRequired::class,
-            PaymentStatus::AUTHORIZING => PaymentRetrieved\PaymentAuthorizing::class,
-            PaymentStatus::AUTHORIZED => PaymentRetrieved\PaymentAuthorized::class,
-            PaymentStatus::EXECUTED => PaymentRetrieved\PaymentExecuted::class,
-            PaymentStatus::SETTLED => PaymentRetrieved\PaymentSettled::class,
-            PaymentStatus::FAILED => PaymentRetrieved\PaymentFailed::class,
-        ];
-
-        $model = isset($response['status']) && isset($states[$response['status']])
-            ? $states[$response['status']]
-            : PaymentRetrieved::class;
-
-        return $model::make($sdk)->fill($response);
     }
 }

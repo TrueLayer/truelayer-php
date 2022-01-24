@@ -5,34 +5,27 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Contracts\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\Api\AccessTokenApiInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 
-final class AccessTokenApi
+final class AccessTokenApi extends Api implements AccessTokenApiInterface
 {
-    private ApiClientInterface $api;
-
-    public function __construct(ApiClientInterface $api)
-    {
-        $this->api = $api;
-    }
-
     /**
      * @param string   $clientId
      * @param string   $clientSecret
      * @param string[] $scopes
      *
-     *@throws ApiResponseUnsuccessfulException
+     * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
-    public function fetch(string $clientId, string $clientSecret, array $scopes): array
+    public function retrieve(string $clientId, string $clientSecret, array $scopes): array
     {
-        return (array) $this->api->request()
+        return (array) $this->request()
             ->uri(Endpoints::TOKEN)
             ->payload([
                 'grant_type' => 'client_credentials',

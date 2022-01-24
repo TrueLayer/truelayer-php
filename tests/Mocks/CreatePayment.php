@@ -9,13 +9,13 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
-use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Contracts\Payment\PaymentMethodInterface;
-use TrueLayer\Contracts\Payment\PaymentRequestInterface;
-use TrueLayer\Contracts\Sdk\SdkInterface;
-use TrueLayer\Contracts\UserInterface;
-use TrueLayer\Models\Beneficiary\ScanBeneficiary;
-use TrueLayer\Models\Payment\PaymentMethod;
+use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
+use TrueLayer\Interfaces\Sdk\SdkInterface;
+use TrueLayer\Interfaces\UserInterface;
+use TrueLayer\Entities\Beneficiary\ScanBeneficiary;
+use TrueLayer\Entities\Payment\PaymentMethod;
 
 class CreatePayment
 {
@@ -75,7 +75,7 @@ class CreatePayment
             ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
             ->providerIds(['mock-payments-gb-redirect']);
 
-        return PaymentMethod::make($this->sdk)
+        return $this->sdk->paymentMethod()
             ->type(PaymentMethods::BANK_TRANSFER)
             ->statementReference('Statement ref')
             ->providerFilter($filter);

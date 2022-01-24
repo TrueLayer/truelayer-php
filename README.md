@@ -275,7 +275,10 @@ $beneficiary->toArray();
 Depending on the beneficiary type, you can then access specific methods:
 
 ```php
-if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\ScanBeneficiary) {
+use TrueLayer\Interfaces\Beneficiary\ScanBeneficiaryInterface;
+use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+
+if ($beneficiary instanceof ScanBeneficiaryInterface) {
     $beneficiary->getReference();
     $beneficiary->getAccountNumber();
     $beneficiary->getSortCode();
@@ -283,14 +286,7 @@ if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\ScanBeneficiary) {
 ```
 
 ```php
-if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\IbanBeneficiary) {
-    $beneficiary->getReference();
-    $beneficiary->getIban();
-}
-```
-
-```php
-if ($beneficiary instanceof \TrueLayer\Models\Beneficiary\MerchantBeneficiary) {
+if ($beneficiary instanceof MerchantBeneficiaryInterface) {
     $beneficiary->getId();
 }
 ```
@@ -325,7 +321,7 @@ $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQU
 > Payment with this status is on its initial phase where no action beyond the creation of the payment was taken.
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentAuthorizationRequiredInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
 
 if ($payment instanceof PaymentAuthorizationRequiredInterface) {
     // Your logic here, you would normally start the authorization process.
@@ -342,12 +338,12 @@ A payment in `Authorizing` will expose 2 additional methods for retrieving:
 - the next action in the payment authorization user journey
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentAuthorizingInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 
 if ($payment instanceof PaymentAuthorizingInterface) {
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
     
-    // Will return a \TrueLayer\Contracts\Payment\AuthorizationFlow\Action\ActionInterface
+    // Will return a \TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ActionInterface
     $payment->getAuthorizationFlowNextAction(); 
 }
 ```
@@ -359,7 +355,7 @@ This action indicates that the user needs to select a provider from the provided
 To render the provider list, each provider comes with helpful methods for retrieving the name, logo, id, etc.
 
 ```php
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 
 $nextAction = $payment->getAuthorizationFlowNextAction();
 
@@ -382,7 +378,7 @@ if ($nextAction instanceof ProviderSelectionActionInterface) {
 This action indicates that the user needs to be redirected to complete the authorization process.
 
 ```php
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\RedirectActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 
 $nextAction = $payment->getAuthorizationFlowNextAction();
 
@@ -396,7 +392,7 @@ if ($nextAction instanceof RedirectActionInterface) {
 #### Wait action
 
 ```php
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\WaitActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
 
 $nextAction = $payment->getAuthorizationFlowNextAction();
 
@@ -411,7 +407,7 @@ if ($nextAction instanceof WaitActionInterface) {
 > Payment has successfully completed its authorization flow
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentAuthorizedInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 
 if ($payment instanceof PaymentAuthorizedInterface) {
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
@@ -424,7 +420,7 @@ if ($payment instanceof PaymentAuthorizedInterface) {
 > Payment has been accepted by the bank
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 
 if ($payment instanceof PaymentExecutedInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
@@ -439,7 +435,7 @@ if ($payment instanceof PaymentExecutedInterface) {
 > Payment can transition into this state if the beneficiary account was a merchant account within Truelayer, and Truelayer has observed the money to be settled.
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentSettledInterface;
+use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 
 if ($payment instanceof PaymentSettledInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
@@ -455,7 +451,7 @@ if ($payment instanceof PaymentSettledInterface) {
 > Payment has failed. The reason for failure can be observed in failure_reason field on the payment resource
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentFailedInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 
 if ($payment instanceof PaymentFailedInterface) {
     $payment->getFailedAt(); // The date and time the payment failed at
@@ -468,10 +464,10 @@ if ($payment instanceof PaymentFailedInterface) {
 <a name="auth-flow-config"></a>
 ### Authorization flow config
 
-This object provides information about the authorization flow the payment went through. 
+This object provides information about the authorization flow the payment went through.
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 
 if ($payment instanceof PaymentExecutedInterface) {
     $config = $payment->getAuthorizationFlowConfig(); 
@@ -485,12 +481,12 @@ if ($payment instanceof PaymentExecutedInterface) {
 ### Source of funds
 
 ```php
-use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
-use TrueLayer\Contracts\Payment\PaymentSettledInterface;
-use TrueLayer\Contracts\SchemeIdentifier\ScanDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\IbanDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\BbanDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\NrbDetailsInterface;
+use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\ScanDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\IbanDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\BbanDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
 
 if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentSettledInterface) {
     $sourceOfFunds = $payment->getSourceOfFunds();

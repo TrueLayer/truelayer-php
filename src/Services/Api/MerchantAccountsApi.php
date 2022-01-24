@@ -5,61 +5,41 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Constants\PaymentStatus;
-use TrueLayer\Contracts\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Contracts\Payment\PaymentCreatedInterface;
-use TrueLayer\Contracts\Payment\PaymentRequestInterface;
-use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Models\MerchantAccount\MerchantAccount;
-use TrueLayer\Models\Payment\PaymentRetrieved;
-use TrueLayer\Services\Util\Type;
-use TrueLayer\Traits\WithSdk;
+use TrueLayer\Interfaces\Api\MerchantAccountsApiInterface;
 
-final class MerchantAccountsApi
+final class MerchantAccountsApi extends Api implements MerchantAccountsApiInterface
 {
-    use WithSdk;
-
     /**
-     * @return MerchantAccountInterface[]
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      */
     public function list(): array
     {
-        $response = $this->getSdk()->getApiClient()->request()
+        $response = (array) $this->request()
             ->uri(Endpoints::MERCHANT_ACCOUNTS)
             ->get();
 
-        $items = Type::getNullableArray($response, 'items') ?: [];
-
-        return \array_map(fn ($data) => MerchantAccount::make($this->getSdk())->fill(
-            \is_array($data) ? $data : []
-        ), $items);
+        return isset($response['items']) && is_array($response['items'])
+            ? $response['items']
+            : [];
     }
 
     /**
      * @param string $id
-     * @return MerchantAccountInterface
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      */
-    public function retrieve(string $id): MerchantAccountInterface
+    public function retrieve(string $id): array
     {
-        $response = (array) $this->getSdk()->getApiClient()->request()
+        return (array) $this->request()
             ->uri(Endpoints::MERCHANT_ACCOUNTS . '/' . $id)
             ->get();
-
-        return MerchantAccount::make($this->getSdk())->fill($response);
     }
 }

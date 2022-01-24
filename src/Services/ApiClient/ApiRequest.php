@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Services\ApiClient;
 
 use TrueLayer\Constants\RequestMethods;
-use TrueLayer\Contracts\ApiClient\ApiClientInterface;
-use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;

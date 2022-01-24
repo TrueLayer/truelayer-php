@@ -8,7 +8,7 @@ use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Constants\ResponseStatusCodes;
-use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
+use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Services\Util\Retry;
