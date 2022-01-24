@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
-use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Entities\Payment\PaymentRetrieved;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Validation\ValidType;
 
 class _PaymentWithAuthorizationConfig extends PaymentRetrieved
@@ -20,7 +20,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
      */
     protected function casts(): array
     {
-        return array_merge(parent::casts(), [
+        return \array_merge(parent::casts(), [
             'authorization_flow.configuration' => ConfigurationInterface::class,
         ]);
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment;
 
 use TrueLayer\Constants\PaymentMethods;
+use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
-use TrueLayer\Entities\Entity;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 

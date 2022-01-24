@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
+use TrueLayer\Entities\Entity;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
-use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
-use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Entities\Entity;
 
 final class PaymentCreated extends Entity implements PaymentCreatedInterface
 {
@@ -74,9 +74,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     }
 
     /**
-     * @return HppInterface
      * @throws ValidationException
      * @throws InvalidArgumentException
+     *
+     * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface
     {
@@ -86,16 +87,18 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {
         $data = $this->apiFactory()->paymentsApi()->retrieve($this->getId());
+
         return $this->make(PaymentRetrievedInterface::class, $data);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Factories;
 
-use TrueLayer\Interfaces\Api\AccessTokenApiInterface;
 use TrueLayer\Interfaces\Api\MerchantAccountsApiInterface;
 use TrueLayer\Interfaces\Api\PaymentsApiInterface;
 

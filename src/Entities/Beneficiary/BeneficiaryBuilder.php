@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Beneficiary;
 
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ScanBeneficiaryInterface;
 use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 
 final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 {
@@ -29,9 +29,10 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
     }
 
     /**
-     * @return ScanBeneficiaryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return ScanBeneficiaryInterface
      */
     public function sortCodeAccountNumber(): ScanBeneficiaryInterface
     {
@@ -48,9 +49,11 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param MerchantAccountInterface|null $merchantAccount
-     * @return MerchantBeneficiaryInterface
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return MerchantBeneficiaryInterface
      */
     public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface
     {
@@ -65,9 +68,11 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
 
     /**
      * @param array $data
-     * @return BeneficiaryInterface
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return BeneficiaryInterface
      */
     public function fill(array $data): BeneficiaryInterface
     {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\SchemeIdentifier;
 
-use TrueLayer\Interfaces\SchemeIdentifier\IbanInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\SchemeIdentifier\IbanInterface;
 
 final class Iban extends Entity implements IbanInterface
 {

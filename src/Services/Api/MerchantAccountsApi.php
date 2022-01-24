@@ -13,10 +13,11 @@ use TrueLayer\Interfaces\Api\MerchantAccountsApiInterface;
 final class MerchantAccountsApi extends Api implements MerchantAccountsApiInterface
 {
     /**
-     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function list(): array
     {
@@ -24,17 +25,19 @@ final class MerchantAccountsApi extends Api implements MerchantAccountsApiInterf
             ->uri(Endpoints::MERCHANT_ACCOUNTS)
             ->get();
 
-        return isset($response['items']) && is_array($response['items'])
+        return isset($response['items']) && \is_array($response['items'])
             ? $response['items']
             : [];
     }
 
     /**
      * @param string $id
-     * @return mixed[]
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function retrieve(string $id): array
     {

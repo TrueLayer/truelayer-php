@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action;
 
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
-use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
-use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action;
 use TrueLayer\Entities\Provider\Provider;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
+use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Validation\ValidType;
 
 class RedirectAction extends Action implements RedirectActionInterface

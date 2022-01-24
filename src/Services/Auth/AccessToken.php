@@ -7,13 +7,12 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use TrueLayer\Constants\CacheKeys;
-use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
-use TrueLayer\Interfaces\Auth\AccessTokenInterface;
-use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\Auth\AccessTokenInterface;
+use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Services\Api\AccessTokenApi;
 
 final class AccessToken implements AccessTokenInterface

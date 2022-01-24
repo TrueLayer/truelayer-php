@@ -11,12 +11,12 @@ use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\ExternalAccountTypes;
 use TrueLayer\Constants\PaymentStatus;
+use TrueLayer\Entities;
+use TrueLayer\Entities\Hpp;
+use TrueLayer\Entities\User;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces;
-use TrueLayer\Entities\Hpp;
-use TrueLayer\Entities;
-use TrueLayer\Entities\User;
 
 final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 {
@@ -36,9 +36,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private Interfaces\Sdk\SdkConfigInterface $sdkConfig;
 
     /**
-     * @param ValidatorFactory $validatorFactory
+     * @param ValidatorFactory                         $validatorFactory
      * @param Interfaces\Factories\ApiFactoryInterface $apiFactory
-     * @param Interfaces\Sdk\SdkConfigInterface $sdkConfig
+     * @param Interfaces\Sdk\SdkConfigInterface        $sdkConfig
      */
     public function __construct(
         ValidatorFactory $validatorFactory,
@@ -124,16 +124,19 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             'array_key' => 'scheme_identifier.type',
             ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\Beneficiary\ScanBeneficiaryInterface::class,
             ExternalAccountTypes::IBAN => Interfaces\Beneficiary\IbanBeneficiaryInterface::class,
-        ]
+        ],
     ];
 
     /**
      * @template T
+     *
      * @param class-string<T> $abstract
-     * @param array|null $data
-     * @return T
+     * @param array|null      $data
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return T
      */
     public function make(string $abstract, array $data = null)
     {
@@ -141,11 +144,11 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         $concrete = self::BINDINGS[$abstract] ?? null;
 
         if (!$concrete) {
-            throw new InvalidArgumentException("Could not find concrete implementation for $abstract");
+            throw new InvalidArgumentException("Could not find concrete implementation for {$abstract}");
         }
 
-        if (method_exists($this, $concrete)) {
-            return $this->$concrete($data);
+        if (\method_exists($this, $concrete)) {
+            return $this->{$concrete}($data);
         }
 
         $instance = $this->makeConcrete($concrete);
@@ -159,15 +162,17 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
     /**
      * @param string $abstract
-     * @param array $data
-     * @return array
+     * @param array  $data
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return array
      */
     public function makeMany(string $abstract, array $data): array
     {
-        return array_map(function ($item) use ($abstract) {
-            if (!is_array($item)) {
+        return \array_map(function ($item) use ($abstract) {
+            if (!\is_array($item)) {
                 throw new InvalidArgumentException('Item is not array');
             }
 
@@ -194,9 +199,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     {
         return new Entities\Beneficiary\BeneficiaryBuilder($this);
     }
+
     /**
      * @template T
+     *
      * @param class-string<T> $concrete
+     *
      * @return T
      */
     private function makeConcrete(string $concrete)
@@ -205,9 +213,11 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * Recursively look in the TYPES array to find an abstract based on the provided data
+     * Recursively look in the TYPES array to find an abstract based on the provided data.
+     *
      * @param class-string $abstract
-     * @param array|null $data
+     * @param array|null   $data
+     *
      * @return class-string
      */
     private function getTypeAbstract(string $abstract, array $data = null): string
@@ -219,8 +229,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             $key = $typeConfig['array_key'];
             $type = Arr::get($data, $key);
 
-            if (is_string($type) && isset($typeConfig[$type])) {
+            if (\is_string($type) && isset($typeConfig[$type])) {
                 $typeAbstract = $typeConfig[$type];
+
                 return $this->getTypeAbstract($typeAbstract, $data);
             }
         }

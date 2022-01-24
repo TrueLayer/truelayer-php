@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Provider;
 
 use TrueLayer\Constants\Countries;
-use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Validation\AllowedConstant;
 
 final class Provider extends Entity implements ProviderInterface

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\MerchantAccount;
 
+use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
-use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Entities\Entity;
-use TrueLayer\Services\Util\Type;
 use TrueLayer\Validation\ValidType;
 
 final class MerchantAccount extends Entity implements MerchantAccountInterface

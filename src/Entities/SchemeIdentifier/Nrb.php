@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\SchemeIdentifier;
 
-use TrueLayer\Interfaces\SchemeIdentifier\NrbInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\SchemeIdentifier\NrbInterface;
 
 final class Nrb extends Entity implements NrbInterface
 {

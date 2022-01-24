@@ -11,19 +11,24 @@ interface EntityFactoryInterface
 {
     /**
      * @template T
+     *
      * @param class-string<T> $abstract
-     * @return T
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return T
      */
     public function make(string $abstract);
 
     /**
      * @param string $abstract
-     * @param array $data
-     * @return array
+     * @param array  $data
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return array
      */
     public function makeMany(string $abstract, array $data): array;
 }

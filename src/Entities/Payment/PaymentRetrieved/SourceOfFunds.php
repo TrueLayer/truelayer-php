@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
+use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\SourceOfFundsInterface;
 use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
-use TrueLayer\Entities\Entity;
 use TrueLayer\Validation\ValidType;
 
 final class SourceOfFunds extends Entity implements SourceOfFundsInterface

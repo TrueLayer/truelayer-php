@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Interfaces\Api\PaymentsApiInterface;
-use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\Api\PaymentsApiInterface;
 
 final class PaymentsApi extends Api implements PaymentsApiInterface
 {
@@ -18,7 +16,6 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      * @param mixed[] $paymentRequest
      *
      * @throws ApiResponseUnsuccessfulException
-
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
@@ -34,10 +31,12 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
 
     /**
      * @param string $id
-     * @return array
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return array
      */
     public function retrieve(string $id): array
     {

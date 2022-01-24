@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
+use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
@@ -23,7 +24,6 @@ use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
 use TrueLayer\Interfaces\SchemeIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Tests\Mocks\PaymentResponse;
-use TrueLayer\Constants\DateTime;
 
 function assertCommon(PaymentRetrievedInterface $payment)
 {

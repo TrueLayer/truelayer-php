@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Interfaces\Api\AccessTokenApiInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\Api\AccessTokenApiInterface;
 
 final class AccessTokenApi extends Api implements AccessTokenApiInterface
 {

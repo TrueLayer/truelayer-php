@@ -9,13 +9,12 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
+use TrueLayer\Entities\Beneficiary\ScanBeneficiary;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Entities\Beneficiary\ScanBeneficiary;
-use TrueLayer\Entities\Payment\PaymentMethod;
 
 class CreatePayment
 {

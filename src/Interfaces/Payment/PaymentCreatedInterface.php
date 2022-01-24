@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use TrueLayer\Interfaces\ArrayableInterface;
-use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Interfaces\ArrayableInterface;
+use TrueLayer\Interfaces\HppInterface;
 
 interface PaymentCreatedInterface extends ArrayableInterface
 {

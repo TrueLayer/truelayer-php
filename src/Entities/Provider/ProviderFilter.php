@@ -7,8 +7,8 @@ namespace TrueLayer\Entities\Provider;
 use TrueLayer\Constants\Countries;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\ReleaseChannels;
-use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Validation\AllowedConstant;
 
 class ProviderFilter extends Entity implements ProviderFilterInterface

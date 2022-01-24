@@ -42,16 +42,16 @@ final class Sdk implements SdkInterface
     private SdkConfigInterface $config;
 
     /**
-     * @param ApiClientInterface $apiClient
-     * @param ApiFactoryInterface $apiFactory
+     * @param ApiClientInterface     $apiClient
+     * @param ApiFactoryInterface    $apiFactory
      * @param EntityFactoryInterface $entityFactory
-     * @param SdkConfigInterface $config
+     * @param SdkConfigInterface     $config
      */
     public function __construct(
-        ApiClientInterface     $apiClient,
+        ApiClientInterface $apiClient,
         ApiFactoryInterface $apiFactory,
         EntityFactoryInterface $entityFactory,
-        SdkConfigInterface     $config
+        SdkConfigInterface $config
     ) {
         $this->apiClient = $apiClient;
         $this->apiFactory = $apiFactory;
@@ -68,9 +68,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return UserInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return UserInterface
      */
     public function user(): UserInterface
     {
@@ -78,9 +79,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return BeneficiaryBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return BeneficiaryBuilderInterface
      */
     public function beneficiary(): BeneficiaryBuilderInterface
     {
@@ -88,9 +90,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return ProviderFilterInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return ProviderFilterInterface
      */
     public function providerFilter(): ProviderFilterInterface
     {
@@ -98,9 +101,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return PaymentMethodInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return PaymentMethodInterface
      */
     public function paymentMethod(): PaymentMethodInterface
     {
@@ -108,9 +112,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return PaymentRequestInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return PaymentRequestInterface
      */
     public function payment(): PaymentRequestInterface
     {
@@ -131,13 +136,15 @@ final class Sdk implements SdkInterface
     public function getPayment(string $id): PaymentRetrievedInterface
     {
         $data = $this->apiFactory->paymentsApi()->retrieve($id);
+
         return $this->entityFactory->make(PaymentRetrievedInterface::class, $data);
     }
 
     /**
-     * @return HppInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface
     {
@@ -145,31 +152,36 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return MerchantAccountInterface[]
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
+     *
+     * @return MerchantAccountInterface[]
      */
     public function getMerchantAccounts(): array
     {
         $data = $this->apiFactory->merchantAccountsApi()->list();
+
         return $this->entityFactory->makeMany(MerchantAccountInterface::class, $data);
     }
 
     /**
      * @param string $id
-     * @return MerchantAccountInterface
+     *
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
+     *
+     * @return MerchantAccountInterface
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface
     {
         $data = $this->apiFactory->merchantAccountsApi()->retrieve($id);
+
         return $this->entityFactory->make(MerchantAccountInterface::class, $data);
     }
 }

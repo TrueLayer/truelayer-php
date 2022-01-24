@@ -24,36 +24,35 @@ trait CastsAttributes
     }
 
     /**
-     * @param array $data
+     * @param array      $data
      * @param array|null $casts
-     * @return array
+     *
      * @throws InvalidArgumentException
      * @throws \TrueLayer\Exceptions\ValidationException
+     *
+     * @return array
      */
     protected function castData(array $data, array $casts = null): array
     {
         $casts = $casts ?: $this->casts();
 
         foreach ($casts as $path => $abstract) {
-
             if (Str::endsWith($path, '.*')) {
                 $path .= '.';
             }
 
-            $partPaths = explode('.*.', $path);
+            $partPaths = \explode('.*.', $path);
 
-            if (count($partPaths) > 1) {
-
-                $initialPartPath = array_shift($partPaths);
-                $remainingPartPaths = implode('.*.', $partPaths);
+            if (\count($partPaths) > 1) {
+                $initialPartPath = \array_shift($partPaths);
+                $remainingPartPaths = \implode('.*.', $partPaths);
                 $partArr = Arr::get($data, $initialPartPath);
 
-                if (is_array($partArr)) {
+                if (\is_array($partArr)) {
                     foreach ($partArr as $key => $item) {
-
                         $itemKey = 'item';
                         $abstractKey = $remainingPartPaths
-                            ? "$itemKey.$remainingPartPaths"
+                            ? "{$itemKey}.{$remainingPartPaths}"
                             : $itemKey;
 
                         $casted = $this->castData(
@@ -62,12 +61,10 @@ trait CastsAttributes
                         );
 
                         $partArr[$key] = $casted['item'];
-
                     }
                 }
 
                 Arr::set($data, $initialPartPath, $partArr);
-
             } elseif ($partData = Arr::get($data, $path)) {
                 if ($abstract === \DateTimeInterface::class) {
                     $partData = $this->toDateTime($partData);
@@ -83,6 +80,7 @@ trait CastsAttributes
 
     /**
      * @param string $dateTime
+     *
      * @return \DateTimeInterface|null
      */
     protected function toDateTime(string $dateTime): ?\DateTimeInterface

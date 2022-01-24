@@ -7,11 +7,11 @@ namespace TrueLayer\Entities\Payment;
 use DateTimeInterface;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
+use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Entities\Entity;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 

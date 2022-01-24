@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow;
 
-use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 
 class Configuration extends Entity implements ConfigurationInterface
 {

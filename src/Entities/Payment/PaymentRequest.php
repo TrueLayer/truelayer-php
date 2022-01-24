@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment;
 
 use TrueLayer\Constants\Currencies;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
-use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
-use TrueLayer\Interfaces\UserInterface;
+use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
+use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 

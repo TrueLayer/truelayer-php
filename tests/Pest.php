@@ -28,13 +28,13 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Sdk\SdkConfigInterface
  *@throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
- *
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ *
+ * @return \TrueLayer\Interfaces\Sdk\SdkConfigInterface
  */
 function rawSdk(array $mockResponses = [])
 {

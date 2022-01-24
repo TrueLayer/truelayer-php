@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer;
 
-use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
-use TrueLayer\Services\Sdk\SdkConfig;
 use TrueLayer\Factories\SdkFactory;
+use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
 
 final class Sdk
 {

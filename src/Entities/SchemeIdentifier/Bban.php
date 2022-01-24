@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\SchemeIdentifier;
 
-use TrueLayer\Interfaces\SchemeIdentifier\BbanInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\SchemeIdentifier\BbanInterface;
 
 final class Bban extends Entity implements BbanInterface
 {

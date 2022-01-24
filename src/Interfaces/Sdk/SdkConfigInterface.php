@@ -6,9 +6,9 @@ namespace TrueLayer\Interfaces\Sdk;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
-use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\EncryptedCacheInterface;
 
 interface SdkConfigInterface
 {

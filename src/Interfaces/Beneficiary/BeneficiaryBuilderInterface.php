@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Beneficiary;
 
+use TrueLayer\Entities\Beneficiary\IbanBeneficiary;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Entities\Beneficiary\IbanBeneficiary;
 
 interface BeneficiaryBuilderInterface
 {

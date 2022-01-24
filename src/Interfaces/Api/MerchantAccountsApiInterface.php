@@ -12,19 +12,22 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 interface MerchantAccountsApiInterface
 {
     /**
-     * @return MerchantAccountInterface[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return MerchantAccountInterface[]
      */
     public function list(): array;
 
     /**
      * @param string $id
-     * @return mixed[]
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function retrieve(string $id): array;
 }

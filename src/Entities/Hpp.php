@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Entities;
 
 use Illuminate\Support\Str;
-use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\HppInterface;
 
 final class Hpp extends Entity implements HppInterface
 {

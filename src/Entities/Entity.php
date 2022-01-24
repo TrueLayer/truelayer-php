@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities;
 
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ArrayableInterface;
@@ -13,7 +14,6 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Traits\ArrayableAttributes;
 use TrueLayer\Traits\CastsAttributes;
 use TrueLayer\Traits\ValidatesAttributes;
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 
 abstract class Entity implements ArrayableInterface, HasAttributesInterface
 {
@@ -32,16 +32,15 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     private ApiFactoryInterface $apiFactory;
 
     /**
-     * @param ValidatorFactory $validatorFactory
+     * @param ValidatorFactory       $validatorFactory
      * @param EntityFactoryInterface $modelFactory
-     * @param ApiFactoryInterface $apiFactory
+     * @param ApiFactoryInterface    $apiFactory
      */
     public function __construct(
-        ValidatorFactory       $validatorFactory,
+        ValidatorFactory $validatorFactory,
         EntityFactoryInterface $modelFactory,
-        ApiFactoryInterface    $apiFactory
-    )
-    {
+        ApiFactoryInterface $apiFactory
+    ) {
         $this->validatorFactory = $validatorFactory;
         $this->modelFactory = $modelFactory;
         $this->apiFactory = $apiFactory;
@@ -50,10 +49,10 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     /**
      * @param mixed[] $data
      *
-     * @return $this
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
@@ -66,10 +65,13 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
 
     /**
      * @template T
+     *
      * @param class-string<T> $abstract
-     * @return T|null
+     *
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return T|null
      */
     protected function make(string $abstract, array $data = null)
     {

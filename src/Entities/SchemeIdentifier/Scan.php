@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\SchemeIdentifier;
 
-use TrueLayer\Interfaces\SchemeIdentifier\ScanInterface;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\SchemeIdentifier\ScanInterface;
 
 final class Scan extends Entity implements ScanInterface
 {
