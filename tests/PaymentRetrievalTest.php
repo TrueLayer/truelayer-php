@@ -150,7 +150,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(true);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getExecutedAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
 
     \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
     \expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
