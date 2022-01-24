@@ -172,8 +172,8 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(true);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
-    \expect($payment->getSettledAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getExecutedAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getSettledAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
     \expect($payment->getSourceOfFunds())->toBeInstanceOf(SourceOfFundsInterface::class);
 
     \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
@@ -196,7 +196,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(true);
-    \expect($payment->getFailedAt()->toIso8601ZuluString('microsecond'))->toBe('2022-01-13T20:22:25.645589Z');
+    \expect($payment->getFailedAt()->toISOString())->toBe('2022-01-13T20:22:25.645589Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
 
