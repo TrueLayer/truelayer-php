@@ -7,12 +7,12 @@ namespace TrueLayer\Services\Auth;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use TrueLayer\Constants\CacheKeys;
-use TrueLayer\Contracts\ApiClient\ApiClientInterface;
-use TrueLayer\Contracts\Auth\AccessTokenInterface;
-use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\Auth\AccessTokenInterface;
+use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Services\Api\AccessTokenApi;
 
 final class AccessToken implements AccessTokenInterface
@@ -164,7 +164,7 @@ final class AccessToken implements AccessTokenInterface
     private function retrieve(): void
     {
         /** @var array{access_token: string, expires_in: int} $data */
-        $data = (new AccessTokenApi($this->api))->fetch($this->clientId, $this->clientSecret, $this->scopes);
+        $data = (new AccessTokenApi($this->api))->retrieve($this->clientId, $this->clientSecret, $this->scopes);
         $this->validate($data);
 
         $this->accessToken = $data['access_token'];

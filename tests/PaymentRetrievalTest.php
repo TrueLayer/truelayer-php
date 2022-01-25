@@ -3,25 +3,26 @@
 declare(strict_types=1);
 
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
-use TrueLayer\Contracts\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\RedirectActionInterface;
-use TrueLayer\Contracts\Payment\AuthorizationFlow\Action\WaitActionInterface;
-use TrueLayer\Contracts\Payment\AuthorizationFlow\ConfigurationInterface;
-use TrueLayer\Contracts\Payment\PaymentAuthorizationRequiredInterface;
-use TrueLayer\Contracts\Payment\PaymentAuthorizedInterface;
-use TrueLayer\Contracts\Payment\PaymentAuthorizingInterface;
-use TrueLayer\Contracts\Payment\PaymentExecutedInterface;
-use TrueLayer\Contracts\Payment\PaymentFailedInterface;
-use TrueLayer\Contracts\Payment\PaymentRetrievedInterface;
-use TrueLayer\Contracts\Payment\PaymentSettledInterface;
-use TrueLayer\Contracts\Payment\SourceOfFundsInterface;
-use TrueLayer\Contracts\ProviderInterface;
-use TrueLayer\Contracts\SchemeIdentifier\BbanDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\IbanDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\NrbDetailsInterface;
-use TrueLayer\Contracts\SchemeIdentifier\ScanDetailsInterface;
-use TrueLayer\Contracts\UserInterface;
+use TrueLayer\Constants\DateTime;
+use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
+use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
+use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
+use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
+use TrueLayer\Interfaces\Payment\SourceOfFundsInterface;
+use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\BbanDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\IbanDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
+use TrueLayer\Interfaces\SchemeIdentifier\ScanDetailsInterface;
+use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Tests\Mocks\PaymentResponse;
 
 function assertCommon(PaymentRetrievedInterface $payment)
@@ -150,7 +151,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(true);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
 
     \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
     \expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
@@ -172,8 +173,8 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(true);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
-    \expect($payment->getSettledAt()->toISOString())->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
     \expect($payment->getSourceOfFunds())->toBeInstanceOf(SourceOfFundsInterface::class);
 
     \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
@@ -196,7 +197,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(true);
-    \expect($payment->getFailedAt()->toISOString())->toBe('2022-01-13T20:22:25.645589Z');
+    \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T20:22:25.645589Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
 

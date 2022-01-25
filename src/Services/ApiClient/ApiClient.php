@@ -9,10 +9,10 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use TrueLayer\Constants\ResponseStatusCodes;
-use TrueLayer\Contracts\ApiClient\ApiClientInterface;
-use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 
 final class ApiClient implements ApiClientInterface
 {

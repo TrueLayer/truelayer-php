@@ -6,10 +6,10 @@ namespace TrueLayer\Services\Util;
 
 use Illuminate\Encryption\Encrypter;
 use Psr\SimpleCache\CacheInterface;
-use TrueLayer\Contracts\EncryptedCacheInterface;
 use TrueLayer\Exceptions\DecryptException;
 use TrueLayer\Exceptions\EncryptException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Interfaces\EncryptedCacheInterface;
 
 final class EncryptedCache implements EncryptedCacheInterface
 {

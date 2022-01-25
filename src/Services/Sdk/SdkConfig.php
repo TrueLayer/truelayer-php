@@ -8,12 +8,12 @@ use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\Encryption;
-use TrueLayer\Contracts\EncryptedCacheInterface;
-use TrueLayer\Contracts\Sdk\SdkConfigInterface;
-use TrueLayer\Contracts\Sdk\SdkFactoryInterface;
-use TrueLayer\Contracts\Sdk\SdkInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\EncryptedCacheInterface;
+use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
+use TrueLayer\Interfaces\Sdk\SdkFactoryInterface;
+use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Services\Util\EncryptedCache;
 
 class SdkConfig implements SdkConfigInterface

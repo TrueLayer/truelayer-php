@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\ApiClient\Decorators;
 
-use TrueLayer\Contracts\ApiClient\ApiClientInterface;
-use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
+use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 use TrueLayer\Services\ApiClient\ApiRequest;
 
 abstract class BaseApiClientDecorator implements ApiClientInterface

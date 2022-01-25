@@ -6,9 +6,9 @@ namespace TrueLayer\Services\ApiClient\Decorators;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use TrueLayer\Constants\ResponseStatusCodes;
-use TrueLayer\Contracts\ApiClient\ApiRequestInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 use TrueLayer\Services\Util\Retry;
 
 final class ExponentialBackoffDecorator extends BaseApiClientDecorator
