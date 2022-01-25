@@ -76,7 +76,6 @@ class CreatePayment
 
         return $this->sdk->paymentMethod()
             ->type(PaymentMethods::BANK_TRANSFER)
-            ->statementReference('Statement ref')
             ->providerFilter($filter);
     }
 

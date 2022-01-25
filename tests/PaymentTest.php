@@ -19,17 +19,19 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
         'currency' => Currencies::GBP,
         'payment_method' => [
             'type' => PaymentMethods::BANK_TRANSFER,
-            'statement_reference' => 'Statement ref',
-            'provider_filter' => [
-                'countries' => [
-                    Countries::GB,
-                ],
-                'release_channel' => ReleaseChannels::PRIVATE_BETA,
-                'customer_segments' => [
-                    CustomerSegments::RETAIL,
-                ],
-                'provider_ids' => [
-                    'mock-payments-gb-redirect',
+            'provider' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
+                 'filter' => [
+                    'countries' => [
+                        Countries::GB,
+                    ],
+                    'release_channel' => ReleaseChannels::PRIVATE_BETA,
+                    'customer_segments' => [
+                        CustomerSegments::RETAIL,
+                    ],
+                    'provider_ids' => [
+                        'mock-payments-gb-redirect',
+                    ],
                 ],
             ],
         ],

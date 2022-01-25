@@ -35,11 +35,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     /**
      * @var string
      */
-    protected string $statementReference;
-
-    /**
-     * @var string
-     */
     protected string $status;
 
     /**

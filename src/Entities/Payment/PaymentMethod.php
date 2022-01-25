@@ -35,7 +35,7 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
      */
     protected array $arrayFields = [
         'type',
-        'provider.filter',
+        'provider.filter' => 'provider_filter',
         'provider.type' => 'provider_type',
     ];
 
