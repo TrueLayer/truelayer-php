@@ -21,7 +21,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
             'type' => PaymentMethods::BANK_TRANSFER,
             'provider' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
-                 'filter' => [
+                'filter' => [
                     'countries' => [
                         Countries::GB,
                     ],
