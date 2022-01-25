@@ -19,11 +19,6 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
     protected string $type;
 
     /**
-     * @var string
-     */
-    protected string $statementReference;
-
-    /**
      * @var ProviderFilterInterface
      */
     protected ProviderFilterInterface $providerFilter;
@@ -40,8 +35,8 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
      */
     protected array $arrayFields = [
         'type',
-        'statement_reference',
-        'provider_filter',
+        'provider.filter',
+        'provider.type' => 'provider_type',
     ];
 
     /**
@@ -52,7 +47,7 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
         return [
             'type' => ['required', 'string', AllowedConstant::in(PaymentMethods::class)],
             'statement_reference' => ['string'],
-            'provider_filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)],
+            'provider.filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)],
         ];
     }
 
@@ -69,18 +64,6 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
     }
 
     /**
-     * @param string $statementReference
-     *
-     * @return PaymentMethodInterface
-     */
-    public function statementReference(string $statementReference): PaymentMethodInterface
-    {
-        $this->statementReference = $statementReference;
-
-        return $this;
-    }
-
-    /**
      * @param ProviderFilterInterface $providerFilter
      *
      * @return PaymentMethodInterface
@@ -90,5 +73,13 @@ class PaymentMethod extends Entity implements PaymentMethodInterface
         $this->providerFilter = $providerFilter;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProviderType(): string
+    {
+        return PaymentMethods::PROVIDER_TYPE_USER_SELECTION;
     }
 }

@@ -18,13 +18,6 @@ interface PaymentMethodInterface extends ArrayableInterface, HasAttributesInterf
     public function type(string $type): PaymentMethodInterface;
 
     /**
-     * @param string $statementReference
-     *
-     * @return PaymentMethodInterface
-     */
-    public function statementReference(string $statementReference): PaymentMethodInterface;
-
-    /**
      * @param ProviderFilterInterface $providerFilter
      *
      * @return PaymentMethodInterface

@@ -145,8 +145,7 @@ $user = $sdk->user()
 
 ```php
 $paymentMethod = $sdk->paymentMethod()
-    ->type(\TrueLayer\Constants\PaymentMethods::BANK_TRANSFER)
-    ->statementReference('Reference');
+    ->type(\TrueLayer\Constants\PaymentMethods::BANK_TRANSFER);
 ```
 
 <a name="creating-the-payment"></a>
