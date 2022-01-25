@@ -1,0 +1,90 @@
+name: PHP
+
+on:
+  push:
+    branches: [ main, builders ]
+    tags:
+      - "v**"
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  code-style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: "8.0"
+          ini-values: memory_limit=-1
+        env:
+          update: true
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: php-cs-fixer
+
+      - name: Install
+        run: composer install
+
+      - name: Run php-cs-fixer
+        run: composer cs-fix
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply php-cs-fixer changes
+
+  code-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dependencies:
+          - lowest
+          - highest
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: pcov
+          php-version: ${{ matrix.php-version }}
+          ini-values: memory_limit=-1
+        env:
+          update: true
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: php-${{ matrix.php-version }}-${{ matrix.dependencies }}
+
+      - name: Install lowest dependencies
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: composer update --prefer-lowest --no-interaction --no-progress
+
+      - name: Install highest dependencies
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: composer update --no-interaction --no-progress
+
+      - name: PHPStan
+        run: composer analyse
+
+      - name: Tests
+        run: composer test
