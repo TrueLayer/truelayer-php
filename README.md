@@ -92,7 +92,7 @@ You can generate a random encryption key by running `openssl rand -hex 32`. This
 ```php
 $sdk = \TrueLayer\Sdk::configure()
     ...
-    ->cache(\Illuminate\Support\Facades\App::make('cache')->driver(), $encryptionKey)
+    ->cache($cacheImplementation, $encryptionKey)
     ->create();
 ```
 
