@@ -24,7 +24,7 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     /**
      * @var string
      */
-    protected string $paymentToken;
+    protected string $resourceToken;
 
     /**
      * @var string
@@ -36,7 +36,7 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
      */
     protected array $arrayFields = [
         'id',
-        'payment_token',
+        'resource_token',
         'user.id' => 'user_id',
     ];
 
@@ -46,7 +46,7 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     protected array $rules = [
         'id' => 'required|string',
         'user.id' => 'required|string',
-        'payment_token' => 'required|string',
+        'resource_token' => 'required|string',
     ];
 
     /**
@@ -60,9 +60,9 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     /**
      * @return string
      */
-    public function getPaymentToken(): string
+    public function getResourceToken(): string
     {
-        return $this->paymentToken;
+        return $this->resourceToken;
     }
 
     /**
@@ -83,7 +83,7 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     {
         return $this->make(HppInterface::class)
             ->paymentId($this->getId())
-            ->paymentToken($this->getPaymentToken());
+            ->resourceToken($this->getResourceToken());
     }
 
     /**

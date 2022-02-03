@@ -33,16 +33,16 @@ interface HppInterface extends ArrayableInterface
     public function getPaymentId(): ?string;
 
     /**
-     * @param string $paymentToken
+     * @param string $resourceToken
      *
      * @return HppInterface
      */
-    public function paymentToken(string $paymentToken): HppInterface;
+    public function resourceToken(string $resourceToken): HppInterface;
 
     /**
      * @return string|null
      */
-    public function getPaymentToken(): ?string;
+    public function getResourceToken(): ?string;
 
     /**
      * @param string $returnUri

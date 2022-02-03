@@ -9,7 +9,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 \it('generates HPP url', function () {
     $url = \sdk()->hostedPaymentsPage()
         ->paymentId('1')
-        ->paymentToken('1')
+        ->resourceToken('1')
         ->returnUri('http://www.return.com')
         ->primaryColour('#111')
         ->secondaryColour('#222222')
@@ -17,7 +17,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
         ->toUrl();
 
     \expect($url)->toEndWith(
-        '#payment_id=1&payment_token=1&return_uri=http%3A%2F%2Fwww.return.com&c_primary=111&c_secondary=222222&c_tertiary=333333'
+        '#payment_id=1&resource_token=1&return_uri=http%3A%2F%2Fwww.return.com&c_primary=111&c_secondary=222222&c_tertiary=333333'
     );
 });
 
@@ -33,7 +33,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
         ->toUrl();
 
     \expect($url)->toEndWith(
-        '#payment_id=5a2a0a0d-d3ad-4740-860b-45a01bcc17ac&payment_token=the-token&return_uri=http%3A%2F%2Fwww.return.com&c_primary=111&c_secondary=222222&c_tertiary=333333'
+        '#payment_id=5a2a0a0d-d3ad-4740-860b-45a01bcc17ac&resource_token=the-token&return_uri=http%3A%2F%2Fwww.return.com&c_primary=111&c_secondary=222222&c_tertiary=333333'
     );
 });
 
@@ -47,7 +47,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
     } catch (ValidationException $e) {
         \expect($e->getErrors())->toHaveKeys([
             'payment_id',
-            'payment_token',
+            'resource_token',
             'return_uri',
             'c_primary',
             'c_secondary',
