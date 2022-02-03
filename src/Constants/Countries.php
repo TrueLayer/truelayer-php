@@ -7,4 +7,6 @@ namespace TrueLayer\Constants;
 class Countries
 {
     public const GB = 'GB';
+    public const FR = 'FR';
+    public const IE = 'IE';
 }

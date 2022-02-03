@@ -39,7 +39,7 @@ class CreatePayment
             ->accountNumber('12345678')
             ->sortCode('010203')
             ->reference('The ref')
-            ->name('John Doe');
+            ->accountHolderName('John Doe');
     }
 
     /**
@@ -63,9 +63,10 @@ class CreatePayment
     }
 
     /**
+     * @param BeneficiaryInterface $beneficiary
      * @return PaymentMethodInterface
      */
-    public function paymentMethod(): PaymentMethodInterface
+    public function paymentMethod(BeneficiaryInterface $beneficiary): PaymentMethodInterface
     {
         $filter = $this->sdk
             ->providerFilter()
@@ -76,20 +77,18 @@ class CreatePayment
 
         return $this->sdk->paymentMethod()
             ->type(PaymentMethods::BANK_TRANSFER)
+            ->beneficiary($beneficiary)
             ->providerFilter($filter);
     }
 
     /**
-     * @param BeneficiaryInterface   $beneficiary
-     * @param UserInterface          $user
+     * @param UserInterface $user
      * @param PaymentMethodInterface $paymentMethod
-     *
      * @return PaymentRequestInterface
      */
-    public function payment(BeneficiaryInterface $beneficiary, UserInterface $user, PaymentMethodInterface $paymentMethod): PaymentRequestInterface
+    public function payment(UserInterface $user, PaymentMethodInterface $paymentMethod): PaymentRequestInterface
     {
         return $this->sdk->payment()
-            ->beneficiary($beneficiary)
             ->user($user)
             ->amountInMinor(1)
             ->currency(Currencies::GBP)

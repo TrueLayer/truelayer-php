@@ -12,14 +12,14 @@ interface BeneficiaryInterface extends ArrayableInterface, HasAttributesInterfac
     /**
      * @return string|null
      */
-    public function getName(): ?string;
+    public function getAccountHolderName(): ?string;
 
     /**
      * @param string $name
      *
      * @return $this
      */
-    public function name(string $name): self;
+    public function accountHolderName(string $name): self;
 
     /**
      * @return string

@@ -9,7 +9,8 @@ use Illuminate\Support\Arr;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Constants\ExternalAccountTypes;
+use TrueLayer\Constants\AccountIdentifierTypes;
+use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
@@ -54,10 +55,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\UserInterface::class => User::class,
         Interfaces\HppInterface::class => 'makeHpp',
 
-        Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => 'makeBeneficiaryBuilder',
-        Interfaces\Beneficiary\ScanBeneficiaryInterface::class => Entities\Beneficiary\ScanBeneficiary::class,
-        Interfaces\Beneficiary\IbanBeneficiaryInterface::class => Entities\Beneficiary\IbanBeneficiary::class,
+        Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Beneficiary\BeneficiaryBuilder::class,
         Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
+        Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
 
         Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
         Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
@@ -66,25 +66,32 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Payment\PaymentExecutedInterface::class => Entities\Payment\PaymentRetrieved\PaymentExecuted::class,
         Interfaces\Payment\PaymentSettledInterface::class => Entities\Payment\PaymentRetrieved\PaymentSettled::class,
         Interfaces\Payment\PaymentFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentFailed::class,
-        Interfaces\Payment\SourceOfFundsInterface::class => Entities\Payment\PaymentRetrieved\SourceOfFunds::class,
+        Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
         Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Configuration::class,
         Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\ProviderSelectionAction::class,
         Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\RedirectAction::class,
         Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\WaitAction::class,
-        Interfaces\Payment\PaymentMethodInterface::class => Entities\Payment\PaymentMethod::class,
-        Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
 
-        Interfaces\SchemeIdentifier\ScanInterface::class => Entities\SchemeIdentifier\Scan::class,
-        Interfaces\SchemeIdentifier\ScanDetailsInterface::class => Entities\SchemeIdentifier\Iban::class,
-        Interfaces\SchemeIdentifier\IbanInterface::class => Entities\SchemeIdentifier\Iban::class,
-        Interfaces\SchemeIdentifier\IbanDetailsInterface::class => Entities\SchemeIdentifier\Iban::class,
-        Interfaces\SchemeIdentifier\BbanInterface::class => Entities\SchemeIdentifier\Bban::class,
-        Interfaces\SchemeIdentifier\BbanDetailsInterface::class => Entities\SchemeIdentifier\Bban::class,
-        Interfaces\SchemeIdentifier\NrbInterface::class => Entities\SchemeIdentifier\Nrb::class,
-        Interfaces\SchemeIdentifier\NrbDetailsInterface::class => Entities\SchemeIdentifier\Nrb::class,
+        Interfaces\PaymentMethod\PaymentMethodBuilderInterface::class => Entities\Payment\PaymentMethod\PaymentMethodBuilder::class,
+        Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Payment\PaymentMethod\BankTransferPaymentMethod::class,
+
+        Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
+        Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
 
         Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
-        Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderFilter::class,
+        Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
+
+        Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
+
+        Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
+        Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
+        Interfaces\AccountIdentifier\ScanDetailsInterface::class => Entities\AccountIdentifier\Iban::class,
+        Interfaces\AccountIdentifier\IbanInterface::class => Entities\AccountIdentifier\Iban::class,
+        Interfaces\AccountIdentifier\IbanDetailsInterface::class => Entities\AccountIdentifier\Iban::class,
+        Interfaces\AccountIdentifier\BbanInterface::class => Entities\AccountIdentifier\Bban::class,
+        Interfaces\AccountIdentifier\BbanDetailsInterface::class => Entities\AccountIdentifier\Bban::class,
+        Interfaces\AccountIdentifier\NrbInterface::class => Entities\AccountIdentifier\Nrb::class,
+        Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
 
         Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
     ];
@@ -105,12 +112,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             AuthorizationFlowActionTypes::REDIRECT => Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class,
             AuthorizationFlowActionTypes::WAIT => Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class,
         ],
-        Interfaces\SchemeIdentifier\SchemeIdentifierInterface::class => [
+        Interfaces\AccountIdentifier\AccountIdentifierInterface::class => [
             'array_key' => 'type',
-            ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\SchemeIdentifier\ScanInterface::class,
-            ExternalAccountTypes::IBAN => Interfaces\SchemeIdentifier\IbanInterface::class,
-            ExternalAccountTypes::BBAN => Interfaces\SchemeIdentifier\BbanInterface::class,
-            ExternalAccountTypes::NRB => Interfaces\SchemeIdentifier\NrbInterface::class,
+            AccountIdentifierTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\AccountIdentifier\ScanInterface::class,
+            AccountIdentifierTypes::IBAN => Interfaces\AccountIdentifier\IbanInterface::class,
+            AccountIdentifierTypes::BBAN => Interfaces\AccountIdentifier\BbanInterface::class,
+            AccountIdentifierTypes::NRB => Interfaces\AccountIdentifier\NrbInterface::class,
         ],
         Interfaces\Beneficiary\BeneficiaryInterface::class => [
             'array_key' => 'type',
@@ -118,10 +125,18 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Beneficiary\MerchantBeneficiaryInterface::class,
         ],
         Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => [
-            'array_key' => 'scheme_identifier.type',
-            ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\Beneficiary\ScanBeneficiaryInterface::class,
-            ExternalAccountTypes::IBAN => Interfaces\Beneficiary\IbanBeneficiaryInterface::class,
+            'array_key' => 'account_identifier.type',
+            AccountIdentifierTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\AccountIdentifier\ScanInterface::class,
+            AccountIdentifierTypes::IBAN => Interfaces\Beneficiary\IbanBeneficiaryInterface::class,
         ],
+        Interfaces\PaymentMethod\PaymentMethodInterface::class => [
+            'array_key' => 'type',
+            PaymentMethods::BANK_TRANSFER => Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class,
+        ],
+        Interfaces\Provider\ProviderSelectionInterface::class => [
+            'array_key' => 'type',
+            PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
+        ]
     ];
 
     /**
@@ -183,6 +198,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
     /**
      * @return Interfaces\HppInterface
+     * @throws InvalidArgumentException
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -194,23 +210,24 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @return Interfaces\Beneficiary\BeneficiaryBuilderInterface
-     */
-    private function makeBeneficiaryBuilder(): Interfaces\Beneficiary\BeneficiaryBuilderInterface
-    {
-        return new Entities\Beneficiary\BeneficiaryBuilder($this);
-    }
-
-    /**
      * @template T
      *
      * @param class-string<T> $concrete
      *
      * @return T
+     * @throws InvalidArgumentException
      */
     private function makeConcrete(string $concrete)
     {
-        return new $concrete($this->validatorFactory, $this, $this->apiFactory);
+        if (is_subclass_of($concrete, Entities\Entity::class)) {
+            return new $concrete($this->validatorFactory, $this, $this->apiFactory);
+        }
+
+        if (is_subclass_of($concrete, Entities\EntityBuilder::class)) {
+            return new $concrete($this);
+        }
+
+        throw new InvalidArgumentException("Provided concrete class $concrete must be an Entity or EntityBuilder");
     }
 
     /**

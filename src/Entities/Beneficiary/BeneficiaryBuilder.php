@@ -4,39 +4,25 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Beneficiary;
 
+use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\ScanBeneficiaryInterface;
-use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 
-final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
+final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {
     /**
-     * @var EntityFactoryInterface
-     */
-    private EntityFactoryInterface $entityFactory;
-
-    /**
-     * @param EntityFactoryInterface $entityFactory
-     */
-    public function __construct(EntityFactoryInterface $entityFactory)
-    {
-        $this->entityFactory = $entityFactory;
-    }
-
-    /**
+     * @return ExternalAccountBeneficiaryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
-     *
-     * @return ScanBeneficiaryInterface
      */
-    public function sortCodeAccountNumber(): ScanBeneficiaryInterface
+    public function externalAccount(): ExternalAccountBeneficiaryInterface
     {
-        return $this->entityFactory->make(ScanBeneficiaryInterface::class);
+        return $this->entityFactory->make(ExternalAccountBeneficiaryInterface::class);
     }
 
     /**
@@ -52,7 +38,7 @@ final class BeneficiaryBuilder implements BeneficiaryBuilderInterface
         $beneficiary = $this->entityFactory->make(MerchantBeneficiaryInterface::class);
 
         if ($merchantAccount && $merchantAccount->getId()) {
-            $beneficiary->id($merchantAccount->getId());
+            $beneficiary->merchantAccountId($merchantAccount->getId());
         }
 
         return $beneficiary;

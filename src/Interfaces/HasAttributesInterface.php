@@ -7,7 +7,7 @@ namespace TrueLayer\Interfaces;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 
-interface HasAttributesInterface extends ArrayableInterface, HasValidationInterface
+interface HasAttributesInterface extends ArrayableInterface
 {
     /**
      * @param mixed[] $data

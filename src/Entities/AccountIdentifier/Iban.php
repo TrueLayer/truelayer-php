@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\SchemeIdentifier;
+namespace TrueLayer\Entities\AccountIdentifier;
 
+use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\SchemeIdentifier\IbanInterface;
+use TrueLayer\Interfaces\AccountIdentifier\IbanInterface;
 
 final class Iban extends Entity implements IbanInterface
 {
@@ -18,6 +19,7 @@ final class Iban extends Entity implements IbanInterface
      * @var string[]
      */
     protected array $arrayFields = [
+        'type',
         'iban',
     ];
 
@@ -46,5 +48,13 @@ final class Iban extends Entity implements IbanInterface
         $this->iban = $iban;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return AccountIdentifierTypes::IBAN;
     }
 }

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Payment\SourceOfFundsInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
+use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Validation\ValidType;
 
-final class SourceOfFunds extends Entity implements SourceOfFundsInterface
+final class PaymentSource extends Entity implements PaymentSourceInterface
 {
     /**
-     * @var SchemeIdentifierInterface[]
+     * @var AccountIdentifierInterface[]
      */
-    private array $schemeIdentifiers;
+    private array $accountIdentifiers;
 
     /**
      * @var string
@@ -30,14 +30,14 @@ final class SourceOfFunds extends Entity implements SourceOfFundsInterface
      * @var string[]
      */
     protected array $casts = [
-        'scheme_identifiers.*' => SchemeIdentifierInterface::class,
+        'account_identifiers.*' => AccountIdentifierInterface::class,
     ];
 
     /**
      * @var array|string[]
      */
     protected array $arrayFields = [
-        'scheme_identifiers',
+        'account_identifiers',
         'external_account_id',
         'account_holder_name',
     ];
@@ -48,29 +48,31 @@ final class SourceOfFunds extends Entity implements SourceOfFundsInterface
     protected function rules(): array
     {
         return [
+            'id' => 'required|string',
+            'details' => 'array',
             'external_account_id' => 'nullable|string',
             'account_holder_name' => 'nullable|string',
-            'scheme_identifiers' => 'array',
-            'scheme_identifiers.*' => ValidType::of(SchemeIdentifierInterface::class),
+            'account_identifiers' => 'array',
+            'account_identifiers.*' => ValidType::of(AccountIdentifierInterface::class),
         ];
     }
 
     /**
-     * @return SchemeIdentifierInterface[]
+     * @return AccountIdentifierInterface[]
      */
-    public function getSchemeIdentifiers(): array
+    public function getAccountIdentifiers(): array
     {
-        return $this->schemeIdentifiers ?? [];
+        return $this->accountIdentifiers ?? [];
     }
 
     /**
-     * @param SchemeIdentifierInterface[] $schemeIdentifiers
+     * @param AccountIdentifierInterface[] $accountIdentifiers
      *
-     * @return SourceOfFundsInterface
+     * @return PaymentSourceInterface
      */
-    public function schemeIdentifiers(array $schemeIdentifiers): SourceOfFundsInterface
+    public function accountIdentifiers(array $accountIdentifiers): PaymentSourceInterface
     {
-        $this->schemeIdentifiers = $schemeIdentifiers;
+        $this->accountIdentifiers = $accountIdentifiers;
 
         return $this;
     }
@@ -86,9 +88,9 @@ final class SourceOfFunds extends Entity implements SourceOfFundsInterface
     /**
      * @param string $externalAccountId
      *
-     * @return SourceOfFundsInterface
+     * @return PaymentSourceInterface
      */
-    public function externalAccountId(string $externalAccountId): SourceOfFundsInterface
+    public function externalAccountId(string $externalAccountId): PaymentSourceInterface
     {
         $this->externalAccountId = $externalAccountId;
 
@@ -106,9 +108,9 @@ final class SourceOfFunds extends Entity implements SourceOfFundsInterface
     /**
      * @param string $accountHolderName
      *
-     * @return SourceOfFundsInterface
+     * @return PaymentSourceInterface
      */
-    public function accountHolderName(string $accountHolderName): SourceOfFundsInterface
+    public function accountHolderName(string $accountHolderName): PaymentSourceInterface
     {
         $this->accountHolderName = $accountHolderName;
 

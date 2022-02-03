@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Beneficiary;
 
-use TrueLayer\Entities\Beneficiary\IbanBeneficiary;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 
 interface BeneficiaryBuilderInterface
 {
     /**
-     * @return ScanBeneficiaryInterface
+     * @return ExternalAccountBeneficiaryInterface
+     * @throws InvalidArgumentException
      */
-    public function sortCodeAccountNumber(): ScanBeneficiaryInterface;
+    public function externalAccount(): ExternalAccountBeneficiaryInterface;
 
     /**
-     * @return IbanBeneficiary
-     */
-//    public function ibanAccount(): IbanBeneficiary;
-
-    /**
+     * @param MerchantAccountInterface|null $merchantAccount
+     *
+     * @throws InvalidArgumentException
+     *
      * @return MerchantBeneficiaryInterface
      */
-    public function merchantAccount(): MerchantBeneficiaryInterface;
+    public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface;
 
     /**
      * @param mixed[] $data

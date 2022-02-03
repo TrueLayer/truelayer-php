@@ -14,7 +14,7 @@ interface ProviderFilterInterface extends ArrayableInterface, HasAttributesInter
      *
      * @return ProviderFilterInterface
      */
-    public function countries(array $countries): ProviderFilterInterface;
+    public function countries(string ...$countries): ProviderFilterInterface;
 
     /**
      * @param string $releaseChannel
@@ -28,12 +28,18 @@ interface ProviderFilterInterface extends ArrayableInterface, HasAttributesInter
      *
      * @return ProviderFilterInterface
      */
-    public function customerSegments(array $customerSegments): ProviderFilterInterface;
+    public function customerSegments(string ...$customerSegments): ProviderFilterInterface;
 
     /**
      * @param string[] $providerIds
      *
      * @return ProviderFilterInterface
      */
-    public function providerIds(array $providerIds): ProviderFilterInterface;
+    public function providerIds(string ...$providerIds): ProviderFilterInterface;
+
+    /**
+     * @param string[] $providerIds
+     * @return ProviderFilterInterface
+     */
+    public function excludesProviderIds(string ...$providerIds): ProviderFilterInterface;
 }

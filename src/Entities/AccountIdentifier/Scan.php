@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\SchemeIdentifier;
+namespace TrueLayer\Entities\AccountIdentifier;
 
+use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\SchemeIdentifier\ScanInterface;
+use TrueLayer\Interfaces\AccountIdentifier\ScanInterface;
 
 final class Scan extends Entity implements ScanInterface
 {
@@ -23,6 +24,7 @@ final class Scan extends Entity implements ScanInterface
      * @var string[]
      */
     protected array $arrayFields = [
+        'type',
         'sort_code',
         'account_number',
     ];
@@ -73,5 +75,13 @@ final class Scan extends Entity implements ScanInterface
         $this->accountNumber = $accountNumber;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return AccountIdentifierTypes::SORT_CODE_ACCOUNT_NUMBER;
     }
 }

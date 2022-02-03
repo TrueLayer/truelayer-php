@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 interface PaymentRequestInterface extends HasAttributesInterface
@@ -30,13 +30,6 @@ interface PaymentRequestInterface extends HasAttributesInterface
      * @return PaymentRequestInterface
      */
     public function paymentMethod(PaymentMethodInterface $paymentMethod): PaymentRequestInterface;
-
-    /**
-     * @param BeneficiaryInterface $beneficiary
-     *
-     * @return PaymentRequestInterface
-     */
-    public function beneficiary(BeneficiaryInterface $beneficiary): PaymentRequestInterface;
 
     /**
      * @param UserInterface $user

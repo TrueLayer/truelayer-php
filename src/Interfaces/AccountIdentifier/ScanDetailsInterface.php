@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\SchemeIdentifier;
+namespace TrueLayer\Interfaces\AccountIdentifier;
 
-interface ScanDetailsInterface extends SchemeIdentifierInterface
+interface ScanDetailsInterface extends AccountIdentifierInterface
 {
     /**
      * @return string

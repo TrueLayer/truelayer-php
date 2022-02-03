@@ -6,7 +6,7 @@ namespace TrueLayer\Entities\MerchantAccount;
 
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Validation\ValidType;
 
 final class MerchantAccount extends Entity implements MerchantAccountInterface
@@ -22,9 +22,9 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     protected string $currency;
 
     /**
-     * @var SchemeIdentifierInterface[]
+     * @var AccountIdentifierInterface[]
      */
-    protected array $schemeIdentifiers;
+    protected array $accountIdentifiers;
 
     /**
      * @var int
@@ -42,7 +42,7 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     protected string $accountHolderName;
 
     protected array $casts = [
-        'scheme_identifiers.*' => SchemeIdentifierInterface::class,
+        'account_identifiers.*' => AccountIdentifierInterface::class,
     ];
 
     /**
@@ -51,7 +51,7 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     protected array $arrayFields = [
         'id',
         'currency',
-        'scheme_identifiers',
+        'account_identifiers',
         'available_balance_in_minor',
         'current_balance_in_minor',
         'account_holder_name',
@@ -65,8 +65,8 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
         return [
             'id' => 'required|string',
             'currency' => ['required', 'string'],
-            'scheme_identifiers' => 'required|array',
-            'scheme_identifiers.*' => [ValidType::of(SchemeIdentifierInterface::class)],
+            'account_identifiers' => 'required|array',
+            'account_identifiers.*' => [ValidType::of(AccountIdentifierInterface::class)],
             'available_balance_in_minor' => 'required|int',
             'current_balance_in_minor' => 'required|int',
             'account_holder_name' => 'required|string',
@@ -90,11 +90,11 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     }
 
     /**
-     * @return SchemeIdentifierInterface[]
+     * @return AccountIdentifierInterface[]
      */
-    public function getSchemeIdentifiers(): array
+    public function getAccountIdentifiers(): array
     {
-        return $this->schemeIdentifiers;
+        return $this->accountIdentifiers;
     }
 
     /**

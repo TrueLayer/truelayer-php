@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\SchemeIdentifier;
+namespace TrueLayer\Entities\AccountIdentifier;
 
+use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\SchemeIdentifier\NrbInterface;
+use TrueLayer\Interfaces\AccountIdentifier\NrbInterface;
 
 final class Nrb extends Entity implements NrbInterface
 {
@@ -18,6 +19,7 @@ final class Nrb extends Entity implements NrbInterface
      * @var string[]
      */
     protected array $arrayFields = [
+        'type',
         'nrb',
     ];
 
@@ -46,5 +48,13 @@ final class Nrb extends Entity implements NrbInterface
         $this->nrb = $nrb;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return AccountIdentifierTypes::NRB;
     }
 }

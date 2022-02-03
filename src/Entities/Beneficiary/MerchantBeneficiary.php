@@ -7,25 +7,26 @@ namespace TrueLayer\Entities\Beneficiary;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 
-final class MerchantBeneficiary extends Entity implements BeneficiaryInterface
+final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInterface
 {
     /**
      * @var string
      */
-    protected string $id;
+    protected string $merchantAccountId;
 
     /**
      * @var string
      */
-    protected string $name;
+    protected string $accountHolderName;
 
     /**
      * @var string[]
      */
     protected array $arrayFields = [
-        'id',
-        'name',
+        'merchant_account_id',
+        'account_holder_name',
         'type',
     ];
 
@@ -33,16 +34,16 @@ final class MerchantBeneficiary extends Entity implements BeneficiaryInterface
      * @var string[]
      */
     protected array $rules = [
-        'id' => 'required|string',
-        'name' => 'nullable|string',
+        'merchant_account_id' => 'required|string',
+        'account_holder_name' => 'nullable|string',
     ];
 
     /**
      * @return string|null
      */
-    public function getId(): ?string
+    public function getMerchantAccountId(): ?string
     {
-        return $this->id ?? null;
+        return $this->merchantAccountId ?? null;
     }
 
     /**
@@ -50,9 +51,9 @@ final class MerchantBeneficiary extends Entity implements BeneficiaryInterface
      *
      * @return MerchantBeneficiary
      */
-    public function id(string $id): MerchantBeneficiary
+    public function merchantAccountId(string $id): MerchantBeneficiary
     {
-        $this->id = $id;
+        $this->merchantAccountId = $id;
 
         return $this;
     }
@@ -60,9 +61,9 @@ final class MerchantBeneficiary extends Entity implements BeneficiaryInterface
     /**
      * @return string|null
      */
-    public function getName(): ?string
+    public function getAccountHolderName(): ?string
     {
-        return $this->name ?? null;
+        return $this->accountHolderName ?? null;
     }
 
     /**
@@ -70,9 +71,9 @@ final class MerchantBeneficiary extends Entity implements BeneficiaryInterface
      *
      * @return MerchantBeneficiary
      */
-    public function name(string $name): MerchantBeneficiary
+    public function accountHolderName(string $name): MerchantBeneficiary
     {
-        $this->name = $name;
+        $this->accountHolderName = $name;
 
         return $this;
     }

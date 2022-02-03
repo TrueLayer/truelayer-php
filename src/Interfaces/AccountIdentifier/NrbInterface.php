@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\SchemeIdentifier;
+namespace TrueLayer\Interfaces\AccountIdentifier;
 
 interface NrbInterface extends NrbDetailsInterface
 {

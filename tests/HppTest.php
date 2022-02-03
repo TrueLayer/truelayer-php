@@ -23,7 +23,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
 \it('generates HPP url from created payment response', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
-    $result = $factory->payment($factory->sortCodeBeneficiary(), $factory->newUser(), $factory->paymentMethod())->create();
+    $result = $factory->payment($factory->newUser(), $factory->paymentMethod($factory->sortCodeBeneficiary()))->create();
 
     $url = $result->hostedPaymentsPage()
         ->returnUri('http://www.return.com')

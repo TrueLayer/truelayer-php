@@ -9,14 +9,17 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
+use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 interface SdkInterface
@@ -32,14 +35,25 @@ interface SdkInterface
     public function user(): UserInterface;
 
     /**
+     * @return AccountIdentifierBuilderInterface
+     * @throws InvalidArgumentException
+     */
+    public function accountIdentifier(): AccountIdentifierBuilderInterface;
+
+    /**
      * @return BeneficiaryBuilderInterface
      */
     public function beneficiary(): BeneficiaryBuilderInterface;
 
     /**
-     * @return PaymentMethodInterface
+     * @return PaymentMethodBuilderInterface
      */
-    public function paymentMethod(): PaymentMethodInterface;
+    public function paymentMethod(): PaymentMethodBuilderInterface;
+
+    /**
+     * @return ProviderSelectionBuilderInterface
+     */
+    public function providerSelection(): ProviderSelectionBuilderInterface;
 
     /**
      * @return ProviderFilterInterface

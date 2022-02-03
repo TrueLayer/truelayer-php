@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Payment;
 
 use TrueLayer\Interfaces\ArrayableInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 
-interface SourceOfFundsInterface extends ArrayableInterface
+interface PaymentSourceInterface extends ArrayableInterface
 {
     /**
-     * @return SchemeIdentifierInterface[]
+     * @return AccountIdentifierInterface[]
      */
-    public function getSchemeIdentifiers(): array;
+    public function getAccountIdentifiers(): array;
 
     /**
      * @return string|null

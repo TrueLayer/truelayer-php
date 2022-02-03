@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use TrueLayer\Exceptions;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
@@ -14,7 +15,9 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
+use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
@@ -70,6 +73,16 @@ final class Sdk implements SdkInterface
     }
 
     /**
+     * @return AccountIdentifierBuilderInterface
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\ValidationException
+     */
+    public function accountIdentifier(): AccountIdentifierBuilderInterface
+    {
+        return $this->entityFactory->make(AccountIdentifierBuilderInterface::class);
+    }
+
+    /**
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
      *
@@ -92,14 +105,24 @@ final class Sdk implements SdkInterface
     }
 
     /**
+     * @return ProviderSelectionBuilderInterface
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\ValidationException
+     */
+    public function providerSelection(): ProviderSelectionBuilderInterface
+    {
+        return $this->entityFactory->make(ProviderSelectionBuilderInterface::class);
+    }
+
+    /**
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
      *
-     * @return PaymentMethodInterface
+     * @return PaymentMethodBuilderInterface
      */
-    public function paymentMethod(): PaymentMethodInterface
+    public function paymentMethod(): PaymentMethodBuilderInterface
     {
-        return $this->entityFactory->make(PaymentMethodInterface::class);
+        return $this->entityFactory->make(PaymentMethodBuilderInterface::class);
     }
 
     /**

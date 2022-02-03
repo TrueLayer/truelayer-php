@@ -16,12 +16,12 @@ use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
-use TrueLayer\Interfaces\Payment\SourceOfFundsInterface;
+use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\BbanDetailsInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\IbanDetailsInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\ScanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\BbanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\IbanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\NrbDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Tests\Mocks\PaymentResponse;
 
@@ -153,10 +153,10 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
 
-    \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
-    \expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
-    \expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeArray();
-    \expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeEmpty();
+    \expect($payment->getPaymentSource()->getExternalAccountId())->toBeNull();
+    \expect($payment->getPaymentSource()->getAccountHolderName())->toBeNull();
+    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeArray();
+    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeEmpty();
 
     \assertCommon($payment);
 });
@@ -175,12 +175,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
     \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
-    \expect($payment->getSourceOfFunds())->toBeInstanceOf(SourceOfFundsInterface::class);
+    \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
 
-    \expect($payment->getSourceOfFunds()->getExternalAccountId())->toBeNull();
-    \expect($payment->getSourceOfFunds()->getAccountHolderName())->toBeNull();
-    \expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeArray();
-    \expect($payment->getSourceOfFunds()->getSchemeIdentifiers())->toBeEmpty();
+    \expect($payment->getPaymentSource()->getExternalAccountId())->toBeNull();
+    \expect($payment->getPaymentSource()->getAccountHolderName())->toBeNull();
+    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeArray();
+    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeEmpty();
 
     \assertCommon($payment);
 });
@@ -214,30 +214,30 @@ function assertCommon(PaymentRetrievedInterface $payment)
 
 \it('handles payment source of funds', function () {
     /** @var PaymentExecutedInterface $payment */
-    $payment = \sdk(PaymentResponse::executedWithSourceOfFundsData())->getPayment('1');
+    $payment = \sdk(PaymentResponse::executedWithPaymentSourceData())->getPayment('1');
 
-    $sourceOfFunds = $payment->getSourceOfFunds();
-    \expect($sourceOfFunds->getAccountHolderName())->toBe('John Doe');
-    \expect($sourceOfFunds->getExternalAccountId())->toBe('123');
+    $paymentSource = $payment->getPaymentSource();
+    \expect($paymentSource->getAccountHolderName())->toBe('John Doe');
+    \expect($paymentSource->getExternalAccountId())->toBe('123');
 
     /** @var ScanDetailsInterface $scan */
-    $scan = $sourceOfFunds->getSchemeIdentifiers()[0];
+    $scan = $paymentSource->getAccountIdentifiers()[0];
     \expect($scan)->toBeInstanceOf(ScanDetailsInterface::class);
     \expect($scan->getAccountNumber())->toBe('12345678');
     \expect($scan->getSortCode())->toBe('010203');
 
     /** @var IbanDetailsInterface $iban */
-    $iban = $sourceOfFunds->getSchemeIdentifiers()[1];
+    $iban = $paymentSource->getAccountIdentifiers()[1];
     \expect($iban)->toBeInstanceOf(IbanDetailsInterface::class);
     \expect($iban->getIban())->toBe('AT483200000012345864');
 
     /** @var BbanDetailsInterface $bban */
-    $bban = $sourceOfFunds->getSchemeIdentifiers()[2];
+    $bban = $paymentSource->getAccountIdentifiers()[2];
     \expect($bban)->toBeInstanceOf(BbanDetailsInterface::class);
     \expect($bban->getBban())->toBe('539007547034');
 
     /** @var NrbDetailsInterface $nrb */
-    $nrb = $sourceOfFunds->getSchemeIdentifiers()[3];
+    $nrb = $paymentSource->getAccountIdentifiers()[3];
     \expect($nrb)->toBeInstanceOf(NrbDetailsInterface::class);
     \expect($nrb->getNrb())->toBe('61109010140000071219812874');
 });

@@ -13,7 +13,7 @@ use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Validation\AllowedConstant;
@@ -37,11 +37,6 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     protected PaymentMethodInterface $paymentMethod;
 
     /**
-     * @var BeneficiaryInterface
-     */
-    protected BeneficiaryInterface $beneficiary;
-
-    /**
      * @var UserInterface
      */
     protected UserInterface $user;
@@ -50,8 +45,8 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
      * @var string[]
      */
     protected array $casts = [
+        'payment_method' => PaymentMethodInterface::class,
         'user' => UserInterface::class,
-        'beneficiary' => BeneficiaryInterface::class,
     ];
 
     /**
@@ -60,9 +55,8 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     protected array $arrayFields = [
         'amount_in_minor',
         'currency',
-        'user',
-        'beneficiary',
         'payment_method',
+        'user',
     ];
 
     /**
@@ -75,7 +69,6 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
             'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
-            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
     }
 
@@ -111,18 +104,6 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     public function paymentMethod(PaymentMethodInterface $paymentMethod): PaymentRequestInterface
     {
         $this->paymentMethod = $paymentMethod;
-
-        return $this;
-    }
-
-    /**
-     * @param BeneficiaryInterface $beneficiary
-     *
-     * @return PaymentRequestInterface
-     */
-    public function beneficiary(BeneficiaryInterface $beneficiary): PaymentRequestInterface
-    {
-        $this->beneficiary = $beneficiary;
 
         return $this;
     }
