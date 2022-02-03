@@ -19,7 +19,7 @@ interface PaymentCreatedInterface extends ArrayableInterface
     /**
      * @return string
      */
-    public function getPaymentToken(): string;
+    public function getResourceToken(): string;
 
     /**
      * @return string

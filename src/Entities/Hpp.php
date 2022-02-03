@@ -23,7 +23,7 @@ final class Hpp extends Entity implements HppInterface
     /**
      * @var string
      */
-    protected string $paymentToken;
+    protected string $resourceToken;
 
     /**
      * @var string
@@ -51,7 +51,7 @@ final class Hpp extends Entity implements HppInterface
     protected array $arrayFields = [
         'base_url',
         'payment_id',
-        'payment_token' => 'payment_token',
+        'resource_token' => 'resource_token',
         'return_uri',
         'c_primary' => 'primary_colour',
         'c_secondary' => 'secondary_colour',
@@ -64,7 +64,7 @@ final class Hpp extends Entity implements HppInterface
     protected array $rules = [
         'base_url' => 'required|url',
         'payment_id' => 'required|string',
-        'payment_token' => 'required|string',
+        'resource_token' => 'required|string',
         'return_uri' => 'required|url',
         'c_primary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
         'c_secondary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
@@ -112,13 +112,13 @@ final class Hpp extends Entity implements HppInterface
     }
 
     /**
-     * @param string $paymentToken
+     * @param string $resourceToken
      *
      * @return HppInterface
      */
-    public function paymentToken(string $paymentToken): HppInterface
+    public function resourceToken(string $resourceToken): HppInterface
     {
-        $this->paymentToken = $paymentToken;
+        $this->resourceToken = $resourceToken;
 
         return $this;
     }
@@ -126,9 +126,9 @@ final class Hpp extends Entity implements HppInterface
     /**
      * @return string|null
      */
-    public function getPaymentToken(): ?string
+    public function getResourceToken(): ?string
     {
-        return $this->paymentToken ?? null;
+        return $this->resourceToken ?? null;
     }
 
     /**

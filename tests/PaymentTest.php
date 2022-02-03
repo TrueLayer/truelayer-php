@@ -76,7 +76,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
     $factory = CreatePayment::responses([PaymentResponse::created()]);
     $payment = $factory->payment($factory->sortCodeBeneficiary(), $factory->newUser(), $factory->paymentMethod())->create();
 
-    \expect($payment->getPaymentToken())->toBe(PaymentResponse::CREATED['payment_token']);
+    \expect($payment->getResourceToken())->toBe(PaymentResponse::CREATED['resource_token']);
     \expect($payment->getId())->toBe(PaymentResponse::CREATED['id']);
     \expect($payment->getUserId())->toBe(PaymentResponse::CREATED['user']['id']);
 });
