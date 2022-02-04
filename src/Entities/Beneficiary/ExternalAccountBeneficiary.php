@@ -30,6 +30,13 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     /**
      * @var string[]
      */
+    protected array $casts = [
+        'account_identifier' => AccountIdentifierInterface::class
+    ];
+
+    /**
+     * @var string[]
+     */
     protected array $arrayFields = [
         'type',
         'account_holder_name',

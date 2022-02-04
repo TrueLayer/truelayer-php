@@ -67,7 +67,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
      * @param string[] $countries
      * @return ProviderFilterInterface
      */
-    public function countries(string ...$countries): ProviderFilterInterface
+    public function countries(array $countries): ProviderFilterInterface
     {
         $this->countries = $countries;
 
@@ -89,7 +89,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
      * @param string[] $customerSegments
      * @return ProviderFilterInterface
      */
-    public function customerSegments(string ...$customerSegments): ProviderFilterInterface
+    public function customerSegments(array $customerSegments): ProviderFilterInterface
     {
         $this->customerSegments = $customerSegments;
 
@@ -100,7 +100,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
      * @param string[] $providerIds
      * @return ProviderFilterInterface
      */
-    public function providerIds(string ...$providerIds): ProviderFilterInterface
+    public function providerIds(array $providerIds): ProviderFilterInterface
     {
         $this->providerIds = $providerIds;
 
@@ -111,7 +111,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
      * @param string[] $providerIds
      * @return ProviderFilterInterface
      */
-    public function excludesProviderIds(string ...$providerIds): ProviderFilterInterface
+    public function excludesProviderIds(array $providerIds): ProviderFilterInterface
     {
         $this->excludesProviderIds = $providerIds;
 

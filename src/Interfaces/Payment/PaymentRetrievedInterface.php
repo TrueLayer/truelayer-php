@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Exception;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 interface PaymentRetrievedInterface extends ArrayableInterface
