@@ -32,7 +32,7 @@ interface BankTransferPaymentMethodInterface extends PaymentMethodInterface
     public function providerSelection(ProviderSelectionInterface $providerSelection): BankTransferPaymentMethodInterface;
 
     /**
-     * @return ProviderSelectionInterface|null
+     * @return ProviderSelectionInterface
      */
-    public function getProviderSelection(): ?ProviderSelectionInterface;
+    public function getProviderSelection(): ProviderSelectionInterface;
 }

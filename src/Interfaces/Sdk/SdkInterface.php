@@ -36,7 +36,6 @@ interface SdkInterface
 
     /**
      * @return AccountIdentifierBuilderInterface
-     * @throws InvalidArgumentException
      */
     public function accountIdentifier(): AccountIdentifierBuilderInterface;
 

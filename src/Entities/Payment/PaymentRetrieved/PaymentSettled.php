@@ -44,7 +44,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'payment_source' => ['required', ValidType::of(PaymentSourceInterface::class)],
+            'payment_source' => [ValidType::of(PaymentSourceInterface::class)],
             'executed_at' => 'required|date',
             'settled_at' => 'required|date',
         ]);

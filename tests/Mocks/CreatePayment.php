@@ -9,10 +9,11 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
-use TrueLayer\Entities\Beneficiary\ScanBeneficiary;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
@@ -29,15 +30,18 @@ class CreatePayment
     }
 
     /**
-     * @return ScanBeneficiary
+     * @return ExternalAccountBeneficiaryInterface
      */
-    public function sortCodeBeneficiary(): ScanBeneficiary
+    public function sortCodeBeneficiary(): ExternalAccountBeneficiaryInterface
     {
-        return $this->sdk
-            ->beneficiary()
+        $accountIdentifier = $this->sdk->accountIdentifier()
             ->sortCodeAccountNumber()
             ->accountNumber('12345678')
-            ->sortCode('010203')
+            ->sortCode('010203');
+
+        return $this->sdk->beneficiary()
+            ->externalAccount()
+            ->accountIdentifier($accountIdentifier)
             ->reference('The ref')
             ->accountHolderName('John Doe');
     }
@@ -64,9 +68,9 @@ class CreatePayment
 
     /**
      * @param BeneficiaryInterface $beneficiary
-     * @return PaymentMethodInterface
+     * @return BankTransferPaymentMethodInterface
      */
-    public function paymentMethod(BeneficiaryInterface $beneficiary): PaymentMethodInterface
+    public function bankTransferMethod(BeneficiaryInterface $beneficiary): BankTransferPaymentMethodInterface
     {
         $filter = $this->sdk
             ->providerFilter()
@@ -75,10 +79,15 @@ class CreatePayment
             ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
             ->providerIds(['mock-payments-gb-redirect']);
 
+        $selection = $this->sdk
+            ->providerSelection()
+            ->userSelected()
+            ->filter($filter);
+
         return $this->sdk->paymentMethod()
-            ->type(PaymentMethods::BANK_TRANSFER)
+            ->bankTransfer()
             ->beneficiary($beneficiary)
-            ->providerFilter($filter);
+            ->providerSelection($selection);
     }
 
     /**

@@ -10,13 +10,11 @@ interface AccountIdentifierBuilderInterface
 {
     /**
      * @return ScanInterface
-     * @throws InvalidArgumentException
      */
     public function sortCodeAccountNumber(): ScanInterface;
 
     /**
      * @return IbanInterface
-     * @throws InvalidArgumentException
      */
     public function iban(): IbanInterface;
 

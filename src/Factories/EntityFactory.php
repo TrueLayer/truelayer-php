@@ -124,11 +124,6 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
             BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Beneficiary\MerchantBeneficiaryInterface::class,
         ],
-        Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => [
-            'array_key' => 'account_identifier.type',
-            AccountIdentifierTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\AccountIdentifier\ScanInterface::class,
-            AccountIdentifierTypes::IBAN => Interfaces\Beneficiary\IbanBeneficiaryInterface::class,
-        ],
         Interfaces\PaymentMethod\PaymentMethodInterface::class => [
             'array_key' => 'type',
             PaymentMethods::BANK_TRANSFER => Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class,

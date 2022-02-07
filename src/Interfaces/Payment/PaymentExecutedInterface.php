@@ -10,11 +10,6 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 interface PaymentExecutedInterface extends PaymentRetrievedInterface
 {
     /**
-     * @return PaymentSourceInterface
-     */
-    public function getPaymentSource(): PaymentSourceInterface;
-
-    /**
      * @return DateTimeInterface
      */
     public function getExecutedAt(): DateTimeInterface;

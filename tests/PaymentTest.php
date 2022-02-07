@@ -12,7 +12,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
 \it('sends correct payload on creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
-    $factory->payment($factory->newUser(), $factory->paymentMethod($factory->sortCodeBeneficiary()))->create();
+    $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'amount_in_minor' => 1,
@@ -26,10 +26,10 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
                     'type' => 'sort_code_account_number',
                 ],
                 'reference' => 'The ref',
-                'name' => 'John Doe',
+                'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
             ],
-            'provider' => [
+            'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
                 'filter' => [
                     'countries' => [
@@ -42,6 +42,9 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
                     'provider_ids' => [
                         'mock-payments-gb-redirect',
                     ],
+                    'excludes' => [
+                        'provider_ids' => []
+                    ]
                 ],
             ],
         ],
@@ -50,8 +53,8 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
 \it('sends correct user payload on creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created(), PaymentResponse::created()]);
-    $factory->payment($factory->newUser(), $factory->paymentMethod($factory->sortCodeBeneficiary()))->create();
-    $factory->payment($factory->existingUser(), $factory->paymentMethod($factory->sortCodeBeneficiary()))->create();
+    $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+    $factory->payment($factory->existingUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'user' => [
@@ -74,7 +77,7 @@ use TrueLayer\Tests\Mocks\PaymentResponse;
 
 \it('parses payment creation response correctly', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
-    $payment = $factory->payment($factory->newUser(), $factory->paymentMethod($factory->sortCodeBeneficiary()))->create();
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
     \expect($payment->getResourceToken())->toBe(PaymentResponse::CREATED['resource_token']);
     \expect($payment->getId())->toBe(PaymentResponse::CREATED['id']);

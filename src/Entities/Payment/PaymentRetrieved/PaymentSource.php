@@ -12,19 +12,19 @@ use TrueLayer\Validation\ValidType;
 final class PaymentSource extends Entity implements PaymentSourceInterface
 {
     /**
+     * @var string
+     */
+    protected string $id;
+
+    /**
      * @var AccountIdentifierInterface[]
      */
-    private array $accountIdentifiers;
+    protected array $accountIdentifiers;
 
     /**
      * @var string
      */
-    private string $externalAccountId;
-
-    /**
-     * @var string
-     */
-    private string $accountHolderName;
+    protected string $accountHolderName;
 
     /**
      * @var string[]
@@ -37,8 +37,8 @@ final class PaymentSource extends Entity implements PaymentSourceInterface
      * @var array|string[]
      */
     protected array $arrayFields = [
+        'id',
         'account_identifiers',
-        'external_account_id',
         'account_holder_name',
     ];
 
@@ -48,13 +48,19 @@ final class PaymentSource extends Entity implements PaymentSourceInterface
     protected function rules(): array
     {
         return [
-            'id' => 'required|string',
-            'details' => 'array',
-            'external_account_id' => 'nullable|string',
+            'id' => 'nullable|string',
             'account_holder_name' => 'nullable|string',
-            'account_identifiers' => 'array',
+            'account_identifiers' => 'nullable|array',
             'account_identifiers.*' => ValidType::of(AccountIdentifierInterface::class),
         ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getId(): ?string
+    {
+        return $this->id ?? null;
     }
 
     /**
@@ -66,54 +72,10 @@ final class PaymentSource extends Entity implements PaymentSourceInterface
     }
 
     /**
-     * @param AccountIdentifierInterface[] $accountIdentifiers
-     *
-     * @return PaymentSourceInterface
-     */
-    public function accountIdentifiers(array $accountIdentifiers): PaymentSourceInterface
-    {
-        $this->accountIdentifiers = $accountIdentifiers;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getExternalAccountId(): ?string
-    {
-        return $this->externalAccountId ?? null;
-    }
-
-    /**
-     * @param string $externalAccountId
-     *
-     * @return PaymentSourceInterface
-     */
-    public function externalAccountId(string $externalAccountId): PaymentSourceInterface
-    {
-        $this->externalAccountId = $externalAccountId;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getAccountHolderName(): ?string
     {
         return $this->accountHolderName ?? null;
-    }
-
-    /**
-     * @param string $accountHolderName
-     *
-     * @return PaymentSourceInterface
-     */
-    public function accountHolderName(string $accountHolderName): PaymentSourceInterface
-    {
-        $this->accountHolderName = $accountHolderName;
-
-        return $this;
     }
 }

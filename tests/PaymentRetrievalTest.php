@@ -85,8 +85,6 @@ function assertCommon(PaymentRetrievedInterface $payment)
     $payment = \sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
 
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    \expect($payment->getAuthorizationFlowConfig()->isRedirectSupported())->toBe(true);
-    \expect($payment->getAuthorizationFlowConfig()->isProviderSelectionSupported())->toBe(true);
     \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBe('https://penny.t7r.dev/redirect/v3');
 
     \assertCommon($payment);
@@ -102,7 +100,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
     \expect($next)->toBeInstanceOf(RedirectActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
-    \expect($next->getUri())->toBe('https://foo.com');
+    \expect($next->getUri())->toStartWith('https://');
     \expect($next->getMetadataType())->toBe('provider');
     \expect($next->getProvider())->toBeNull();
 
@@ -151,12 +149,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(true);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
-
-    \expect($payment->getPaymentSource()->getExternalAccountId())->toBeNull();
-    \expect($payment->getPaymentSource()->getAccountHolderName())->toBeNull();
-    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeArray();
-    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeEmpty();
+    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-04T14:12:07.705938Z');
 
     \assertCommon($payment);
 });
@@ -164,6 +157,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
 \it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
     $payment = \sdk(PaymentResponse::settled())->getPayment('1');
+    $paymentSource = $payment->getPaymentSource();
 
     \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
@@ -173,16 +167,45 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(true);
     \expect($payment->isFailed())->toBe(false);
-    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
-    \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-01-13T22:13:09.914177Z');
+    \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:48.014149Z');
+    \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:51.382114Z');
     \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
 
-    \expect($payment->getPaymentSource()->getExternalAccountId())->toBeNull();
-    \expect($payment->getPaymentSource()->getAccountHolderName())->toBeNull();
-    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeArray();
-    \expect($payment->getPaymentSource()->getAccountIdentifiers())->toBeEmpty();
+    \expect($paymentSource->getId())->toBeString();
+    \expect($paymentSource->getAccountHolderName())->toBe('Bob');
+
+    /** @var ScanDetailsInterface $scan */
+    $scan = $paymentSource->getAccountIdentifiers()[0];
+    \expect($scan)->toBeInstanceOf(ScanDetailsInterface::class);
+    \expect($scan->getAccountNumber())->toBe('00002723');
+    \expect($scan->getSortCode())->toBe('040662');
+
+    /** @var IbanDetailsInterface $iban */
+    $iban = $paymentSource->getAccountIdentifiers()[1];
+    \expect($iban)->toBeInstanceOf(IbanDetailsInterface::class);
+    \expect($iban->getIban())->toBe('GB53CLRB04066200002723');
+
+    /** @var BbanDetailsInterface $bban */
+    $bban = $paymentSource->getAccountIdentifiers()[2];
+    \expect($bban)->toBeInstanceOf(BbanDetailsInterface::class);
+    \expect($bban->getBban())->toBe('CLRB04066200002723');
+
+    /** @var NrbDetailsInterface $nrb */
+    $nrb = $paymentSource->getAccountIdentifiers()[3];
+    \expect($nrb)->toBeInstanceOf(NrbDetailsInterface::class);
+    \expect($nrb->getNrb())->toBe('61109010140000071219812874');
 
     \assertCommon($payment);
+});
+
+\it('handles payment settled with no payment source fields', function () {
+    /** @var PaymentSettledInterface $payment */
+    $payment = \sdk(PaymentResponse::settledNoPaymentSourceFields())->getPayment('1');
+    $paymentSource = $payment->getPaymentSource();
+
+    expect($paymentSource->getAccountHolderName())->toBeNull();
+    expect($paymentSource->getAccountIdentifiers())->toBeEmpty();
+
 });
 
 \it('handles payment failed', function () {
@@ -197,7 +220,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(true);
-    \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-01-13T20:22:25.645589Z');
+    \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:26:48.849469Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
 
@@ -206,38 +229,8 @@ function assertCommon(PaymentRetrievedInterface $payment)
 
 \it('handles payment with no auth flow config', function () {
     /** @var PaymentExecutedInterface $payment */
-    $payment = \sdk(PaymentResponse::executedNoAuthFlowConfig())->getPayment('1');
+    $payment = \sdk(PaymentResponse::executedNoAuthFlow())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeNull();
-});
-
-\it('handles payment source of funds', function () {
-    /** @var PaymentExecutedInterface $payment */
-    $payment = \sdk(PaymentResponse::executedWithPaymentSourceData())->getPayment('1');
-
-    $paymentSource = $payment->getPaymentSource();
-    \expect($paymentSource->getAccountHolderName())->toBe('John Doe');
-    \expect($paymentSource->getExternalAccountId())->toBe('123');
-
-    /** @var ScanDetailsInterface $scan */
-    $scan = $paymentSource->getAccountIdentifiers()[0];
-    \expect($scan)->toBeInstanceOf(ScanDetailsInterface::class);
-    \expect($scan->getAccountNumber())->toBe('12345678');
-    \expect($scan->getSortCode())->toBe('010203');
-
-    /** @var IbanDetailsInterface $iban */
-    $iban = $paymentSource->getAccountIdentifiers()[1];
-    \expect($iban)->toBeInstanceOf(IbanDetailsInterface::class);
-    \expect($iban->getIban())->toBe('AT483200000012345864');
-
-    /** @var BbanDetailsInterface $bban */
-    $bban = $paymentSource->getAccountIdentifiers()[2];
-    \expect($bban)->toBeInstanceOf(BbanDetailsInterface::class);
-    \expect($bban->getBban())->toBe('539007547034');
-
-    /** @var NrbDetailsInterface $nrb */
-    $nrb = $paymentSource->getAccountIdentifiers()[3];
-    \expect($nrb)->toBeInstanceOf(NrbDetailsInterface::class);
-    \expect($nrb->getNrb())->toBe('61109010140000071219812874');
 });

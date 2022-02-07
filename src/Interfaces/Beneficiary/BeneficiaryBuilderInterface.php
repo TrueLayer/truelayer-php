@@ -12,7 +12,6 @@ interface BeneficiaryBuilderInterface
 {
     /**
      * @return ExternalAccountBeneficiaryInterface
-     * @throws InvalidArgumentException
      */
     public function externalAccount(): ExternalAccountBeneficiaryInterface;
 

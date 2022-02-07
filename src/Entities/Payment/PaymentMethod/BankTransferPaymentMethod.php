@@ -6,10 +6,13 @@ namespace TrueLayer\Entities\Payment\PaymentMethod;
 
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionInterface;
+use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
@@ -92,11 +95,13 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     }
 
     /**
-     * @return ProviderSelectionInterface|null
+     * @return ProviderSelectionInterface
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      */
-    public function getProviderSelection(): ?ProviderSelectionInterface
+    public function getProviderSelection(): ProviderSelectionInterface
     {
-        return $this->providerSelection ?? null;
+        return $this->providerSelection ?? $this->make(UserSelectedProviderSelectionInterface::class);
     }
 
     /**
