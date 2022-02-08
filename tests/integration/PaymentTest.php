@@ -7,8 +7,8 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
-use TrueLayer\Tests\Mocks\CreatePayment;
-use TrueLayer\Tests\Mocks\PaymentResponse;
+use TrueLayer\Tests\Integration\Mocks\CreatePayment;
+use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 \it('sends correct payload on creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);

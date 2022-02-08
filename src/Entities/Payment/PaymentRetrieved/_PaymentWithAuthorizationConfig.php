@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
 use TrueLayer\Entities\Payment\PaymentRetrieved;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Validation\ValidType;
 
 class _PaymentWithAuthorizationConfig extends PaymentRetrieved
 {
     /**
-     * @var ConfigurationInterface
+     * @var AuthorizationFlowInterface
      */
-    protected ConfigurationInterface $configuration;
+    protected AuthorizationFlowInterface $authorizationFlow;
 
     /**
      * @return mixed[]
@@ -21,7 +22,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'authorization_flow.configuration' => ConfigurationInterface::class,
+            'authorization_flow' => AuthorizationFlowInterface::class,
         ]);
     }
 
@@ -31,7 +32,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected function arrayFields(): array
     {
         return \array_merge(parent::arrayFields(), [
-            'authorization_flow.configuration' => 'configuration',
+            'authorization_flow'
         ]);
     }
 
@@ -41,9 +42,16 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'authorization_flow' => ['nullable', 'array'],
-            'authorization_flow.configuration' => ['nullable', ValidType::of(ConfigurationInterface::class)],
+            'authorization_flow' => ['nullable', ValidType::of(AuthorizationFlowInterface::class)],
         ]);
+    }
+
+    /**
+     * @return AuthorizationFlowInterface|null
+     */
+    public function getAuthorizationFlow(): ?AuthorizationFlowInterface
+    {
+        return $this->authorizationFlow ?? null;
     }
 
     /**
@@ -51,6 +59,8 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
      */
     public function getAuthorizationFlowConfig(): ?ConfigurationInterface
     {
-        return $this->configuration ?? null;
+        return $this->getAuthorizationFlow()
+            ? $this->getAuthorizationFlow()->getConfig()
+            : null;
     }
 }

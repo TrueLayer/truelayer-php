@@ -7,6 +7,7 @@ namespace TrueLayer\Factories;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Arr;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
+use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\AccountIdentifierTypes;
@@ -67,10 +68,14 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Payment\PaymentSettledInterface::class => Entities\Payment\PaymentRetrieved\PaymentSettled::class,
         Interfaces\Payment\PaymentFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentFailed::class,
         Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
-        Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Configuration::class,
-        Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\ProviderSelectionAction::class,
-        Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\RedirectAction::class,
-        Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class => Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action\WaitAction::class,
+
+        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlow::class,
+        Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\AuthorizationFlow\Configuration::class,
+        Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class => Entities\Payment\AuthorizationFlow\Action\ProviderSelectionAction::class,
+        Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class => Entities\Payment\AuthorizationFlow\Action\RedirectAction::class,
+        Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class => Entities\Payment\AuthorizationFlow\Action\WaitAction::class,
+        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlowAuthorizing::class,
+        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailed::class,
 
         Interfaces\PaymentMethod\PaymentMethodBuilderInterface::class => Entities\Payment\PaymentMethod\PaymentMethodBuilder::class,
         Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Payment\PaymentMethod\BankTransferPaymentMethod::class,
@@ -106,6 +111,11 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             PaymentStatus::SETTLED => Interfaces\Payment\PaymentSettledInterface::class,
             PaymentStatus::FAILED => Interfaces\Payment\PaymentFailedInterface::class,
         ],
+        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface::class => [
+            'array_key' => 'status',
+            AuthorizationFlowStatusTypes::AUTHORIZING => Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface::class,
+            AuthorizationFlowStatusTypes::FAILED => Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface::class,
+        ],
         Interfaces\Payment\AuthorizationFlow\ActionInterface::class => [
             'array_key' => 'type',
             AuthorizationFlowActionTypes::PROVIDER_SELECTION => Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class,
@@ -135,7 +145,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     ];
 
     /**
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
@@ -170,7 +180,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $abstract
      * @param mixed[]         $data
@@ -205,7 +215,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $concrete
      *
@@ -214,12 +224,18 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      */
     private function makeConcrete(string $concrete)
     {
+        // We could just return the new instances but PHPStan doesn't understand
+        // is_subclass_of so we need to rely on the instanceof operator.
+        $instance = null;
+
         if (is_subclass_of($concrete, Entities\Entity::class)) {
-            return new $concrete($this->validatorFactory, $this, $this->apiFactory);
+            $instance = new $concrete($this->validatorFactory, $this, $this->apiFactory);
+        } elseif (is_subclass_of($concrete, Entities\EntityBuilder::class)) {
+            $instance = new $concrete($this);
         }
 
-        if (is_subclass_of($concrete, Entities\EntityBuilder::class)) {
-            return new $concrete($this);
+        if ($instance instanceof $concrete) {
+            return $instance;
         }
 
         throw new InvalidArgumentException("Provided concrete class $concrete must be an Entity or EntityBuilder");

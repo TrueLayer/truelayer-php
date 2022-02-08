@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Sdk;
 
 use TrueLayer\Exceptions;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
@@ -12,11 +17,14 @@ use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
 use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
+use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
+use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -155,6 +163,51 @@ final class Sdk implements SdkInterface
     }
 
     /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string $returnUri
+     * @return AuthorizationFlowAuthorizingInterface
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     */
+    public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface
+    {
+        $paymentId = $this->getPaymentId($payment);
+        $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, $returnUri);
+
+        return $this->entityFactory->make(AuthorizationFlowAuthorizingInterface::class, $data);
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string|ProviderInterface $provider
+     * @return AuthorizationFlowResponseInterface
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     */
+    public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface
+    {
+        $paymentId = $this->getPaymentId($payment);
+
+        if ($provider instanceof ProviderInterface) {
+            $provider = $provider->getProviderId();
+        }
+
+        if (!is_string($provider)) {
+            throw new InvalidArgumentException('Provider must be string|ProviderInterface');
+        }
+
+        $data = $this->apiFactory->paymentsApi()->submitProvider($paymentId, $provider);
+
+        return $this->entityFactory->make(AuthorizationFlowResponseInterface::class, $data);
+    }
+
+    /**
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
      *
@@ -197,5 +250,23 @@ final class Sdk implements SdkInterface
         $data = $this->apiFactory->merchantAccountsApi()->retrieve($id);
 
         return $this->entityFactory->make(MerchantAccountInterface::class, $data);
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    private function getPaymentId($payment): string
+    {
+        if ($payment instanceof PaymentCreatedInterface || $payment instanceof PaymentRetrievedInterface) {
+            return $payment->getId();
+        }
+
+        if (is_string($payment)) {
+            return $payment;
+        }
+
+        throw new InvalidArgumentException('Payment must be string|PaymentCreatedInterface|PaymentRetrievedInterface');
     }
 }

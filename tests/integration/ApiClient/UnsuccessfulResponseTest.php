@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use TrueLayer\Exceptions;
-use TrueLayer\Tests\Mocks\ErrorResponse;
+use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
 \it('handles non-200 responses', function () {
     \request(ErrorResponse::forbidden())->post();

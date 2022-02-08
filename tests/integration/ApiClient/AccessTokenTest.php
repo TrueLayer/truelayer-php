@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Carbon;
-use TrueLayer\Tests\Mocks;
+use TrueLayer\Tests\Integration\Mocks;
 
 \it('appends access token', function () {
     \request()->post();

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use TrueLayer\Exceptions\ValidationException;
-use TrueLayer\Tests\Mocks\CreatePayment;
-use TrueLayer\Tests\Mocks\PaymentResponse;
+use TrueLayer\Tests\Integration\Mocks\CreatePayment;
+use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 \it('generates HPP url', function () {
     $url = \sdk()->hostedPaymentsPage()

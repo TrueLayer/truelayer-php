@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Tests\Mocks;
+namespace TrueLayer\Tests\Integration\Mocks;
 
 use TrueLayer\Constants\Countries;
 use TrueLayer\Constants\Currencies;

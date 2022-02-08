@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
-use TrueLayer\Tests\Mocks\ErrorResponse;
+use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
 \it('appends idempotency key', function () {
     \request()->post();

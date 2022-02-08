@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow;
+namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action;
+namespace TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
-use TrueLayer\Entities\Payment\PaymentRetrieved\AuthorizationFlow\Action;
-use TrueLayer\Entities\Provider\Provider;
+use TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Validation\ValidType;
@@ -19,9 +18,16 @@ class RedirectAction extends Action implements RedirectActionInterface
     protected string $uri;
 
     /**
-     * @var Provider
+     * @var ProviderInterface
      */
     protected ProviderInterface $provider;
+
+    /**
+     * @var array|string[]
+     */
+    protected array $casts = [
+        'metadata' => ProviderInterface::class,
+    ];
 
     /**
      * @var string[]
@@ -39,7 +45,7 @@ class RedirectAction extends Action implements RedirectActionInterface
     {
         return [
             'uri' => 'required|url',
-            'metadata' => ['nullable', ValidType::of(Provider::class)],
+            'metadata' => ['nullable', ValidType::of(ProviderInterface::class)],
         ];
     }
 

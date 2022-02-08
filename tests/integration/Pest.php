@@ -7,7 +7,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use TrueLayer\Sdk;
 use TrueLayer\Services\Util\Retry;
-use TrueLayer\Tests\Mocks\AuthResponse;
+use TrueLayer\Tests\Integration\Mocks\AuthResponse;
 
 $httpTransactions = [];
 $sleeps = [];

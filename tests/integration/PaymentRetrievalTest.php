@@ -23,13 +23,12 @@ use TrueLayer\Interfaces\AccountIdentifier\IbanDetailsInterface;
 use TrueLayer\Interfaces\AccountIdentifier\NrbDetailsInterface;
 use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Tests\Mocks\PaymentResponse;
+use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 function assertCommon(PaymentRetrievedInterface $payment)
 {
     \expect($payment->getId())->toBeString();
     \expect($payment->getStatus())->toBeString();
-    \expect($payment->getBeneficiary())->toBeInstanceOf(BeneficiaryInterface::class);
     \expect($payment->getUser())->toBeInstanceOf(UserInterface::class);
     \expect($payment->getCurrency())->toBeString();
     \expect($payment->getAmountInMinor())->toBeInt();

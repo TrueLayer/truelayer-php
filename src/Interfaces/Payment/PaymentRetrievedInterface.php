@@ -34,11 +34,6 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getPaymentMethod(): PaymentMethodInterface;
 
     /**
-     * @return BeneficiaryInterface
-     */
-    public function getBeneficiary(): BeneficiaryInterface;
-
-    /**
      * @return UserInterface|null
      */
     public function getUser(): ?UserInterface;

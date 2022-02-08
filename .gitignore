@@ -1,9 +1,7 @@
 .idea
-composer.phar
-/vendor/
 .phpunit.result.cache
-example/client-secret.txt
-example/private-key.pem
 .php-cs-fixer.cache
+vendor/
 example/
 composer.lock
+.env

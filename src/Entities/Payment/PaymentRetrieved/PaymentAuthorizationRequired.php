@@ -9,4 +9,5 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
 
 final class PaymentAuthorizationRequired extends PaymentRetrieved implements PaymentAuthorizationRequiredInterface
 {
+
 }

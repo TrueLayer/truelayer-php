@@ -123,14 +123,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     }
 
     /**
-     * @return BeneficiaryInterface
-     */
-    public function getBeneficiary(): BeneficiaryInterface
-    {
-        return $this->getPaymentMethod()->getBeneficiary();
-    }
-
-    /**
      * @return UserInterface
      */
     public function getUser(): UserInterface

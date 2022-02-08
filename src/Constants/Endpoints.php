@@ -16,7 +16,11 @@ class Endpoints
     public const HPP_SANDBOX_URL = 'https://payment.t7r.dev/payments';
 
     public const TOKEN = '/connect/token';
-    public const PAYMENTS = '/payments';
+    public const PAYMENTS_CREATE = '/payments';
+    public const PAYMENTS_RETRIEVE = '/payments/{id}';
+    public const PAYMENTS_START_AUTH_FLOW = '/payments/{id}/authorization-flow';
+    public const PAYMENTS_SUBMIT_PROVIDER = '/payments/{id}/authorization-flow/actions/provider-selection';
+
     public const MERCHANT_ACCOUNTS = '/merchant-accounts';
     public const PAYOUTS = '/payouts';
     public const TRANSACTIONS = '/merchant-accounts/{id}/transactions';

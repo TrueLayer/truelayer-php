@@ -6,7 +6,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use TrueLayer\Sdk;
-use TrueLayer\Tests\Mocks\AuthResponse;
+use TrueLayer\Tests\Integration\Mocks\AuthResponse;
 
 \it('accepts a custom PSR client', function () {
     $responses = [
