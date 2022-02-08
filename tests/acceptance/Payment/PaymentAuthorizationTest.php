@@ -79,24 +79,15 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
     \bankAction($next->getUri(), 'Execute');
+    \sleep(5);
 
-    /* @var PaymentAuthorizedInterface $payment */
-    \sleep(3);
-    $payment = $created->getDetails();
-
-    \expect($payment)->toBeInstanceOf(PaymentAuthorizedInterface::class);
-    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBeString();
-
-    return $created;
-})->depends('it submits provider');
-
-\it('it retrieves executed payment', function (PaymentCreatedInterface $created) {
-    \sleep(3);
-
-    /** @var PaymentExecutedInterface $payment */
+    /* @var PaymentExecutedInterface $payment */
     $payment = $created->getDetails();
 
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBeString();
     \expect($payment->getExecutedAt())->toBeInstanceOf(DateTimeInterface::class);
-})->depends('it authorizes payment');
+
+    return $created;
+})->depends('it submits provider');
