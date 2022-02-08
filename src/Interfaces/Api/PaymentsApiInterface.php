@@ -35,20 +35,24 @@ interface PaymentsApiInterface
     /**
      * @param string $id
      * @param string $returnUri
-     * @return mixed[]
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function startAuthorizationFlow(string $id, string $returnUri): array;
 
     /**
      * @param string $id
      * @param string $providerId
-     * @return mixed[]
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function submitProvider(string $id, string $providerId): array;
 }

@@ -81,7 +81,7 @@ interface SdkInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string $returnUri
+     * @param string                                                   $returnUri
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
