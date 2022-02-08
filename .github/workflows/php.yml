@@ -97,3 +97,4 @@ jobs:
           echo TEST_KID=${{ secrets.TEST_KID }} >> .env
           echo TEST_PEM=${{ secrets.TEST_PEM }} >> .env
           cat .env
+          composer acceptance-tests
