@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Tests\Acceptance\Payment;
 
-use TrueLayer\Constants\Countries;
-use TrueLayer\Constants\Currencies;
-use TrueLayer\Constants\CustomerSegments;
-use TrueLayer\Constants\PaymentMethods;
-use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
-use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Sdk\SdkInterface;
@@ -39,9 +33,9 @@ class CreatePayment
             ->reference('TEST')
             ->accountHolderName('Bob')
             ->accountIdentifier($this->sdk->accountIdentifier()
-                ->sortCodeAccountNumber()
-                ->accountNumber('12345678')
-                ->sortCode('010203')
+            ->sortCodeAccountNumber()
+            ->accountNumber('12345678')
+            ->sortCode('010203')
             );
     }
 
@@ -59,6 +53,7 @@ class CreatePayment
 
     /**
      * @param BeneficiaryInterface $beneficiary
+     *
      * @return BankTransferPaymentMethodInterface
      */
     public function bankTransferMethod(BeneficiaryInterface $beneficiary): BankTransferPaymentMethodInterface
@@ -69,9 +64,10 @@ class CreatePayment
     }
 
     /**
-     * @param null|PaymentMethodInterface $paymentMethod
-     * @param null|UserInterface $user
-     * @param string $currency
+     * @param PaymentMethodInterface|null $paymentMethod
+     * @param UserInterface|null          $user
+     * @param string                      $currency
+     *
      * @return PaymentCreatedInterface
      */
     public function create(PaymentMethodInterface $paymentMethod = null, UserInterface $user = null, string $currency = 'GBP'): PaymentCreatedInterface

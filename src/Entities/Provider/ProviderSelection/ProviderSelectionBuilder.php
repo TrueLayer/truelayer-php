@@ -13,13 +13,13 @@ use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
 class ProviderSelectionBuilder extends EntityBuilder implements ProviderSelectionBuilderInterface
 {
     /**
-     * @return UserSelectedProviderSelectionInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return UserSelectedProviderSelectionInterface
      */
     public function userSelected(): UserSelectedProviderSelectionInterface
     {
         return $this->entityFactory->make(UserSelectedProviderSelectionInterface::class);
     }
-
 }

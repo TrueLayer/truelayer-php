@@ -16,9 +16,10 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {
     /**
-     * @return ExternalAccountBeneficiaryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return ExternalAccountBeneficiaryInterface
      */
     public function externalAccount(): ExternalAccountBeneficiaryInterface
     {

@@ -7,7 +7,6 @@ namespace TrueLayer\Tests\Integration\Mocks;
 use TrueLayer\Constants\Countries;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
-use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
@@ -68,6 +67,7 @@ class CreatePayment
 
     /**
      * @param BeneficiaryInterface $beneficiary
+     *
      * @return BankTransferPaymentMethodInterface
      */
     public function bankTransferMethod(BeneficiaryInterface $beneficiary): BankTransferPaymentMethodInterface
@@ -91,8 +91,9 @@ class CreatePayment
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface          $user
      * @param PaymentMethodInterface $paymentMethod
+     *
      * @return PaymentRequestInterface
      */
     public function payment(UserInterface $user, PaymentMethodInterface $paymentMethod): PaymentRequestInterface

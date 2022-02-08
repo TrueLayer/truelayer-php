@@ -6,9 +6,9 @@ namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Validation\ValidType;
-use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
 
 final class AuthorizationFlow extends Entity implements AuthorizationFlowInterface
 {

@@ -6,5 +6,4 @@ namespace TrueLayer\Interfaces\Payment\AuthorizationFlow;
 
 interface AuthorizationFlowAuthorizingInterface extends AuthorizationFlowResponseInterface
 {
-
 }

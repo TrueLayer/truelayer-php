@@ -46,7 +46,7 @@ abstract class AuthorizationFlowResponse extends Entity implements Authorization
     {
         return [
             'status' => ['required', AllowedConstant::in(AuthorizationFlowStatusTypes::class)],
-            'authorization_flow' => ['nullable', ValidType::of(AuthorizationFlowInterface::class)]
+            'authorization_flow' => ['nullable', ValidType::of(AuthorizationFlowInterface::class)],
         ];
     }
 
@@ -58,7 +58,6 @@ abstract class AuthorizationFlowResponse extends Entity implements Authorization
         return isset($this->authorizationFlow)
             ? $this->authorizationFlow->getNextAction()
             : null;
-
     }
 
     /**

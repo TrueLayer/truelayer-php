@@ -81,9 +81,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return AccountIdentifierBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return AccountIdentifierBuilderInterface
      */
     public function accountIdentifier(): AccountIdentifierBuilderInterface
     {
@@ -113,9 +114,10 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @return ProviderSelectionBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     *
+     * @return ProviderSelectionBuilderInterface
      */
     public function providerSelection(): ProviderSelectionBuilderInterface
     {
@@ -164,13 +166,15 @@ final class Sdk implements SdkInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string $returnUri
-     * @return AuthorizationFlowAuthorizingInterface
+     * @param string                                                   $returnUri
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface
     {
@@ -182,13 +186,15 @@ final class Sdk implements SdkInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string|ProviderInterface $provider
-     * @return AuthorizationFlowResponseInterface
+     * @param string|ProviderInterface                                 $provider
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface
     {
@@ -198,7 +204,7 @@ final class Sdk implements SdkInterface
             $provider = $provider->getProviderId();
         }
 
-        if (!is_string($provider)) {
+        if (!\is_string($provider)) {
             throw new InvalidArgumentException('Provider must be string|ProviderInterface');
         }
 
@@ -254,8 +260,10 @@ final class Sdk implements SdkInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @return string
+     *
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     private function getPaymentId($payment): string
     {
@@ -263,7 +271,7 @@ final class Sdk implements SdkInterface
             return $payment->getId();
         }
 
-        if (is_string($payment)) {
+        if (\is_string($payment)) {
             return $payment;
         }
 

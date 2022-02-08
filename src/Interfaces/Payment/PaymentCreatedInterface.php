@@ -37,12 +37,14 @@ interface PaymentCreatedInterface extends ArrayableInterface
 
     /**
      * @param string $returnUri
-     * @return AuthorizationFlowAuthorizingInterface
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface;
 

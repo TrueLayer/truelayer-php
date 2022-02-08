@@ -6,11 +6,11 @@ namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Arr;
+use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities;
@@ -141,7 +141,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Provider\ProviderSelectionInterface::class => [
             'array_key' => 'type',
             PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
-        ]
+        ],
     ];
 
     /**
@@ -202,8 +202,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
+     *
+     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -219,8 +220,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
-     * @return T
      * @throws InvalidArgumentException
+     *
+     * @return T
      */
     private function makeConcrete(string $concrete)
     {
@@ -228,9 +230,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         // is_subclass_of so we need to rely on the instanceof operator.
         $instance = null;
 
-        if (is_subclass_of($concrete, Entities\Entity::class)) {
+        if (\is_subclass_of($concrete, Entities\Entity::class)) {
             $instance = new $concrete($this->validatorFactory, $this, $this->apiFactory);
-        } elseif (is_subclass_of($concrete, Entities\EntityBuilder::class)) {
+        } elseif (\is_subclass_of($concrete, Entities\EntityBuilder::class)) {
             $instance = new $concrete($this);
         }
 
@@ -238,7 +240,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             return $instance;
         }
 
-        throw new InvalidArgumentException("Provided concrete class $concrete must be an Entity or EntityBuilder");
+        throw new InvalidArgumentException("Provided concrete class {$concrete} must be an Entity or EntityBuilder");
     }
 
     /**

@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 
 final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInterface

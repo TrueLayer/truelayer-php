@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
+use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Validation\ValidType;
 
 final class PaymentSource extends Entity implements PaymentSourceInterface

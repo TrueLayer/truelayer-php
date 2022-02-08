@@ -39,6 +39,7 @@ interface ProviderFilterInterface extends ArrayableInterface, HasAttributesInter
 
     /**
      * @param string[] $providerIds
+     *
      * @return ProviderFilterInterface
      */
     public function excludesProviderIds(array $providerIds): ProviderFilterInterface;
