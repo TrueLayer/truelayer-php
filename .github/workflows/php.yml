@@ -2,7 +2,7 @@ name: PHP
 
 on:
   push:
-    branches: [ main, builders ]
+    branches: [ main, feature/PHP-20 ]
     tags:
       - "v**"
   pull_request:
@@ -86,5 +86,14 @@ jobs:
       - name: PHPStan
         run: composer analyse
 
-      - name: Tests
-        run: composer test
+      - name: Integration Tests
+        run: composer integration-tests
+        
+      - name: Acceptance Tests
+        run: |
+          touch .env
+          echo TEST_CLIENT_ID=${{ secrets.TEST_CLIENT_ID }} >> .env
+          echo TEST_CLIENT_SECRET=${{ secrets.TEST_CLIENT_SECRET }} >> .env
+          echo TEST_KID=${{ secrets.TEST_KID }} >> .env
+          echo TEST_PEM=${{ secrets.TEST_PEM }} >> .env
+          cat .env
