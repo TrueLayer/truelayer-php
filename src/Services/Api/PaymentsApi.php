@@ -47,7 +47,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
     /**
      * @param string $id
      * @param string $returnUri
-     * @return array
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
@@ -67,7 +67,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
     /**
      * @param string $id
      * @param string $providerId
-     * @return array
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException

@@ -267,6 +267,7 @@ final class Sdk implements SdkInterface
             return $payment;
         }
 
+        // @phpstan-ignore-next-line
         throw new InvalidArgumentException('Payment must be string|PaymentCreatedInterface|PaymentRetrievedInterface');
     }
 }

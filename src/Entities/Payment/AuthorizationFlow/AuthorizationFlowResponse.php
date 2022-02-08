@@ -40,7 +40,7 @@ abstract class AuthorizationFlowResponse extends Entity implements Authorization
     ];
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function rules(): array
     {

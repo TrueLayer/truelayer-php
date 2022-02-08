@@ -29,7 +29,7 @@ final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowRespon
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function rules(): array
     {

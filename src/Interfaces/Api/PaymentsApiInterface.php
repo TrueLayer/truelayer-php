@@ -35,7 +35,7 @@ interface PaymentsApiInterface
     /**
      * @param string $id
      * @param string $returnUri
-     * @return array
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
@@ -45,7 +45,7 @@ interface PaymentsApiInterface
     /**
      * @param string $id
      * @param string $providerId
-     * @return array
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException

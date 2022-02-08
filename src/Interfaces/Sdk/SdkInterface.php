@@ -80,7 +80,7 @@ interface SdkInterface
     public function getPayment(string $id): PaymentRetrievedInterface;
 
     /**
-     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string $returnUri
      * @return AuthorizationFlowAuthorizingInterface
      * @throws ApiRequestJsonSerializationException
