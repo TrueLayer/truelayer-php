@@ -65,6 +65,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
 
     /**
      * @param string[] $countries
+     *
      * @return ProviderFilterInterface
      */
     public function countries(array $countries): ProviderFilterInterface
@@ -76,6 +77,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
 
     /**
      * @param string $releaseChannel
+     *
      * @return ProviderFilterInterface
      */
     public function releaseChannel(string $releaseChannel): ProviderFilterInterface
@@ -87,6 +89,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
 
     /**
      * @param string[] $customerSegments
+     *
      * @return ProviderFilterInterface
      */
     public function customerSegments(array $customerSegments): ProviderFilterInterface
@@ -98,6 +101,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
 
     /**
      * @param string[] $providerIds
+     *
      * @return ProviderFilterInterface
      */
     public function providerIds(array $providerIds): ProviderFilterInterface
@@ -117,6 +121,7 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
 
     /**
      * @param string[] $providerIds
+     *
      * @return ProviderFilterInterface
      */
     public function excludesProviderIds(array $providerIds): ProviderFilterInterface

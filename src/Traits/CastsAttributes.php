@@ -69,11 +69,9 @@ trait CastsAttributes
 
                 Arr::set($data, $initialPartPath, $partArr);
             } else {
-
                 $partData = Arr::get($data, $path);
 
                 if ($partData !== null) {
-
                     if ($abstract === DateTimeInterface::class) {
                         if (\is_string($partData)) {
                             $partData = $this->toDateTime($partData);

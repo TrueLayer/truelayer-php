@@ -38,7 +38,7 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
     protected function rules(): array
     {
         return [
-            'filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)]
+            'filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)],
         ];
     }
 
@@ -52,11 +52,13 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
 
     /**
      * @param ProviderFilterInterface $filter
+     *
      * @return $this
      */
     public function filter(ProviderFilterInterface $filter): self
     {
         $this->filter = $filter;
+
         return $this;
     }
 

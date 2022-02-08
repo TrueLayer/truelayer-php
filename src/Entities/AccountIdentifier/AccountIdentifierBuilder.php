@@ -15,9 +15,10 @@ use TrueLayer\Interfaces\AccountIdentifier\ScanInterface;
 final class AccountIdentifierBuilder extends EntityBuilder implements AccountIdentifierBuilderInterface
 {
     /**
-     * @return ScanInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return ScanInterface
      */
     public function sortCodeAccountNumber(): ScanInterface
     {
@@ -25,9 +26,10 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
     }
 
     /**
-     * @return IbanInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return IbanInterface
      */
     public function iban(): IbanInterface
     {

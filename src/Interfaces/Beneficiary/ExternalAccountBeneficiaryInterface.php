@@ -15,6 +15,7 @@ interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface
 
     /**
      * @param AccountIdentifierInterface $accountIdentifier
+     *
      * @return $this
      */
     public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): self;

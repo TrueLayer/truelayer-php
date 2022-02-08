@@ -14,8 +14,9 @@ $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../../.env');
 
 /**
- * @return SdkInterface
  * @throws SignerException
+ *
+ * @return SdkInterface
  */
 function sdk(): SdkInterface
 {
@@ -29,12 +30,13 @@ function sdk(): SdkInterface
 }
 
 /**
- * @return CreatePayment
  * @throws SignerException
+ *
+ * @return CreatePayment
  */
 function paymentHelper(): CreatePayment
 {
-    return new CreatePayment(sdk());
+    return new CreatePayment(\sdk());
 }
 
 function bankAction(string $redirectUri, string $action): void
@@ -44,13 +46,13 @@ function bankAction(string $redirectUri, string $action): void
     $id = Str::before($id, '#token');
     $token = Str::after($redirectUri, '#token=');
 
-    (new \GuzzleHttp\Client())->post("$url/api/single-immediate-payments/$id/action", [
+    (new \GuzzleHttp\Client())->post("{$url}/api/single-immediate-payments/{$id}/action", [
         'headers' => [
-            'authorization' => "Bearer $token"
+            'authorization' => "Bearer {$token}",
         ],
         'json' => [
             'redirect' => false,
             'action' => $action,
-        ]
+        ],
     ]);
 }

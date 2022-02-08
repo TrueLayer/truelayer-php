@@ -32,7 +32,7 @@ class _PaymentWithAuthorizationConfig extends PaymentRetrieved
     protected function arrayFields(): array
     {
         return \array_merge(parent::arrayFields(), [
-            'authorization_flow'
+            'authorization_flow',
         ]);
     }
 

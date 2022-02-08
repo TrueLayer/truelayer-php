@@ -31,7 +31,7 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
      * @var string[]
      */
     protected array $casts = [
-        'account_identifier' => AccountIdentifierInterface::class
+        'account_identifier' => AccountIdentifierInterface::class,
     ];
 
     /**
@@ -86,6 +86,7 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
 
     /**
      * @param AccountIdentifierInterface $accountIdentifier
+     *
      * @return $this
      */
     public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): self

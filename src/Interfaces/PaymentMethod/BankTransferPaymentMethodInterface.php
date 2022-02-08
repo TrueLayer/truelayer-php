@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\PaymentMethod;
 
-use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\HasAttributesInterface;
-use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionInterface;
 
 interface BankTransferPaymentMethodInterface extends PaymentMethodInterface

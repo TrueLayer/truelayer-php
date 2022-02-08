@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\DateTime;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\AccountIdentifier\BbanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\IbanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\NrbDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
@@ -18,10 +21,6 @@ use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Interfaces\AccountIdentifier\BbanDetailsInterface;
-use TrueLayer\Interfaces\AccountIdentifier\IbanDetailsInterface;
-use TrueLayer\Interfaces\AccountIdentifier\NrbDetailsInterface;
-use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
@@ -202,9 +201,8 @@ function assertCommon(PaymentRetrievedInterface $payment)
     $payment = \sdk(PaymentResponse::settledNoPaymentSourceFields())->getPayment('1');
     $paymentSource = $payment->getPaymentSource();
 
-    expect($paymentSource->getAccountHolderName())->toBeNull();
-    expect($paymentSource->getAccountIdentifiers())->toBeEmpty();
-
+    \expect($paymentSource->getAccountHolderName())->toBeNull();
+    \expect($paymentSource->getAccountIdentifiers())->toBeEmpty();
 });
 
 \it('handles payment failed', function () {

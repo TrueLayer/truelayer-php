@@ -8,5 +8,4 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingI
 
 class AuthorizationFlowAuthorizing extends AuthorizationFlowResponse implements AuthorizationFlowAuthorizingInterface
 {
-
 }

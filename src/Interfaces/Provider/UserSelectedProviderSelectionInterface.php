@@ -9,12 +9,13 @@ use TrueLayer\Entities\Provider\ProviderSelection\ProviderFilter;
 interface UserSelectedProviderSelectionInterface extends ProviderSelectionInterface
 {
     /**
-     * @return null|ProviderFilterInterface
+     * @return ProviderFilterInterface|null
      */
     public function getFilter(): ?ProviderFilterInterface;
 
     /**
      * @param ProviderFilter $filter
+     *
      * @return UserSelectedProviderSelectionInterface
      */
     public function filter(ProviderFilter $filter): UserSelectedProviderSelectionInterface;

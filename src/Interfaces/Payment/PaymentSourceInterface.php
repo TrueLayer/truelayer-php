@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
+use TrueLayer\Interfaces\ArrayableInterface;
 
 interface PaymentSourceInterface extends ArrayableInterface
 {

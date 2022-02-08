@@ -43,8 +43,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                         'mock-payments-gb-redirect',
                     ],
                     'excludes' => [
-                        'provider_ids' => []
-                    ]
+                        'provider_ids' => [],
+                    ],
                 ],
             ],
         ],
