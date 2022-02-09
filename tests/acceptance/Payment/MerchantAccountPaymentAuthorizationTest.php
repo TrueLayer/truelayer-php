@@ -15,12 +15,12 @@ use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 
-it('creates a merchant payment', function () {
-    $helper = paymentHelper();
+\it('creates a merchant payment', function () {
+    $helper = \paymentHelper();
 
     $account = Arr::first(
         $helper->sdk()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -102,12 +102,11 @@ it('creates a merchant payment', function () {
     \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBeString();
     \expect($payment->getSettledAt())->toBeInstanceOf(DateTimeInterface::class);
 
-    expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
-    expect($payment->getPaymentSource()->getId())->toBeString();
-    expect($payment->getPaymentSource()->getAccountHolderName())->toBeString();
+    \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
+    \expect($payment->getPaymentSource()->getId())->toBeString();
+    \expect($payment->getPaymentSource()->getAccountHolderName())->toBeString();
 
-    var_dump($payment->getPaymentSource()->getAccountHolderName());
+    \var_dump($payment->getPaymentSource()->getAccountHolderName());
 
     return $created;
 })->depends('it submits provider');
-
