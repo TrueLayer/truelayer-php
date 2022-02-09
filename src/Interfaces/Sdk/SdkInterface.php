@@ -9,14 +9,20 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
+use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
+use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 interface SdkInterface
@@ -32,14 +38,24 @@ interface SdkInterface
     public function user(): UserInterface;
 
     /**
+     * @return AccountIdentifierBuilderInterface
+     */
+    public function accountIdentifier(): AccountIdentifierBuilderInterface;
+
+    /**
      * @return BeneficiaryBuilderInterface
      */
     public function beneficiary(): BeneficiaryBuilderInterface;
 
     /**
-     * @return PaymentMethodInterface
+     * @return PaymentMethodBuilderInterface
      */
-    public function paymentMethod(): PaymentMethodInterface;
+    public function paymentMethod(): PaymentMethodBuilderInterface;
+
+    /**
+     * @return ProviderSelectionBuilderInterface
+     */
+    public function providerSelection(): ProviderSelectionBuilderInterface;
 
     /**
      * @return ProviderFilterInterface
@@ -62,6 +78,34 @@ interface SdkInterface
      * @return PaymentRetrievedInterface
      */
     public function getPayment(string $id): PaymentRetrievedInterface;
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string                                                   $returnUri
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
+     */
+    public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface;
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string|ProviderInterface                                 $provider
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @return AuthorizationFlowResponseInterface
+     */
+    public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
      * @throws ApiRequestJsonSerializationException

@@ -24,7 +24,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TrueLayer\\Tests\\": "tests"
+            "TrueLayer\\Tests\\Integration\\": "tests/integration",
+            "TrueLayer\\Tests\\Acceptance\\": "tests/acceptance"
         }
     },
     "prefer-stable": true,
@@ -46,11 +47,13 @@
         "symfony/http-client": "^v5.4",
         "nyholm/psr7": "^1.4",
         "mockery/mockery": "^1.4",
-        "guzzlehttp/guzzle": "^7.4"
+        "guzzlehttp/guzzle": "^7.4",
+        "symfony/dotenv": "^5.4"
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse --memory-limit=-1",
-        "test": "vendor/bin/pest",
+        "integration-tests": "vendor/bin/pest --test-directory tests/integration",
+        "acceptance-tests": "vendor/bin/pest --test-directory tests/acceptance",
         "cs-fix": "vendor/bin/php-cs-fixer fix"
     }
 }

@@ -24,7 +24,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
     public function create(array $paymentRequest): array
     {
         return (array) $this->request()
-            ->uri(Endpoints::PAYMENTS)
+            ->uri(Endpoints::PAYMENTS_CREATE)
             ->payload($paymentRequest)
             ->post();
     }
@@ -40,8 +40,51 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      */
     public function retrieve(string $id): array
     {
+        $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_RETRIEVE);
+
+        return (array) $this->request()->uri($uri)->get();
+    }
+
+    /**
+     * @param string $id
+     * @param string $returnUri
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return mixed[]
+     */
+    public function startAuthorizationFlow(string $id, string $returnUri): array
+    {
+        $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_START_AUTH_FLOW);
+
         return (array) $this->request()
-            ->uri(Endpoints::PAYMENTS . '/' . $id)
-            ->get();
+            ->uri($uri)
+            ->payload([
+                'provider_selection' => (object) [],
+                'redirect' => ['return_uri' => $returnUri],
+            ])
+            ->post();
+    }
+
+    /**
+     * @param string $id
+     * @param string $providerId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return mixed[]
+     */
+    public function submitProvider(string $id, string $providerId): array
+    {
+        $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_SUBMIT_PROVIDER);
+
+        return (array) $this->request()
+            ->uri($uri)
+            ->payload(['provider_id' => $providerId])
+            ->post();
     }
 }

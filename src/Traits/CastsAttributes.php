@@ -68,16 +68,20 @@ trait CastsAttributes
                 }
 
                 Arr::set($data, $initialPartPath, $partArr);
-            } elseif ($partData = Arr::get($data, $path)) {
-                if ($abstract === DateTimeInterface::class) {
-                    if (\is_string($partData)) {
-                        $partData = $this->toDateTime($partData);
+            } else {
+                $partData = Arr::get($data, $path);
+
+                if ($partData !== null) {
+                    if ($abstract === DateTimeInterface::class) {
+                        if (\is_string($partData)) {
+                            $partData = $this->toDateTime($partData);
+                        }
+                    } elseif (\is_array($partData) && \is_string($abstract) && (\interface_exists($abstract) || \class_exists($abstract))) {
+                        // @phpstan-ignore-next-line
+                        $partData = $this->make($abstract, $partData);
                     }
-                } elseif (\is_array($partData) && \is_string($abstract) && (\interface_exists($abstract) || \class_exists($abstract))) {
-                    // @phpstan-ignore-next-line
-                    $partData = $this->make($abstract, $partData);
+                    Arr::set($data, $path, $partData);
                 }
-                Arr::set($data, $path, $partData);
             }
         }
 

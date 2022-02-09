@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Beneficiary;
 
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
+
 interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface
 {
     /**
-     * @return string|null
+     * @return AccountIdentifierInterface
      */
-    public function getName(): ?string;
+    public function getAccountIdentifier(): AccountIdentifierInterface;
+
+    /**
+     * @param AccountIdentifierInterface $accountIdentifier
+     *
+     * @return $this
+     */
+    public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): self;
 
     /**
      * @return string|null
@@ -27,9 +36,4 @@ interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface
      * @return string
      */
     public function getType(): string;
-
-    /**
-     * @return string
-     */
-    public function getSchemeType(): string;
 }

@@ -6,15 +6,15 @@ namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
 use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
-use TrueLayer\Interfaces\Payment\SourceOfFundsInterface;
+use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Validation\ValidType;
 
 final class PaymentSettled extends _PaymentWithAuthorizationConfig implements PaymentSettledInterface
 {
     /**
-     * @var SourceOfFundsInterface
+     * @var PaymentSourceInterface
      */
-    protected SourceOfFundsInterface $sourceOfFunds;
+    protected PaymentSourceInterface $paymentSource;
 
     /**
      * @var DateTimeInterface
@@ -34,7 +34,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
         return \array_merge_recursive(parent::casts(), [
             'executed_at' => DateTimeInterface::class,
             'settled_at' => DateTimeInterface::class,
-            'source_of_funds' => SourceOfFundsInterface::class,
+            'payment_source' => PaymentSourceInterface::class,
         ]);
     }
 
@@ -44,7 +44,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'source_of_funds' => ['required', ValidType::of(SourceOfFundsInterface::class)],
+            'payment_source' => [ValidType::of(PaymentSourceInterface::class)],
             'executed_at' => 'required|date',
             'settled_at' => 'required|date',
         ]);
@@ -56,7 +56,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function arrayFields(): array
     {
         return \array_merge(parent::arrayFields(), [
-            'source_of_funds',
+            'payment_source',
             'executed_at',
             'settled_at',
         ]);
@@ -71,11 +71,11 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @return SourceOfFundsInterface
+     * @return PaymentSourceInterface
      */
-    public function getSourceOfFunds(): SourceOfFundsInterface
+    public function getPaymentSource(): PaymentSourceInterface
     {
-        return $this->sourceOfFunds;
+        return $this->paymentSource;
     }
 
     /**

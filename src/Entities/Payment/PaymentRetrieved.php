@@ -8,9 +8,8 @@ use DateTimeInterface;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Payment\PaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
@@ -43,11 +42,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     protected PaymentMethodInterface $paymentMethod;
 
     /**
-     * @var BeneficiaryInterface
-     */
-    protected BeneficiaryInterface $beneficiary;
-
-    /**
      * @var UserInterface
      */
     protected UserInterface $user;
@@ -61,7 +55,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
      * @var class-string[]
      */
     protected array $casts = [
-        'beneficiary' => BeneficiaryInterface::class,
         'user' => UserInterface::class,
         'payment_method' => PaymentMethodInterface::class,
         'created_at' => DateTimeInterface::class,
@@ -77,7 +70,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
         'amount_in_minor',
         'currency',
         'user',
-        'beneficiary',
         'payment_method',
     ];
 
@@ -94,7 +86,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
-            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
         ];
     }
 
@@ -128,14 +119,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     public function getPaymentMethod(): PaymentMethodInterface
     {
         return $this->paymentMethod;
-    }
-
-    /**
-     * @return BeneficiaryInterface
-     */
-    public function getBeneficiary(): BeneficiaryInterface
-    {
-        return $this->beneficiary;
     }
 
     /**

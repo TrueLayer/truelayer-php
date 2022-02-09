@@ -10,9 +10,9 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 interface PaymentSettledInterface extends PaymentRetrievedInterface
 {
     /**
-     * @return SourceOfFundsInterface
+     * @return PaymentSourceInterface
      */
-    public function getSourceOfFunds(): SourceOfFundsInterface;
+    public function getPaymentSource(): PaymentSourceInterface;
 
     /**
      * @return DateTimeInterface

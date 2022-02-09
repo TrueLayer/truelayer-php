@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\MerchantAccount;
 
+use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\ArrayableInterface;
-use TrueLayer\Interfaces\SchemeIdentifier\SchemeIdentifierInterface;
 
 interface MerchantAccountInterface extends ArrayableInterface
 {
@@ -20,9 +20,9 @@ interface MerchantAccountInterface extends ArrayableInterface
     public function getCurrency(): string;
 
     /**
-     * @return SchemeIdentifierInterface[]
+     * @return AccountIdentifierInterface[]
      */
-    public function getSchemeIdentifiers(): array;
+    public function getAccountIdentifiers(): array;
 
     /**
      * @return int

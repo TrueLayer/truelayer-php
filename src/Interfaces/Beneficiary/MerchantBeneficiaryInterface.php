@@ -9,26 +9,14 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
     /**
      * @return string|null
      */
-    public function getId(): ?string;
+    public function getMerchantAccountId(): ?string;
 
     /**
      * @param string $id
      *
      * @return MerchantBeneficiaryInterface
      */
-    public function id(string $id): MerchantBeneficiaryInterface;
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string;
-
-    /**
-     * @param string $name
-     *
-     * @return MerchantBeneficiaryInterface
-     */
-    public function name(string $name): MerchantBeneficiaryInterface;
+    public function merchantAccountId(string $id): MerchantBeneficiaryInterface;
 
     /**
      * @return string
