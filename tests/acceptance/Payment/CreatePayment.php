@@ -6,6 +6,8 @@ namespace TrueLayer\Tests\Acceptance\Payment;
 
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
@@ -31,12 +33,28 @@ class CreatePayment
     {
         return $this->sdk->beneficiary()->externalAccount()
             ->reference('TEST')
-            ->accountHolderName('Bob')
+            ->accountHolderName('John SCAN')
             ->accountIdentifier($this->sdk->accountIdentifier()
-            ->sortCodeAccountNumber()
-            ->accountNumber('12345678')
-            ->sortCode('010203')
+                ->sortCodeAccountNumber()
+                ->accountNumber('12345678')
+                ->sortCode('010203')
             );
+    }
+
+    public function ibanBeneficiary(): ExternalAccountBeneficiaryInterface
+    {
+        return $this->sdk->beneficiary()->externalAccount()
+            ->reference('TEST')
+            ->accountHolderName('John IBAN')
+            ->accountIdentifier($this->sdk->accountIdentifier()
+                ->iban()
+                ->iban('GB53CLRB04066200002723')
+            );
+    }
+
+    public function merchantBeneficiary(MerchantAccountInterface $account): MerchantBeneficiaryInterface
+    {
+        return $this->sdk->beneficiary()->merchantAccount($account);
     }
 
     /**

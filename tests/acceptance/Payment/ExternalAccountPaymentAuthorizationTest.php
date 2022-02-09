@@ -11,9 +11,22 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 
-\it('creates a payment', function () {
+\it('creates an IBAN payment', function () {
+    $helper = paymentHelper();
+    $created = $helper->create(
+        $helper->bankTransferMethod($helper->ibanBeneficiary()), $helper->user(), 'EUR'
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getId())->toBeString();
+    \expect($created->getResourceToken())->toBeString();
+    \expect($created->getUserId())->toBeString();
+});
+
+\it('creates a SCAN payment', function () {
     $created = \paymentHelper()->create();
 
     \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
@@ -36,7 +49,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
 
     return $created;
-})->depends('it creates a payment');
+})->depends('it creates a SCAN payment');
 
 \it('retrieves payment as authorizing - provider selection', function (PaymentCreatedInterface $created) {
     /** @var PaymentAuthorizingInterface $payment */
@@ -74,7 +87,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     return $created;
 })->depends('it submits provider');
 
-\it('authorizes payment', function (PaymentCreatedInterface $created) {
+\it('executes payment', function (PaymentCreatedInterface $created) {
     /** @var RedirectActionInterface $next */
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
@@ -91,3 +104,24 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
     return $created;
 })->depends('it submits provider');
+
+it('creates payment and fails authorization', function () {
+    $created = \paymentHelper()->create();
+    $created->startAuthorization('https://penny.t7r.dev/redirect/v3');
+    \sdk()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+
+    /** @var RedirectActionInterface $next */
+    $next = $created->getDetails()->getAuthorizationFlowNextAction();
+
+
+    \bankAction($next->getUri(), 'RejectExecution');
+    \sleep(5);
+
+    /** @var PaymentFailedInterface $payment */
+    $payment = $created->getDetails();
+
+    expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
+    expect($payment->getFailedAt())->toBeInstanceOf(DateTimeInterface::class);
+    expect($payment->getFailureStage())->toBeString();
+    expect($payment->getFailureReason())->toBeString();
+});
