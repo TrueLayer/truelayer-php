@@ -106,7 +106,5 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($payment->getPaymentSource()->getId())->toBeString();
     \expect($payment->getPaymentSource()->getAccountHolderName())->toBeString();
 
-    \var_dump($payment->getPaymentSource()->getAccountHolderName());
-
     return $created;
 })->depends('it submits provider');
