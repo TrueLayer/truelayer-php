@@ -37,7 +37,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->startPaymentAuthorization($created, 'https://penny.t7r.dev/redirect/v3');
+    $response = \sdk()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $response->getNextAction();
@@ -106,7 +106,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
 it('creates payment and fails authorization', function () {
     $created = \paymentHelper()->create();
-    $created->startAuthorization('https://penny.t7r.dev/redirect/v3');
+    $created->startAuthorization('https://console.truelayer.com/redirect-page');
     \sdk()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
 
     /** @var RedirectActionInterface $next */

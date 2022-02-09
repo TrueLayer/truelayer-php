@@ -38,7 +38,7 @@ it('creates a merchant payment', function () {
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->startPaymentAuthorization($created, 'https://penny.t7r.dev/redirect/v3');
+    $response = \sdk()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $response->getNextAction();
