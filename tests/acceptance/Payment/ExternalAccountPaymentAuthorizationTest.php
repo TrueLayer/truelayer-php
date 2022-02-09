@@ -7,7 +7,6 @@ use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
-use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
