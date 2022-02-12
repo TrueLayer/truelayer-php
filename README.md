@@ -1,38 +1,44 @@
 ## Quick Links
+
 1. [Why use this package?](#why)
 2. [Getting started](#getting-started)
 3. [Caching](#caching)
 4. [Converting to and from arrays](#arrays)
 5. [Creating a payment](#creating-a-payment)
-   1. [Creating a beneficiary](#creating-a-beneficiary)
-   2. [Creating a user](#creating-a-user)
-   3. [Creating a payment method](#creating-a-payment-method)
-   4. [Creating the payment](#creating-the-payment)
-   5. [Creating a payment from an array](#creating-a-payment-from-array)
-   6. [Redirecting to the Hosted Payments Page](#redirect-to-hpp)
+    1. [Creating a beneficiary](#creating-a-beneficiary)
+    2. [Creating a user](#creating-a-user)
+    3. [Creating a payment method](#creating-a-payment-method)
+    4. [Creating the payment](#creating-the-payment)
+    5. [Creating a payment from an array](#creating-a-payment-from-array)
+    6. [Redirecting to the Hosted Payments Page](#redirect-to-hpp)
 6. [Retrieving a payment's details](#retrieving-a-payment)
-   1. [Get the user](#get-the-user)
-   2. [Get the beneficiary](#get-the-beneficiary)
-   3. [Check a payment's status](#check-payment-status)
-   4. [Working with status specific payment fields](#payment-status-specific-fields)
-      1. [Authorization Required Status](#status-authorization-required)
-      2. [Authorizing Status](#status-authorizing)
-         1. [Provider selection action](#action-provider-selection)
-         2. [Redirect action](#action-redirect)
-         3. [Wait action](#action-wait)
-      3. [Authorized Status](#status-authorized)
-      4. [Executed Status](#status-executed)
-      5. [Settled Status](#status-settled)
-      6. [Failed Status](#status-failed)
-      7. [Authorization flow config](#auth-flow-config)
-      8. [Source of funds](#source-of-funds)
-7. [Custom API calls](#custom-api-calls)
-8. [Error Handling](#error-handling)
+    1. [Get the user](#get-the-user)
+    2. [Get the payment method and beneficiary](#get-the-payment-method)
+    3. [Check a payment's status](#check-payment-status)
+    4. [Working with status specific payment fields](#payment-status-specific-fields)
+        1. [Authorization Required Status](#status-authorization-required)
+        2. [Authorizing Status](#status-authorizing)
+            1. [Provider selection action](#action-provider-selection)
+            2. [Redirect action](#action-redirect)
+            3. [Wait action](#action-wait)
+        3. [Authorized Status](#status-authorized)
+        4. [Executed Status](#status-executed)
+        5. [Settled Status](#status-settled)
+        6. [Failed Status](#status-failed)
+        7. [Authorization flow config](#auth-flow-config)
+        8. [Source of funds](#source-of-funds)
+7. [Authorizing a payment - TODO](#authorizing-payment)
+8. [Merchant accounts](#merchant-accounts)
+9. [Account identifiers](#account-identifiers)
+10. [Custom API calls](#custom-api-calls)
+11. [Error Handling](#error-handling)
 
 <a name="why"></a>
+
 ## Why use this package?
 
 This package simplifies working with the TrueLayer API, by:
+
 1. Handling authentication, including token expiry, invalidation and caching
 2. Signing requests
 3. Managing idempotency keys, including retrying on conflicts
@@ -41,9 +47,10 @@ This package simplifies working with the TrueLayer API, by:
 6. Providing type-hinted methods and classes to work with
 
 <a name="getting-started"></a>
+
 ## Getting started
 
-### Installation 
+### Installation
 
 ```
 composer require truelayer/sdk
@@ -51,8 +58,8 @@ composer require truelayer/sdk
 
 ### Initialisation
 
-You will need to provide your own HTTP client that implements [PSR-18](https://www.php-fig.org/psr/psr-18/).
-If your application does not already have one, you can use a client such as [Guzzle](https://docs.guzzlephp.org/en/stable/):
+You will need to provide your own HTTP client that implements [PSR-18](https://www.php-fig.org/psr/psr-18/). If your
+application does not already have one, you can use a client such as [Guzzle](https://docs.guzzlephp.org/en/stable/):
 
 ```php
 composer require guzzlehttp/guzzle:^7.0
@@ -60,7 +67,8 @@ composer require guzzlehttp/guzzle:^7.0
 $httpClient = new \GuzzleHttp\Client();
 ```
 
-You will also need to go to the TrueLayer console and create your credentials which you can then provide to the SDK configurator:
+You will also need to go to the TrueLayer console and create your credentials which you can then provide to the SDK
+configurator:
 
 ```php
 $sdk = \TrueLayer\Sdk::configure()
@@ -82,12 +90,15 @@ $sdk = \TrueLayer\Sdk::configure()
 ```
 
 <a name="caching"></a>
+
 ## Caching
 
-The SDK supports caching the `client_credentials` grant access token needed to access, create and modify resources on TrueLayer's systems.
-In order to enable it, you need to provide an implementation of the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
+The SDK supports caching the `client_credentials` grant access token needed to access, create and modify resources on
+TrueLayer's systems. In order to enable it, you need to provide an implementation of
+the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
 
-You can generate a random encryption key by running `openssl rand -hex 32`. This key must be considered secret and stored next to the client secrets obtained from TrueLayer's console.
+You can generate a random encryption key by running `openssl rand -hex 32`. This key must be considered secret and
+stored next to the client secrets obtained from TrueLayer's console.
 
 ```php
 $sdk = \TrueLayer\Sdk::configure()
@@ -99,6 +110,7 @@ $sdk = \TrueLayer\Sdk::configure()
 A good example of a caching library that implements PSR-16 is [illuminate/cache](https://github.com/illuminate/cache).
 
 <a name="arrays"></a>
+
 ## Converting to and from arrays
 
 If you want to skip calling each setter method, you can use arrays to create any resource:
@@ -117,21 +129,56 @@ $paymentData = $sdk->getPayment($paymentId)->toArray();
 ```
 
 <a name="creating-a-payment"></a>
+
 ## Creating a payment
 
 <a name="creating-a-beneficiary"></a>
+
 ### 1. Creating a beneficiary
 
+*Merchant account beneficiary*
+
 ```php
-$beneficiary = $sdk->beneficiary()
-    ->sortCodeAccountNumber()
-    ->accountNumber('12345678')
-    ->sortCode('010203')
-    ->reference('The reference')
-    ->name('John Doe');
+// If the merchant account id is known:
+$beneficiary = $sdk->beneficiary()->merchantAccount()
+    ->merchantAccountId('a2dcee6d-7a00-414d-a1e6-8a2b23169e00');
+
+// Alternatively you can retrieve merchant accounts and use one of them directly:
+$merchantAccounts = $sdk->getMerchantAccounts();
+
+// Select the merchant account you need...
+$merchantAccount = $merchantAccounts[0];
+
+$beneficiary = $sdk->beneficiary()->merchantAccount($merchantAccount);
+```
+
+*External account beneficiary - Sort code & account number*
+
+```php
+$beneficiary = $sdk->beneficiary()->externalAccount()
+    ->reference('Transaction reference')
+    ->accountHolderName('John Doe')
+    ->accountIdentifier(
+        $sdk->accountIdentifier()->sortCodeAccountNumber()
+            ->sortCode('010203')
+            ->accountNumber('12345678')
+    );
+```
+
+*External account beneficiary - IBAN*
+
+```php
+$beneficiary = $sdk->beneficiary()->externalAccount()
+    ->reference('Transaction reference')
+    ->accountHolderName('John Doe')
+    ->accountIdentifier(
+        $sdk->accountIdentifier()->iban()
+            ->iban('GB53CLRB04066200002723')
+    );
 ```
 
 <a name="creating-a-user"></a>
+
 ### 2. Creating a user
 
 ```php
@@ -141,19 +188,20 @@ $user = $sdk->user()
 ```
 
 <a name="creating-a-payment-method"></a>
+
 ### 3. Creating a payment method
 
 ```php
-$paymentMethod = $sdk->paymentMethod()
-    ->type(\TrueLayer\Constants\PaymentMethods::BANK_TRANSFER);
+$paymentMethod = $sdk->paymentMethod()->bankTransfer()
+    ->beneficiary($beneficiary);
 ```
 
 <a name="creating-the-payment"></a>
+
 ### 4. Creating the payment
 
 ```php
 $payment = $sdk->payment()
-    ->beneficiary($beneficiary)
     ->user($user)
     ->amountInMinor(1)
     ->currency(\TrueLayer\Constants\Currencies::GBP) // You can use other currencies defined in this class.
@@ -172,6 +220,7 @@ $payment->toArray(); // Convert to array
 ```
 
 <a name="creating-a-payment-from-array"></a>
+
 ### 5. Creating a payment from an array
 
 If you prefer, you can work directly with arrays by calling the `fill` method:
@@ -179,35 +228,35 @@ If you prefer, you can work directly with arrays by calling the `fill` method:
 ```php
 $paymentData = [
     'amount_in_minor' => 1,
-    'currency' => \TrueLayer\Constants\Currencies::GBP,
-    'user' => [
-        'name' => 'Jane Doe',
-        'email' => 'jane@doe.com'
-    ],
-    'beneficiary' => [
-        'type' => \TrueLayer\Constants\BeneficiaryTypes::EXTERNAL_ACCOUNT,
-        'name' => 'John Doe',
-        'reference' => 'Payment',
-        'scheme_identifier' => [
-            'type' => \TrueLayer\Constants\ExternalAccountTypes::SORT_CODE_ACCOUNT_NUMBER,
-            'sort_code' => '010203',
-            'account_number' => '12345678',
-        ]
-    ],
+    'currency' => Currencies::GBP,
     'payment_method' => [
-        'type' => \TrueLayer\Constants\PaymentMethods::BANK_TRANSFER,
-        'statement_reference' => 'Reference',
-        'provider_filter' => [
-            'countries' => [
-                \TrueLayer\Constants\Countries::GB,
+        'type' => PaymentMethods::BANK_TRANSFER,
+        'beneficiary' => [
+            'account_identifier' => [
+                'account_number' => '12345678',
+                'sort_code' => '010203',
+                'type' => 'sort_code_account_number',
             ],
-            'release_channel' => \TrueLayer\Constants\ReleaseChannels::GENERAL_AVAILABILITY,
-            'customer_segments' => [
-                \TrueLayer\Constants\CustomerSegments::RETAIL,
-                \TrueLayer\Constants\CustomerSegments::BUSINESS,
-            ],
-            'provider_ids' => [
-                'mock-payments-gb-redirect',
+            'reference' => 'Transaction reference',
+            'account_holder_name' => 'John Doe',
+            'type' => 'external_account',
+        ],
+        'provider_selection' => [
+            'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
+            'filter' => [
+                'countries' => [
+                    Countries::GB,
+                ],
+                'release_channel' => ReleaseChannels::PRIVATE_BETA,
+                'customer_segments' => [
+                    CustomerSegments::RETAIL,
+                ],
+                'provider_ids' => [
+                    'mock-payments-gb-redirect',
+                ],
+                'excludes' => [
+                    'provider_ids' => [],
+                ],
             ],
         ],
     ],
@@ -217,10 +266,11 @@ $payment = $sdk->payment()->fill($paymentData)->create();
 ```
 
 <a name="redirect-to-hpp"></a>
+
 ### 6. Redirecting to the Hosted Payments Page
 
-TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box, all action types.
-You can easily get the URL to redirect to after creating your payment:
+TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box,
+all action types. You can easily get the URL to redirect to after creating your payment:
 
 ```php
 $url = $sdk->payment()
@@ -235,19 +285,21 @@ $url = $sdk->payment()
 ```
 
 <a name="retrieving-a-payment"></a>
+
 # Retrieving a payment's details
 
 ```php
 $payment = $sdk->getPayment($paymentId);
 $payment->getId();
 $payment->getAmountInMinor();
-$payment->getCreatedAt(); // The date and time the payment was executed at
+$payment->getCreatedAt(); 
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->toArray();
 ```
 
 <a name="get-the-user"></a>
+
 ## Get the user
 
 ```php
@@ -259,38 +311,35 @@ $user->getPhone();
 $user->toArray();
 ```
 
-<a name="get-the-beneficiary"></a>
-## Get the beneficiary
+<a name="get-the-payment-method"></a>
 
-There are multiple types of payment beneficiaries. They all implement `BeneficiaryInterface` so you can access:
-
-```php
-$beneficiary = $sdk->getPayment($paymentId)->getBeneficiary();
-$beneficiary->getName();
-$beneficiary->getType();
-$beneficiary->toArray();
-```
-
-Depending on the beneficiary type, you can then access specific methods:
+## Get the payment method and beneficiary
 
 ```php
-use TrueLayer\Interfaces\Beneficiary\ScanBeneficiaryInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
+use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 
-if ($beneficiary instanceof ScanBeneficiaryInterface) {
-    $beneficiary->getReference();
-    $beneficiary->getAccountNumber();
-    $beneficiary->getSortCode();
-}
-```
+$method = $sdk->getPayment($paymentId)->getPaymentMethod();
 
-```php
-if ($beneficiary instanceof MerchantBeneficiaryInterface) {
-    $beneficiary->getId();
+if ($method instanceof BankTransferPaymentMethodInterface) {
+    $providerSelection = $method->getProviderSelection();
+    $beneficiary = $method->getBeneficiary();
+    $beneficiary->getAccountHolderName();
+    
+    if ($beneficiary instanceof ExternalAccountBeneficiaryInterface) {
+        $beneficiary->getReference();
+        $beneficiary->getAccountIdentifier(); // See account identifiers documentation
+    }
+    
+    if ($beneficiary instanceof MerchantBeneficiaryInterface) {
+        $beneficiary->getMerchantAccountId();
+    }
 }
 ```
 
 <a name="check-payment-status"></a>
+
 ## Check a payment's status
 
 You can check for the status by using one of the following helper methods:
@@ -306,15 +355,18 @@ $payment->isFailed();
 ```
 
 Or you can get the status as a string and compare it to the provided constants in `PaymentStatus`:
+
 ```php
 $payment = $sdk->getPayment($paymentId);
 $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQUIRED;
 ```
 
 <a name="payment-status-specific-fields"></a>
+
 ## Working with status specific payment fields
 
 <a name="status-authorization-required"></a>
+
 ### Authorization Required Status
 
 > Payment with this status is on its initial phase where no action beyond the creation of the payment was taken.
@@ -328,11 +380,13 @@ if ($payment instanceof PaymentAuthorizationRequiredInterface) {
 ```
 
 <a name="status-authorizing"></a>
+
 ### Authorizing Status
 
 > Payment has its authorization_flow started, but the authorization has not completed yet
 
 A payment in `Authorizing` will expose 2 additional methods for retrieving:
+
 - the [authorization flow config](#auth-flow-config)
 - the next action in the payment authorization user journey
 
@@ -348,10 +402,11 @@ if ($payment instanceof PaymentAuthorizingInterface) {
 ```
 
 <a name="action-provider-selection"></a>
+
 #### Provider selection action
 
-This action indicates that the user needs to select a provider from the provided list.
-To render the provider list, each provider comes with helpful methods for retrieving the name, logo, id, etc.
+This action indicates that the user needs to select a provider from the provided list. To render the provider list, each
+provider comes with helpful methods for retrieving the name, logo, id, etc.
 
 ```php
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
@@ -372,6 +427,7 @@ if ($nextAction instanceof ProviderSelectionActionInterface) {
 ```
 
 <a name="action-redirect"></a>
+
 #### Redirect action
 
 This action indicates that the user needs to be redirected to complete the authorization process.
@@ -388,6 +444,7 @@ if ($nextAction instanceof RedirectActionInterface) {
 ```
 
 <a name="action-wait"></a>
+
 #### Wait action
 
 ```php
@@ -401,6 +458,7 @@ if ($nextAction instanceof WaitActionInterface) {
 ```
 
 <a name="status-authorized"></a>
+
 ### Authorized Status
 
 > Payment has successfully completed its authorization flow
@@ -414,6 +472,7 @@ if ($payment instanceof PaymentAuthorizedInterface) {
 ```
 
 <a name="status-executed"></a>
+
 ### Executed Status
 
 > Payment has been accepted by the bank
@@ -424,11 +483,11 @@ use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 if ($payment instanceof PaymentExecutedInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
     $payment->getAuthorizationFlowConfig(); // See authorization flow config
-    $payment->getSourceOfFunds(); // See source of funds
 }
 ```
 
 <a name="status-settled"></a>
+
 ### Settled Status
 
 > Payment can transition into this state if the beneficiary account was a merchant account within Truelayer, and Truelayer has observed the money to be settled.
@@ -445,6 +504,7 @@ if ($payment instanceof PaymentSettledInterface) {
 ```
 
 <a name="status-failed"></a>
+
 ### Failed Status
 
 > Payment has failed. The reason for failure can be observed in failure_reason field on the payment resource
@@ -461,6 +521,7 @@ if ($payment instanceof PaymentFailedInterface) {
 ```
 
 <a name="auth-flow-config"></a>
+
 ### Authorization flow config
 
 This object provides information about the authorization flow the payment went through.
@@ -477,6 +538,7 @@ if ($payment instanceof PaymentExecutedInterface) {
 ```
 
 <a name="source-of-funds"></a>
+
 ### Source of funds
 
 ```php
@@ -488,30 +550,82 @@ use TrueLayer\Interfaces\SchemeIdentifier\BbanDetailsInterface;
 use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
 
 if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentSettledInterface) {
-    $sourceOfFunds = $payment->getSourceOfFunds();
-    $sourceOfFunds->getAccountHolderName(); // The unique ID for the external account
-    $sourceOfFunds->getExternalAccountId(); // The account holder name for the external account
-    $sourceOfFunds->toArray();
-    
-    foreach ($sourceOfFunds->getSchemeIdentifiers() as $schemeIdentifier) {
-        if ($schemeIdentifier instanceof ScanDetailsInterface) {
-            $schemeIdentifier->getSortCode();
-            $schemeIdentifier->getAccountNumber();
-        }
-        if ($schemeIdentifier instanceof IbanDetailsInterface) {
-            $schemeIdentifier->getIban();
-        }
-        if ($schemeIdentifier instanceof BbanDetailsInterface) {
-            $schemeIdentifier->getBban();
-        }
-        if ($schemeIdentifier instanceof NrbDetailsInterface) {
-            $schemeIdentifier->getNrb();
-        }
+    $paymentSource = $payment->getPaymentSource();
+    $paymentSource->getAccountHolderName(); // The unique ID for the external account
+    $paymentSource->getId(); 
+    $paymentSource->toArray();
+        
+    foreach ($paymentSource->getAccountIdentifiers() as $accountIdentifier) {
+       // See 'Account identifiers' for available methods.
     }
 }
 ```
 
+<a name="merchant-accounts"></a>
+
+# Merchant accounts
+
+Listing all merchant accounts:
+
+```php
+$merchantAccounts = $sdk->getMerchantAccounts(); // MerchantAccountInterface[]
+```
+
+Retrieving an account by id:
+
+```php
+$merchantAccount = $sdk->getMerchantAccount('a2dcee6d-7a00-414d-a1e6-8a2b23169e00');
+
+$merchantAccount->getAccountHolderName();
+$merchantAccount->getAvailableBalanceInMinor();
+$merchantAccount->getCurrentBalanceInMinor();
+$merchantAccount->getCurrency();
+$merchantAccount->getId();
+
+foreach ($merchantAccount->getAccountIdentifiers() as $accountIdentifier) {
+    // See 'Account identifiers' for available methods.
+}
+```
+
+<a name="account-identifiers"></a>
+
+# Account identifiers
+
+All account identifiers implement a common interface, so you can access:
+
+```php
+$accountIdentifier->getType();
+$accountIdentifier->toArray();
+```
+
+Based on the specific type, you can get more information:
+
+```php
+use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\IbanDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\NrbDetailsInterface;
+use TrueLayer\Interfaces\AccountIdentifier\BbanDetailsInterface;
+
+if ($accountIdentifier instanceof ScanDetailsInterface) {
+    $accountIdentifier->getAccountNumber();
+    $accountIdentifier->getSortCode();
+}
+
+if ($accountIdentifier instanceof IbanDetailsInterface) {
+    $accountIdentifier->getIban();
+}
+
+if ($accountIdentifier instanceof NrbDetailsInterface) {
+    $accountIdentifier->getNrb();
+}
+
+if ($accountIdentifier instanceof BbanDetailsInterface) {
+    $accountIdentifier->getBban();
+}
+```
+
 <a name="custom-api-calls"></a>
+
 # Custom API calls
 
 You can use the SDK to make your own API calls without worrying about authentication or request signing:
@@ -527,6 +641,7 @@ $responseData = $sdk->getApiClient()->request()
 ```
 
 <a name="error-handling"></a>
+
 # Error Handling
 
 The SDK throws the following exceptions:
@@ -535,7 +650,8 @@ The SDK throws the following exceptions:
 
 ### ClientExceptionInterface
 
-Thrown according to the PSR-18 specification, if the HTTP client is unable to send the request at all or if the response could not be parsed into a PSR-7 response object.
+Thrown according to the PSR-18 specification, if the HTTP client is unable to send the request at all or if the response
+could not be parsed into a PSR-7 response object.
 
 ```php
 Psr\Http\Client\ClientExceptionInterface
@@ -546,6 +662,7 @@ Psr\Http\Client\ClientExceptionInterface
 All custom exceptions will extend from the base `TrueLayer\Exceptions\Exception` class.
 
 ### ApiResponseUnsuccessfulException
+
 Thrown if the API response is not a 2xx status.
 
 ```php
@@ -595,7 +712,7 @@ Thrown if the request signer cannot be initialised or signing fails.
 ### EncryptException
 
 Thrown when the SDK fails to encrypt a payload that needs to be cached.
- 
+
 ```php
 \TrueLayer\Exceptions\EncryptException
 ```
