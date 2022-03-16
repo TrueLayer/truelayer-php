@@ -265,7 +265,7 @@ class SdkConfig implements SdkConfigInterface
      */
     public function cache(CacheInterface $cache, string $encryptionKey): SdkConfigInterface
     {
-        //TODO validate key length
+        // TODO validate key length
         $binEncryptionKey = \hex2bin($encryptionKey);
         if (!$binEncryptionKey) {
             throw new InvalidArgumentException('Invalid encryption key. Please use `openssl rand -hex 32` to generate a valid one.');
