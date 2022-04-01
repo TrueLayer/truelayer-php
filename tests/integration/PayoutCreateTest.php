@@ -37,9 +37,9 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
             'reference' => 'Test reference',
             'account_identifier' => [
                 'type' => AccountIdentifierTypes::IBAN,
-                'iban' => 'GB29NWBK60161331926819'
-            ]
-        ]
+                'iban' => 'GB29NWBK60161331926819',
+            ],
+        ],
     ]);
 });
 
@@ -67,7 +67,7 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
             'payment_source_id' => 'source1',
             'user_id' => 'user1',
             'reference' => 'Test reference',
-        ]
+        ],
     ]);
 });
 
@@ -90,6 +90,6 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
         ->beneficiary($beneficiary)
         ->create();
 
-    expect($response)->toBeInstanceOf(PayoutCreatedInterface::class);
-    expect($response->getId())->toBe('ca9a3154-9151-44cf-b7cb-073c9e12ef91');
+    \expect($response)->toBeInstanceOf(PayoutCreatedInterface::class);
+    \expect($response->getId())->toBe('ca9a3154-9151-44cf-b7cb-073c9e12ef91');
 });

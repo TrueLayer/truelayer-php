@@ -39,14 +39,14 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private Interfaces\Client\ConfigInterface $sdkConfig;
 
     /**
-     * @param ValidatorFactory $validatorFactory
+     * @param ValidatorFactory                         $validatorFactory
      * @param Interfaces\Factories\ApiFactoryInterface $apiFactory
-     * @param Interfaces\Client\ConfigInterface $sdkConfig
+     * @param Interfaces\Client\ConfigInterface        $sdkConfig
      */
     public function __construct(
-        ValidatorFactory                         $validatorFactory,
+        ValidatorFactory $validatorFactory,
         Interfaces\Factories\ApiFactoryInterface $apiFactory,
-        Interfaces\Client\ConfigInterface        $sdkConfig)
+        Interfaces\Client\ConfigInterface $sdkConfig)
     {
         $this->validatorFactory = $validatorFactory;
         $this->apiFactory = $apiFactory;
@@ -168,12 +168,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T
-     * @throws InvalidArgumentException
-     *
-     * @throws ValidationException
      */
     public function make(string $abstract, array $data = null)
     {
@@ -203,12 +203,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[] $data
+     * @param mixed[]         $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T[]
-     * @throws InvalidArgumentException
-     *
-     * @throws ValidationException
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -222,9 +222,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
      *
+     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -240,9 +240,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
-     * @return T
      * @throws InvalidArgumentException
      *
+     * @return T
      */
     private function makeConcrete(string $concrete)
     {

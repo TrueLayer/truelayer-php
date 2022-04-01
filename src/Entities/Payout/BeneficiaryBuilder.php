@@ -15,10 +15,10 @@ use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {
     /**
-     * @return ExternalAccountBeneficiaryInterface
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return ExternalAccountBeneficiaryInterface
      */
     public function externalAccount(): ExternalAccountBeneficiaryInterface
     {
@@ -26,10 +26,10 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
     }
 
     /**
-     * @return PaymentSourceBeneficiaryInterface
      * @throws ValidationException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return PaymentSourceBeneficiaryInterface
      */
     public function paymentSource(): PaymentSourceBeneficiaryInterface
     {
@@ -39,10 +39,10 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
     /**
      * @param mixed[] $data
      *
-     * @return PayoutBeneficiaryInterface
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return PayoutBeneficiaryInterface
      */
     public function fill(array $data): PayoutBeneficiaryInterface
     {
