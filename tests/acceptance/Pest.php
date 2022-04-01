@@ -5,9 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpClient\Psr18Client;
+use TrueLayer\Client;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
-use TrueLayer\Sdk;
+use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Tests\Acceptance\Payment\CreatePayment;
 
 $dotenv = new Dotenv();
@@ -16,11 +16,11 @@ $dotenv->load(__DIR__ . '/../../.env');
 /**
  * @throws SignerException
  *
- * @return SdkInterface
+ * @return ClientInterface
  */
-function sdk(): SdkInterface
+function client(): ClientInterface
 {
-    return Sdk::configure()
+    return Client::configure()
         ->clientId($_ENV['TEST_CLIENT_ID'])
         ->clientSecret($_ENV['TEST_CLIENT_SECRET'])
         ->keyId($_ENV['TEST_KID'])
@@ -36,7 +36,7 @@ function sdk(): SdkInterface
  */
 function paymentHelper(): CreatePayment
 {
-    return new CreatePayment(\sdk());
+    return new CreatePayment(\client());
 }
 
 function bankAction(string $redirectUri, string $action): void

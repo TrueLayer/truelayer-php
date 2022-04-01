@@ -37,7 +37,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
+    $response = \client()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $response->getNextAction();
@@ -62,7 +62,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 })->depends('it starts payment authorization');
 
 \it('submits provider', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+    $response = \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
 
     /** @var RedirectActionInterface $next */
     $next = $response->getNextAction();
@@ -91,7 +91,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
     \bankAction($next->getUri(), 'Execute');
-    \sleep(5);
+    \sleep(10);
 
     /* @var PaymentExecutedInterface $payment */
     $payment = $created->getDetails();
@@ -107,13 +107,13 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 \it('creates payment and fails authorization', function () {
     $created = \paymentHelper()->create();
     $created->startAuthorization('https://console.truelayer.com/redirect-page');
-    \sdk()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+    \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
 
     /** @var RedirectActionInterface $next */
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
     \bankAction($next->getUri(), 'RejectExecution');
-    \sleep(5);
+    \sleep(10);
 
     /** @var PaymentFailedInterface $payment */
     $payment = $created->getDetails();

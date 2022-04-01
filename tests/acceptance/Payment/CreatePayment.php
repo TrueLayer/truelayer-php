@@ -7,23 +7,23 @@ namespace TrueLayer\Tests\Acceptance\Payment;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 class CreatePayment
 {
-    private SdkInterface $sdk;
+    private ClientInterface $client;
 
     /**
-     * @param SdkInterface $sdk
+     * @param ClientInterface $client
      */
-    public function __construct(SdkInterface $sdk)
+    public function __construct(ClientInterface $client)
     {
-        $this->sdk = $sdk;
+        $this->client = $client;
     }
 
     /**
@@ -31,10 +31,10 @@ class CreatePayment
      */
     public function sortCodeBeneficiary(): ExternalAccountBeneficiaryInterface
     {
-        return $this->sdk->beneficiary()->externalAccount()
+        return $this->client->beneficiary()->externalAccount()
             ->reference('TEST')
             ->accountHolderName('John SCAN')
-            ->accountIdentifier($this->sdk->accountIdentifier()
+            ->accountIdentifier($this->client->accountIdentifier()
             ->sortCodeAccountNumber()
             ->accountNumber('12345678')
             ->sortCode('010203')
@@ -43,10 +43,10 @@ class CreatePayment
 
     public function ibanBeneficiary(): ExternalAccountBeneficiaryInterface
     {
-        return $this->sdk->beneficiary()->externalAccount()
+        return $this->client->beneficiary()->externalAccount()
             ->reference('TEST')
             ->accountHolderName('John IBAN')
-            ->accountIdentifier($this->sdk->accountIdentifier()
+            ->accountIdentifier($this->client->accountIdentifier()
             ->iban()
             ->iban('GB53CLRB04066200002723')
             );
@@ -54,7 +54,7 @@ class CreatePayment
 
     public function merchantBeneficiary(MerchantAccountInterface $account): MerchantBeneficiaryInterface
     {
-        return $this->sdk->beneficiary()->merchantAccount($account);
+        return $this->client->beneficiary()->merchantAccount($account);
     }
 
     /**
@@ -62,7 +62,7 @@ class CreatePayment
      */
     public function user(): UserInterface
     {
-        return $this->sdk
+        return $this->client
             ->user()
             ->name('Alice')
             ->phone('+447837485713')
@@ -76,7 +76,7 @@ class CreatePayment
      */
     public function bankTransferMethod(BeneficiaryInterface $beneficiary): BankTransferPaymentMethodInterface
     {
-        return $this->sdk->paymentMethod()
+        return $this->client->paymentMethod()
             ->bankTransfer()
             ->beneficiary($beneficiary);
     }
@@ -94,7 +94,7 @@ class CreatePayment
             $paymentMethod = $this->bankTransferMethod($this->sortCodeBeneficiary());
         }
 
-        return $this->sdk->payment()
+        return $this->client->payment()
             ->paymentMethod($paymentMethod)
             ->amountInMinor(1)
             ->currency($currency)
@@ -103,10 +103,10 @@ class CreatePayment
     }
 
     /**
-     * @return SdkInterface
+     * @return ClientInterface
      */
-    public function sdk(): SdkInterface
+    public function client(): ClientInterface
     {
-        return $this->sdk;
+        return $this->client;
     }
 }

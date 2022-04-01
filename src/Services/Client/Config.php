@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Sdk;
+namespace TrueLayer\Services\Client;
 
 use Illuminate\Encryption\Encrypter;
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\Encryption;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\Client\ClientFactoryInterface;
+use TrueLayer\Interfaces\Client\ClientInterface;
+use TrueLayer\Interfaces\Client\ConfigInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
-use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
-use TrueLayer\Interfaces\Sdk\SdkFactoryInterface;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Services\Util\EncryptedCache;
 
-class SdkConfig implements SdkConfigInterface
+class Config implements ConfigInterface
 {
     /**
-     * @var SdkFactoryInterface
+     * @var ClientFactoryInterface
      */
-    private SdkFactoryInterface $factory;
+    private ClientFactoryInterface $factory;
 
     /**
      * @var string
@@ -54,9 +54,9 @@ class SdkConfig implements SdkConfigInterface
     private bool $useProduction = false;
 
     /**
-     * @var ClientInterface
+     * @var HttpClientInterface
      */
-    private ClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     /**
      * @var EncryptedCacheInterface|null
@@ -64,9 +64,9 @@ class SdkConfig implements SdkConfigInterface
     private ?EncryptedCacheInterface $cache = null;
 
     /**
-     * @param SdkFactoryInterface $factory
+     * @param ClientFactoryInterface $factory
      */
-    public function __construct(SdkFactoryInterface $factory)
+    public function __construct(ClientFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
@@ -172,11 +172,11 @@ class SdkConfig implements SdkConfigInterface
     /**
      * @param string $pemBase64
      *
-     *@throws SignerException
+     * @throws SignerException
      *
-     * @return SdkConfigInterface
+     * @return ConfigInterface
      */
-    public function pemBase64(string $pemBase64): SdkConfigInterface
+    public function pemBase64(string $pemBase64): ConfigInterface
     {
         $decoded = \base64_decode($pemBase64);
 
@@ -228,19 +228,19 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     * @return ClientInterface
+     * @return HttpClientInterface
      */
-    public function getHttpClient(): ClientInterface
+    public function getHttpClient(): HttpClientInterface
     {
         return $this->httpClient;
     }
 
     /**
-     * @param ClientInterface $httpClient
+     * @param HttpClientInterface $httpClient
      *
      * @return $this
      */
-    public function httpClient(ClientInterface $httpClient): self
+    public function httpClient(HttpClientInterface $httpClient): self
     {
         $this->httpClient = $httpClient;
 
@@ -261,9 +261,9 @@ class SdkConfig implements SdkConfigInterface
      *
      * @throws InvalidArgumentException
      *
-     * @return SdkConfigInterface
+     * @return ConfigInterface
      */
-    public function cache(CacheInterface $cache, string $encryptionKey): SdkConfigInterface
+    public function cache(CacheInterface $cache, string $encryptionKey): ConfigInterface
     {
         //TODO validate key length
         $binEncryptionKey = \hex2bin($encryptionKey);
@@ -278,11 +278,11 @@ class SdkConfig implements SdkConfigInterface
     }
 
     /**
-     *@throws SignerException
+     * @throws SignerException
      *
-     * @return SdkInterface
+     * @return ClientInterface
      */
-    public function create(): SdkInterface
+    public function create(): ClientInterface
     {
         return $this->factory->make($this);
     }

@@ -7,7 +7,7 @@ use TrueLayer\Tests\Integration\Mocks\CreatePayment;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 \it('generates HPP url', function () {
-    $url = \sdk()->hostedPaymentsPage()
+    $url = \client()->hostedPaymentsPage()
         ->paymentId('1')
         ->resourceToken('1')
         ->returnUri('http://www.return.com')
@@ -39,7 +39,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 \it('validates input', function () {
     try {
-        \sdk()->hostedPaymentsPage()
+        \client()->hostedPaymentsPage()
             ->primaryColour('1st')
             ->secondaryColour('2nd')
             ->tertiaryColour('3rd')

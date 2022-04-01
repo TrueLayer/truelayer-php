@@ -10,22 +10,22 @@ use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 class CreatePayment
 {
-    private SdkInterface $sdk;
+    private ClientInterface $client;
 
     /**
-     * @param SdkInterface $sdk
+     * @param ClientInterface $client
      */
-    public function __construct(SdkInterface $sdk)
+    public function __construct(ClientInterface $client)
     {
-        $this->sdk = $sdk;
+        $this->client = $client;
     }
 
     /**
@@ -33,12 +33,12 @@ class CreatePayment
      */
     public function sortCodeBeneficiary(): ExternalAccountBeneficiaryInterface
     {
-        $accountIdentifier = $this->sdk->accountIdentifier()
+        $accountIdentifier = $this->client->accountIdentifier()
             ->sortCodeAccountNumber()
             ->accountNumber('12345678')
             ->sortCode('010203');
 
-        return $this->sdk->beneficiary()
+        return $this->client->beneficiary()
             ->externalAccount()
             ->accountIdentifier($accountIdentifier)
             ->reference('The ref')
@@ -50,7 +50,7 @@ class CreatePayment
      */
     public function newUser(): UserInterface
     {
-        return $this->sdk
+        return $this->client
             ->user()
             ->name('Alice')
             ->phone('+447837485713')
@@ -62,7 +62,7 @@ class CreatePayment
      */
     public function existingUser(): UserInterface
     {
-        return $this->sdk->user()->id('64f800c1-ff48-411f-af78-464725376059');
+        return $this->client->user()->id('64f800c1-ff48-411f-af78-464725376059');
     }
 
     /**
@@ -72,19 +72,19 @@ class CreatePayment
      */
     public function bankTransferMethod(BeneficiaryInterface $beneficiary): BankTransferPaymentMethodInterface
     {
-        $filter = $this->sdk
+        $filter = $this->client
             ->providerFilter()
             ->countries([Countries::GB])
             ->customerSegments([CustomerSegments::RETAIL])
             ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
             ->providerIds(['mock-payments-gb-redirect']);
 
-        $selection = $this->sdk
+        $selection = $this->client
             ->providerSelection()
             ->userSelected()
             ->filter($filter);
 
-        return $this->sdk->paymentMethod()
+        return $this->client->paymentMethod()
             ->bankTransfer()
             ->beneficiary($beneficiary)
             ->providerSelection($selection);
@@ -98,7 +98,7 @@ class CreatePayment
      */
     public function payment(UserInterface $user, PaymentMethodInterface $paymentMethod): PaymentRequestInterface
     {
-        return $this->sdk->payment()
+        return $this->client->payment()
             ->user($user)
             ->amountInMinor(1)
             ->currency(Currencies::GBP)
@@ -112,6 +112,6 @@ class CreatePayment
      */
     public static function responses(array $responses): self
     {
-        return new static(\sdk($responses));
+        return new static(\client($responses));
     }
 }

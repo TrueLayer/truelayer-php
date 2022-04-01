@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use TrueLayer\Sdk;
+use TrueLayer\Client;
 use TrueLayer\Tests\Integration\Mocks\AuthResponse;
 
 \it('accepts a custom PSR client', function () {
@@ -16,7 +16,7 @@ use TrueLayer\Tests\Integration\Mocks\AuthResponse;
 
     $client = new Psr18Client(new MockHttpClient($responses));
 
-    $sdk = Sdk::configure()
+    $client = Client::configure()
         ->clientId('client_id')
         ->clientSecret('client_secret')
         ->keyId('123')
@@ -24,7 +24,7 @@ use TrueLayer\Tests\Integration\Mocks\AuthResponse;
         ->httpClient($client)
         ->create();
 
-    $result = $sdk->getApiClient()->request()->uri('/bar')->post();
+    $result = $client->getApiClient()->request()->uri('/bar')->post();
 
     \expect($result['test'])->toBe('value');
     \expect($result['username'])->toBe('alex');

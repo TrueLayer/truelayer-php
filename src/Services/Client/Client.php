@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Services\Sdk;
+namespace TrueLayer\Services\Client;
 
 use TrueLayer\Exceptions;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -13,6 +13,7 @@ use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
 use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\HppInterface;
@@ -23,13 +24,14 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
+use TrueLayer\Interfaces\Payout;
+use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
 use TrueLayer\Interfaces\UserInterface;
 
-final class Sdk implements SdkInterface
+final class Client implements ClientInterface
 {
     /**
      * @var ApiClientInterface
@@ -70,8 +72,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return UserInterface
      */
@@ -81,8 +83,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return AccountIdentifierBuilderInterface
      */
@@ -92,8 +94,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return BeneficiaryBuilderInterface
      */
@@ -103,8 +105,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderFilterInterface
      */
@@ -114,8 +116,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderSelectionBuilderInterface
      */
@@ -125,8 +127,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentMethodBuilderInterface
      */
@@ -136,8 +138,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentRequestInterface
      */
@@ -149,11 +151,11 @@ final class Sdk implements SdkInterface
     /**
      * @param string $id
      *
-     * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\ApiRequestJsonSerializationException
      *
      * @return PaymentRetrievedInterface
      */
@@ -168,11 +170,11 @@ final class Sdk implements SdkInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
@@ -188,11 +190,11 @@ final class Sdk implements SdkInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowResponseInterface
      */
@@ -214,8 +216,8 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return HppInterface
      */
@@ -225,11 +227,11 @@ final class Sdk implements SdkInterface
     }
 
     /**
-     * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface[]
      */
@@ -241,13 +243,42 @@ final class Sdk implements SdkInterface
     }
 
     /**
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return Payout\PayoutRequestInterface
+     */
+    public function payout(): Payout\PayoutRequestInterface
+    {
+        return $this->entityFactory->make(Payout\PayoutRequestInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return Payout\BeneficiaryBuilderInterface
+     */
+    public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface
+    {
+        return $this->entityFactory->make(Payout\BeneficiaryBuilderInterface::class);
+    }
+
+    public function getPayout(string $id): PayoutRetrievedInterface
+    {
+        $data = $this->apiFactory->payoutsApi()->retrieve($id);
+
+        return $this->entityFactory->make(PayoutRetrievedInterface::class, $data);
+    }
+
+    /**
      * @param string $id
      *
-     * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface
      */

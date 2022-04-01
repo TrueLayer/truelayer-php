@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Sdk;
+namespace TrueLayer\Interfaces\Client;
 
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -20,12 +20,13 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
+use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 
-interface SdkInterface
+interface ClientInterface
 {
     /**
      * @return ApiClientInterface
@@ -70,10 +71,10 @@ interface SdkInterface
     /**
      * @param string $id
      *
-     *@throws ApiResponseUnsuccessfulException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentRetrievedInterface
      */
@@ -83,11 +84,11 @@ interface SdkInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
@@ -97,22 +98,39 @@ interface SdkInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
-     * @throws ApiRequestJsonSerializationException
+     * @return Payout\PayoutRequestInterface
+     */
+    public function payout(): Payout\PayoutRequestInterface;
+
+    /**
+     * @return Payout\BeneficiaryBuilderInterface
+     */
+    public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface;
+
+    /**
+     * @param string $id
+     *
+     * @return Payout\PayoutRetrievedInterface
+     */
+    public function getPayout(string $id): Payout\PayoutRetrievedInterface;
+
+    /**
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface[]
      */
@@ -121,11 +139,11 @@ interface SdkInterface
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface
      */

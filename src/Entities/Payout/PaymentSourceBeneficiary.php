@@ -1,0 +1,116 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TrueLayer\Entities\Payout;
+
+use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
+
+final class PaymentSourceBeneficiary extends Entity implements PaymentSourceBeneficiaryInterface
+{
+    /**
+     * @var string
+     */
+    protected string $paymentSourceId;
+
+    /**
+     * @var string
+     */
+    protected string $userId;
+
+    /**
+     * @var string
+     */
+    protected string $reference;
+
+    /**
+     * @var string[]
+     */
+    protected array $arrayFields = [
+        'payment_source_id',
+        'user_id',
+        'reference',
+        'type',
+    ];
+
+    /**
+     * @return mixed[]
+     */
+    protected function rules(): array
+    {
+        return [
+            'payment_source_id' => 'required|string',
+            'user_id' => 'nullable|string',
+            'reference' => 'nullable|string',
+        ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPaymentSourceId(): ?string
+    {
+        return $this->paymentSourceId ?? null;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return PaymentSourceBeneficiaryInterface
+     */
+    public function paymentSourceId(string $id): PaymentSourceBeneficiaryInterface
+    {
+        $this->paymentSourceId = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return 'payment_source';
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUserId(): ?string
+    {
+        return $this->userId ?? null;
+    }
+
+    /**
+     * @param string $userId
+     *
+     * @return PaymentSourceBeneficiaryInterface
+     */
+    public function userId(string $userId): PaymentSourceBeneficiaryInterface
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReference(): ?string
+    {
+        return $this->reference ?? null;
+    }
+
+    /**
+     * @param string $reference
+     *
+     * @return PaymentSourceBeneficiaryInterface
+     */
+    public function reference(string $reference): PaymentSourceBeneficiaryInterface
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+}
