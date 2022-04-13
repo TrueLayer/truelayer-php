@@ -28,7 +28,7 @@ final class ApiClient implements ApiClientInterface
 
     /**
      * @param HttpClientInterface $httpClient
-     * @param string $baseUri
+     * @param string              $baseUri
      */
     public function __construct(HttpClientInterface $httpClient, string $baseUri)
     {
@@ -47,11 +47,11 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @return mixed
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws ClientExceptionInterface
+     *
+     * @return mixed
      */
     public function send(ApiRequestInterface $apiRequest)
     {

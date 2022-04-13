@@ -24,11 +24,11 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     try {
         \request(ErrorResponse::legacyErrorFormat())->post();
     } catch (Exceptions\ApiResponseUnsuccessfulException $e) {
-        expect($e->getMessage())->toBe('invalid_client');
-        expect($e->getTitle())->toBe('invalid_client');
-        expect($e->getTraceId())->toBe('123');
-        expect($e->getStatusCode())->toBe(400);
-        expect($e->getType())->toBe('https://docs.truelayer.com/docs/error-types');
+        \expect($e->getMessage())->toBe('invalid_client');
+        \expect($e->getTitle())->toBe('invalid_client');
+        \expect($e->getTraceId())->toBe('123');
+        \expect($e->getStatusCode())->toBe(400);
+        \expect($e->getType())->toBe('https://docs.truelayer.com/docs/error-types');
 
         throw $e;
     }
@@ -38,11 +38,11 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     try {
         \request(ErrorResponse::noBodyErrorFormat())->post();
     } catch (Exceptions\ApiResponseUnsuccessfulException $e) {
-        expect($e->getMessage())->toBe('server_error');
-        expect($e->getTitle())->toBe('server_error');
-        expect($e->getTraceId())->toBe('123');
-        expect($e->getStatusCode())->toBe(400);
-        expect($e->getType())->toBe('https://docs.truelayer.com/docs/error-types');
+        \expect($e->getMessage())->toBe('server_error');
+        \expect($e->getTitle())->toBe('server_error');
+        \expect($e->getTraceId())->toBe('123');
+        \expect($e->getStatusCode())->toBe(400);
+        \expect($e->getType())->toBe('https://docs.truelayer.com/docs/error-types');
 
         throw $e;
     }

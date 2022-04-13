@@ -39,8 +39,8 @@ class ApiResponseUnsuccessfulException extends Exception
     private array $errors;
 
     /**
-     * @param int $statusCode
-     * @param mixed $data
+     * @param int        $statusCode
+     * @param mixed      $data
      * @param string[][] $headers
      */
     public function __construct(int $statusCode, $data, array $headers = [])
@@ -104,11 +104,12 @@ class ApiResponseUnsuccessfulException extends Exception
 
     /**
      * @param mixed $data
+     *
      * @return bool
      */
     private function setFieldsFromProblemDetailsFormat($data): bool
     {
-        if (!is_array($data) || empty($data['type']) || empty($data['title']) || empty($data['status']) || empty($data['trace_id'])) {
+        if (!\is_array($data) || empty($data['type']) || empty($data['title']) || empty($data['status']) || empty($data['trace_id'])) {
             return false;
         }
 
@@ -136,19 +137,19 @@ class ApiResponseUnsuccessfulException extends Exception
     }
 
     /**
-     * @param mixed $data
+     * @param mixed      $data
      * @param string[][] $headers
      */
     private function setFieldsFromLegacyFormat($data, array $headers = []): void
     {
         if (!empty($headers[CustomHeaders::CORRELATION_ID][0])) {
             $traceId = $headers[CustomHeaders::CORRELATION_ID][0];
-            if (is_string($traceId)) {
+            if (\is_string($traceId)) {
                 $this->traceId = $traceId;
             }
         }
 
-        if (is_array($data) && is_string($data['error'])) {
+        if (\is_array($data) && \is_string($data['error'])) {
             $this->title = $data['error'];
         }
     }
