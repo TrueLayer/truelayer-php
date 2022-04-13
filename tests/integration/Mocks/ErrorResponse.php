@@ -127,6 +127,22 @@ class ErrorResponse
     }
 
     /**
+     * @return Response
+     */
+    public static function legacyErrorFormat(): Response
+    {
+        return new Response(400, ['X-Tl-Correlation-Id' => ['123']], '{"error":"invalid_client"}');
+    }
+
+    /**
+     * @return Response
+     */
+    public static function noBodyErrorFormat(): Response
+    {
+        return new Response(400, ['X-Tl-Correlation-Id' => ['123']]);
+    }
+
+    /**
      * @param array $payload
      *
      * @return ResponseInterface

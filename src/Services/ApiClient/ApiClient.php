@@ -28,7 +28,7 @@ final class ApiClient implements ApiClientInterface
 
     /**
      * @param HttpClientInterface $httpClient
-     * @param string              $baseUri
+     * @param string $baseUri
      */
     public function __construct(HttpClientInterface $httpClient, string $baseUri)
     {
@@ -47,11 +47,11 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ClientExceptionInterface
+     * @return mixed
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return mixed
+     * @throws ClientExceptionInterface
      */
     public function send(ApiRequestInterface $apiRequest)
     {
@@ -69,7 +69,7 @@ final class ApiClient implements ApiClientInterface
         $data = $this->getResponseData($response);
 
         if ($response->getStatusCode() >= ResponseStatusCodes::BAD_REQUEST) {
-            throw new ApiResponseUnsuccessfulException($response->getStatusCode(), $data);
+            throw new ApiResponseUnsuccessfulException($response->getStatusCode(), $data, $response->getHeaders());
         }
 
         return $data;

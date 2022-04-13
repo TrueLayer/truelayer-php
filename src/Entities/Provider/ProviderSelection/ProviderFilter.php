@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Provider\ProviderSelection;
 
-use TrueLayer\Constants\Countries;
-use TrueLayer\Constants\CustomerSegments;
-use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
-use TrueLayer\Validation\AllowedConstant;
 
 class ProviderFilter extends Entity implements ProviderFilterInterface
 {
@@ -55,11 +51,11 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
     protected function rules(): array
     {
         return [
-            'countries.*' => ['string', AllowedConstant::in(Countries::class)],
-            'release_channel' => ['string', AllowedConstant::in(ReleaseChannels::class)],
-            'customer_segments.*' => ['string', AllowedConstant::in(CustomerSegments::class)],
-            'provider_ids.*' => ['string'],
-            'excludes.provider_ids.*' => ['string'],
+            'countries.*' => 'string',
+            'release_channel' => 'string',
+            'customer_segments.*' => 'string',
+            'provider_ids.*' => 'string',
+            'excludes.provider_ids.*' => 'string',
         ];
     }
 

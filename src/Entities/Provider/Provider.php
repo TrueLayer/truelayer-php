@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Provider;
 
-use TrueLayer\Constants\Countries;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Validation\AllowedConstant;
 
 final class Provider extends Entity implements ProviderInterface
 {
@@ -64,7 +62,7 @@ final class Provider extends Entity implements ProviderInterface
             'icon_uri' => 'url',
             'logo_uri' => 'url',
             'bg_color' => 'regex:/^#[a-fA-F0-9]{6}$/',
-            'country_code' => AllowedConstant::in(Countries::class),
+            'country_code' => 'string',
         ];
     }
 
