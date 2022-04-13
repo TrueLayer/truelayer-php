@@ -14,7 +14,7 @@ use TrueLayer\Tests\Integration\Mocks;
 
 \it('reuses access token across requests', function () {
     $okResponse = new Response(200);
-    $client = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+    $client = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
         ->create()
         ->getApiClient();
 
@@ -31,7 +31,7 @@ use TrueLayer\Tests\Integration\Mocks;
 \it('fetches new token on expiry', function () {
     $okResponse = new Response(200);
 
-    $client = \rawSdk([
+    $client = \rawClient([
         Mocks\AuthResponse::success(),
         $okResponse,
         Mocks\AuthResponse::success('_SECOND_'),
@@ -57,7 +57,7 @@ use TrueLayer\Tests\Integration\Mocks;
 });
 
 \it('fetches new token on unauthenticated error response', function () {
-    $client = \rawSdk([
+    $client = \rawClient([
         Mocks\AuthResponse::success(), // Retrieve the access token
         Mocks\ErrorResponse::unauthenticated(), // Reject the access token in the api call
         Mocks\AuthResponse::success('_SECOND_'), // Retrieve new access token
@@ -87,11 +87,11 @@ use TrueLayer\Tests\Integration\Mocks;
             'expires_in' => 3600,
             'retrieved_at' => (int) Carbon::now()->timestamp,
         ]));
-        $client1 = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+        $client1 = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
             ->cache($cacheMock, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
             ->create()
             ->getApiClient();
-        $client2 = \rawSdk([$okResponse, $okResponse])
+        $client2 = \rawClient([$okResponse, $okResponse])
             ->cache($cacheMock, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
             ->create()
             ->getApiClient();
@@ -119,7 +119,7 @@ use TrueLayer\Tests\Integration\Mocks;
         'retrieved_at' => (int) Carbon::now()->timestamp - 5000,
     ]));
 
-    $client = \rawSdk([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+    $client = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
         ->cache($cacheMock, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
         ->create()
         ->getApiClient();

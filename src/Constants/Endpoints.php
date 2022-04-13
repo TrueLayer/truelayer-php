@@ -22,6 +22,8 @@ class Endpoints
     public const PAYMENTS_SUBMIT_PROVIDER = '/payments/{id}/authorization-flow/actions/provider-selection';
 
     public const MERCHANT_ACCOUNTS = '/merchant-accounts';
-    public const PAYOUTS = '/payouts';
     public const TRANSACTIONS = '/merchant-accounts/{id}/transactions';
+
+    public const PAYOUTS_CREATE = '/payouts';
+    public const PAYOUTS_RETRIEVE = '/payouts/{id}';
 }

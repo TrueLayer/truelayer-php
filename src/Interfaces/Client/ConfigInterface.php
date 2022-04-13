@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Sdk;
+namespace TrueLayer\Interfaces\Client;
 
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
 
-interface SdkConfigInterface
+interface ConfigInterface
 {
     /**
      * @return string
@@ -103,16 +103,16 @@ interface SdkConfigInterface
     public function useProduction(bool $useProduction): self;
 
     /**
-     * @return ClientInterface
+     * @return HttpClientInterface
      */
-    public function getHttpClient(): ClientInterface;
+    public function getHttpClient(): HttpClientInterface;
 
     /**
-     * @param ClientInterface $httpClient
+     * @param HttpClientInterface $httpClient
      *
      * @return $this
      */
-    public function httpClient(ClientInterface $httpClient): self;
+    public function httpClient(HttpClientInterface $httpClient): self;
 
     /**
      * @return EncryptedCacheInterface|null
@@ -132,7 +132,7 @@ interface SdkConfigInterface
     /**
      * @throws SignerException
      *
-     * @return SdkInterface
+     * @return ClientInterface
      */
-    public function create(): SdkInterface;
+    public function create(): ClientInterface;
 }

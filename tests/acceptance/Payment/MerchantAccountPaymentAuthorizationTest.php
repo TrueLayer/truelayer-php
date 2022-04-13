@@ -19,7 +19,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     $helper = \paymentHelper();
 
     $account = Arr::first(
-        $helper->sdk()->getMerchantAccounts(),
+        $helper->client()->getMerchantAccounts(),
         fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
@@ -38,7 +38,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
+    $response = \client()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $response->getNextAction();
@@ -63,7 +63,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 })->depends('it starts payment authorization');
 
 \it('submits provider', function (PaymentCreatedInterface $created) {
-    $response = \sdk()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+    $response = \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
 
     /** @var RedirectActionInterface $next */
     $next = $response->getNextAction();

@@ -17,9 +17,9 @@ final class AccessTokenApi extends Api implements AccessTokenApiInterface
      * @param string   $clientSecret
      * @param string[] $scopes
      *
+     * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */

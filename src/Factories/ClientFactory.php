@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Auth\AccessTokenInterface;
-use TrueLayer\Interfaces\Sdk\SdkConfigInterface;
-use TrueLayer\Interfaces\Sdk\SdkFactoryInterface;
-use TrueLayer\Interfaces\Sdk\SdkInterface;
+use TrueLayer\Interfaces\Client\ClientFactoryInterface;
+use TrueLayer\Interfaces\Client\ClientInterface;
+use TrueLayer\Interfaces\Client\ConfigInterface;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
-use TrueLayer\Services\Sdk\Sdk;
-use TrueLayer\Services\Sdk\SdkConfig;
+use TrueLayer\Services\Client\Client;
+use TrueLayer\Services\Client\Config;
 
-final class SdkFactory implements SdkFactoryInterface
+final class ClientFactory implements ClientFactoryInterface
 {
     /**
      * @var ValidatorFactory
@@ -27,9 +27,9 @@ final class SdkFactory implements SdkFactoryInterface
     private ValidatorFactory $validatorFactory;
 
     /**
-     * @var ClientInterface
+     * @var HttpClientInterface
      */
-    private ClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     /**
      * @var AccessTokenInterface
@@ -42,13 +42,13 @@ final class SdkFactory implements SdkFactoryInterface
     private ApiClientInterface $apiClient;
 
     /**
-     * @param SdkConfigInterface $config
+     * @param ConfigInterface $config
      *
      * @throws SignerException
      *
-     * @return SdkInterface
+     * @return ClientInterface
      */
-    public function make(SdkConfigInterface $config): SdkInterface
+    public function make(ConfigInterface $config): ClientInterface
     {
         $this->makeValidatorFactory();
         $this->makeHttpClient($config);
@@ -58,15 +58,15 @@ final class SdkFactory implements SdkFactoryInterface
         $apiFactory = new ApiFactory($this->apiClient);
         $entityFactory = new EntityFactory($this->validatorFactory, $apiFactory, $config);
 
-        return new Sdk($this->apiClient, $apiFactory, $entityFactory);
+        return new Client($this->apiClient, $apiFactory, $entityFactory);
     }
 
     /**
      * Build the HTTP client.
      *
-     * @param SdkConfigInterface $config
+     * @param ConfigInterface $config
      */
-    private function makeHttpClient(SdkConfigInterface $config): void
+    private function makeHttpClient(ConfigInterface $config): void
     {
         $this->httpClient = $config->getHttpClient();
     }
@@ -90,9 +90,9 @@ final class SdkFactory implements SdkFactoryInterface
      * Build the auth token service
      * Handles the auth token retrieval & manages expiration.
      *
-     * @param SdkConfigInterface $config
+     * @param ConfigInterface $config
      */
-    private function makeAuthToken(SdkConfigInterface $config): void
+    private function makeAuthToken(ConfigInterface $config): void
     {
         $authBaseUri = $config->shouldUseProduction()
             ? Endpoints::AUTH_PROD_URL
@@ -115,11 +115,11 @@ final class SdkFactory implements SdkFactoryInterface
      * Build the API client
      * Handles API calls, including signing, validation & error handling.
      *
-     * @param SdkConfigInterface $config
+     * @param ConfigInterface $config
      *
      * @throws SignerException
      */
-    private function makeApiClient(SdkConfigInterface $config): void
+    private function makeApiClient(ConfigInterface $config): void
     {
         try {
             $signer = \TrueLayer\Signing\Signer::signWithPem(
@@ -143,10 +143,10 @@ final class SdkFactory implements SdkFactoryInterface
     }
 
     /**
-     * @return SdkConfigInterface
+     * @return ConfigInterface
      */
-    public static function makeConfigurator(): SdkConfigInterface
+    public static function makeConfigurator(): ConfigInterface
     {
-        return new SdkConfig(new SdkFactory());
+        return new Config(new ClientFactory());
     }
 }

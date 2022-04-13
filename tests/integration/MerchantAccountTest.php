@@ -8,7 +8,7 @@ use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
 
 \it('retrieves merchant accounts', function () {
-    $accounts = \sdk(MerchantAccountResponse::accountsList())->getMerchantAccounts();
+    $accounts = \client(MerchantAccountResponse::accountsList())->getMerchantAccounts();
 
     \expect($accounts[0]->getId())->toBeString();
     \expect($accounts[0]->getCurrency())->toBe(\TrueLayer\Constants\Currencies::EUR);
@@ -37,7 +37,7 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
 });
 
 \it('retrieves a merchant account', function () {
-    $account = \sdk(MerchantAccountResponse::account())->getMerchantAccount('1');
+    $account = \client(MerchantAccountResponse::account())->getMerchantAccount('1');
 
     \expect($account->getId())->toBeString();
     \expect($account->getCurrency())->toBe(\TrueLayer\Constants\Currencies::EUR);

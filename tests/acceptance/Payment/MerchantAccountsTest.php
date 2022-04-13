@@ -6,7 +6,7 @@ use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 
 \it('retrieves merchant accounts', function () {
-    $accounts = \sdk()->getMerchantAccounts();
+    $accounts = \client()->getMerchantAccounts();
 
     \expect($accounts)->toBeArray();
     \expect(\count($accounts))->toBeGreaterThan(0);
@@ -22,8 +22,8 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 });
 
 \it('retrieves merchant account', function () {
-    $accounts = \sdk()->getMerchantAccounts();
-    $account = \sdk()->getMerchantAccount($accounts[0]->getId());
+    $accounts = \client()->getMerchantAccounts();
+    $account = \client()->getMerchantAccount($accounts[0]->getId());
 
     \expect($account)->toBeInstanceOf(MerchantAccountInterface::class);
     \expect($account->getId())->toBeString();

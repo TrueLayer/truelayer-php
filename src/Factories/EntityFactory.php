@@ -13,6 +13,7 @@ use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
+use TrueLayer\Constants\PayoutStatus;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Entities\User;
@@ -33,19 +34,19 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private Interfaces\Factories\ApiFactoryInterface $apiFactory;
 
     /**
-     * @var Interfaces\Sdk\SdkConfigInterface
+     * @var Interfaces\Client\ConfigInterface
      */
-    private Interfaces\Sdk\SdkConfigInterface $sdkConfig;
+    private Interfaces\Client\ConfigInterface $sdkConfig;
 
     /**
      * @param ValidatorFactory                         $validatorFactory
      * @param Interfaces\Factories\ApiFactoryInterface $apiFactory
-     * @param Interfaces\Sdk\SdkConfigInterface        $sdkConfig
+     * @param Interfaces\Client\ConfigInterface        $sdkConfig
      */
     public function __construct(
         ValidatorFactory $validatorFactory,
         Interfaces\Factories\ApiFactoryInterface $apiFactory,
-        Interfaces\Sdk\SdkConfigInterface $sdkConfig)
+        Interfaces\Client\ConfigInterface $sdkConfig)
     {
         $this->validatorFactory = $validatorFactory;
         $this->apiFactory = $apiFactory;
@@ -60,6 +61,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
         Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
 
+        Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
         Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
         Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
         Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,
@@ -82,11 +84,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
         Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
         Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
-
         Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
         Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
-
-        Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
 
         Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
         Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
@@ -97,6 +96,15 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\AccountIdentifier\BbanDetailsInterface::class => Entities\AccountIdentifier\Bban::class,
         Interfaces\AccountIdentifier\NrbInterface::class => Entities\AccountIdentifier\Nrb::class,
         Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
+
+        Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
+        Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
+        Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
+        Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
+        Interfaces\Payout\PayoutPendingInterface::class => Entities\Payout\PayoutRetrieved\PayoutPending::class,
+        Interfaces\Payout\PayoutAuthorizedInterface::class => Entities\Payout\PayoutRetrieved\PayoutAuthorized::class,
+        Interfaces\Payout\PayoutExecutedInterface::class => Entities\Payout\PayoutRetrieved\PayoutExecuted::class,
+        Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
 
         Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
     ];
@@ -141,6 +149,18 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Provider\ProviderSelectionInterface::class => [
             'array_key' => 'type',
             PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
+        ],
+        Interfaces\Payout\PayoutBeneficiaryInterface::class => [
+            'array_key' => 'type',
+            BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
+            BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        ],
+        Interfaces\Payout\PayoutRetrievedInterface::class => [
+            'array_key' => 'status',
+            PayoutStatus::PENDING => Interfaces\Payout\PayoutPendingInterface::class,
+            PayoutStatus::AUTHORIZED => Interfaces\Payout\PayoutAuthorizedInterface::class,
+            PayoutStatus::EXECUTED => Interfaces\Payout\PayoutExecutedInterface::class,
+            PayoutStatus::FAILED => Interfaces\Payout\PayoutFailedInterface::class,
         ],
     ];
 

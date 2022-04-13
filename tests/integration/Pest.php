@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
-use TrueLayer\Sdk;
 use TrueLayer\Services\Util\Retry;
 use TrueLayer\Tests\Integration\Mocks\AuthResponse;
 
@@ -28,15 +27,15 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- *@throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  *
- * @return \TrueLayer\Interfaces\Sdk\SdkConfigInterface
+ * @return \TrueLayer\Interfaces\Client\ConfigInterface
  */
-function rawSdk(array $mockResponses = [])
+function rawClient(array $mockResponses = [])
 {
     global $httpTransactions;
 
@@ -46,9 +45,9 @@ function rawSdk(array $mockResponses = [])
 
     $handlerStack->push(\GuzzleHttp\Middleware::history($httpTransactions));
 
-    $mockClient = new Client(['handler' => $handlerStack]);
+    $mockClient = new HttpClient(['handler' => $handlerStack]);
 
-    return Sdk::configure()
+    return \TrueLayer\Client::configure()
         ->clientId('client_id')
         ->clientSecret('client_secret')
         ->keyId('123')
@@ -61,9 +60,9 @@ function rawSdk(array $mockResponses = [])
  *
  * @param $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Sdk\SdkInterface
+ * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
-function sdk($mockResponses = [])
+function client($mockResponses = [])
 {
     // For the first http call, we return the Auth token
     // For subsequent calls we return the given response(s)
@@ -72,7 +71,7 @@ function sdk($mockResponses = [])
         \is_array($mockResponses) ? $mockResponses : [$mockResponses]
     );
 
-    return \rawSdk($responses)->create();
+    return \rawClient($responses)->create();
 }
 
 /**
@@ -88,7 +87,7 @@ function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequest
         $mockResponses = new \GuzzleHttp\Psr7\Response(200, [], 'OK');
     }
 
-    return \sdk($mockResponses)->getApiClient()->request()
+    return \client($mockResponses)->getApiClient()->request()
         ->uri('/test');
 }
 

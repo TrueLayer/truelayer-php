@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
-use TrueLayer\Constants\Currencies;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -15,7 +14,6 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
 final class PaymentRequest extends Entity implements PaymentRequestInterface
@@ -65,7 +63,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     {
         return [
             'amount_in_minor' => 'required|int|min:1',
-            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'currency' => ['required', 'string'],
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
         ];
@@ -120,11 +118,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     }
 
     /**
-     *@throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentCreatedInterface
      */

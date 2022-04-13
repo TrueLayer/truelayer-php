@@ -24,7 +24,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
-function assertCommon(PaymentRetrievedInterface $payment)
+function assertPaymentCommon(PaymentRetrievedInterface $payment)
 {
     \expect($payment->getId())->toBeString();
     \expect($payment->getStatus())->toBeString();
@@ -35,7 +35,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
 }
 
 \it('handles payment authorization required', function () {
-    $payment = \sdk(PaymentResponse::authorizationRequired())->getPayment('1');
+    $payment = \client(PaymentResponse::authorizationRequired())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentAuthorizationRequiredInterface::class);
     \expect($payment->isAuthorizationRequired())->toBe(true);
@@ -45,12 +45,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment authorizing - provider selection', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = \sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
+    $payment = \client(PaymentResponse::authorizingProviderSelection())->getPayment('1');
 
     /** @var ProviderSelectionActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
@@ -75,22 +75,22 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next->getProviders()[0]->getBgColor())->toBe('#FFFFFF');
     \expect($next->getProviders()[0]->getCountryCode())->toBe('GB');
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment authorization flow config', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = \sdk(PaymentResponse::authorizingProviderSelection())->getPayment('1');
+    $payment = \client(PaymentResponse::authorizingProviderSelection())->getPayment('1');
 
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
     \expect($payment->getAuthorizationFlowConfig()->getRedirectReturnUri())->toBe('https://penny.t7r.dev/redirect/v3');
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment authorizing - redirect', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = \sdk(PaymentResponse::authorizingRedirect())->getPayment('1');
+    $payment = \client(PaymentResponse::authorizingRedirect())->getPayment('1');
 
     /** @var RedirectActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
@@ -102,12 +102,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next->getMetadataType())->toBe('provider');
     \expect($next->getProvider())->toBeNull();
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment authorizing - wait', function () {
     /** @var PaymentAuthorizingInterface $payment */
-    $payment = \sdk(PaymentResponse::authorizingWait())->getPayment('1');
+    $payment = \client(PaymentResponse::authorizingWait())->getPayment('1');
 
     /** @var WaitActionInterface $next */
     $next = $payment->getAuthorizationFlowNextAction();
@@ -116,12 +116,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($next)->toBeInstanceOf(WaitActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::WAIT);
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment authorized', function () {
     /** @var PaymentAuthorizedInterface $payment */
-    $payment = \sdk(PaymentResponse::authorized())->getPayment('1');
+    $payment = \client(PaymentResponse::authorized())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentAuthorizedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
@@ -132,12 +132,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment executed', function () {
     /** @var PaymentExecutedInterface $payment */
-    $payment = \sdk(PaymentResponse::executed())->getPayment('1');
+    $payment = \client(PaymentResponse::executed())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
@@ -149,12 +149,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-04T14:12:07.705938Z');
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
-    $payment = \sdk(PaymentResponse::settled())->getPayment('1');
+    $payment = \client(PaymentResponse::settled())->getPayment('1');
     $paymentSource = $payment->getPaymentSource();
 
     \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
@@ -193,12 +193,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($nrb)->toBeInstanceOf(NrbDetailsInterface::class);
     \expect($nrb->getNrb())->toBe('61109010140000071219812874');
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment settled with no payment source fields', function () {
     /** @var PaymentSettledInterface $payment */
-    $payment = \sdk(PaymentResponse::settledNoPaymentSourceFields())->getPayment('1');
+    $payment = \client(PaymentResponse::settledNoPaymentSourceFields())->getPayment('1');
     $paymentSource = $payment->getPaymentSource();
 
     \expect($paymentSource->getAccountHolderName())->toBeNull();
@@ -207,7 +207,7 @@ function assertCommon(PaymentRetrievedInterface $payment)
 
 \it('handles payment failed', function () {
     /** @var PaymentFailedInterface $payment */
-    $payment = \sdk(PaymentResponse::failed())->getPayment('1');
+    $payment = \client(PaymentResponse::failed())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
@@ -221,12 +221,12 @@ function assertCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
 
-    \assertCommon($payment);
+    \assertPaymentCommon($payment);
 });
 
 \it('handles payment with no auth flow config', function () {
     /** @var PaymentExecutedInterface $payment */
-    $payment = \sdk(PaymentResponse::executedNoAuthFlow())->getPayment('1');
+    $payment = \client(PaymentResponse::executedNoAuthFlow())->getPayment('1');
 
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeNull();
