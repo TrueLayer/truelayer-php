@@ -55,6 +55,6 @@
         "integration-tests": "vendor/bin/pest --test-directory tests/integration",
         "acceptance-tests": "vendor/bin/pest --test-directory tests/acceptance",
         "cs-fix": "vendor/bin/php-cs-fixer fix",
-        "format": "vendor/bin/php-cs-fixer fix"
+        "checks": "@composer analyse && composer cs-fix && composer integration-tests && composer acceptance-tests"
     }
 }
