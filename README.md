@@ -68,7 +68,7 @@ composer require guzzlehttp/guzzle:^7.0
 $httpClient = new \GuzzleHttp\Client();
 ```
 
-You will also need to go to the TrueLayer console and create your credentials which you can then provide to the SDK
+You will also need to go to the TrueLayer console and create your credentials which you can then provide to the Client
 configurator:
 
 ```php
@@ -81,7 +81,7 @@ $client = \TrueLayer\Client::configure()
     ->create();
 ```
 
-By default, the SDK will initialise in `sandbox` mode. To switch to production call `useProduction()`:
+By default, the client library will initialise in `sandbox` mode. To switch to production call `useProduction()`:
 
 ```php
 $client = \TrueLayer\Client::configure()
@@ -94,7 +94,7 @@ $client = \TrueLayer\Client::configure()
 
 ## Caching
 
-The SDK supports caching the `client_credentials` grant access token needed to access, create and modify resources on
+The client library supports caching the `client_credentials` grant access token needed to access, create and modify resources on
 TrueLayer's systems. In order to enable it, you need to provide an implementation of
 the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
 
@@ -720,7 +720,7 @@ if ($accountIdentifier instanceof BbanDetailsInterface) {
 
 # Custom API calls
 
-You can use the SDK to make your own API calls without worrying about authentication or request signing:
+You can use the client library to make your own API calls without worrying about authentication or request signing:
 
 ```php
 $responseData = $client->getApiClient()->request()->uri('/merchant-accounts')->get();
@@ -736,7 +736,7 @@ $responseData = $client->getApiClient()->request()
 
 # Error Handling
 
-The SDK throws the following exceptions:
+The client library throws the following exceptions:
 
 ## PSR Exceptions
 
@@ -777,7 +777,7 @@ Thrown if the request data cannot be json encoded prior to calling the APIs.
 
 ### ValidationException
 
-Thrown if the data you provide to the SDK or the API response data is invalid.
+Thrown if the data you provide to the client library or the API response data is invalid.
 
 ```php
 \TrueLayer\Exceptions\ValidationException
@@ -803,7 +803,7 @@ Thrown if the request signer cannot be initialised or signing fails.
 
 ### EncryptException
 
-Thrown when the SDK fails to encrypt a payload that needs to be cached.
+Thrown when the client library fails to encrypt a payload that needs to be cached.
 
 ```php
 \TrueLayer\Exceptions\EncryptException
@@ -811,7 +811,7 @@ Thrown when the SDK fails to encrypt a payload that needs to be cached.
 
 ### DecryptException
 
-Thrown if the SDK fails to decrypt the value of a cached key.
+Thrown if the client library fails to decrypt the value of a cached key.
 
 ```php
 \TrueLayer\Exceptions\DecryptException
