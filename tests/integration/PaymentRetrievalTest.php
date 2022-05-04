@@ -68,7 +68,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect(\count($next->getProviders()) > 0)->toBe(true);
 
     \expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
-    \expect($next->getProviders()[0]->getProviderId())->toBe('mock-payments-gb-redirect');
+    \expect($next->getProviders()[0]->getId())->toBe('mock-payments-gb-redirect');
     \expect($next->getProviders()[0]->getDisplayName())->toBe('Mock UK Payments - Redirect Flow');
     \expect($next->getProviders()[0]->getIconUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/icons/mock-payments-gb-redirect.svg');
     \expect($next->getProviders()[0]->getLogoUri())->toBe('https://truelayer-provider-assets.s3.amazonaws.com/uk/logos/mock-payments-gb-redirect.svg');
