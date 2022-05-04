@@ -47,9 +47,9 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
+     * @throws ApiResponseUnsuccessfulException
      * @throws ClientExceptionInterface
      * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed
      */
@@ -69,7 +69,7 @@ final class ApiClient implements ApiClientInterface
         $data = $this->getResponseData($response);
 
         if ($response->getStatusCode() >= ResponseStatusCodes::BAD_REQUEST) {
-            throw new ApiResponseUnsuccessfulException($response->getStatusCode(), $data);
+            throw new ApiResponseUnsuccessfulException($response->getStatusCode(), $data, $response->getHeaders());
         }
 
         return $data;

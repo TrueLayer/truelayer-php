@@ -64,7 +64,7 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     {
         return [
             'id' => 'required|string',
-            'currency' => ['required', 'string'],
+            'currency' => 'required|string',
             'account_identifiers' => 'required|array',
             'account_identifiers.*' => [ValidType::of(AccountIdentifierInterface::class)],
             'available_balance_in_minor' => 'required|int',

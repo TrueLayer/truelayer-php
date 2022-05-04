@@ -10,4 +10,5 @@ class CustomHeaders
     public const TRACE_ID = 'Tl-Trace-Id';
     public const SIGNATURE = 'Tl-Signature';
     public const IDEMPOTENCY_KEY = 'Idempotency-Key';
+    public const CORRELATION_ID = 'X-Tl-Correlation-Id';
 }

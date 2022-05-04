@@ -416,7 +416,7 @@ $nextAction = $payment->getAuthorizationFlowNextAction();
 
 if ($nextAction instanceof ProviderSelectionActionInterface) {
     foreach ($nextAction->getProviders() as $provider) {
-        $provider->getProviderId();
+        $provider->getId();
         $provider->getDisplayName();
         $provider->getCountryCode();
         $provider->getLogoUri();

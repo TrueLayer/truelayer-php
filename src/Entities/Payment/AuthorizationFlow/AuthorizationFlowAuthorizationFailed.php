@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
-use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface;
-use TrueLayer\Validation\AllowedConstant;
 
 final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowResponse implements AuthorizationFlowAuthorizationFailedInterface
 {
@@ -34,7 +32,7 @@ final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowRespon
     protected function rules(): array
     {
         return \array_merge(parent::rules(), [
-            'failure_stage' => ['required', AllowedConstant::in(PaymentStatus::class)],
+            'failure_stage' => 'required|string',
             'failure_reason' => 'nullable|string',
         ]);
     }

@@ -11,7 +11,7 @@ interface ProviderInterface extends ArrayableInterface
     /**
      * @return string|null
      */
-    public function getProviderId(): ?string;
+    public function getId(): ?string;
 
     /**
      * @return string|null

@@ -54,6 +54,7 @@
         "analyse": "vendor/bin/phpstan analyse --memory-limit=-1",
         "integration-tests": "vendor/bin/pest --test-directory tests/integration",
         "acceptance-tests": "vendor/bin/pest --test-directory tests/acceptance",
-        "cs-fix": "vendor/bin/php-cs-fixer fix"
+        "cs-fix": "vendor/bin/php-cs-fixer fix",
+        "checks": "@composer analyse && composer cs-fix && composer integration-tests && composer acceptance-tests"
     }
 }

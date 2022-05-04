@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment;
 
 use DateTimeInterface;
-use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Validation\AllowedConstant;
 use TrueLayer\Validation\ValidType;
 
 class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
@@ -83,7 +81,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'status' => 'required|string',
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
-            'currency' => ['required', 'string', AllowedConstant::in(Currencies::class)],
+            'currency' => 'required|string',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
         ];
