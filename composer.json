@@ -1,6 +1,6 @@
 {
-    "name": "truelayer/sdk",
-    "description": "TrueLayer's payments platform SDK",
+    "name": "truelayer/client",
+    "description": "TrueLayer's payments platform client",
     "type": "library",
     "license": "MIT",
     "authors": [
