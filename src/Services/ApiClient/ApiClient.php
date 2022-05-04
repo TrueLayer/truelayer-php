@@ -47,9 +47,9 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ClientExceptionInterface
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed
      */

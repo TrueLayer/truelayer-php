@@ -12,7 +12,7 @@ final class Provider extends Entity implements ProviderInterface
     /**
      * @var string
      */
-    protected string $providerId;
+    protected string $id;
 
     /**
      * @var string
@@ -43,7 +43,7 @@ final class Provider extends Entity implements ProviderInterface
      * @var array|string[]
      */
     protected array $arrayFields = [
-        'provider_id',
+        'id',
         'display_name',
         'icon_uri',
         'logo_uri',
@@ -57,7 +57,7 @@ final class Provider extends Entity implements ProviderInterface
     protected function rules(): array
     {
         return [
-            'provider_id' => 'string',
+            'id' => 'string',
             'display_name' => 'string',
             'icon_uri' => 'url',
             'logo_uri' => 'url',
@@ -69,9 +69,9 @@ final class Provider extends Entity implements ProviderInterface
     /**
      * @return string|null
      */
-    public function getProviderId(): ?string
+    public function getId(): ?string
     {
-        return $this->providerId ?? null;
+        return $this->id ?? null;
     }
 
     /**
