@@ -9,7 +9,7 @@ use TrueLayer\Exceptions\ValidationException;
         \client()->payment()->create();
     } catch (ValidationException $e) {
         $errors = $e->getErrors();
-        expect($errors['amount_in_minor'][0])->toBe('The amount in minor field is required.');
+        \expect($errors['amount_in_minor'][0])->toBe('The amount in minor field is required.');
 
         throw $e;
     }
