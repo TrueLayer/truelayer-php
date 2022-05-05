@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Auth\AccessTokenInterface;
@@ -159,6 +160,7 @@ final class AccessToken implements AccessTokenInterface
     /**
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      * @throws ValidationException
      */
     private function retrieve(): void
