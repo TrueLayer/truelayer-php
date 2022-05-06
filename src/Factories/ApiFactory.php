@@ -53,12 +53,4 @@ final class ApiFactory implements ApiFactoryInterface
     {
         return new PayoutsApi($this->apiClient);
     }
-
-    /**
-     * @return WebhooksApiInterface
-     */
-    public function webhooksApi(): WebhooksApiInterface
-    {
-        return new WebhooksApi($this->apiClient);
-    }
 }
