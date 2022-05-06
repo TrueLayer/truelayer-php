@@ -33,7 +33,7 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  *
- * @return \TrueLayer\Interfaces\Client\ConfigInterface
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {

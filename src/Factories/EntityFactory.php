@@ -34,19 +34,19 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private Interfaces\Factories\ApiFactoryInterface $apiFactory;
 
     /**
-     * @var Interfaces\Client\ConfigInterface
+     * @var Interfaces\Configuration\ClientConfigInterface
      */
-    private Interfaces\Client\ConfigInterface $sdkConfig;
+    private Interfaces\Configuration\ClientConfigInterface $sdkConfig;
 
     /**
-     * @param ValidatorFactory                         $validatorFactory
-     * @param Interfaces\Factories\ApiFactoryInterface $apiFactory
-     * @param Interfaces\Client\ConfigInterface        $sdkConfig
+     * @param ValidatorFactory                               $validatorFactory
+     * @param Interfaces\Factories\ApiFactoryInterface       $apiFactory
+     * @param Interfaces\Configuration\ClientConfigInterface $sdkConfig
      */
     public function __construct(
         ValidatorFactory $validatorFactory,
         Interfaces\Factories\ApiFactoryInterface $apiFactory,
-        Interfaces\Client\ConfigInterface $sdkConfig)
+        Interfaces\Configuration\ClientConfigInterface $sdkConfig)
     {
         $this->validatorFactory = $validatorFactory;
         $this->apiFactory = $apiFactory;

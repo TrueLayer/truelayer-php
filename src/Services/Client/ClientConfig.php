@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Client;
 
-use Illuminate\Encryption\Encrypter;
-use Psr\Http\Client\ClientInterface as HttpClientInterface;
-use Psr\SimpleCache\CacheInterface;
-use TrueLayer\Constants\Encryption;
-use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Client\ClientFactoryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
-use TrueLayer\Interfaces\Client\ConfigInterface;
-use TrueLayer\Interfaces\EncryptedCacheInterface;
-use TrueLayer\Services\Util\EncryptedCache;
+use TrueLayer\Interfaces\Configuration\ClientConfigInterface;
+use TrueLayer\Services\Configuration\Config;
 
-class Config implements ConfigInterface
+class ClientConfig extends Config implements ClientConfigInterface
 {
     /**
      * @var ClientFactoryInterface
@@ -47,21 +41,6 @@ class Config implements ConfigInterface
      * @var string|null
      */
     private ?string $passphrase = null;
-
-    /**
-     * @var bool
-     */
-    private bool $useProduction = false;
-
-    /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $httpClient;
-
-    /**
-     * @var EncryptedCacheInterface|null
-     */
-    private ?EncryptedCacheInterface $cache = null;
 
     /**
      * @param ClientFactoryInterface $factory
@@ -174,9 +153,9 @@ class Config implements ConfigInterface
      *
      * @throws SignerException
      *
-     * @return ConfigInterface
+     * @return ClientConfigInterface
      */
-    public function pemBase64(string $pemBase64): ConfigInterface
+    public function pemBase64(string $pemBase64): ClientConfigInterface
     {
         $decoded = \base64_decode($pemBase64);
 
@@ -205,76 +184,6 @@ class Config implements ConfigInterface
     public function getPassphrase(): ?string
     {
         return $this->passphrase;
-    }
-
-    /**
-     * @return bool
-     */
-    public function shouldUseProduction(): bool
-    {
-        return $this->useProduction;
-    }
-
-    /**
-     * @param bool $useProduction
-     *
-     * @return $this
-     */
-    public function useProduction(bool $useProduction): self
-    {
-        $this->useProduction = $useProduction;
-
-        return $this;
-    }
-
-    /**
-     * @return HttpClientInterface
-     */
-    public function getHttpClient(): HttpClientInterface
-    {
-        return $this->httpClient;
-    }
-
-    /**
-     * @param HttpClientInterface $httpClient
-     *
-     * @return $this
-     */
-    public function httpClient(HttpClientInterface $httpClient): self
-    {
-        $this->httpClient = $httpClient;
-
-        return $this;
-    }
-
-    /**
-     * @return EncryptedCacheInterface|null
-     */
-    public function getCache(): ?EncryptedCacheInterface
-    {
-        return $this->cache;
-    }
-
-    /**
-     * @param CacheInterface $cache
-     * @param string         $encryptionKey
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return ConfigInterface
-     */
-    public function cache(CacheInterface $cache, string $encryptionKey): ConfigInterface
-    {
-        // TODO validate key length
-        $binEncryptionKey = \hex2bin($encryptionKey);
-        if (!$binEncryptionKey) {
-            throw new InvalidArgumentException('Invalid encryption key. Please use `openssl rand -hex 32` to generate a valid one.');
-        }
-
-        $encrypter = new Encrypter($binEncryptionKey, Encryption::ALGORITHM);
-        $this->cache = new EncryptedCache($cache, $encrypter);
-
-        return $this;
     }
 
     /**
