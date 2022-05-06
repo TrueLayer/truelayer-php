@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 trait ValidatesAttributes
 {
     /**
-     * @var MakeValidatorFactory
+     * @var ValidatorFactory
      */
     protected ValidatorFactory $validatorFactory;
 

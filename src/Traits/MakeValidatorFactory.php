@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Traits;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;

@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Interfaces\Webhooks;
 
-use TrueLayer\Signing\Contracts\Verifier;
+use TrueLayer\Signing\Contracts\Verifier as VerifierInterface;
 
 interface WebhookVerifierInterface
 {
-    public function verifier(): Verifier;
+    /**
+     * @return VerifierInterface
+     */
+    public function verifier(): VerifierInterface;
 }

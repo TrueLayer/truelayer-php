@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Interfaces\Configuration;
 
 use TrueLayer\Exceptions\SignerException;

@@ -106,7 +106,7 @@ class Jwks implements JwksInterface
      */
     private function retrieve(): void
     {
-        $data = (new WebhooksApi($this->api))->retrieve();
+        $data = (new WebhooksApi($this->api))->jwks();
         $this->validate($data);
 
         $this->keys = $data['keys'];

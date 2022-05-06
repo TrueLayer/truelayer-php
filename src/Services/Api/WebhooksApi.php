@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Services\Api;
 
 use TrueLayer\Constants\Endpoints;
