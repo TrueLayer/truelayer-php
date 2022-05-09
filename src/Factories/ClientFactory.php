@@ -78,8 +78,9 @@ final class ClientFactory implements ClientFactoryInterface
     private function makeValidatorFactory(): void
     {
         $filesystem = new \Illuminate\Filesystem\Filesystem();
-        $loader = new \Illuminate\Translation\FileLoader($filesystem, \dirname(__FILE__, 4) . '/lang');
-        $loader->addNamespace('lang', \dirname(__FILE__, 4) . '/lang');
+        $langPath = \dirname(__FILE__, 3) . '/lang';
+        $loader = new \Illuminate\Translation\FileLoader($filesystem, $langPath);
+        $loader->addNamespace('lang', $langPath);
         $loader->load('en', 'validation', 'lang');
         $translationFactory = new \Illuminate\Translation\Translator($loader, 'en');
 
