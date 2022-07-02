@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Composer\InstalledVersions;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 \it('adds user agent header', function () {
@@ -10,6 +11,9 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $authRequestUserAgent = \getSentHttpRequests()[0]->getHeaderLine('User-Agent');
     $apiRequestUserAgent = \getSentHttpRequests()[1]->getHeaderLine('User-Agent');
 
-    expect($authRequestUserAgent)->toBe('truelayer-php/unknown');
-    expect($apiRequestUserAgent)->toBe('truelayer-php/unknown');
+    $version = InstalledVersions::getPrettyVersion('truelayer/client');
+    $userAgent = "truelayer-php/{$version}";
+
+    \expect($authRequestUserAgent)->toBe($userAgent);
+    \expect($apiRequestUserAgent)->toBe($userAgent);
 });
