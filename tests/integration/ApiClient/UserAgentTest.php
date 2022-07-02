@@ -10,6 +10,6 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $authRequestUserAgent = \getSentHttpRequests()[0]->getHeaderLine('User-Agent');
     $apiRequestUserAgent = \getSentHttpRequests()[1]->getHeaderLine('User-Agent');
 
-    expect($authRequestUserAgent)->toBe('truelayer-php/unknown');
-    expect($apiRequestUserAgent)->toBe('truelayer-php/unknown');
+    \expect($authRequestUserAgent)->toBe('truelayer-php/unknown');
+    \expect($apiRequestUserAgent)->toBe('truelayer-php/unknown');
 });
