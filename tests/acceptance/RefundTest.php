@@ -76,7 +76,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
     $refundId = $payment->refund()
         ->amountInMinor(1)
-        ->reference('My reference')
+        ->reference('refund')
         ->create()
         ->getId();
 
