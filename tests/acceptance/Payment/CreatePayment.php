@@ -35,9 +35,9 @@ class CreatePayment
             ->reference('TEST')
             ->accountHolderName('John SCAN')
             ->accountIdentifier($this->client->accountIdentifier()
-                ->sortCodeAccountNumber()
-                ->accountNumber('12345678')
-                ->sortCode('010203')
+            ->sortCodeAccountNumber()
+            ->accountNumber('12345678')
+            ->sortCode('010203')
             );
     }
 
@@ -47,8 +47,8 @@ class CreatePayment
             ->reference('TEST')
             ->accountHolderName('John IBAN')
             ->accountIdentifier($this->client->accountIdentifier()
-                ->iban()
-                ->iban('GB53CLRB04066200002723')
+            ->iban()
+            ->iban('GB53CLRB04066200002723')
             );
     }
 
@@ -83,8 +83,8 @@ class CreatePayment
 
     /**
      * @param PaymentMethodInterface|null $paymentMethod
-     * @param UserInterface|null $user
-     * @param string $currency
+     * @param UserInterface|null          $user
+     * @param string                      $currency
      *
      * @return PaymentCreatedInterface
      */
