@@ -23,6 +23,8 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInte
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Payment\RefundRequestInterface;
+use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
@@ -30,6 +32,7 @@ use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
+use TrueLayer\Services\Util\PaymentId;
 
 final class Client implements ClientInterface
 {
@@ -72,8 +75,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return UserInterface
      */
@@ -83,8 +86,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return AccountIdentifierBuilderInterface
      */
@@ -94,8 +97,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return BeneficiaryBuilderInterface
      */
@@ -105,8 +108,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderFilterInterface
      */
@@ -116,8 +119,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderSelectionBuilderInterface
      */
@@ -127,8 +130,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentMethodBuilderInterface
      */
@@ -138,8 +141,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentRequestInterface
      */
@@ -151,11 +154,11 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentRetrievedInterface
      */
@@ -170,17 +173,17 @@ final class Client implements ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface
     {
-        $paymentId = $this->getPaymentId($payment);
+        $paymentId = PaymentId::find($payment);
         $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, $returnUri);
 
         return $this->entityFactory->make(AuthorizationFlowAuthorizingInterface::class, $data);
@@ -190,17 +193,17 @@ final class Client implements ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface
     {
-        $paymentId = $this->getPaymentId($payment);
+        $paymentId = PaymentId::find($payment);
 
         if ($provider instanceof ProviderInterface) {
             $provider = $provider->getId();
@@ -216,8 +219,60 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return RefundRequestInterface
+     */
+    public function refund(): RefundRequestInterface
+    {
+        return $this->entityFactory->make(RefundRequestInterface::class);
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string                                                   $refundId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @return RefundRetrievedInterface
+     */
+    public function getRefund($payment, string $refundId): RefundRetrievedInterface
+    {
+        $paymentId = PaymentId::find($payment);
+
+        $data = $this->apiFactory->paymentsApi()->retrieveRefund($paymentId, $refundId);
+
+        return $this->entityFactory->make(RefundRetrievedInterface::class, $data);
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @return mixed[]
+     */
+    public function getRefunds($payment): array
+    {
+        $paymentId = PaymentId::find($payment);
+
+        $data = $this->apiFactory->paymentsApi()->retrieveRefunds($paymentId);
+
+        return $this->entityFactory->makeMany(RefundRetrievedInterface::class, $data);
+    }
+
+    /**
      * @throws Exceptions\ValidationException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return HppInterface
      */
@@ -227,11 +282,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return MerchantAccountInterface[]
      */
@@ -243,8 +298,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return Payout\PayoutRequestInterface
      */
@@ -254,8 +309,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return Payout\BeneficiaryBuilderInterface
      */
@@ -274,11 +329,11 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
      *
      * @return MerchantAccountInterface
      */
@@ -288,25 +343,11 @@ final class Client implements ClientInterface
 
         return $this->entityFactory->make(MerchantAccountInterface::class, $data);
     }
-
-    /**
-     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return string
-     */
-    private function getPaymentId($payment): string
-    {
-        if ($payment instanceof PaymentCreatedInterface || $payment instanceof PaymentRetrievedInterface) {
-            return $payment->getId();
-        }
-
-        if (\is_string($payment)) {
-            return $payment;
-        }
-
-        // @phpstan-ignore-next-line
-        throw new InvalidArgumentException('Payment must be string|PaymentCreatedInterface|PaymentRetrievedInterface');
-    }
 }
+
+/* TODO
+
+- test refund on rejected payment
+- acceptance tests
+- document new methods + methods on appropriate payment statuses
+*/

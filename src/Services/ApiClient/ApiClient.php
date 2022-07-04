@@ -47,9 +47,9 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ClientExceptionInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws ClientExceptionInterface
      *
      * @return mixed
      */
@@ -63,6 +63,7 @@ final class ApiClient implements ApiClientInterface
             $apiRequest->getHeaders(),
             $apiRequest->getJsonPayload()
         );
+
         $response = $this->httpClient->sendRequest($httpRequest);
 
         $data = $this->getResponseData($response);

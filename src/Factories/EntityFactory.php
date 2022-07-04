@@ -14,6 +14,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
+use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Entities\User;
@@ -81,6 +82,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
         Interfaces\PaymentMethod\PaymentMethodBuilderInterface::class => Entities\Payment\PaymentMethod\PaymentMethodBuilder::class,
         Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Payment\PaymentMethod\BankTransferPaymentMethod::class,
+
+        Interfaces\Payment\RefundRequestInterface::class => Entities\Payment\Refund\RefundRequest::class,
+        Interfaces\Payment\RefundCreatedInterface::class => Entities\Payment\Refund\RefundCreated::class,
+        Interfaces\Payment\RefundPendingInterface::class => Entities\Payment\Refund\RefundPending::class,
+        Interfaces\Payment\RefundAuthorizedInterface::class => Entities\Payment\Refund\RefundAuthorized::class,
+        Interfaces\Payment\RefundExecutedInterface::class => Entities\Payment\Refund\RefundExecuted::class,
+        Interfaces\Payment\RefundFailedInterface::class => Entities\Payment\Refund\RefundFailed::class,
 
         Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
         Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
@@ -162,6 +170,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             PayoutStatus::EXECUTED => Interfaces\Payout\PayoutExecutedInterface::class,
             PayoutStatus::FAILED => Interfaces\Payout\PayoutFailedInterface::class,
         ],
+        Interfaces\Payment\RefundRetrievedInterface::class => [
+            'array_key' => 'status',
+            RefundStatus::PENDING => Interfaces\Payment\RefundPendingInterface::class,
+            RefundStatus::AUTHORIZED => Interfaces\Payment\RefundAuthorizedInterface::class,
+            RefundStatus::EXECUTED => Interfaces\Payment\RefundExecutedInterface::class,
+            RefundStatus::FAILED => Interfaces\Payment\RefundFailedInterface::class,
+        ],
     ];
 
     /**
@@ -170,8 +185,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T implements
      */
@@ -208,8 +223,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T[]
      */
