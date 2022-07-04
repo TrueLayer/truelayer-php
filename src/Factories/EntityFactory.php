@@ -185,8 +185,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T implements
      */
@@ -223,8 +223,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T[]
      */
