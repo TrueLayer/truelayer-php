@@ -101,6 +101,7 @@ final class ClientFactory implements ClientFactoryInterface
 
         $authClient = new ApiClient($this->httpClient, $authBaseUri);
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
+        $authClient = new Decorators\UserAgentDecorator($authClient);
 
         $this->authToken = new AccessToken(
             $authClient,
@@ -141,6 +142,7 @@ final class ClientFactory implements ClientFactoryInterface
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
         $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);
         $this->apiClient = new Decorators\IdempotencyKeyDecorator($this->apiClient);
+        $this->apiClient = new Decorators\UserAgentDecorator($this->apiClient);
     }
 
     /**

@@ -10,7 +10,7 @@ class Endpoints
     public const AUTH_SANDBOX_URL = 'https://auth.truelayer-sandbox.com';
 
     public const API_PROD_URL = 'https://api.truelayer.com';
-    public const API_SANDBOX_URL = 'https://test-pay-api.truelayer-sandbox.com';
+    public const API_SANDBOX_URL = 'https://api.truelayer-sandbox.com';
 
     public const HPP_PROD_URL = 'https://payment.truelayer.com/payments';
     public const HPP_SANDBOX_URL = 'https://payment.truelayer-sandbox.com/payments';

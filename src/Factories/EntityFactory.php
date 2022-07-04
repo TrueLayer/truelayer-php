@@ -170,10 +170,10 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
-     * @return T
+     * @return T implements
      */
     public function make(string $abstract, array $data = null)
     {
@@ -188,7 +188,10 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             return $this->{$concrete}($data);
         }
 
-        // @phpstan-ignore-next-line
+        if (!\class_exists($concrete)) {
+            throw new InvalidArgumentException("Could not find class {$concrete}");
+        }
+
         $instance = $this->makeConcrete($concrete);
 
         if ($data && $instance instanceof Interfaces\HasAttributesInterface) {
@@ -205,8 +208,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T[]
      */
