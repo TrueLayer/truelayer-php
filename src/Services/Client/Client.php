@@ -344,10 +344,3 @@ final class Client implements ClientInterface
         return $this->entityFactory->make(MerchantAccountInterface::class, $data);
     }
 }
-
-/* TODO
-
-- test refund on rejected payment
-- acceptance tests
-- document new methods + methods on appropriate payment statuses
-*/
