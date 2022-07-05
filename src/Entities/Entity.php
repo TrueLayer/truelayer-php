@@ -49,8 +49,8 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     /**
      * @param mixed[] $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return $this
      */
@@ -77,13 +77,31 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T
      */
     protected function make(string $abstract, array $data = null)
     {
         return $this->entityFactory->make($abstract, $data);
+    }
+
+    /**
+     * @template T
+     *
+     * @param class-string<T> $abstract
+     * @param mixed[]|null    $data
+     *
+     * @throws ValidationException
+     * @throws InvalidArgumentException
+     *
+     * @return T[]
+     */
+    protected function makeMany(string $abstract, array $data = null)
+    {
+        return $data ?
+            $this->entityFactory->makeMany($abstract, $data)
+            : [];
     }
 }

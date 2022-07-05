@@ -28,11 +28,12 @@
         7. [Authorization flow config](#auth-flow-config)
         8. [Source of funds](#source-of-funds)
 7. [Authorizing a payment - TODO](#authorizing-payment)
-8. [Payouts](#payouts)
-9. [Merchant accounts](#merchant-accounts)
-10. [Account identifiers](#account-identifiers)
-11. [Custom API calls](#custom-api-calls)
-12. [Error Handling](#error-handling)
+8. [Refunds](#refunds)
+9. [Payouts](#payouts)
+10. [Merchant accounts](#merchant-accounts)
+11. [Account identifiers](#account-identifiers)
+12. [Custom API calls](#custom-api-calls)
+13. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -94,8 +95,8 @@ $client = \TrueLayer\Client::configure()
 
 ## Caching
 
-The client library supports caching the `client_credentials` grant access token needed to access, create and modify resources on
-TrueLayer's systems. In order to enable it, you need to provide an implementation of
+The client library supports caching the `client_credentials` grant access token needed to access, create and modify
+resources on TrueLayer's systems. In order to enable it, you need to provide an implementation of
 the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
 
 You can generate a random encryption key by running `openssl rand -hex 32`. This key must be considered secret and
@@ -559,6 +560,80 @@ if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentS
     foreach ($paymentSource->getAccountIdentifiers() as $accountIdentifier) {
        // See 'Account identifiers' for available methods.
     }
+}
+```
+
+<a name="refunds"></a>
+
+# Refunds
+
+Refunds are only supported for settled merchant account payments.
+
+## Creating and retrieving refunds from the client
+
+```php
+use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Interfaces\Payment\RefundExecutedInterface;
+use TrueLayer\Interfaces\Payment\RefundFailedInterface;
+
+// Create and get the refund id
+$refundId = $client->refund()
+    ->payment($paymentId) // Payment ID, PaymentRetrievedInterface or PaymentCreatedInterface
+    ->amountInMinor(1)
+    ->reference('My reference')
+    ->create()
+    ->getId();
+    
+// Get a refund's details
+$refund = $client->getRefund($paymentId, $refundId);
+
+// Common refund methods
+$refund->getId();
+$refund->getAmountInMinor();
+$refund->getCurrency();
+$refund->getReference();
+$refund->getStatus();
+$refund->getCreatedAt();
+$refund->isPending();
+$refund->isAuthorized();
+$refund->isExecuted();
+$refund->isFailed();
+
+// Executed refunds
+if ($refund instanceof RefundExecutedInterface) {
+    $refund->getExecutedAt();
+}
+
+// Failed refunds
+if ($refund instanceof RefundFailedInterface) {
+    $refund->getFailureReason();
+    $refund->getFailedAt();
+}
+
+// Get all refunds for a payment
+$refunds = $client->getRefunds($paymentId); // RefundRetrievedInterface[]
+```
+
+## Creating and retrieving refunds from a settled payment
+
+Alternatively, if you already have a payment instance you can use the following convenience methods:
+
+```php
+use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
+
+if ($payment instanceof PaymentSettledInterface) {
+    // Create a refund
+    $refundId = $payment->refund()
+        ->amountInMinor(1)
+        ->reference('My reference')
+        ->create()
+        ->getId();
+        
+    // Get a refund's details
+    $payment->getRefund($refundId)
+    
+    // Get all refunds
+    $payment->getRefunds();
 }
 ```
 
