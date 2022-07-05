@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace TrueLayer\Services\ApiClient\Decorators;
 
 use Composer\InstalledVersions;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 
-final class UserAgentDecorator extends BaseApiClientDecorator
+final class TLAgentDecorator extends BaseApiClientDecorator
 {
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed
      */
@@ -29,7 +30,7 @@ final class UserAgentDecorator extends BaseApiClientDecorator
             $version = 'unknown';
         }
 
-        $apiRequest->header('User-Agent', "truelayer-php/{$version}");
+        $apiRequest->header(CustomHeaders::TL_AGENT, "truelayer-php/{$version}");
 
         return $this->next->send($apiRequest);
     }
