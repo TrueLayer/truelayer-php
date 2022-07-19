@@ -8,7 +8,6 @@ use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ArrayableInterface;
-use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
 use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Traits\ArrayableAttributes;
@@ -26,33 +25,27 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      */
     private EntityFactoryInterface $entityFactory;
 
-    /**
-     * @var ApiFactoryInterface
-     */
-    private ApiFactoryInterface $apiFactory;
 
     /**
-     * @param ValidatorFactory       $validatorFactory
+     * @param ValidatorFactory $validatorFactory
      * @param EntityFactoryInterface $entityFactory
-     * @param ApiFactoryInterface    $apiFactory
      */
     public function __construct(
-        ValidatorFactory $validatorFactory,
-        EntityFactoryInterface $entityFactory,
-        ApiFactoryInterface $apiFactory
-    ) {
+        ValidatorFactory       $validatorFactory,
+        EntityFactoryInterface $entityFactory
+    )
+    {
         $this->validatorFactory = $validatorFactory;
         $this->entityFactory = $entityFactory;
-        $this->apiFactory = $apiFactory;
     }
 
     /**
      * @param mixed[] $data
      *
-     * @throws InvalidArgumentException
+     * @return $this
      * @throws ValidationException
      *
-     * @return $this
+     * @throws InvalidArgumentException
      */
     public function fill(array $data): self
     {
@@ -64,23 +57,15 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     }
 
     /**
-     * @return ApiFactoryInterface
-     */
-    protected function apiFactory(): ApiFactoryInterface
-    {
-        return $this->apiFactory;
-    }
-
-    /**
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null    $data
-     *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @param mixed[]|null $data
      *
      * @return T
+     * @throws ValidationException
+     *
+     * @throws InvalidArgumentException
      */
     protected function make(string $abstract, array $data = null)
     {

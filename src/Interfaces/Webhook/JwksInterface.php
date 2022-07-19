@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Webhooks;
+namespace TrueLayer\Interfaces\Webhook;
 
 interface JwksInterface
 {

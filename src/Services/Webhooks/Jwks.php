@@ -13,7 +13,7 @@ use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
-use TrueLayer\Interfaces\Webhooks\JwksInterface;
+use TrueLayer\Interfaces\Webhook\JwksInterface;
 use TrueLayer\Services\Api\WebhooksApi;
 
 class Jwks implements JwksInterface
@@ -30,9 +30,9 @@ class Jwks implements JwksInterface
 
     private ?int $retrievedAt = null;
 
-    public function __construct(ApiClientInterface $api,
+    public function __construct(ApiClientInterface       $api,
                                 ?EncryptedCacheInterface $cache,
-                                ValidatorFactory $validatorFactory)
+                                ValidatorFactory         $validatorFactory)
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -40,12 +40,12 @@ class Jwks implements JwksInterface
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return array
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return array
+     * @throws ApiResponseUnsuccessfulException
      */
     public function getJsonKeys(): array
     {

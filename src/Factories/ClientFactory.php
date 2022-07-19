@@ -48,9 +48,9 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @param ClientConfigInterface $config
      *
+     * @return ClientInterface
      * @throws SignerException
      *
-     * @return ClientInterface
      */
     public function make(ClientConfigInterface $config): ClientInterface
     {
@@ -60,9 +60,14 @@ final class ClientFactory implements ClientFactoryInterface
         $this->makeApiClient($config);
 
         $apiFactory = new ApiFactory($this->apiClient);
-        $entityFactory = new EntityFactory($this->validatorFactory, $apiFactory, $config);
+        $entityFactory = new EntityFactory($this->validatorFactory, $config, $apiFactory);
 
-        return new Client($this->apiClient, $apiFactory, $entityFactory);
+        return new Client(
+            $this->apiClient,
+            $apiFactory,
+            $entityFactory,
+            $config
+        );
     }
 
     /**

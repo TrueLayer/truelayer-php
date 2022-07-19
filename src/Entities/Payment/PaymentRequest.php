@@ -10,14 +10,18 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\UserInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 use TrueLayer\Validation\ValidType;
 
-final class PaymentRequest extends Entity implements PaymentRequestInterface
+final class PaymentRequest extends Entity implements PaymentRequestInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var int
      */
@@ -118,17 +122,17 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @return PaymentCreatedInterface
      * @throws ValidationException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return PaymentCreatedInterface
+     * @throws InvalidArgumentException
      */
     public function create(): PaymentCreatedInterface
     {
-        $data = $this->apiFactory()->paymentsApi()->create(
+        $data = $this->getApiFactory()->paymentsApi()->create(
             $this->validate()->toArray()
         );
 

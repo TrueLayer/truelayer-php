@@ -14,6 +14,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
+use TrueLayer\Constants\WebhookEventTypes;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Entities\User;
@@ -29,28 +30,29 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private ValidatorFactory $validatorFactory;
 
     /**
-     * @var Interfaces\Factories\ApiFactoryInterface
+     * @var Interfaces\Factories\ApiFactoryInterface|null
      */
-    private Interfaces\Factories\ApiFactoryInterface $apiFactory;
+    private ?Interfaces\Factories\ApiFactoryInterface $apiFactory;
 
     /**
-     * @var Interfaces\Configuration\ClientConfigInterface
+     * @var Interfaces\Configuration\ConfigInterface
      */
-    private Interfaces\Configuration\ClientConfigInterface $sdkConfig;
+    private Interfaces\Configuration\ConfigInterface $sdkConfig;
 
     /**
-     * @param ValidatorFactory                               $validatorFactory
-     * @param Interfaces\Factories\ApiFactoryInterface       $apiFactory
-     * @param Interfaces\Configuration\ClientConfigInterface $sdkConfig
+     * @param ValidatorFactory $validatorFactory
+     * @param Interfaces\Configuration\ConfigInterface $sdkConfig
+     * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
-        ValidatorFactory $validatorFactory,
-        Interfaces\Factories\ApiFactoryInterface $apiFactory,
-        Interfaces\Configuration\ClientConfigInterface $sdkConfig)
+        ValidatorFactory                         $validatorFactory,
+        Interfaces\Configuration\ConfigInterface $sdkConfig,
+        Interfaces\Factories\ApiFactoryInterface $apiFactory = null
+    )
     {
         $this->validatorFactory = $validatorFactory;
-        $this->apiFactory = $apiFactory;
         $this->sdkConfig = $sdkConfig;
+        $this->apiFactory = $apiFactory;
     }
 
     private const BINDINGS = [
@@ -162,18 +164,28 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             PayoutStatus::EXECUTED => Interfaces\Payout\PayoutExecutedInterface::class,
             PayoutStatus::FAILED => Interfaces\Payout\PayoutFailedInterface::class,
         ],
+        Interfaces\Webhook\EventInterface::class => [
+            'array_key' => 'type',
+            WebhookEventTypes::PAYMENT_EXECUTED => Interfaces\Webhook\PaymentExecutedEventInterface::class,
+            WebhookEventTypes::PAYMENT_SETTLED => Interfaces\Webhook\PaymentSettledEventInterface::class,
+            WebhookEventTypes::PAYMENT_FAILED => Interfaces\Webhook\PaymentFailedEventInterface::class,
+            WebhookEventTypes::REFUND_EXECUTED => Interfaces\Webhook\RefundExecutedEventInterface::class,
+            WebhookEventTypes::REFUND_FAILED => Interfaces\Webhook\RefundFailedEventInterface::class,
+            WebhookEventTypes::PAYOUT_EXECUTED => Interfaces\Webhook\PayoutExecutedEventInterface::class,
+            WebhookEventTypes::PAYOUT_FAILED => Interfaces\Webhook\PayoutFailedEventInterface::class,
+        ]
     ];
 
     /**
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null    $data
-     *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @param mixed[]|null $data
      *
      * @return T
+     * @throws ValidationException
+     *
+     * @throws InvalidArgumentException
      */
     public function make(string $abstract, array $data = null)
     {
@@ -203,12 +215,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]         $data
-     *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @param mixed[] $data
      *
      * @return T[]
+     * @throws ValidationException
+     *
+     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -222,9 +234,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
+     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
      *
-     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -240,20 +252,28 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
+     * @return T
      * @throws InvalidArgumentException
      *
-     * @return T
      */
-    private function makeConcrete(string $concrete)
+    public function makeConcrete(string $concrete)
     {
         // We could just return the new instances but PHPStan doesn't understand
         // is_subclass_of so we need to rely on the instanceof operator.
         $instance = null;
 
         if (\is_subclass_of($concrete, Entities\Entity::class)) {
-            $instance = new $concrete($this->validatorFactory, $this, $this->apiFactory);
+            $instance = new $concrete($this->validatorFactory, $this);
         } elseif (\is_subclass_of($concrete, Entities\EntityBuilder::class)) {
             $instance = new $concrete($this);
+        }
+
+        if ($instance instanceof Interfaces\HasApiFactoryInterface) {
+            if (!$this->apiFactory) {
+                throw new InvalidArgumentException("$concrete requires ApiFactory but none provided");
+            }
+
+            $instance->apiFactory($this->apiFactory);
         }
 
         if ($instance instanceof $concrete) {

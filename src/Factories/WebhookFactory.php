@@ -7,18 +7,21 @@ namespace TrueLayer\Factories;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Interfaces\Configuration\WebhookVerifierConfigInterface;
-use TrueLayer\Interfaces\Webhooks\JwksInterface;
-use TrueLayer\Interfaces\Webhooks\WebhookVerifierFactoryInterface;
-use TrueLayer\Interfaces\Webhooks\WebhookVerifierInterface;
+use TrueLayer\Interfaces\Configuration\ConfigInterface;
+use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
+use TrueLayer\Interfaces\Webhook\JwksInterface;
+use TrueLayer\Interfaces\Webhook\WebhookInterface;
+use TrueLayer\Interfaces\Webhook\WebhookVerifierFactoryInterface;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Webhooks\Jwks;
-use TrueLayer\Services\Webhooks\WebhookVerifier;
-use TrueLayer\Services\Webhooks\WebhookVerifierConfig;
+use TrueLayer\Services\Webhooks\Webhook;
+use TrueLayer\Services\Webhooks\WebhookConfig;
+use TrueLayer\Signing\Exceptions\InvalidArgumentException;
+use TrueLayer\Signing\Verifier;
 use TrueLayer\Traits\MakeValidatorFactory;
 
-class WebhookVerifierFactory implements WebhookVerifierFactoryInterface
+class WebhookFactory implements WebhookVerifierFactoryInterface
 {
     use MakeValidatorFactory;
 
@@ -34,26 +37,37 @@ class WebhookVerifierFactory implements WebhookVerifierFactoryInterface
 
     private JwksInterface $jwks;
 
-    public function make(WebhookVerifierConfigInterface $config): WebhookVerifierInterface
+    /**
+     * @param WebhookConfigInterface $config
+     * @return WebhookInterface
+     * @throws InvalidArgumentException
+     */
+    public function make(ConfigInterface $config): WebhookInterface
     {
         $this->validatorFactory = $this->makeValidatorFactory();
         $this->makeHttpClient($config);
         $this->makeJwks($config);
 
-        return new WebhookVerifier();
+        $verifier = Verifier::verifyWithJsonKeys(...$this->jwks->getJsonKeys());
+        $entityFactory = new EntityFactory($this->validatorFactory, $config);
+
+        return new Webhook($verifier, $entityFactory);
     }
 
     /**
      * Build the HTTP client.
      *
-     * @param WebhookVerifierConfigInterface $config
+     * @param ConfigInterface $config
      */
-    private function makeHttpClient(WebhookVerifierConfigInterface $config): void
+    private function makeHttpClient(ConfigInterface $config): void
     {
         $this->httpClient = $config->getHttpClient();
     }
 
-    private function makeJwks(WebhookVerifierConfigInterface $config): void
+    /**
+     * @param ConfigInterface $config
+     */
+    private function makeJwks(ConfigInterface $config): void
     {
         $webhooksBaseUri = $config->shouldUseProduction()
             ? Endpoints::WEBHOOKS_PROD_URL
@@ -66,10 +80,10 @@ class WebhookVerifierFactory implements WebhookVerifierFactoryInterface
     }
 
     /**
-     * @return WebhookVerifierConfigInterface
+     * @return WebhookConfigInterface
      */
-    public static function makeConfigurator(): WebhookVerifierConfigInterface
+    public static function makeConfigurator(): WebhookConfigInterface
     {
-        return new WebhookVerifierConfig(new WebhookVerifierFactory());
+        return new WebhookConfig(new WebhookFactory());
     }
 }

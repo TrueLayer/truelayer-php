@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use TrueLayer\Interfaces\Configuration\WebhookVerifierConfigInterface;
-use TrueLayer\Interfaces\Webhooks\WebhookVerifierFactoryInterface;
-use TrueLayer\Interfaces\Webhooks\WebhookVerifierInterface;
+use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
+use TrueLayer\Interfaces\Webhook\WebhookInterface;
+use TrueLayer\Interfaces\Webhook\WebhookVerifierFactoryInterface;
 use TrueLayer\Services\Configuration\Config;
 
-class WebhookVerifierConfig extends Config implements WebhookVerifierConfigInterface
+class WebhookConfig extends Config implements WebhookConfigInterface
 {
     /**
      * @var WebhookVerifierFactoryInterface
@@ -25,9 +25,9 @@ class WebhookVerifierConfig extends Config implements WebhookVerifierConfigInter
     }
 
     /**
-     * @return WebhookVerifierInterface
+     * @return WebhookInterface
      */
-    public function create(): WebhookVerifierInterface
+    public function create(): WebhookInterface
     {
         return $this->factory->make($this);
     }

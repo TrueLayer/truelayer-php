@@ -12,13 +12,17 @@ use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\PayoutRequestInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 use TrueLayer\Validation\ValidType;
 
-final class PayoutRequest extends Entity implements PayoutRequestInterface
+final class PayoutRequest extends Entity implements PayoutRequestInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var string
      */
@@ -118,17 +122,17 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @return PayoutCreatedInterface
      * @throws ValidationException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return PayoutCreatedInterface
+     * @throws InvalidArgumentException
      */
     public function create(): PayoutCreatedInterface
     {
-        $data = $this->apiFactory()->payoutsApi()->create(
+        $data = $this->getApiFactory()->payoutsApi()->create(
             $this->validate()->toArray()
         );
 
