@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Webhook;
 
 use DateTimeInterface;
+use TrueLayer\Interfaces\HasAttributesInterface;
 
-interface EventInterface
+interface EventInterface extends HasAttributesInterface
 {
     /**
      * Get the time that the webhook was sent to you
@@ -34,7 +35,7 @@ interface EventInterface
 
     /**
      * Get the event version
-     * @return string
+     * @return int
      */
-    public function getEventVersion(): string;
+    public function getEventVersion(): int;
 }

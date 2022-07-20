@@ -31,9 +31,9 @@ class Event extends Entity implements EventInterface
     protected string $eventId;
 
     /**
-     * @var string
+     * @var int
      */
-    protected string $eventVersion;
+    protected int $eventVersion;
 
     /**
      * @var string
@@ -62,7 +62,7 @@ class Event extends Entity implements EventInterface
         'signature' => 'required|string',
         'type' => 'required|string',
         'event_id' => 'required|string',
-        'event_version' => 'required|string',
+        'event_version' => 'required|int',
         'body' => 'required|string',
         'headers' => 'required|array'
     ];
@@ -99,7 +99,7 @@ class Event extends Entity implements EventInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getEventId(): string
     {
@@ -107,9 +107,9 @@ class Event extends Entity implements EventInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getEventVersion(): string
+    public function getEventVersion(): int
     {
         return $this->eventVersion;
     }

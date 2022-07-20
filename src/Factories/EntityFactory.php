@@ -109,6 +109,18 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
 
         Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
+
+        Interfaces\Webhook\PaymentExecutedEventInterface::class => Entities\Webhook\PaymentExecutedEvent::class,
+        Interfaces\Webhook\PaymentSettledEventInterface::class => Entities\Webhook\PaymentSettledEvent::class,
+        Interfaces\Webhook\PaymentFailedEventInterface::class => Entities\Webhook\PaymentFailedEvent::class,
+        Interfaces\Webhook\RefundExecutedEventInterface::class => Entities\Webhook\RefundExecutedEvent::class,
+        Interfaces\Webhook\RefundFailedEventInterface::class => Entities\Webhook\RefundFailedEvent::class,
+        Interfaces\Webhook\PayoutExecutedEventInterface::class => Entities\Webhook\PayoutExecutedEvent::class,
+        Interfaces\Webhook\PayoutFailedEventInterface::class => Entities\Webhook\PayoutFailedEvent::class,
+        Interfaces\Webhook\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Webhook\PaymentMethod\BankTransferPaymentMethod::class,
+        Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface::class => Entities\Webhook\PaymentMethod\MandatePaymentMethod::class,
+        Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\Beneficiary::class,
+        Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Webhook\Beneficiary\PaymentSourceBeneficiary::class,
     ];
 
     private const TYPES = [
@@ -173,6 +185,16 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             WebhookEventTypes::REFUND_FAILED => Interfaces\Webhook\RefundFailedEventInterface::class,
             WebhookEventTypes::PAYOUT_EXECUTED => Interfaces\Webhook\PayoutExecutedEventInterface::class,
             WebhookEventTypes::PAYOUT_FAILED => Interfaces\Webhook\PayoutFailedEventInterface::class,
+        ],
+        Interfaces\Webhook\PaymentMethod\PaymentMethodInterface::class => [
+            'array_key' => 'type',
+            PaymentMethods::BANK_TRANSFER => Interfaces\Webhook\PaymentMethod\BankTransferPaymentMethodInterface::class,
+            PaymentMethods::MANDATE => Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface::class,
+        ],
+        Interfaces\Webhook\Beneficiary\BeneficiaryInterface::class => [
+            'array_key' => 'type',
+            BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
+            BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class,
         ]
     ];
 

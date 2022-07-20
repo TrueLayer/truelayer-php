@@ -126,7 +126,7 @@ class Jwks implements JwksInterface
     {
         $validator = $this->validatorFactory->make($data, [
             'keys.*.kty' => 'required|string|in:RSA,EC',
-            'keys.*.alg' => 'required|string|in:RS512,EC512',
+            'keys.*.alg' => 'required|string|in:RS512,ES512',
             'keys.*.kid' => 'required|string',
         ]);
 

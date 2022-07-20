@@ -102,11 +102,17 @@ class Signing
     /**
      * @return string[]
      */
-    public static function getHeaders(): array
+    public static function getHeaders(string $body = null): array
     {
-        return [
+        $headers = [
             'x-tl-webhook-timestamp' => '2022-02-16T16:21:14Z'
         ];
+
+        if ($body !== null) {
+            $headers['tl-signature'] = self::sign($body);
+        }
+
+        return $headers;
     }
 
     private static function make()

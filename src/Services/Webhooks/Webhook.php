@@ -66,7 +66,7 @@ class Webhook implements WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws ReflectionException
      */
-    public function handle(callable $handler): WebhookInterface
+    public function handler(callable $handler): WebhookInterface
     {
         $closure = \Closure::fromCallable($handler);
         $ref = new \ReflectionFunction($closure);
@@ -77,9 +77,9 @@ class Webhook implements WebhookInterface
         }
 
         $parameter = $parameters[0];
-        $type = $parameter->getClass();
+        $type = $parameter->getType()->getName();
 
-        if (!$type->isSubclassOf(EventInterface::class)) {
+        if (!is_subclass_of($type, EventInterface::class)) {
             throw new WebhookHandlerInvalidArgumentException('Webhook handler argument should be of type ' . EventInterface::class);
         }
 
@@ -171,14 +171,14 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @param EventInterface $notification
+     * @param EventInterface $event
      * @return array
      */
-    private function getEventHandlers(EventInterface $notification): array
+    private function getEventHandlers(EventInterface $event): array
     {
-        $interfaces = class_implements($notification);
+        $interfaces = class_implements($event);
         $interfaces = array_unique($interfaces);
-        $handlers = array_map(fn($interface) => $this->handlers[$interfaces] ?? [], $interfaces);
+        $handlers = array_map(fn($interface) => $this->handlers[$interface] ?? [], $interfaces);
         return Arr::flatten($handlers);
     }
 
@@ -191,8 +191,12 @@ class Webhook implements WebhookInterface
     private function getEventEntity(): EventInterface
     {
         $data = $this->getDecodedBody();
+
+        $headers = $this->getHeaders();
         $data['body'] = $this->getBody();
-        $data['headers'] = $this->getHeaders();
+        $data['headers'] = $headers;
+        $data['timestamp'] = $headers[strtolower(CustomHeaders::WEBHOOK_TIMESTAMP)] ?? '';
+        $data['signature'] = $headers[strtolower(CustomHeaders::SIGNATURE)];
 
         try {
             return $this->entityFactory->make(EventInterface::class, $data);
@@ -200,6 +204,11 @@ class Webhook implements WebhookInterface
             // If we do not recognise the data structure as valid for any of the existing entities,
             // We create the base event entity which will be passed to the default handler.
             if ($e instanceof ValidationException || $e instanceof InvalidArgumentException) {
+                if ($e instanceof ValidationException) {
+                    var_dump('exception thrown', $e->getErrors());
+                } else {
+                    var_dump('exception thrown', $e);
+                }
                 return $this->entityFactory->makeConcrete(Event::class)->fill($data);
             }
             throw $e;

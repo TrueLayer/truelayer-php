@@ -15,7 +15,7 @@ interface WebhookInterface
      * @param callable $handler
      * @return WebhookInterface
      */
-    public function handle(callable $handler): WebhookInterface;
+    public function handler(callable $handler): WebhookInterface;
 
     /**
      * @param string $path
