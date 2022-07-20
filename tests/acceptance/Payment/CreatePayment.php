@@ -96,7 +96,7 @@ class CreatePayment
 
         return $this->client->payment()
             ->paymentMethod($paymentMethod)
-            ->amountInMinor(1)
+            ->amountInMinor(10)
             ->currency($currency)
             ->user($user ?? $this->user())
             ->create();

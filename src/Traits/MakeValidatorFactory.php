@@ -6,7 +6,6 @@ namespace TrueLayer\Traits;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
 
@@ -19,8 +18,9 @@ trait MakeValidatorFactory
     private function makeValidatorFactory(): ValidatorFactory
     {
         $filesystem = new Filesystem();
-        $loader = new FileLoader($filesystem, \dirname(__FILE__, 4) . '/lang');
-        $loader->addNamespace('lang', \dirname(__FILE__, 4) . '/lang');
+        $langPath = \dirname(__FILE__, 3) . '/lang';
+        $loader = new \Illuminate\Translation\FileLoader($filesystem, $langPath);
+        $loader->addNamespace('lang', $langPath);
         $loader->load('en', 'validation', 'lang');
         $translationFactory = new Translator($loader, 'en');
 

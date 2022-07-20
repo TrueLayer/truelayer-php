@@ -19,6 +19,8 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInte
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Payment\RefundRequestInterface;
+use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
@@ -73,11 +75,11 @@ interface ClientInterface
      * @param string $id
      *
      * @return PaymentRetrievedInterface
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws SignerException
+     *
+     * @throws ValidationException
      */
     public function getPayment(string $id): PaymentRetrievedInterface;
 
@@ -86,12 +88,12 @@ interface ClientInterface
      * @param string $returnUri
      *
      * @return AuthorizationFlowAuthorizingInterface
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @throws InvalidArgumentException
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface;
 
@@ -100,14 +102,49 @@ interface ClientInterface
      * @param string|ProviderInterface $provider
      *
      * @return AuthorizationFlowResponseInterface
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @throws InvalidArgumentException
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
+
+    /**
+     * @return RefundRequestInterface
+     * @throws ValidationException
+     *
+     * @throws InvalidArgumentException
+     */
+    public function refund(): RefundRequestInterface;
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string $refundId
+     *
+     * @return RefundRetrievedInterface
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @throws ApiRequestJsonSerializationException
+     */
+    public function getRefund($payment, string $refundId): RefundRetrievedInterface;
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     *
+     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ValidationException
+     *
+     * @throws ApiRequestJsonSerializationException
+     */
+    public function getRefunds($payment): array;
 
     /**
      * @return Payout\PayoutRequestInterface
@@ -128,12 +165,12 @@ interface ClientInterface
 
     /**
      * @return MerchantAccountInterface[]
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @throws InvalidArgumentException
      */
     public function getMerchantAccounts(): array;
 
@@ -141,12 +178,12 @@ interface ClientInterface
      * @param string $id
      *
      * @return MerchantAccountInterface
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @throws InvalidArgumentException
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface;
 

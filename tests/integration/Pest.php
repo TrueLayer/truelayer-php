@@ -27,11 +27,11 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
+ * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  *
  * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
@@ -58,7 +58,12 @@ function rawClient(array $mockResponses = [])
 /**
  * Get an instance of the SDK with mocked http client and access token call.
  *
- * @param $mockResponses The responses returned by the 'server'
+ * @param array $mockResponses The responses returned by the 'server'
+ *
+ * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @throws \TrueLayer\Exceptions\SignerException
  *
  * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
@@ -78,6 +83,11 @@ function client($mockResponses = [])
  * Create a new request with a mocked successful response.
  *
  * @param array $mockResponses
+ *
+ * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @throws \TrueLayer\Exceptions\SignerException
  *
  * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  */

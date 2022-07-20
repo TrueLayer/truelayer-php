@@ -13,9 +13,9 @@ interface PaymentsApiInterface
     /**
      * @param mixed[] $paymentRequest
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
@@ -24,9 +24,9 @@ interface PaymentsApiInterface
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
@@ -36,9 +36,9 @@ interface PaymentsApiInterface
      * @param string $id
      * @param string $returnUri
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
@@ -48,11 +48,46 @@ interface PaymentsApiInterface
      * @param string $id
      * @param string $providerId
      *
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed[]
+     */
+    public function submitProvider(string $id, string $providerId): array;
+
+    /**
+     * @param string  $paymentId
+     * @param mixed[] $refundRequest
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
      * @return mixed[]
      */
-    public function submitProvider(string $id, string $providerId): array;
+    public function createRefund(string $paymentId, array $refundRequest): array;
+
+    /**
+     * @param string $paymentId
+     * @param string $refundId
+     *
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed[]
+     */
+    public function retrieveRefund(string $paymentId, string $refundId): array;
+
+    /**
+     * @param string $paymentId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return mixed[]
+     */
+    public function retrieveRefunds(string $paymentId): array;
 }

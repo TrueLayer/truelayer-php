@@ -14,6 +14,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
+use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Constants\WebhookEventTypes;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
@@ -83,6 +84,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
         Interfaces\PaymentMethod\PaymentMethodBuilderInterface::class => Entities\Payment\PaymentMethod\PaymentMethodBuilder::class,
         Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Payment\PaymentMethod\BankTransferPaymentMethod::class,
+
+        Interfaces\Payment\RefundRequestInterface::class => Entities\Payment\Refund\RefundRequest::class,
+        Interfaces\Payment\RefundCreatedInterface::class => Entities\Payment\Refund\RefundCreated::class,
+        Interfaces\Payment\RefundPendingInterface::class => Entities\Payment\Refund\RefundPending::class,
+        Interfaces\Payment\RefundAuthorizedInterface::class => Entities\Payment\Refund\RefundAuthorized::class,
+        Interfaces\Payment\RefundExecutedInterface::class => Entities\Payment\Refund\RefundExecuted::class,
+        Interfaces\Payment\RefundFailedInterface::class => Entities\Payment\Refund\RefundFailed::class,
 
         Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
         Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
@@ -176,6 +184,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             PayoutStatus::EXECUTED => Interfaces\Payout\PayoutExecutedInterface::class,
             PayoutStatus::FAILED => Interfaces\Payout\PayoutFailedInterface::class,
         ],
+        Interfaces\Payment\RefundRetrievedInterface::class => [
+            'array_key' => 'status',
+            RefundStatus::PENDING => Interfaces\Payment\RefundPendingInterface::class,
+            RefundStatus::AUTHORIZED => Interfaces\Payment\RefundAuthorizedInterface::class,
+            RefundStatus::EXECUTED => Interfaces\Payment\RefundExecutedInterface::class,
+            RefundStatus::FAILED => Interfaces\Payment\RefundFailedInterface::class,
+        ],
         Interfaces\Webhook\EventInterface::class => [
             'array_key' => 'type',
             WebhookEventTypes::PAYMENT_EXECUTED => Interfaces\Webhook\PaymentExecutedEventInterface::class,
@@ -195,7 +210,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             'array_key' => 'type',
             BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
             BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class,
-        ]
+        ],
     ];
 
     /**
@@ -205,9 +220,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param mixed[]|null $data
      *
      * @return T
-     * @throws ValidationException
-     *
+     * @return T implements
      * @throws InvalidArgumentException
+     * @throws ValidationException
      */
     public function make(string $abstract, array $data = null)
     {
@@ -222,7 +237,10 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
             return $this->{$concrete}($data);
         }
 
-        // @phpstan-ignore-next-line
+        if (!\class_exists($concrete)) {
+            throw new InvalidArgumentException("Could not find class {$concrete}");
+        }
+
         $instance = $this->makeConcrete($concrete);
 
         if ($data && $instance instanceof Interfaces\HasAttributesInterface) {
