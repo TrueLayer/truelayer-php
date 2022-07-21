@@ -4,18 +4,31 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
+use ReflectionException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Exceptions\WebhookHandlerException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 
 interface WebhookInterface
 {
     /**
-     * Add a webhook notification handler
-     * @param callable $handler
+     * @param callable|class-string $handler
      * @return WebhookInterface
+     * @throws ReflectionException
+     * @throws WebhookHandlerInvalidArgumentException
+     * @throws WebhookHandlerException
      */
-    public function handler(callable $handler): WebhookInterface;
+    public function handler($handler): WebhookInterface;
+
+    /**
+     * @param callable|class-string ...$handlers
+     * @return WebhookInterface
+     * @throws ReflectionException
+     * @throws WebhookHandlerInvalidArgumentException
+     * @throws WebhookHandlerException
+     */
+    public function handlers(...$handlers): WebhookInterface;
 
     /**
      * @param string $path
@@ -30,7 +43,7 @@ interface WebhookInterface
     public function body(string $body): WebhookInterface;
 
     /**
-     * @param array $headers
+     * @param mixed[] $headers
      * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      */

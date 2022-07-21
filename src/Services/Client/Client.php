@@ -10,6 +10,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Factories\WebhookFactory;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
@@ -303,23 +304,6 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return MerchantAccountInterface[]
-     * @throws Exceptions\SignerException
-     * @throws Exceptions\ValidationException
-     * @throws Exceptions\ApiRequestJsonSerializationException
-     * @throws Exceptions\ApiResponseUnsuccessfulException
-     * @throws Exceptions\InvalidArgumentException
-     *
-     * @throws Exceptions\InvalidArgumentException
-     */
-    public function getMerchantAccounts(): array
-    {
-        $data = $this->apiFactory->merchantAccountsApi()->list();
-
-        return $this->entityFactory->makeMany(MerchantAccountInterface::class, $data);
-    }
-
-    /**
      * @return Payout\PayoutRequestInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
@@ -351,6 +335,23 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @return MerchantAccountInterface[]
+     * @throws Exceptions\SignerException
+     * @throws Exceptions\ValidationException
+     * @throws Exceptions\ApiRequestJsonSerializationException
+     * @throws Exceptions\ApiResponseUnsuccessfulException
+     * @throws Exceptions\InvalidArgumentException
+     *
+     * @throws Exceptions\InvalidArgumentException
+     */
+    public function getMerchantAccounts(): array
+    {
+        $data = $this->apiFactory->merchantAccountsApi()->list();
+
+        return $this->entityFactory->makeMany(MerchantAccountInterface::class, $data);
+    }
+
+    /**
      * @param string $id
      *
      * @return MerchantAccountInterface
@@ -368,10 +369,9 @@ final class Client implements ClientInterface
 
         return $this->entityFactory->make(MerchantAccountInterface::class, $data);
     }
-
+    
     /**
      * @return WebhookInterface
-     * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
      */
     public function webhook(): WebhookInterface
     {

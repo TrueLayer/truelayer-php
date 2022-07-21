@@ -17,9 +17,9 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
     protected DateTimeInterface $settledAt;
 
     /**
-     * @var array
+     * @var string
      */
-    protected array $settlementRisk = [];
+    protected string $settlementRiskCategory;
 
     /**
      * @var PaymentSourceInterface
@@ -56,7 +56,7 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
     {
         return \array_merge(parent::arrayFields(), [
             'settled_at',
-            'settlement_risk.category',
+            'settlement_risk.category' => 'settlement_risk_category',
             'payment_source',
         ]);
     }
@@ -74,7 +74,7 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
      */
     public function getSettlementRiskCategory(): ?string
     {
-        return $this->settlementRisk['category'] ?? null;
+        return $this->settlementRiskCategory ?? null;
     }
 
     /**

@@ -42,6 +42,14 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     /**
      * @return string
      */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
     public function getProviderId(): string
     {
         return $this->providerId;

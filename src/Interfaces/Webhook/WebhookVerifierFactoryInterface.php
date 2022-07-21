@@ -9,7 +9,7 @@ use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
 interface WebhookVerifierFactoryInterface
 {
     /**
-     * @param WebhookVerifierConfigInterface $config
+     * @param WebhookConfigInterface $config
      *
      * @return WebhookInterface
      */

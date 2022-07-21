@@ -15,16 +15,16 @@ class PaymentExecutedEvent extends PaymentEvent implements PaymentExecutedEventI
     protected DateTimeInterface $executedAt;
 
     /**
-     * @var array
+     * @var string
      */
-    protected array $settlementRisk = [];
+    protected string $settlementRiskCategory;
 
     /**
      * @return mixed[]
      */
     protected function casts(): array
     {
-        return \array_merge_recursive(parent::casts(), [
+        return \array_merge(parent::casts(), [
             'executed_at' => DateTimeInterface::class,
         ]);
     }
@@ -36,7 +36,7 @@ class PaymentExecutedEvent extends PaymentEvent implements PaymentExecutedEventI
     {
         return \array_merge(parent::arrayFields(), [
             'executed_at',
-            'settlement_risk.category'
+            'settlement_risk.category' => 'settlement_risk_category',
         ]);
     }
 
@@ -65,6 +65,6 @@ class PaymentExecutedEvent extends PaymentEvent implements PaymentExecutedEventI
      */
     public function getSettlementRiskCategory(): ?string
     {
-        return $this->settlementRisk['category'] ?? null;
+        return $this->settlementRiskCategory ?? null;
     }
 }

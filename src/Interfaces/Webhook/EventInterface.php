@@ -38,4 +38,9 @@ interface EventInterface extends HasAttributesInterface
      * @return int
      */
     public function getEventVersion(): int;
+
+    /**
+     * @return array
+     */
+    public function getBody(): array;
 }

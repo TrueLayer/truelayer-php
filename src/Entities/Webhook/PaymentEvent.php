@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Webhook\PaymentEventInterface;
+use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Validation\ValidType;
 
 class PaymentEvent extends Event implements PaymentEventInterface

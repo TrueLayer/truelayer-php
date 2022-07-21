@@ -29,9 +29,9 @@ trait ValidatesAttributes
     }
 
     /**
+     * @return self
      * @throws \TrueLayer\Exceptions\ValidationException
      *
-     * @return self
      */
     public function validate(): self
     {
@@ -59,9 +59,9 @@ trait ValidatesAttributes
     /**
      * @param mixed[]|null $data
      *
+     * @return $this
      * @throws \TrueLayer\Exceptions\ValidationException
      *
-     * @return $this
      */
     protected function validateData(array $data = null): self
     {

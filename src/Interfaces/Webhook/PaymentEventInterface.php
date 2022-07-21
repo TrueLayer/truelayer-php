@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
+
+use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 
 interface PaymentEventInterface extends EventInterface
 {
@@ -20,5 +21,5 @@ interface PaymentEventInterface extends EventInterface
      * Mandates contain mandate_id and bank transfers contain provider_id and scheme_id, if available.
      * @return PaymentMethodInterface
      */
-//    public function getPaymentMethod(): PaymentMethodInterface;
+    public function getPaymentMethod(): PaymentMethodInterface;
 }

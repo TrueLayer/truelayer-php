@@ -35,6 +35,14 @@ class MandatePaymentMethod extends Entity implements MandatePaymentMethodInterfa
     /**
      * @return string
      */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
     public function getMandateId(): string
     {
         return $this->mandateId;

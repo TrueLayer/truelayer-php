@@ -41,7 +41,7 @@ class Event extends Entity implements EventInterface
     protected string $body;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     protected array $headers;
 
@@ -64,7 +64,6 @@ class Event extends Entity implements EventInterface
         'event_id' => 'required|string',
         'event_version' => 'required|int',
         'body' => 'required|string',
-        'headers' => 'required|array'
     ];
 
     /**
@@ -99,7 +98,7 @@ class Event extends Entity implements EventInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getEventId(): string
     {
@@ -115,18 +114,14 @@ class Event extends Entity implements EventInterface
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getBody(): string
+    public function getBody(): array
     {
-        return $this->body;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getHeaders(): array
-    {
-        return $this->headers;
+        $decoded = json_decode($this->body);
+        
+        return is_array($decoded)
+            ? $decoded
+            : [];
     }
 }

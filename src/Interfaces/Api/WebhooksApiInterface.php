@@ -6,5 +6,8 @@ namespace TrueLayer\Interfaces\Api;
 
 interface WebhooksApiInterface
 {
+    /**
+     * @return mixed[]
+     */
     public function jwks(): array;
 }

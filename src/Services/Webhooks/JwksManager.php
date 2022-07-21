@@ -10,26 +10,47 @@ use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Exceptions\TLPublicKeysNotFound;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
-use TrueLayer\Interfaces\Webhook\JwksInterface;
+use TrueLayer\Interfaces\Webhook\JwksManagerInterface;
 use TrueLayer\Services\Api\WebhooksApi;
 
-class Jwks implements JwksInterface
+class JwksManager implements JwksManagerInterface
 {
     private const CACHE_TTL = 1800;
 
+    /**
+     * @var ApiClientInterface
+     */
     private ApiClientInterface $api;
 
+    /**
+     * @var EncryptedCacheInterface|null
+     */
     private ?EncryptedCacheInterface $cache;
 
+    /**
+     * @var ValidatorFactory
+     */
     private ValidatorFactory $validatorFactory;
 
+    /**
+     * @var mixed[]|null
+     */
     private ?array $keys = null;
 
+    /**
+     * @var int|null
+     */
     private ?int $retrievedAt = null;
 
+    /**
+     * @param ApiClientInterface $api
+     * @param EncryptedCacheInterface|null $cache
+     * @param ValidatorFactory $validatorFactory
+     */
     public function __construct(ApiClientInterface       $api,
                                 ?EncryptedCacheInterface $cache,
                                 ValidatorFactory         $validatorFactory)
@@ -40,30 +61,33 @@ class Jwks implements JwksInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      *
      * @throws ApiResponseUnsuccessfulException
+     * @throws TLPublicKeysNotFound
      */
     public function getJsonKeys(): array
     {
-        if (!$this->keys) {
-            if ($this->cache && $this->cache->has(CacheKeys::JWKS_KEYS)) {
-                $data = $this->cache->get(CacheKeys::JWKS_KEYS);
+        if (!$this->keys && $this->cache && $this->cache->has(CacheKeys::JWKS_KEYS)) {
+            $data = $this->cache->get(CacheKeys::JWKS_KEYS);
 
-                $this->keys = $data['keys'];
-                $this->retrievedAt = $data['retrieved_at'];
-            } else {
-                $this->retrieve();
+            if (is_array($data)) {
+                $this->keys = isset($data['keys']) && is_array($data['keys']) ? $data['keys'] : null;
+                $this->retrievedAt = isset($data['retrieved_at']) && is_int($data['retrieved_at']) ? $data['retrieved_at'] : null;
             }
         }
 
-        if ($this->isExpired()) {
+        if (!$this->keys || $this->isExpired()) {
             $this->retrieve();
         }
 
+        if (!$this->keys) {
+            throw new TLPublicKeysNotFound();
+        }
+        
         return $this->keys;
     }
 
@@ -88,9 +112,17 @@ class Jwks implements JwksInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasCache(): bool
+    {
+        return !!$this->cache;
+    }
+
+    /**
      * @return JwksInterface
      */
-    public function clear(): JwksInterface
+    public function clear(): JwksManagerInterface
     {
         $this->keys = null;
         $this->retrievedAt = null;
@@ -104,13 +136,13 @@ class Jwks implements JwksInterface
      * @throws SignerException
      * @throws ValidationException
      */
-    private function retrieve(): void
+    public function retrieve(): void
     {
         $data = (new WebhooksApi($this->api))->jwks();
         $this->validate($data);
 
-        $this->keys = $data['keys'];
-        $this->retrievedAt = Carbon::now()->timestamp;
+        $this->keys = (array)$data['keys'];
+        $this->retrievedAt = (int)Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::JWKS_KEYS, $this->toArray(), self::CACHE_TTL);
@@ -118,7 +150,7 @@ class Jwks implements JwksInterface
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      *
      * @throws ValidationException
      */

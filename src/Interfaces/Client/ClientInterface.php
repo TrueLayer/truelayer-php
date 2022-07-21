@@ -189,7 +189,6 @@ interface ClientInterface
 
     /**
      * @return WebhookInterface
-     * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
      */
     public function webhook(): WebhookInterface;
 

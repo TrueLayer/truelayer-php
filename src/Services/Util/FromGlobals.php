@@ -6,16 +6,35 @@ namespace TrueLayer\Services\Util;
 
 final class FromGlobals
 {
+    /**
+     * @return string
+     */
     public static function getPath(): string
     {
         return $_SERVER['REQUEST_URI'] ?? '';
     }
 
+    /**
+     * @return string
+     */
     public static function getBody(): string
     {
-        return file_get_contents('php://input') ?? '';
+        $raw = file_get_contents('php://input');
+        if (!empty($raw)) {
+            return $raw;
+        }
+
+        $post = json_encode($_POST);
+        if (!empty($post)) {
+            return $post;
+        }
+
+        return '';
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getHeaders(): array
     {
         $headers = [];

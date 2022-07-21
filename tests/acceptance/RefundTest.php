@@ -26,7 +26,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
         $account = Arr::first(
             $helper->client()->getMerchantAccounts(),
-            fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+            fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
         );
 
         $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -54,7 +54,6 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
         return $created;
     } catch (\TrueLayer\Exceptions\ApiResponseUnsuccessfulException $e) {
-        \var_dump($e->getErrors(), $e->getStatusCode());
         throw $e;
     }
 });
