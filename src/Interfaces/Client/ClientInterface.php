@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
+use TrueLayer\Interfaces\Webhook\WebhookInterface;
 
 interface ClientInterface
 {
@@ -73,10 +74,10 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     * @throws ValidationException
      *
      * @return PaymentRetrievedInterface
      */
@@ -86,11 +87,11 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
@@ -100,19 +101,19 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return RefundRequestInterface
      */
@@ -122,11 +123,11 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $refundId
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundRetrievedInterface
      */
@@ -135,11 +136,11 @@ interface ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
@@ -163,11 +164,11 @@ interface ClientInterface
     public function getPayout(string $id): Payout\PayoutRetrievedInterface;
 
     /**
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return MerchantAccountInterface[]
      */
@@ -176,15 +177,20 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return MerchantAccountInterface
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface;
+
+    /**
+     * @return WebhookInterface
+     */
+    public function webhook(): WebhookInterface;
 
     /**
      * @return HppInterface

@@ -11,5 +11,6 @@ class CustomHeaders
     public const SIGNATURE = 'Tl-Signature';
     public const IDEMPOTENCY_KEY = 'Idempotency-Key';
     public const CORRELATION_ID = 'X-Tl-Correlation-Id';
+    public const WEBHOOK_TIMESTAMP = 'X-Tl-Webhook-Timestamp';
     public const TL_AGENT = 'TL-Agent';
 }

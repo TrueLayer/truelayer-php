@@ -32,8 +32,9 @@
 9. [Payouts](#payouts)
 10. [Merchant accounts](#merchant-accounts)
 11. [Account identifiers](#account-identifiers)
-12. [Custom API calls](#custom-api-calls)
-13. [Error Handling](#error-handling)
+12. [Receiving webhook notifications](#webhooks)
+13. [Custom API calls](#custom-api-calls)
+14. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -754,6 +755,247 @@ foreach ($merchantAccount->getAccountIdentifiers() as $accountIdentifier) {
 }
 ```
 
+<a name="webhooks"></a>
+
+# Receiving webhook notifications
+
+You can register to receive notifications about your payment or mandate statuses via webhooks. The URI endpoint for the
+webhook can be [configured in the Console](https://docs.truelayer.com/docs/set-up-truelayer-console-for-payments-v3)
+
+> ⚠️ All incoming webhook requests must have their signatures verified, otherwise you run the risk of accepting fraudulent payment status events.
+
+This library makes handling webhook events easy and secure. You do not need to manually verify the incoming request
+signature as it is done for you. You should add the code below to your webhook endpoint; Alternatively the webhook
+service can be configured in your IoC container and in your endpoint you can simply call `$webhook->execute()`.
+
+## Getting a webhook instance
+
+If you already have access to a client instance, it's as easy as:
+
+```php
+$webhook = $client->webhook();
+```
+
+Alternatively, you can also create an instance from scratch:
+
+```php
+$webhook = \TrueLayer\Webhook::configure()
+    ->httpClient($httpClient)
+    ->cache($cacheImplementation, $encryptionKey)  // optional, but recommeded. See Caching
+    ->useProduction($useProduction) // bool
+    ->create();
+```
+
+## Handling events
+
+You handle events by registering handlers (closures or invokable classes) for the event types you care about. You can
+have as many handlers as you wish, however please note the order of execution is not guaranteed.
+
+Your handlers will only execute after the request signature is verified, and the incoming webhook type is matched to the
+interface you typehinted in your handler.
+
+[Jump to supported event types](#webhook-types)
+
+### Closure handlers
+
+```php
+use TrueLayer\Interfaces\Webhook;
+
+$client->webhook()
+    ->handler(function (Webhook\EventInterface $event) {
+        // Do something on any event
+    })
+    ->handler(function (Webhook\PaymentEventInterface $event) {
+        // Do something on any payment event
+    })
+    ->handler(function (Webhook\PaymentExecutedEventInterface $event) {
+        // Do something on payment executed event only
+    })
+    ->execute();
+```
+
+### Invokable classes
+
+```php
+use TrueLayer\Interfaces\Webhook;
+
+class LogEvents
+{
+    public function __invoke(Webhook\EventInterface $event)
+    {
+        // Log event
+    }
+}
+
+class UpdateOrderStatus
+{
+    public function __invoke(Webhook\PaymentExecutedEventInterface $event)
+    {
+        // Update your order when the payment is executed
+    }
+}
+
+// You can use ->handler()...
+$client->webhook()
+    ->handler(LogEvents::class)
+    ->handler(UpdateOrderStatus::class)
+    ->execute();
+
+// Or you can use ->handlers()...
+$client->webhook()
+    ->handlers(
+        LogEvents::class,
+        UpdateOrderStatus::class
+    )
+    ->execute();
+
+// If you need to, you can also provide instances:
+$client->webhook()
+    ->handlers(
+        new LogEvents(),
+        new UpdateOrderStatus()
+    )
+    ->execute();
+```
+
+<a name="webhook-types"></a>
+
+## Supported handler types
+
+This library supports handlers for the following event types:
+
+- payment_executed
+- payment_settled
+- payment_failed
+- refund_executed
+- refund_failed
+- payout_executed
+- payout_failed
+
+You can also handle other event types by typehinting `TrueLayer\Interfaces\Webhook\EventInterface`
+in your handler. You can then get the payload data by calling the `getBody()` method on your variable.
+
+All events inherit from `EventInterface`.
+
+```php
+
+use TrueLayer\Interfaces\Webhook;
+
+$client->webhook()
+    ->handler(function (Webhook\EventInterface $event) {
+        // handle any incoming event
+        $event->getEventId();
+        $event->getEventVersion();
+        $event->getSignature();
+        $event->getTimestamp();
+        $event->getType();
+        $event->getBody();
+    })
+    ->handler(function (Webhook\PaymentEventInterface $event) {
+        // handle any payment event
+        $event->getPaymentId();
+        
+        $paymentMethod = $event->getPaymentMethod();
+        $paymentMethod->getType();
+        
+        if ($paymentMethod instanceof Webhook\PaymentMethod\BankTransferPaymentMethodInterface) {
+            $paymentMethod->getProviderId();
+            $paymentMethod->getSchemeId();
+        }      
+       
+       if ($paymentMethod instanceof Webhook\PaymentMethod\MandatePaymentMethodInterface) {
+            $paymentMethod->getMandateId();
+       }
+    })
+    ->handler(function (Webhook\PaymentExecutedEventInterface $event) {
+        // handle payment executed
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getExecutedAt();
+        $event->getSettlementRiskCategory();
+    })
+    ->handler(function (Webhook\PaymentSettledEventInterface $event) {
+        // handle payment settled
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getSettledAt();
+        $event->getSettlementRiskCategory();
+        
+        $paymentSource = $event->getPaymentSource();
+        $paymentSource->getId();
+        $paymentSource->getAccountHolderName();
+        $paymentSource->getAccountIdentifiers(); // See Account Identifiers
+    })
+    ->handler(function (Webhook\PaymentFailedEventInterface $event) {
+        // handle payment failed
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getFailedAt();
+        $event->getFailureReason();
+        $event->getFailureStage();
+    })
+    ->handler(function (Webhook\RefundEventInterface $event) {
+        // handle any refund event
+        $event->getPaymentId();
+        $event->getRefundId();
+    })
+    ->handler(function (Webhook\RefundExecutedEventInterface $event) {
+        // handle refund executed
+        // Inherits from RefundEventInterface so provides same methods plus:
+        $event->getExecutedAt();
+    })
+    ->handler(function (Webhook\RefundFailedEventInterface $event) {
+        // handle refund failed
+        // Inherits from RefundEventInterface so provides same methods plus:
+        $event->getFailedAt();
+        $event->getFailureReason();
+    })
+    ->handler(function (Webhook\PayoutEventInterface $event) {
+        // handle any payout event
+        $event->getPayoutId();
+        $beneficiary = $event->getBeneficiary();
+        $beneficiary->getType();
+        
+        if ($beneficiary instanceof Webhook\Beneficiary\BusinessAccountBeneficiaryInterface) {
+            $beneficiary->getType();
+        }
+        
+        if ($beneficiary instanceof Webhook\Beneficiary\PaymentSourceBeneficiaryInterface) {
+            $beneficiary->getPaymentSourceId();
+            $beneficiary->getUserId();
+        }
+    })
+    ->handler(function (Webhook\PayoutExecutedEventInterface $event) {
+        // handle payout executed
+        // Inherits from PayoutEventInterface so provides same methods plus:
+        $event->getExecutedAt();
+    })
+    ->handler(function (Webhook\PayoutFailedEventInterface $event) {
+        // handle payout failed
+        // Inherits from PayoutEventInterface so provides same methods plus:
+        $event->getFailedAt();
+        $event->getFailureReason();
+    })
+    ->execute();
+```
+
+## Overriding globals
+
+By default the webhook service will use php globals to read the endpoint path and request headers and body. This
+behaviour can be overriden if necessary (for example you may be calling `execute()` in a queued job.):
+
+```php
+    $client->webhook()
+        ->handlers(...)
+        ->path('/my/custom/path')
+        ->headers($headers) // flat key-value array
+        ->body($body) // the raw request body string
+        ->execute();
+```
+
+## Signature verification failure
+
+If the webhook signature cannot be verified, a \TrueLayer\Exceptions\WebhookVerificationFailedException will be thrown.
+A number of other exceptions will be thrown when the webhook service is misconfigured, please
+see [error handling](#error-handling)
+
 <a name="account-identifiers"></a>
 
 # Account identifiers
@@ -890,4 +1132,37 @@ Thrown if the client library fails to decrypt the value of a cached key.
 
 ```php
 \TrueLayer\Exceptions\DecryptException
+```
+
+### TLPublicKeysNotFound
+
+Thrown when the webhook service cannot retrieve TL's public keys.
+
+```php
+\TrueLayer\Exceptions\TLPublicKeysNotFound
+```
+
+### WebhookHandlerException
+
+Thrown when the webhook service is provided with an invalid handler.
+
+```php
+\TrueLayer\Exceptions\WebhookHandlerException
+```
+
+### WebhookHandlerInvalidArgumentException
+
+Thrown when the webhook service cannot get the request body, signature header or the provided handlers have invalid
+arguments.
+
+```php
+\TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException
+```
+
+### WebhookVerificationFailedException
+
+Thrown when the webhook signature cannot be verified.
+
+```php
+\TrueLayer\Exceptions\WebhookVerificationFailedException
 ```

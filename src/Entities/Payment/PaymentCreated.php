@@ -10,13 +10,17 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 
-final class PaymentCreated extends Entity implements PaymentCreatedInterface
+final class PaymentCreated extends Entity implements PaymentCreatedInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var string
      */
@@ -75,8 +79,8 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return HppInterface
      */
@@ -90,33 +94,33 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface
     /**
      * @param string $returnUri
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface
     {
-        $data = $this->apiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), $returnUri);
+        $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), $returnUri);
 
         return $this->make(AuthorizationFlowAuthorizingInterface::class, $data);
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {
-        $data = $this->apiFactory()->paymentsApi()->retrieve($this->getId());
+        $data = $this->getApiFactory()->paymentsApi()->retrieve($this->getId());
 
         return $this->make(PaymentRetrievedInterface::class, $data);
     }

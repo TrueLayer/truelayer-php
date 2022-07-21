@@ -5,8 +5,14 @@ declare(strict_types=1);
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
+use TrueLayer\Interfaces\Webhook\WebhookInterface;
 use TrueLayer\Services\Util\Retry;
 use TrueLayer\Tests\Integration\Mocks\AuthResponse;
+use TrueLayer\Tests\Integration\Mocks\Signing;
 
 $httpTransactions = [];
 $sleeps = [];
@@ -27,13 +33,13 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
- * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ * @throws ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
- * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws ApiResponseUnsuccessfulException
+ * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  *
- * @return \TrueLayer\Interfaces\Client\ConfigInterface
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -60,10 +66,10 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
- * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
- * @throws \TrueLayer\Exceptions\SignerException
+ * @throws SignerException
+ * @throws ApiRequestJsonSerializationException
  *
  * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
@@ -84,10 +90,10 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
- * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
- * @throws \TrueLayer\Exceptions\SignerException
+ * @throws SignerException
+ * @throws ApiRequestJsonSerializationException
  *
  * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  */
@@ -119,4 +125,25 @@ function getSentHttpRequests(): array
 function getRequestPayload(int $requestIndex)
 {
     return \json_decode(\getSentHttpRequests()[$requestIndex]->getBody()->getContents(), true);
+}
+
+/**
+ * @param string $body
+ *
+ * @throws ApiRequestJsonSerializationException
+ * @throws ApiResponseUnsuccessfulException
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @throws SignerException
+ * @throws WebhookHandlerInvalidArgumentException
+ * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
+ *
+ * @return WebhookInterface
+ */
+function webhook(string $body): WebhookInterface
+{
+    return \rawClient([Signing::getPublicKeysResponse()])->create()
+        ->webhook()
+        ->body($body)
+        ->path(Signing::getPath())
+        ->headers(Signing::getHeaders($body));
 }

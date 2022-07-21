@@ -15,8 +15,8 @@ interface EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T
      */
@@ -25,11 +25,22 @@ interface EntityFactoryInterface
     /**
      * @template T
      *
+     * @param class-string<T> $concrete
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return T
+     */
+    public function makeConcrete(string $concrete);
+
+    /**
+     * @template T
+     *
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T[]
      */

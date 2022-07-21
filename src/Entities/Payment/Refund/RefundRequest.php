@@ -10,14 +10,18 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundCreatedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Services\Util\PaymentId;
+use TrueLayer\Traits\ProvidesApiFactory;
 
-final class RefundRequest extends Entity implements RefundRequestInterface
+final class RefundRequest extends Entity implements RefundRequestInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var string
      */
@@ -93,17 +97,17 @@ final class RefundRequest extends Entity implements RefundRequestInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return RefundCreatedInterface
      */
     public function create(): RefundCreatedInterface
     {
-        $data = $this->apiFactory()->paymentsApi()->createRefund(
+        $data = $this->getApiFactory()->paymentsApi()->createRefund(
             $this->paymentId,
             $this->validate()->toArray()
         );

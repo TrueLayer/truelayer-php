@@ -54,7 +54,6 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
         return $created;
     } catch (\TrueLayer\Exceptions\ApiResponseUnsuccessfulException $e) {
-        \var_dump($e->getErrors(), $e->getStatusCode());
         throw $e;
     }
 });

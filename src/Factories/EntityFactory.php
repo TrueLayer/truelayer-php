@@ -6,18 +6,9 @@ namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Arr;
-use TrueLayer\Constants\AccountIdentifierTypes;
-use TrueLayer\Constants\AuthorizationFlowActionTypes;
-use TrueLayer\Constants\AuthorizationFlowStatusTypes;
-use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Endpoints;
-use TrueLayer\Constants\PaymentMethods;
-use TrueLayer\Constants\PaymentStatus;
-use TrueLayer\Constants\PayoutStatus;
-use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
-use TrueLayer\Entities\User;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces;
@@ -30,154 +21,43 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private ValidatorFactory $validatorFactory;
 
     /**
-     * @var Interfaces\Factories\ApiFactoryInterface
+     * @var Interfaces\Factories\ApiFactoryInterface|null
      */
-    private Interfaces\Factories\ApiFactoryInterface $apiFactory;
+    private ?Interfaces\Factories\ApiFactoryInterface $apiFactory;
 
     /**
-     * @var Interfaces\Client\ConfigInterface
+     * @var Interfaces\Configuration\ConfigInterface
      */
-    private Interfaces\Client\ConfigInterface $sdkConfig;
+    private Interfaces\Configuration\ConfigInterface $sdkConfig;
 
     /**
-     * @param ValidatorFactory                         $validatorFactory
-     * @param Interfaces\Factories\ApiFactoryInterface $apiFactory
-     * @param Interfaces\Client\ConfigInterface        $sdkConfig
+     * @var array<string, string>
+     */
+    private array $bindings;
+
+    /**
+     * @var array<string, array<string, string>>
+     */
+    private array $discriminations;
+
+    /**
+     * @param ValidatorFactory                              $validatorFactory
+     * @param Interfaces\Configuration\ConfigInterface      $sdkConfig
+     * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
         ValidatorFactory $validatorFactory,
-        Interfaces\Factories\ApiFactoryInterface $apiFactory,
-        Interfaces\Client\ConfigInterface $sdkConfig)
-    {
+        Interfaces\Configuration\ConfigInterface $sdkConfig,
+        Interfaces\Factories\ApiFactoryInterface $apiFactory = null
+    ) {
         $this->validatorFactory = $validatorFactory;
-        $this->apiFactory = $apiFactory;
         $this->sdkConfig = $sdkConfig;
+        $this->apiFactory = $apiFactory;
+
+        $configPath = \dirname(__FILE__, 3) . '/config';
+        $this->bindings = include "{$configPath}/bindings.php";
+        $this->discriminations = include "{$configPath}/discriminations.php";
     }
-
-    private const BINDINGS = [
-        Interfaces\UserInterface::class => User::class,
-        Interfaces\HppInterface::class => 'makeHpp',
-
-        Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Beneficiary\BeneficiaryBuilder::class,
-        Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
-        Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
-
-        Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
-        Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
-        Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
-        Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,
-        Interfaces\Payment\PaymentAuthorizedInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorized::class,
-        Interfaces\Payment\PaymentExecutedInterface::class => Entities\Payment\PaymentRetrieved\PaymentExecuted::class,
-        Interfaces\Payment\PaymentSettledInterface::class => Entities\Payment\PaymentRetrieved\PaymentSettled::class,
-        Interfaces\Payment\PaymentFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentFailed::class,
-        Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
-
-        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlow::class,
-        Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\AuthorizationFlow\Configuration::class,
-        Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class => Entities\Payment\AuthorizationFlow\Action\ProviderSelectionAction::class,
-        Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class => Entities\Payment\AuthorizationFlow\Action\RedirectAction::class,
-        Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class => Entities\Payment\AuthorizationFlow\Action\WaitAction::class,
-        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlowAuthorizing::class,
-        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailed::class,
-
-        Interfaces\PaymentMethod\PaymentMethodBuilderInterface::class => Entities\Payment\PaymentMethod\PaymentMethodBuilder::class,
-        Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Payment\PaymentMethod\BankTransferPaymentMethod::class,
-
-        Interfaces\Payment\RefundRequestInterface::class => Entities\Payment\Refund\RefundRequest::class,
-        Interfaces\Payment\RefundCreatedInterface::class => Entities\Payment\Refund\RefundCreated::class,
-        Interfaces\Payment\RefundPendingInterface::class => Entities\Payment\Refund\RefundPending::class,
-        Interfaces\Payment\RefundAuthorizedInterface::class => Entities\Payment\Refund\RefundAuthorized::class,
-        Interfaces\Payment\RefundExecutedInterface::class => Entities\Payment\Refund\RefundExecuted::class,
-        Interfaces\Payment\RefundFailedInterface::class => Entities\Payment\Refund\RefundFailed::class,
-
-        Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
-        Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
-        Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
-        Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
-
-        Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
-        Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
-        Interfaces\AccountIdentifier\ScanDetailsInterface::class => Entities\AccountIdentifier\Iban::class,
-        Interfaces\AccountIdentifier\IbanInterface::class => Entities\AccountIdentifier\Iban::class,
-        Interfaces\AccountIdentifier\IbanDetailsInterface::class => Entities\AccountIdentifier\Iban::class,
-        Interfaces\AccountIdentifier\BbanInterface::class => Entities\AccountIdentifier\Bban::class,
-        Interfaces\AccountIdentifier\BbanDetailsInterface::class => Entities\AccountIdentifier\Bban::class,
-        Interfaces\AccountIdentifier\NrbInterface::class => Entities\AccountIdentifier\Nrb::class,
-        Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
-
-        Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
-        Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
-        Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
-        Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
-        Interfaces\Payout\PayoutPendingInterface::class => Entities\Payout\PayoutRetrieved\PayoutPending::class,
-        Interfaces\Payout\PayoutAuthorizedInterface::class => Entities\Payout\PayoutRetrieved\PayoutAuthorized::class,
-        Interfaces\Payout\PayoutExecutedInterface::class => Entities\Payout\PayoutRetrieved\PayoutExecuted::class,
-        Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
-
-        Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
-    ];
-
-    private const TYPES = [
-        Interfaces\Payment\PaymentRetrievedInterface::class => [
-            'array_key' => 'status',
-            PaymentStatus::AUTHORIZATION_REQUIRED => Interfaces\Payment\PaymentAuthorizationRequiredInterface::class,
-            PaymentStatus::AUTHORIZING => Interfaces\Payment\PaymentAuthorizingInterface::class,
-            PaymentStatus::AUTHORIZED => Interfaces\Payment\PaymentAuthorizedInterface::class,
-            PaymentStatus::EXECUTED => Interfaces\Payment\PaymentExecutedInterface::class,
-            PaymentStatus::SETTLED => Interfaces\Payment\PaymentSettledInterface::class,
-            PaymentStatus::FAILED => Interfaces\Payment\PaymentFailedInterface::class,
-        ],
-        Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface::class => [
-            'array_key' => 'status',
-            AuthorizationFlowStatusTypes::AUTHORIZING => Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface::class,
-            AuthorizationFlowStatusTypes::FAILED => Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface::class,
-        ],
-        Interfaces\Payment\AuthorizationFlow\ActionInterface::class => [
-            'array_key' => 'type',
-            AuthorizationFlowActionTypes::PROVIDER_SELECTION => Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface::class,
-            AuthorizationFlowActionTypes::REDIRECT => Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface::class,
-            AuthorizationFlowActionTypes::WAIT => Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface::class,
-        ],
-        Interfaces\AccountIdentifier\AccountIdentifierInterface::class => [
-            'array_key' => 'type',
-            AccountIdentifierTypes::SORT_CODE_ACCOUNT_NUMBER => Interfaces\AccountIdentifier\ScanInterface::class,
-            AccountIdentifierTypes::IBAN => Interfaces\AccountIdentifier\IbanInterface::class,
-            AccountIdentifierTypes::BBAN => Interfaces\AccountIdentifier\BbanInterface::class,
-            AccountIdentifierTypes::NRB => Interfaces\AccountIdentifier\NrbInterface::class,
-        ],
-        Interfaces\Beneficiary\BeneficiaryInterface::class => [
-            'array_key' => 'type',
-            BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
-            BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Beneficiary\MerchantBeneficiaryInterface::class,
-        ],
-        Interfaces\PaymentMethod\PaymentMethodInterface::class => [
-            'array_key' => 'type',
-            PaymentMethods::BANK_TRANSFER => Interfaces\PaymentMethod\BankTransferPaymentMethodInterface::class,
-        ],
-        Interfaces\Provider\ProviderSelectionInterface::class => [
-            'array_key' => 'type',
-            PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
-        ],
-        Interfaces\Payout\PayoutBeneficiaryInterface::class => [
-            'array_key' => 'type',
-            BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
-            BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
-        ],
-        Interfaces\Payout\PayoutRetrievedInterface::class => [
-            'array_key' => 'status',
-            PayoutStatus::PENDING => Interfaces\Payout\PayoutPendingInterface::class,
-            PayoutStatus::AUTHORIZED => Interfaces\Payout\PayoutAuthorizedInterface::class,
-            PayoutStatus::EXECUTED => Interfaces\Payout\PayoutExecutedInterface::class,
-            PayoutStatus::FAILED => Interfaces\Payout\PayoutFailedInterface::class,
-        ],
-        Interfaces\Payment\RefundRetrievedInterface::class => [
-            'array_key' => 'status',
-            RefundStatus::PENDING => Interfaces\Payment\RefundPendingInterface::class,
-            RefundStatus::AUTHORIZED => Interfaces\Payment\RefundAuthorizedInterface::class,
-            RefundStatus::EXECUTED => Interfaces\Payment\RefundExecutedInterface::class,
-            RefundStatus::FAILED => Interfaces\Payment\RefundFailedInterface::class,
-        ],
-    ];
 
     /**
      * @template T of object
@@ -188,12 +68,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
+     * @return T
      * @return T implements
      */
     public function make(string $abstract, array $data = null)
     {
         $abstract = $this->getTypeAbstract($abstract, $data);
-        $concrete = self::BINDINGS[$abstract] ?? null;
+        $concrete = $this->bindings[$abstract] ?? null;
 
         if (!$concrete) {
             throw new InvalidArgumentException("Could not find concrete implementation for {$abstract}");
@@ -223,8 +104,8 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T[]
      */
@@ -262,16 +143,24 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @return T
      */
-    private function makeConcrete(string $concrete)
+    public function makeConcrete(string $concrete)
     {
         // We could just return the new instances but PHPStan doesn't understand
         // is_subclass_of so we need to rely on the instanceof operator.
         $instance = null;
 
         if (\is_subclass_of($concrete, Entities\Entity::class)) {
-            $instance = new $concrete($this->validatorFactory, $this, $this->apiFactory);
+            $instance = new $concrete($this->validatorFactory, $this);
         } elseif (\is_subclass_of($concrete, Entities\EntityBuilder::class)) {
             $instance = new $concrete($this);
+        }
+
+        if ($instance instanceof Interfaces\HasApiFactoryInterface) {
+            if (!$this->apiFactory) {
+                throw new InvalidArgumentException("{$concrete} requires ApiFactory but none provided");
+            }
+
+            $instance->apiFactory($this->apiFactory);
         }
 
         if ($instance instanceof $concrete) {
@@ -282,7 +171,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * Recursively look in the TYPES array to find an abstract based on the provided data.
+     * Recursively look in the discriminations array to find an abstract based on the provided data.
      *
      * @param class-string $abstract
      * @param mixed[]|null $data
@@ -291,11 +180,11 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      */
     private function getTypeAbstract(string $abstract, array $data = null): string
     {
-        if (isset(self::TYPES[$abstract]) && !empty($data)) {
-            $typeConfig = self::TYPES[$abstract];
+        if (isset($this->discriminations[$abstract]) && !empty($data)) {
+            $typeConfig = $this->discriminations[$abstract];
 
-            // Get the "type" of the model based on the provided array_key
-            $key = $typeConfig['array_key'];
+            // Get the "type" of the model based on the provided discriminate_on
+            $key = $typeConfig['discriminate_on'];
             $type = Arr::get($data, $key);
 
             if (\is_string($type) && isset($typeConfig[$type])) {

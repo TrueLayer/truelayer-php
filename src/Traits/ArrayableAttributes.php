@@ -106,9 +106,9 @@ trait ArrayableAttributes
 
             $value = \method_exists($this, $method)
                 ? $this->{$method}() : (
-                \property_exists($this, $propertyKey) && isset($this->{$propertyKey})
-                    ? $this->{$propertyKey}
-                    : null
+                    \property_exists($this, $propertyKey) && isset($this->{$propertyKey})
+                        ? $this->{$propertyKey}
+                        : null
                 );
 
             Arr::set($array, $dotNotation, $value);

@@ -12,15 +12,19 @@ use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Auth\AccessTokenInterface;
 use TrueLayer\Interfaces\Client\ClientFactoryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
-use TrueLayer\Interfaces\Client\ConfigInterface;
+use TrueLayer\Interfaces\Configuration\ClientConfigInterface;
 use TrueLayer\Services\ApiClient\ApiClient;
 use TrueLayer\Services\ApiClient\Decorators;
 use TrueLayer\Services\Auth\AccessToken;
 use TrueLayer\Services\Client\Client;
-use TrueLayer\Services\Client\Config;
+use TrueLayer\Services\Client\ClientConfig;
+use TrueLayer\Signing\Signer;
+use TrueLayer\Traits\MakeValidatorFactory;
 
 final class ClientFactory implements ClientFactoryInterface
 {
+    use MakeValidatorFactory;
+
     /**
      * @var ValidatorFactory
      */
@@ -42,58 +46,47 @@ final class ClientFactory implements ClientFactoryInterface
     private ApiClientInterface $apiClient;
 
     /**
-     * @param ConfigInterface $config
+     * @param ClientConfigInterface $config
      *
      * @throws SignerException
      *
      * @return ClientInterface
      */
-    public function make(ConfigInterface $config): ClientInterface
+    public function make(ClientConfigInterface $config): ClientInterface
     {
-        $this->makeValidatorFactory();
+        $this->validatorFactory = $this->makeValidatorFactory();
         $this->makeHttpClient($config);
         $this->makeAuthToken($config);
         $this->makeApiClient($config);
 
         $apiFactory = new ApiFactory($this->apiClient);
-        $entityFactory = new EntityFactory($this->validatorFactory, $apiFactory, $config);
+        $entityFactory = new EntityFactory($this->validatorFactory, $config, $apiFactory);
 
-        return new Client($this->apiClient, $apiFactory, $entityFactory);
+        return new Client(
+            $this->apiClient,
+            $apiFactory,
+            $entityFactory,
+            $config
+        );
     }
 
     /**
      * Build the HTTP client.
      *
-     * @param ConfigInterface $config
+     * @param ClientConfigInterface $config
      */
-    private function makeHttpClient(ConfigInterface $config): void
+    private function makeHttpClient(ClientConfigInterface $config): void
     {
         $this->httpClient = $config->getHttpClient();
-    }
-
-    /**
-     * Build the validation factory
-     * Used for validating api requests and responses.
-     */
-    private function makeValidatorFactory(): void
-    {
-        $filesystem = new \Illuminate\Filesystem\Filesystem();
-        $langPath = \dirname(__FILE__, 3) . '/lang';
-        $loader = new \Illuminate\Translation\FileLoader($filesystem, $langPath);
-        $loader->addNamespace('lang', $langPath);
-        $loader->load('en', 'validation', 'lang');
-        $translationFactory = new \Illuminate\Translation\Translator($loader, 'en');
-
-        $this->validatorFactory = new \Illuminate\Validation\Factory($translationFactory);
     }
 
     /**
      * Build the auth token service
      * Handles the auth token retrieval & manages expiration.
      *
-     * @param ConfigInterface $config
+     * @param ClientConfigInterface $config
      */
-    private function makeAuthToken(ConfigInterface $config): void
+    private function makeAuthToken(ClientConfigInterface $config): void
     {
         $authBaseUri = $config->shouldUseProduction()
             ? Endpoints::AUTH_PROD_URL
@@ -117,14 +110,14 @@ final class ClientFactory implements ClientFactoryInterface
      * Build the API client
      * Handles API calls, including signing, validation & error handling.
      *
-     * @param ConfigInterface $config
+     * @param ClientConfigInterface $config
      *
      * @throws SignerException
      */
-    private function makeApiClient(ConfigInterface $config): void
+    private function makeApiClient(ClientConfigInterface $config): void
     {
         try {
-            $signer = \TrueLayer\Signing\Signer::signWithPem(
+            $signer = Signer::signWithPem(
                 $config->getKeyId(),
                 $config->getPem(),
                 $config->getPassphrase()
@@ -146,10 +139,10 @@ final class ClientFactory implements ClientFactoryInterface
     }
 
     /**
-     * @return ConfigInterface
+     * @return ClientConfigInterface
      */
-    public static function makeConfigurator(): ConfigInterface
+    public static function makeConfigurator(): ClientConfigInterface
     {
-        return new Config(new ClientFactory());
+        return new ClientConfig(new ClientFactory());
     }
 }

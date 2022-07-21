@@ -10,14 +10,18 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 use TrueLayer\Validation\ValidType;
 
-final class PaymentSettled extends _PaymentWithAuthorizationConfig implements PaymentSettledInterface
+final class PaymentSettled extends _PaymentWithAuthorizationConfig implements PaymentSettledInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var PaymentSourceInterface
      */
@@ -94,8 +98,8 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return RefundRequestInterface
      */
@@ -108,33 +112,33 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     /**
      * @param string $refundId
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundRetrievedInterface
      */
     public function getRefund(string $refundId): RefundRetrievedInterface
     {
-        $data = $this->apiFactory()->paymentsApi()->retrieveRefund($this->getId(), $refundId);
+        $data = $this->getApiFactory()->paymentsApi()->retrieveRefund($this->getId(), $refundId);
 
         return $this->make(RefundRetrievedInterface::class, $data);
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundRetrievedInterface[]
      */
     public function getRefunds(): array
     {
-        $data = $this->apiFactory()->paymentsApi()->retrieveRefunds($this->getId());
+        $data = $this->getApiFactory()->paymentsApi()->retrieveRefunds($this->getId());
 
         return $this->makeMany(RefundRetrievedInterface::class, $data);
     }

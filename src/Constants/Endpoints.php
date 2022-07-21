@@ -15,6 +15,10 @@ class Endpoints
     public const HPP_PROD_URL = 'https://payment.truelayer.com/payments';
     public const HPP_SANDBOX_URL = 'https://payment.truelayer-sandbox.com/payments';
 
+    public const WEBHOOKS_PROD_URL = 'https://webhooks.truelayer.com';
+    public const WEBHOOKS_SANDBOX_URL = 'https://webhooks.truelayer-sandbox.com';
+    public const JWKS = '/.well-known/jwks';
+
     public const TOKEN = '/connect/token';
     public const PAYMENTS_CREATE = '/payments';
     public const PAYMENTS_RETRIEVE = '/payments/{id}';
