@@ -111,9 +111,9 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
         }
 
         $type = $parameters[0]->getType();
+        /** @var class-string|null $typeName */
         $typeName = $type instanceof ReflectionNamedType ? $type->getName() : null;
 
-        // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/5369
         if (!$typeName || !\is_subclass_of($typeName, EventInterface::class) && $typeName !== EventInterface::class) {
             throw new WebhookHandlerInvalidArgumentException('Webhook handler argument should be of type ' . EventInterface::class);
         }
