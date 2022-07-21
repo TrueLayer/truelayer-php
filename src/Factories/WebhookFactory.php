@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Interfaces\Configuration\ConfigInterface;
 use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
@@ -26,19 +25,8 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
     use MakeValidatorFactory;
 
     /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
-
-    /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $httpClient;
-
-    private JwksManagerInterface $jwks;
-
-    /**
      * @param ConfigInterface $config
+     *
      * @return WebhookInterface
      */
     public function make(ConfigInterface $config): WebhookInterface
@@ -55,8 +43,9 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
     }
 
     /**
-     * @param ConfigInterface $config
+     * @param ConfigInterface  $config
      * @param ValidatorFactory $validatorFactory
+     *
      * @return JwksManagerInterface
      */
     private function makeJwks(ConfigInterface $config, ValidatorFactory $validatorFactory): JwksManagerInterface

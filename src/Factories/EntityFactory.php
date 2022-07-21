@@ -41,35 +41,35 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private array $discriminations;
 
     /**
-     * @param ValidatorFactory $validatorFactory
-     * @param Interfaces\Configuration\ConfigInterface $sdkConfig
+     * @param ValidatorFactory                              $validatorFactory
+     * @param Interfaces\Configuration\ConfigInterface      $sdkConfig
      * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
-        ValidatorFactory                         $validatorFactory,
+        ValidatorFactory $validatorFactory,
         Interfaces\Configuration\ConfigInterface $sdkConfig,
         Interfaces\Factories\ApiFactoryInterface $apiFactory = null
-    )
-    {
+    ) {
         $this->validatorFactory = $validatorFactory;
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;
 
         $configPath = \dirname(__FILE__, 3) . '/config';
-        $this->bindings = include("$configPath/bindings.php");
-        $this->discriminations = include("$configPath/discriminations.php");
+        $this->bindings = include "{$configPath}/bindings.php";
+        $this->discriminations = include "{$configPath}/discriminations.php";
     }
 
     /**
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T
      * @return T implements
-     * @throws InvalidArgumentException
-     * @throws ValidationException
      */
     public function make(string $abstract, array $data = null)
     {
@@ -102,12 +102,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[] $data
+     * @param mixed[]         $data
+     *
+     * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T[]
-     * @throws ValidationException
-     *
-     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -121,9 +121,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
      *
+     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -139,9 +139,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
-     * @return T
      * @throws InvalidArgumentException
      *
+     * @return T
      */
     public function makeConcrete(string $concrete)
     {
@@ -157,7 +157,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 
         if ($instance instanceof Interfaces\HasApiFactoryInterface) {
             if (!$this->apiFactory) {
-                throw new InvalidArgumentException("$concrete requires ApiFactory but none provided");
+                throw new InvalidArgumentException("{$concrete} requires ApiFactory but none provided");
             }
 
             $instance->apiFactory($this->apiFactory);

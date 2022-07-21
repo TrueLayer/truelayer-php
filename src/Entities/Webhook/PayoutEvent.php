@@ -22,7 +22,7 @@ class PayoutEvent extends Event implements PayoutEventInterface
 
     protected function casts(): array
     {
-        return array_merge(parent::casts(), [
+        return \array_merge(parent::casts(), [
             'beneficiary' => BeneficiaryInterface::class,
         ]);
     }
@@ -32,7 +32,7 @@ class PayoutEvent extends Event implements PayoutEventInterface
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'payout_id',
             'beneficiary',
         ]);
@@ -43,7 +43,7 @@ class PayoutEvent extends Event implements PayoutEventInterface
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'payout_id' => 'required|string',
             'beneficiary' => [ValidType::of(BeneficiaryInterface::class)],
         ]);

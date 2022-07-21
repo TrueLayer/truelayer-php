@@ -23,15 +23,15 @@ class PaymentSourceBeneficiary extends Beneficiary implements PaymentSourceBenef
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'payment_source_id',
-            'user_id'
+            'user_id',
         ]);
     }
 
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'payment_source_id' => 'required|string',
             'user_id' => 'required|string',
         ]);

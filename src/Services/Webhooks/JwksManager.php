@@ -47,13 +47,13 @@ class JwksManager implements JwksManagerInterface
     private ?int $retrievedAt = null;
 
     /**
-     * @param ApiClientInterface $api
+     * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
-     * @param ValidatorFactory $validatorFactory
+     * @param ValidatorFactory             $validatorFactory
      */
-    public function __construct(ApiClientInterface       $api,
+    public function __construct(ApiClientInterface $api,
                                 ?EncryptedCacheInterface $cache,
-                                ValidatorFactory         $validatorFactory)
+                                ValidatorFactory $validatorFactory)
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -61,22 +61,22 @@ class JwksManager implements JwksManagerInterface
     }
 
     /**
-     * @return mixed[]
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
+     * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function getJsonKeys(): array
     {
         if (!$this->keys && $this->cache && $this->cache->has(CacheKeys::JWKS_KEYS)) {
             $data = $this->cache->get(CacheKeys::JWKS_KEYS);
 
-            if (is_array($data)) {
-                $this->keys = isset($data['keys']) && is_array($data['keys']) ? $data['keys'] : null;
-                $this->retrievedAt = isset($data['retrieved_at']) && is_int($data['retrieved_at']) ? $data['retrieved_at'] : null;
+            if (\is_array($data)) {
+                $this->keys = isset($data['keys']) && \is_array($data['keys']) ? $data['keys'] : null;
+                $this->retrievedAt = isset($data['retrieved_at']) && \is_int($data['retrieved_at']) ? $data['retrieved_at'] : null;
             }
         }
 
@@ -87,7 +87,7 @@ class JwksManager implements JwksManagerInterface
         if (!$this->keys) {
             throw new TLPublicKeysNotFound();
         }
-        
+
         return $this->keys;
     }
 
@@ -116,11 +116,11 @@ class JwksManager implements JwksManagerInterface
      */
     public function hasCache(): bool
     {
-        return !!$this->cache;
+        return (bool) $this->cache;
     }
 
     /**
-     * @return JwksInterface
+     * @return JwksManagerInterface
      */
     public function clear(): JwksManagerInterface
     {
@@ -141,8 +141,8 @@ class JwksManager implements JwksManagerInterface
         $data = (new WebhooksApi($this->api))->jwks();
         $this->validate($data);
 
-        $this->keys = (array)$data['keys'];
-        $this->retrievedAt = (int)Carbon::now()->timestamp;
+        $this->keys = (array) $data['keys'];
+        $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::JWKS_KEYS, $this->toArray(), self::CACHE_TTL);

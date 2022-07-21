@@ -7,13 +7,15 @@ namespace TrueLayer\Interfaces\Webhook;
 interface RefundEventInterface extends EventInterface
 {
     /**
-     * Get the unique ID for the refund
+     * Get the unique ID for the refund.
+     *
      * @return string
      */
     public function getRefundId(): string;
 
     /**
-     * Get the unique ID for the payment
+     * Get the unique ID for the payment.
+     *
      * @return string
      */
     public function getPaymentId(): string;

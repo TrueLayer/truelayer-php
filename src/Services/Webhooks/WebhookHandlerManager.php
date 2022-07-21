@@ -24,17 +24,18 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
 
     /**
      * @param callable|class-string $handler
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
      */
     public function add($handler): void
     {
-        if (is_string($handler) && class_exists($handler)) {
+        if (\is_string($handler) && \class_exists($handler)) {
             $handler = $this->instantiateHandler($handler);
         }
 
-        if (!is_callable($handler)) {
+        if (!\is_callable($handler)) {
             throw new WebhookHandlerException('The provided webhook handler is not callable');
         }
 
@@ -48,10 +49,12 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
 
     /**
      * @param callable|class-string ...$handlers
-     * @return void
-     * @throws ReflectionException
+     *
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
+     * @throws ReflectionException
+     *
+     * @return void
      */
     public function addMany(...$handlers): void
     {
@@ -74,39 +77,43 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
 
     /**
      * @param EventInterface $event
+     *
      * @return Closure[]
      */
     private function getFor(EventInterface $event): array
     {
-        $interfaces = class_implements($event);
+        $interfaces = \class_implements($event);
         if (!$interfaces) {
             return [];
         }
 
-        $interfaces = array_unique($interfaces);
-        $handlers = array_map(fn($interface) => $this->handlers[$interface] ?? [], $interfaces);
+        $interfaces = \array_unique($interfaces);
+        $handlers = \array_map(fn ($interface) => $this->handlers[$interface] ?? [], $interfaces);
+
         return Arr::flatten($handlers);
     }
 
     /**
      * @param Closure $handler
-     * @return class-string
-     * @throws ReflectionException
+     *
      * @throws WebhookHandlerInvalidArgumentException
+     * @throws ReflectionException
+     *
+     * @return class-string
      */
     private function getHandlerParameterType(Closure $handler): string
     {
         $ref = new ReflectionFunction($handler);
         $parameters = $ref->getParameters();
 
-        if (count($parameters) !== 1) {
+        if (\count($parameters) !== 1) {
             throw new WebhookHandlerInvalidArgumentException('Webhook handler function signature expects single argument');
         }
 
         $type = $parameters[0]->getType();
         $typeName = $type instanceof ReflectionNamedType ? $type->getName() : null;
 
-        if (!$typeName || !is_subclass_of($typeName, EventInterface::class) && $typeName !== EventInterface::class) {
+        if (!$typeName || !\is_subclass_of($typeName, EventInterface::class) && $typeName !== EventInterface::class) {
             throw new WebhookHandlerInvalidArgumentException('Webhook handler argument should be of type ' . EventInterface::class);
         }
 
@@ -114,18 +121,21 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
     }
 
     /**
-     * If a handler name is provided instead of an instance, we instantiate it
+     * If a handler name is provided instead of an instance, we instantiate it.
+     *
      * @param class-string $class
-     * @return callable
-     * @throws ReflectionException
+     *
      * @throws WebhookHandlerException
+     * @throws ReflectionException
+     *
+     * @return mixed
      */
     private function instantiateHandler(string $class)
     {
         $constructor = (new ReflectionClass($class))->getConstructor();
 
         if ($constructor && $constructor->getNumberOfParameters() > 0) {
-            throw new WebhookHandlerException("Could not instantiate webhook handler: $class");
+            throw new WebhookHandlerException("Could not instantiate webhook handler: {$class}");
         }
 
         return new $class();

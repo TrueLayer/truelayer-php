@@ -16,16 +16,16 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         $event = $evt;
     })->execute();
 
-    expect($event)->toBeInstanceOf(RefundEventInterface::class);
-    expect($event->getEventId())->toBe('f6321c84-1797-4e66-acd4-d768c09f9edf');
-    expect($event->getEventVersion())->toBe(1);
-    expect($event->getPaymentId())->toBe('dfb531ca-8e25-4753-bc23-0c7eeb8d4f29');
-    expect($event->getRefundId())->toBe('af386a24-e5e6-4508-a4e4-82d4bc4e3677');
-    expect($event->getTimestamp()->format(DateTime::FORMAT))->toBe('2022-02-16T16:21:14.000000Z');
-    expect($event->getBody())->toBeJson();
+    \expect($event)->toBeInstanceOf(RefundEventInterface::class);
+    \expect($event->getEventId())->toBe('f6321c84-1797-4e66-acd4-d768c09f9edf');
+    \expect($event->getEventVersion())->toBe(1);
+    \expect($event->getPaymentId())->toBe('dfb531ca-8e25-4753-bc23-0c7eeb8d4f29');
+    \expect($event->getRefundId())->toBe('af386a24-e5e6-4508-a4e4-82d4bc4e3677');
+    \expect($event->getTimestamp()->format(DateTime::FORMAT))->toBe('2022-02-16T16:21:14.000000Z');
+    \expect($event->getBody())->toHaveKey('event_id');
 })->with([
     'executed' => WebhookPayload::refundExecuted(),
-    'failed' => WebhookPayload::refundFailed()
+    'failed' => WebhookPayload::refundFailed(),
 ]);
 
 \it('handles refund executed', function () {
@@ -36,9 +36,9 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         $event = $evt;
     })->execute();
 
-    expect($event)->toBeInstanceOf(RefundExecutedEventInterface::class);
-    expect($event->getExecutedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
-    expect($event->getType())->toBe('refund_executed');
+    \expect($event)->toBeInstanceOf(RefundExecutedEventInterface::class);
+    \expect($event->getExecutedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
+    \expect($event->getType())->toBe('refund_executed');
 });
 
 \it('handles refund failed', function () {
@@ -49,8 +49,8 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         $event = $evt;
     })->execute();
 
-    expect($event)->toBeInstanceOf(RefundFailedEventInterface::class);
-    expect($event->getFailedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
-    expect($event->getFailureReason())->toBe('insufficient_funds');
-    expect($event->getType())->toBe('refund_failed');
+    \expect($event)->toBeInstanceOf(RefundFailedEventInterface::class);
+    \expect($event->getFailedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
+    \expect($event->getFailureReason())->toBe('insufficient_funds');
+    \expect($event->getType())->toBe('refund_failed');
 });

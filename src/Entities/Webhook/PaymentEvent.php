@@ -25,7 +25,7 @@ class PaymentEvent extends Event implements PaymentEventInterface
      */
     protected function casts(): array
     {
-        return array_merge(parent::casts(), [
+        return \array_merge(parent::casts(), [
             'payment_method' => PaymentMethodInterface::class,
         ]);
     }
@@ -35,7 +35,7 @@ class PaymentEvent extends Event implements PaymentEventInterface
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'payment_id',
             'payment_method',
         ]);
@@ -46,9 +46,9 @@ class PaymentEvent extends Event implements PaymentEventInterface
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'payment_id' => 'required|string',
-            'payment_method' => [ValidType::of(PaymentMethodInterface::class)]
+            'payment_method' => [ValidType::of(PaymentMethodInterface::class)],
         ]);
     }
 

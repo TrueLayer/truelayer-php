@@ -9,15 +9,16 @@ use DateTimeInterface;
 interface RefundFailedEventInterface extends RefundEventInterface
 {
     /**
-     * Get the date of refund failure
+     * Get the date of refund failure.
+     *
      * @return DateTimeInterface
      */
     public function getFailedAt(): DateTimeInterface;
 
     /**
-     * Get the reason for the refund failure
+     * Get the reason for the refund failure.
+     *
      * @return string|null
      */
     public function getFailureReason(): ?string;
-
 }

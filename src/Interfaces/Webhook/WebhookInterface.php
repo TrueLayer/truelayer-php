@@ -14,38 +14,46 @@ interface WebhookInterface
 {
     /**
      * @param callable|class-string $handler
-     * @return WebhookInterface
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     *
+     * @return WebhookInterface
      */
     public function handler($handler): WebhookInterface;
 
     /**
      * @param callable|class-string ...$handlers
-     * @return WebhookInterface
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     *
+     * @return WebhookInterface
      */
     public function handlers(...$handlers): WebhookInterface;
 
     /**
      * @param string $path
+     *
      * @return WebhookInterface
      */
     public function path(string $path): WebhookInterface;
 
     /**
      * @param string $body
+     *
      * @return WebhookInterface
      */
     public function body(string $body): WebhookInterface;
 
     /**
      * @param mixed[] $headers
-     * @return WebhookInterface
+     *
      * @throws WebhookHandlerInvalidArgumentException
+     *
+     * @return WebhookInterface
      */
     public function headers(array $headers): WebhookInterface;
 

@@ -9,7 +9,8 @@ use DateTimeInterface;
 interface PayoutExecutedEventInterface extends PayoutEventInterface
 {
     /**
-     * Get the payment execution date
+     * Get the payment execution date.
+     *
      * @return DateTimeInterface
      */
     public function getExecutedAt(): DateTimeInterface;

@@ -19,12 +19,12 @@ final class FromGlobals
      */
     public static function getBody(): string
     {
-        $raw = file_get_contents('php://input');
+        $raw = \file_get_contents('php://input');
         if (!empty($raw)) {
             return $raw;
         }
 
-        $post = json_encode($_POST);
+        $post = \json_encode($_POST);
         if (!empty($post)) {
             return $post;
         }
@@ -40,10 +40,10 @@ final class FromGlobals
         $headers = [];
 
         foreach ($_SERVER as $key => $value) {
-            if (substr($key, 0, 5) === 'HTTP_') {
-                $headers[substr(str_replace('_', '-', $key), 5)] = $value;
-            } elseif (\in_array($key, array('CONTENT_TYPE', 'CONTENT_LENGTH', 'CONTENT_MD5'), true)) {
-                $headers[str_replace('_', '-', $key)] = $value;
+            if (\substr($key, 0, 5) === 'HTTP_') {
+                $headers[\substr(\str_replace('_', '-', $key), 5)] = $value;
+            } elseif (\in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH', 'CONTENT_MD5'], true)) {
+                $headers[\str_replace('_', '-', $key)] = $value;
             }
         }
 

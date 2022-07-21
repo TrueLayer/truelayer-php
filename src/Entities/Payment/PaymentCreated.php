@@ -79,10 +79,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return HppInterface
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface
     {
@@ -94,13 +94,13 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     /**
      * @param string $returnUri
      *
-     * @return AuthorizationFlowAuthorizingInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface
     {
@@ -110,13 +110,13 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {

@@ -8,5 +8,4 @@ use TrueLayer\Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface
 
 class BusinessAccountBeneficiary extends Beneficiary implements BusinessAccountBeneficiaryInterface
 {
-   
 }

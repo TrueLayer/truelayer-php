@@ -114,13 +114,13 @@ class Event extends Entity implements EventInterface
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getBody(): array
     {
-        $decoded = json_decode($this->body);
-        
-        return is_array($decoded)
+        $decoded = \json_decode($this->body, true);
+
+        return \is_array($decoded)
             ? $decoded
             : [];
     }

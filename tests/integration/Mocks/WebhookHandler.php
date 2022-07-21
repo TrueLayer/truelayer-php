@@ -15,4 +15,3 @@ class WebhookHandler
         $this->event = $event;
     }
 }
-

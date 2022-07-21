@@ -37,15 +37,16 @@ class WebhookVerifier implements WebhookVerifierInterface
     }
 
     /**
-     * @param string $path
-     * @param array $headers
-     * @param string $body
+     * @param string                $path
+     * @param array<string, string> $headers
+     * @param string                $body
+     *
      * @throws WebhookVerificationFailedException
      */
     public function verify(string $path, array $headers, string $body): void
     {
         // The verification process requires a path without the trailing slash
-        $path = rtrim($path, '/');
+        $path = \rtrim($path, '/');
 
         try {
             $this->verifyWithRetry($path, $headers, $body);
@@ -58,9 +59,11 @@ class WebhookVerifier implements WebhookVerifierInterface
      * If verification fails and a cache is in use, it may be because the
      * TL keys have changed. We re-fetch them and attempt to verify again.
      * A second verification fail is simply re-thrown.
-     * @param string $path
-     * @param array $headers
-     * @param string $body
+     *
+     * @param string                $path
+     * @param array<string, string> $headers
+     * @param string                $body
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidAlgorithmException
@@ -88,9 +91,10 @@ class WebhookVerifier implements WebhookVerifierInterface
     }
 
     /**
-     * @param string $path
-     * @param array $headers
-     * @param string $body
+     * @param string                $path
+     * @param array<string, string> $headers
+     * @param string                $body
+     *
      * @throws InvalidSignatureException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws InvalidAlgorithmException
@@ -101,12 +105,12 @@ class WebhookVerifier implements WebhookVerifierInterface
      */
     private function verifySignature(string $path, array $headers, string $body): void
     {
-        $signatureHeader = strtolower(CustomHeaders::SIGNATURE);
+        $signatureHeader = \strtolower(CustomHeaders::SIGNATURE);
         if (empty($headers[$signatureHeader])) {
-            throw new WebhookHandlerInvalidArgumentException("$signatureHeader header not provided.");
+            throw new WebhookHandlerInvalidArgumentException("{$signatureHeader} header not provided.");
         }
 
-        $verifier = Verifier::verifyWithJsonKeys(...$this->jwksManager->getJsonKeys()); //@phpstan-ignore-line
+        $verifier = Verifier::verifyWithJsonKeys(...$this->jwksManager->getJsonKeys()); // @phpstan-ignore-line
         $verifier->method('POST')
             ->path($path)
             ->body($body)

@@ -25,16 +25,14 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      */
     private EntityFactoryInterface $entityFactory;
 
-
     /**
-     * @param ValidatorFactory $validatorFactory
+     * @param ValidatorFactory       $validatorFactory
      * @param EntityFactoryInterface $entityFactory
      */
     public function __construct(
-        ValidatorFactory       $validatorFactory,
+        ValidatorFactory $validatorFactory,
         EntityFactoryInterface $entityFactory
-    )
-    {
+    ) {
         $this->validatorFactory = $validatorFactory;
         $this->entityFactory = $entityFactory;
     }
@@ -42,11 +40,11 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     /**
      * @param mixed[] $data
      *
-     * @return $this
      * @throws ValidationException
      * @throws InvalidArgumentException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
@@ -61,13 +59,13 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
      *
-     * @return T
      * @throws ValidationException
      * @throws InvalidArgumentException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return T
      */
     protected function make(string $abstract, array $data = null)
     {
@@ -78,12 +76,12 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return T[]
-     * @throws InvalidArgumentException
-     *
-     * @throws ValidationException
      */
     protected function makeMany(string $abstract, array $data = null)
     {

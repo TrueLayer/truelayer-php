@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;

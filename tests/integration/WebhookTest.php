@@ -17,10 +17,9 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         ->handler($handler)
         ->execute();
 
-
-    expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
-    expect($handler->event->getEventVersion())->toBe(1);
-    expect($handler->event->getType())->toBe('foo');
+    \expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
+    \expect($handler->event->getEventVersion())->toBe(1);
+    \expect($handler->event->getType())->toBe('foo');
 });
 
 \it('calls default handler if webhook type is known, but validation fails', function () {
@@ -30,9 +29,9 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         ->handler($handler)
         ->execute();
 
-    expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
-    expect($handler->event->getEventVersion())->toBe(1);
-    expect($handler->event->getType())->toBe('payment_executed');
+    \expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
+    \expect($handler->event->getEventVersion())->toBe(1);
+    \expect($handler->event->getType())->toBe('payment_executed');
 });
 
 \it('calls all handlers for an event type', function () {
@@ -60,13 +59,12 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         })
         ->execute();
 
+    \expect($defaultEvent1)->toBeInstanceOf(PaymentExecutedEventInterface::class);
+    \expect($defaultEvent1->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
+    \expect($defaultEvent1->getEventVersion())->toBe(1);
+    \expect($defaultEvent1->getType())->toBe('payment_executed');
 
-    expect($defaultEvent1)->toBeInstanceOf(PaymentExecutedEventInterface::class);
-    expect($defaultEvent1->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
-    expect($defaultEvent1->getEventVersion())->toBe(1);
-    expect($defaultEvent1->getType())->toBe('payment_executed');
-
-    expect(
+    \expect(
         $defaultEvent1 === $defaultEvent2 &&
         $defaultEvent1 === $paymentEvent1 &&
         $defaultEvent1 === $paymentEvent2 &&
@@ -76,40 +74,40 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 });
 
 \it('works with globals', function () {
-    $_POST = json_decode(WebhookPayload::paymentExecuted());
+    $_POST = \json_decode(WebhookPayload::paymentExecuted());
     $_SERVER['REQUEST_URI'] = '/test';
     $_SERVER['HTTP_CUSTOM_HEADER'] = 'test';
     $_SERVER['CONTENT_TYPE'] = 'application/json';
-    $_SERVER['HTTP_TL_SIGNATURE'] = Signing::sign(json_encode($_POST), '/test', [
+    $_SERVER['HTTP_TL_SIGNATURE'] = Signing::sign(\json_encode($_POST), '/test', [
         'custom-header' => 'test',
-        'content-type' => 'application/json'
+        'content-type' => 'application/json',
     ]);
 
     \rawClient([Signing::getPublicKeysResponse()])->create()->webhook()->execute();
 
     // If we reach this point, no exception was thrown so signature verification was successful
-    expect(true)->toBeTrue();
+    \expect(true)->toBeTrue();
 });
 
 \it('allows globals to be overridden', function () {
-    $_POST = json_decode(WebhookPayload::unknownType());
+    $_POST = \json_decode(WebhookPayload::unknownType());
     $_SERVER['REQUEST_URI'] = '/foo';
     $_SERVER['HTTP_CUSTOM_HEADER'] = 'foo';
     $_SERVER['CONTENT_TYPE'] = 'application/json';
-    $_SERVER['HTTP_TL_SIGNATURE'] = Signing::sign(json_encode($_POST), '/foo', [
-        'content-type' => 'application/json'
+    $_SERVER['HTTP_TL_SIGNATURE'] = Signing::sign(\json_encode($_POST), '/foo', [
+        'content-type' => 'application/json',
     ]);
 
     $handler = new WebhookHandler();
 
     // The webhook helper does not use globals, instead it provides
     // path, body, and headers directly
-    webhook(WebhookPayload::paymentExecuted())
+    \webhook(WebhookPayload::paymentExecuted())
         ->handler($handler)
         ->execute();
 
     // We expect the event to be payment executed rather than the unknown type set on the globals.
-    expect($handler->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
+    \expect($handler->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
 });
 
 \it('only calls matching handlers', function () {
@@ -118,13 +116,13 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 
     \webhook(WebhookPayload::paymentExecuted())
         ->handler($default)
-        ->handler(function (\TrueLayer\Entities\Webhook\RefundEvent $event) use (&$refund) {
+        ->handler(function (TrueLayer\Entities\Webhook\RefundEvent $event) use (&$refund) {
             $refund = $event;
         })
         ->execute();
 
-    expect($default->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
-    expect($refund)->toBeNull();
+    \expect($default->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
+    \expect($refund)->toBeNull();
 });
 
 \it('works with invokable classes', function () {
@@ -134,10 +132,10 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         ->handler($handler)
         ->execute();
 
-    expect($handler->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
-    expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
-    expect($handler->event->getEventVersion())->toBe(1);
-    expect($handler->event->getType())->toBe('payment_executed');
+    \expect($handler->event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
+    \expect($handler->event->getEventId())->toBe('b8d4dda0-ff2c-4d77-a6da-4615e4bad941');
+    \expect($handler->event->getEventVersion())->toBe(1);
+    \expect($handler->event->getType())->toBe('payment_executed');
 });
 
 \it('works with invokable class names', function () {
@@ -168,11 +166,11 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         )
         ->execute();
 
-    expect(WebhookHandlerTest::$event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
-    expect(SecondWebhookHandlerTest::$event)->toEqual(WebhookHandlerTest::$event);
+    \expect(WebhookHandlerTest::$event)->toBeInstanceOf(PaymentExecutedEventInterface::class);
+    \expect(SecondWebhookHandlerTest::$event)->toEqual(WebhookHandlerTest::$event);
 });
 
-it('works with paths with trailing slash', function () {
+\it('works with paths with trailing slash', function () {
     $body = WebhookPayload::paymentExecuted();
     $signedPath = '/path';
     $verifiedPath = '/path';
@@ -186,15 +184,15 @@ it('works with paths with trailing slash', function () {
         ->execute();
 
     // If we reach this point, no exception was thrown so signature verification was successful
-    expect(true)->toBeTrue();
+    \expect(true)->toBeTrue();
 });
 
-it('works with mixed case headers', function () {
+\it('works with mixed case headers', function () {
     $body = WebhookPayload::paymentExecuted();
 
     $signedHeaders = [
         'x-tl-webhook-timestamp' => '2022-02-16T16:21:14Z',
-        'custom-header' => 'VALUE'
+        'custom-header' => 'VALUE',
     ];
 
     $signature = Signing::sign($body, Signing::getPath(), $signedHeaders);
@@ -202,7 +200,7 @@ it('works with mixed case headers', function () {
     $verifiedHeaders = [
         'X-TL-WEBHOOK-TIMESTAMP' => '2022-02-16T16:21:14Z',
         'CUSTOM-HEADER' => 'VALUE',
-        'TL-SIGNATURE' => $signature
+        'TL-SIGNATURE' => $signature,
     ];
 
     \rawClient([Signing::getPublicKeysResponse()])->create()
@@ -213,10 +211,10 @@ it('works with mixed case headers', function () {
         ->execute();
 
     // If we reach this point, no exception was thrown so signature verification was successful
-    expect(true)->toBeTrue();
+    \expect(true)->toBeTrue();
 });
 
-it('does not call handlers and throws exception if signature is not valid', function () {
+\it('does not call handlers and throws exception if signature is not valid', function () {
     /** @var EventInterface $event1 */
     $defaultEvent = $paymentEvent = $executedEvent = null;
     $thrownInvalidSignature = false;
@@ -231,7 +229,7 @@ it('does not call handlers and throws exception if signature is not valid', func
 
     $verifiedHeaders = [
         'x-tl-webhook-timestamp' => '2023-02-16T16:21:14Z', // Different timestamp
-        'TL-SIGNATURE' => $signature
+        'TL-SIGNATURE' => $signature,
     ];
 
     try {
@@ -254,8 +252,8 @@ it('does not call handlers and throws exception if signature is not valid', func
         $thrownInvalidSignature = true;
     }
 
-    expect($thrownInvalidSignature)->toBeTrue();
-    expect($defaultEvent)->toBeNull();
-    expect($paymentEvent)->toBeNull();
-    expect($executedEvent)->toBeNull();
+    \expect($thrownInvalidSignature)->toBeTrue();
+    \expect($defaultEvent)->toBeNull();
+    \expect($paymentEvent)->toBeNull();
+    \expect($executedEvent)->toBeNull();
 });

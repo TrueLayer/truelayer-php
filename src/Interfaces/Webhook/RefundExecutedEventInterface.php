@@ -9,7 +9,8 @@ use DateTimeInterface;
 interface RefundExecutedEventInterface extends RefundEventInterface
 {
     /**
-     * Get the payment execution date
+     * Get the payment execution date.
+     *
      * @return DateTimeInterface
      */
     public function getExecutedAt(): DateTimeInterface;

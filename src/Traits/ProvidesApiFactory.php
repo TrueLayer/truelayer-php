@@ -15,11 +15,13 @@ trait ProvidesApiFactory
 
     /**
      * @param ApiFactoryInterface $apiFactory
+     *
      * @return $this
      */
     public function apiFactory(ApiFactoryInterface $apiFactory): self
     {
         $this->apiFactory = $apiFactory;
+
         return $this;
     }
 

@@ -9,7 +9,8 @@ use TrueLayer\Interfaces\Webhook\Beneficiary\BeneficiaryInterface;
 interface PayoutEventInterface extends EventInterface
 {
     /**
-     * Get the unique ID for the payout
+     * Get the unique ID for the payout.
+     *
      * @return string
      */
     public function getPayoutId(): string;

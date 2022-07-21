@@ -12,6 +12,7 @@ interface WebhookHandlerManagerInterface
 {
     /**
      * @param callable|class-string $handler
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
@@ -20,10 +21,12 @@ interface WebhookHandlerManagerInterface
 
     /**
      * @param callable|class-string ...$handlers
-     * @return void
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
+     *
+     * @return void
      */
     public function addMany(...$handlers): void;
 

@@ -10,9 +10,9 @@ use TrueLayer\Interfaces\Webhook\WebhookInterface;
 interface WebhookConfigInterface extends ConfigInterface
 {
     /**
-     * @return WebhookInterface
      * @throws SignerException
      *
+     * @return WebhookInterface
      */
     public function create(): WebhookInterface;
 }

@@ -11,7 +11,8 @@ interface PaymentSettledEventInterface extends EventInterface
 {
     /**
      * The payment's settlement risk-rating. Only available for closed-loop EUR payments in Private Beta and subject to change.
-     * Will be one of "low_risk", "high_risk"
+     * Will be one of "low_risk", "high_risk".
+     *
      * @return string|null
      */
     public function getSettlementRiskCategory(): ?string;
@@ -25,5 +26,4 @@ interface PaymentSettledEventInterface extends EventInterface
      * @return DateTimeInterface
      */
     public function getSettledAt(): DateTimeInterface;
-
 }

@@ -48,9 +48,9 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @param ClientConfigInterface $config
      *
-     * @return ClientInterface
      * @throws SignerException
      *
+     * @return ClientInterface
      */
     public function make(ClientConfigInterface $config): ClientInterface
     {

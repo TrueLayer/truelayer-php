@@ -23,9 +23,9 @@ class RefundEvent extends Event implements RefundEventInterface
      */
     protected function arrayFields(): array
     {
-        return array_merge(parent::arrayFields(), [
+        return \array_merge(parent::arrayFields(), [
             'payment_id',
-            'refund_id'
+            'refund_id',
         ]);
     }
 
@@ -34,7 +34,7 @@ class RefundEvent extends Event implements RefundEventInterface
      */
     protected function rules(): array
     {
-        return array_merge(parent::rules(), [
+        return \array_merge(parent::rules(), [
             'payment_id' => 'required|string',
             'refund_id' => 'required|string',
         ]);

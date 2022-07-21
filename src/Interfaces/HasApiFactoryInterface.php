@@ -10,6 +10,7 @@ interface HasApiFactoryInterface
 {
     /**
      * @param ApiFactoryInterface $apiFactory
+     *
      * @return $this
      */
     public function apiFactory(ApiFactoryInterface $apiFactory): self;

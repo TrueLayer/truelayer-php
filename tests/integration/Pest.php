@@ -33,13 +33,13 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws ApiResponseUnsuccessfulException
- *
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+ *
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -66,12 +66,12 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Client\ClientInterface
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
- *
  * @throws ApiRequestJsonSerializationException
+ *
+ * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
 function client($mockResponses = [])
 {
@@ -90,12 +90,12 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
- *
  * @throws ApiRequestJsonSerializationException
+ *
+ * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  */
 function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequestInterface
 {
@@ -129,13 +129,15 @@ function getRequestPayload(int $requestIndex)
 
 /**
  * @param string $body
- * @return WebhookInterface
+ *
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
+ *
+ * @return WebhookInterface
  */
 function webhook(string $body): WebhookInterface
 {

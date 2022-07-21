@@ -53,8 +53,8 @@ class Webhook implements WebhookInterface
     private array $headers;
 
     /**
-     * @param WebhookVerifierInterface $verifier
-     * @param EntityFactoryInterface $entityFactory
+     * @param WebhookVerifierInterface       $verifier
+     * @param EntityFactoryInterface         $entityFactory
      * @param WebhookHandlerManagerInterface $handlerManager
      */
     public function __construct(WebhookVerifierInterface $verifier, EntityFactoryInterface $entityFactory, WebhookHandlerManagerInterface $handlerManager)
@@ -66,57 +66,69 @@ class Webhook implements WebhookInterface
 
     /**
      * @param callable|class-string $handler
-     * @return WebhookInterface
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     *
+     * @return WebhookInterface
      */
     public function handler($handler): WebhookInterface
     {
         $this->handlerManager->add($handler);
+
         return $this;
     }
 
     /**
      * @param callable|class-string ...$handlers
-     * @return WebhookInterface
+     *
      * @throws ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     *
+     * @return WebhookInterface
      */
     public function handlers(...$handlers): WebhookInterface
     {
         $this->handlerManager->addMany(...$handlers);
+
         return $this;
     }
 
     /**
      * @param string $path
+     *
      * @return WebhookInterface
      */
     public function path(string $path): WebhookInterface
     {
         $this->path = $path;
+
         return $this;
     }
 
     /**
      * @param string $body
+     *
      * @return WebhookInterface
      */
     public function body(string $body): WebhookInterface
     {
         $this->body = $body;
+
         return $this;
     }
 
     /**
      * @param array<string, string> $headers
+     *
      * @return WebhookInterface
      */
     public function headers(array $headers): WebhookInterface
     {
         $this->headers = $headers;
+
         return $this;
     }
 
@@ -148,14 +160,15 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @return mixed[]
      * @throws WebhookHandlerInvalidArgumentException
+     *
+     * @return mixed[]
      */
     private function getDecodedBody(): array
     {
-        $payload = json_decode($this->getBody(), true);
+        $payload = \json_decode($this->getBody(), true);
 
-        if (!is_array($payload) || empty($payload) || json_last_error() !== JSON_ERROR_NONE) {
+        if (!\is_array($payload) || empty($payload) || \json_last_error() !== JSON_ERROR_NONE) {
             throw new WebhookHandlerInvalidArgumentException('Body is empty or not in json format');
         }
 
@@ -169,14 +182,16 @@ class Webhook implements WebhookInterface
     {
         // The signing lib requires headers in lower case for now
         $headers = $this->headers ?? FromGlobals::getHeaders();
-        return array_change_key_case($headers, CASE_LOWER);
+
+        return \array_change_key_case($headers, CASE_LOWER);
     }
 
     /**
-     * s     * @return EventInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
+     *
+     * s     * @return EventInterface
      */
     private function getEventEntity(): EventInterface
     {
@@ -184,8 +199,8 @@ class Webhook implements WebhookInterface
 
         $headers = $this->getHeaders();
         $data['body'] = $this->getBody();
-        $data['timestamp'] = $headers[strtolower(CustomHeaders::WEBHOOK_TIMESTAMP)] ?? '';
-        $data['signature'] = $headers[strtolower(CustomHeaders::SIGNATURE)];
+        $data['timestamp'] = $headers[\strtolower(CustomHeaders::WEBHOOK_TIMESTAMP)] ?? '';
+        $data['signature'] = $headers[\strtolower(CustomHeaders::SIGNATURE)];
 
         try {
             return $this->entityFactory->make(EventInterface::class, $data);
@@ -198,6 +213,4 @@ class Webhook implements WebhookInterface
             throw $e;
         }
     }
-
-
 }

@@ -61,9 +61,9 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     /**
      * @param string|PaymentRetrievedInterface|PaymentCreatedInterface $payment
      *
-     * @return RefundRequestInterface
      * @throws InvalidArgumentException
      *
+     * @return RefundRequestInterface
      */
     public function payment($payment): RefundRequestInterface
     {
@@ -97,13 +97,13 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
-     * @return RefundCreatedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return RefundCreatedInterface
      */
     public function create(): RefundCreatedInterface
     {

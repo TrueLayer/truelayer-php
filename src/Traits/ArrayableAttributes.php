@@ -69,8 +69,8 @@ trait ArrayableAttributes
     /**
      * Set an instance property.
      *
-     * @param string $key the instance property name or the setter name
-     * @param mixed $value The instance property value
+     * @param string $key   the instance property name or the setter name
+     * @param mixed  $value The instance property value
      *
      * @return self
      */
@@ -122,7 +122,7 @@ trait ArrayableAttributes
      * Nested sequential arrays will not be nested.
      *
      * @param mixed[] $array
-     * @param string $prepend
+     * @param string  $prepend
      *
      * @return mixed[]
      */
