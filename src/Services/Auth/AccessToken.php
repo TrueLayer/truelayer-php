@@ -72,11 +72,11 @@ final class AccessToken implements AccessTokenInterface
      * @param array<string>|null           $scopes
      */
     public function __construct(ApiClientInterface $api,
-                                ?EncryptedCacheInterface $cache,
-                                ValidatorFactory $validatorFactory,
-                                string $clientId,
-                                string $clientSecret,
-                                ?array $scopes = [])
+        ?EncryptedCacheInterface $cache,
+        ValidatorFactory $validatorFactory,
+        string $clientId,
+        string $clientSecret,
+        ?array $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;

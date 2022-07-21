@@ -52,8 +52,8 @@ class JwksManager implements JwksManagerInterface
      * @param ValidatorFactory             $validatorFactory
      */
     public function __construct(ApiClientInterface $api,
-                                ?EncryptedCacheInterface $cache,
-                                ValidatorFactory $validatorFactory)
+        ?EncryptedCacheInterface $cache,
+        ValidatorFactory $validatorFactory)
     {
         $this->api = $api;
         $this->cache = $cache;
