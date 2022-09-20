@@ -187,6 +187,7 @@ $beneficiary = $client->beneficiary()->externalAccount()
 ```php
 $user = $client->user()
     ->name('Jane Doe')
+    ->phone('+44123456789')
     ->email('jane.doe@truelayer.com');
 ```
 
