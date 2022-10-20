@@ -27,6 +27,7 @@ class Endpoints
     public const PAYMENTS_REFUNDS_CREATE = '/payments/{id}/refunds';
     public const PAYMENTS_REFUNDS_RETRIEVE_ALL = '/payments/{id}/refunds';
     public const PAYMENTS_REFUNDS_RETRIEVE = '/payments/{id}/refunds/{refund_id}';
+    public const PAYMENTS_PROVIDER_RETURN = '/payments-provider-return';
 
     public const MERCHANT_ACCOUNTS = '/merchant-accounts';
     public const TRANSACTIONS = '/merchant-accounts/{id}/transactions';
