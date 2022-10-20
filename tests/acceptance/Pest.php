@@ -46,7 +46,7 @@ function bankAction(string $redirectUri, string $action): void
     $id = Str::after($redirectUri, 'login/');
     $id = Str::before($id, '#token');
     $token = Str::after($redirectUri, '#token=');
-    
+
     $result = (new \GuzzleHttp\Client())->post("{$url}/api/single-immediate-payments/{$id}/action", [
         'headers' => [
             'authorization' => "Bearer {$token}",
@@ -57,8 +57,8 @@ function bankAction(string $redirectUri, string $action): void
         ],
     ]);
 
+    // This is now required for the mock connector to process payments
     $providerReturn = parse_url($result->getBody()->getContents());
-
     \client()->getApiClient()->request()
         ->uri(Endpoints::PAYMENTS_PROVIDER_RETURN)
         ->payload([
