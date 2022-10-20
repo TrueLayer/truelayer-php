@@ -62,8 +62,8 @@ function bankAction(string $redirectUri, string $action): void
     \client()->getApiClient()->request()
         ->uri(Endpoints::PAYMENTS_PROVIDER_RETURN)
         ->payload([
-            'query' => "?" . $providerReturn['query'],
-            'fragment' => "#" . $providerReturn['fragment']
+            'query' => '?' . $providerReturn['query'],
+            'fragment' => '#' . $providerReturn['fragment'],
         ])
         ->post();
 }
