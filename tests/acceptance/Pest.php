@@ -15,9 +15,9 @@ $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../../.env');
 
 /**
- * @return ClientInterface
  * @throws SignerException
  *
+ * @return ClientInterface
  */
 function client(): ClientInterface
 {
@@ -31,9 +31,9 @@ function client(): ClientInterface
 }
 
 /**
- * @return CreatePayment
  * @throws SignerException
  *
+ * @return CreatePayment
  */
 function paymentHelper(): CreatePayment
 {
@@ -58,7 +58,7 @@ function bankAction(string $redirectUri, string $action): void
     ]);
 
     // This is now required for the mock connector to process payments
-    $providerReturn = parse_url($result->getBody()->getContents());
+    $providerReturn = \parse_url($result->getBody()->getContents());
     \client()->getApiClient()->request()
         ->uri(Endpoints::PAYMENTS_PROVIDER_RETURN)
         ->payload([
