@@ -15,9 +15,9 @@ $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../../.env');
 
 /**
- * @return ClientInterface
  * @throws SignerException
  *
+ * @return ClientInterface
  */
 function client(): ClientInterface
 {
@@ -31,9 +31,9 @@ function client(): ClientInterface
 }
 
 /**
- * @return CreatePayment
  * @throws SignerException
  *
+ * @return CreatePayment
  */
 function paymentHelper(): CreatePayment
 {
@@ -46,7 +46,7 @@ function bankAction(string $redirectUri, string $action): void
     $id = Str::after($redirectUri, 'login/');
     $id = Str::before($id, '#token');
     $token = Str::after($redirectUri, '#token=');
-    
+
     $result = (new \GuzzleHttp\Client())->post("{$url}/api/single-immediate-payments/{$id}/action", [
         'headers' => [
             'authorization' => "Bearer {$token}",
@@ -57,13 +57,13 @@ function bankAction(string $redirectUri, string $action): void
         ],
     ]);
 
-    $providerReturn = parse_url($result->getBody()->getContents());
+    $providerReturn = \parse_url($result->getBody()->getContents());
 
     \client()->getApiClient()->request()
         ->uri(Endpoints::PAYMENTS_PROVIDER_RETURN)
         ->payload([
-            'query' => "?" . $providerReturn['query'],
-            'fragment' => "#" . $providerReturn['fragment']
+            'query' => '?' . $providerReturn['query'],
+            'fragment' => '#' . $providerReturn['fragment'],
         ])
         ->post();
 }
