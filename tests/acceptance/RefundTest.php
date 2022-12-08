@@ -42,7 +42,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
         $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
         \bankAction($next->getUri(), 'Execute');
-        \sleep(10);
+        \sleep(120);
 
         $response = $client->refund()
             ->payment($created)

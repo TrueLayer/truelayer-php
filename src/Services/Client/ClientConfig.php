@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Client;
 
+use TrueLayer\Constants\Scopes;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Client\ClientFactoryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
@@ -41,6 +42,11 @@ class ClientConfig extends Config implements ClientConfigInterface
      * @var string|null
      */
     private ?string $passphrase = null;
+
+    /**
+     * @var string[]
+     */
+    private array $scopes = [Scopes::DEFAULT];
 
     /**
      * @param ClientFactoryInterface $factory
@@ -184,6 +190,26 @@ class ClientConfig extends Config implements ClientConfigInterface
     public function getPassphrase(): ?string
     {
         return $this->passphrase;
+    }
+
+    /**
+     * @param string ...$scopes
+     *
+     * @return $this
+     */
+    public function scopes(string ...$scopes): self
+    {
+        $this->scopes = $scopes;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getScopes(): array
+    {
+        return $this->scopes;
     }
 
     /**

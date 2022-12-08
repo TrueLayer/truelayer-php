@@ -102,7 +102,7 @@ final class ClientFactory implements ClientFactoryInterface
             $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret(),
-            ['payments', 'paydirect'],
+            $config->getScopes(),
         );
     }
 

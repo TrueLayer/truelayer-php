@@ -130,3 +130,22 @@ use TrueLayer\Tests\Integration\Mocks;
     \expect($fooRequest->getHeaderLine('Authorization'))->toBe('Bearer ' . Mocks\AuthResponse::ACCESS_TOKEN);
     \expect($fooRequest->getHeaderLine('Authorization'))->not()->toBe('Bearer expired-token');
 });
+
+\it('uses default scope if none provided', function () {
+    $client = \rawClient([Mocks\AuthResponse::success(), new Response(200)])->create();
+    $client->getApiClient()->request()->uri('/test')->post();
+
+    $requestedScope = \getRequestPayload(0)['scope'];
+    \expect($requestedScope)->toBe(\TrueLayer\Constants\Scopes::DEFAULT);
+});
+
+\it('uses custom scopes if provided', function () {
+    $client = \rawClient([Mocks\AuthResponse::success(), new Response(200)])
+        ->scopes('foo', 'bar')
+        ->create();
+
+    $client->getApiClient()->request()->uri('/test')->post();
+
+    $requestedScope = \getRequestPayload(0)['scope'];
+    \expect($requestedScope)->toBe('foo bar');
+});
