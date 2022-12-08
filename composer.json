@@ -55,9 +55,15 @@
         "integration-tests": "vendor/bin/pest --test-directory tests/integration",
         "acceptance-tests": "vendor/bin/pest --test-directory tests/acceptance",
         "cs-fix": "vendor/bin/php-cs-fixer fix",
-        "checks": "@composer analyse && composer cs-fix && composer integration-tests && composer acceptance-tests"
+        "checks": [
+            "@analyse",
+            "@cs-fix",
+            "@integration-tests",
+            "@acceptance-tests"
+        ]
     },
     "config": {
+        "process-timeout": 0,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true

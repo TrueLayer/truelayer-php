@@ -2,7 +2,7 @@ name: PHP
 
 on:
   push:
-    branches: [ main, feature/PHP-20 ]
+    branches: [ main ]
     tags:
       - "v**"
   pull_request:
@@ -11,39 +11,6 @@ on:
     - cron: '0 9,14,17 * * *'
 
 jobs:
-  code-style:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: none
-          php-version: "8.0"
-          ini-values: memory_limit=-1
-        env:
-          update: true
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.composer/cache
-            vendor
-          key: php-cs-fixer
-
-      - name: Install
-        run: composer install
-
-      - name: Run php-cs-fixer
-        run: composer cs-fix
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply php-cs-fixer changes
-
   code-quality:
     runs-on: ubuntu-latest
     strategy:
@@ -90,7 +57,7 @@ jobs:
 
       - name: Integration Tests
         run: composer integration-tests
-        
+
       - name: Acceptance Tests
         run: |
           touch .env

@@ -88,6 +88,18 @@ interface ClientConfigInterface extends ConfigInterface
     public function getPassphrase(): ?string;
 
     /**
+     * @param string ...$scopes
+     *
+     * @return $this
+     */
+    public function scopes(string ...$scopes): self;
+
+    /**
+     * @return string[]
+     */
+    public function getScopes(): array;
+
+    /**
      * @throws SignerException
      *
      * @return ClientInterface

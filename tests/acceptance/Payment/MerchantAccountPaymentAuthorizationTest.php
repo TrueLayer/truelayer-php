@@ -92,7 +92,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
 
     \bankAction($next->getUri(), 'Execute');
-    \sleep(15);
+    \sleep(120);
 
     /* @var PaymentSettledInterface $payment */
     $payment = $created->getDetails();

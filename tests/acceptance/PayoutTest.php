@@ -31,7 +31,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
     /** @var RedirectActionInterface $next */
     $next = $created->getDetails()->getAuthorizationFlowNextAction();
     \bankAction($next->getUri(), 'Execute');
-    \sleep(15);
+    \sleep(120);
 
     /* @var PaymentSettledInterface $payment */
     $payment = $created->getDetails();

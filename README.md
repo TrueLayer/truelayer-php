@@ -92,6 +92,17 @@ $client = \TrueLayer\Client::configure()
     ->create(); 
 ```
 
+This library assumes that your client_id is issued with the `payments` scope. Depending on your account type this may
+not be the case and the authentication server will return an `invalid_scope` error. You can override the scopes used by
+the library with the `scopes()` method:
+
+```php
+$client = \TrueLayer\Client::configure()
+    ...
+    ->scopes('foo', 'bar')
+    ->create(); 
+```
+
 <a name="caching"></a>
 
 ## Caching
