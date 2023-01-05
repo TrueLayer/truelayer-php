@@ -53,7 +53,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
      * @var class-string[]
      */
     protected array $casts = [
-        'user' => UserInterface::class,
+        'user' => PaymentUserRetrievedInterface::class,
         'payment_method' => PaymentMethodInterface::class,
         'created_at' => DateTimeInterface::class,
     ];
@@ -83,7 +83,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'amount_in_minor' => 'required|int|min:1',
             'currency' => 'required|string',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
-            'user' => ['required', ValidType::of(UserInterface::class)],
+            'user' => ['required', ValidType::of(PaymentUserRetrievedInterface::class)],
         ];
     }
 
