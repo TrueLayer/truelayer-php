@@ -8,8 +8,8 @@ use DateTimeInterface;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Payment\PaymentUserRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Validation\ValidType;
 
 class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
@@ -40,9 +40,9 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     protected PaymentMethodInterface $paymentMethod;
 
     /**
-     * @var UserInterface
+     * @var PaymentUserRetrievedInterface
      */
-    protected UserInterface $user;
+    protected PaymentUserRetrievedInterface $user;
 
     /**
      * @var DateTimeInterface
@@ -120,9 +120,9 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     }
 
     /**
-     * @return UserInterface
+     * @return PaymentUserRetrievedInterface
      */
-    public function getUser(): UserInterface
+    public function getUser(): PaymentUserRetrievedInterface
     {
         return $this->user;
     }
