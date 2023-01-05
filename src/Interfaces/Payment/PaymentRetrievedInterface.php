@@ -32,9 +32,9 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getPaymentMethod(): PaymentMethodInterface;
 
     /**
-     * @return UserInterface|null
+     * @return PaymentUserRetrievedInterface|null
      */
-    public function getUser(): ?UserInterface;
+    public function getUser(): ?PaymentUserRetrievedInterface;
 
     /**
      * @return DateTimeInterface
