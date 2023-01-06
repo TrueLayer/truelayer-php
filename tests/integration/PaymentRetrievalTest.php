@@ -20,7 +20,6 @@ use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
-use TrueLayer\Interfaces\Payment\PaymentUserRetrievedInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
@@ -28,7 +27,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
 {
     \expect($payment->getId())->toBeString();
     \expect($payment->getStatus())->toBeString();
-    \expect($payment->getUser())->toBeInstanceOf(PaymentUserRetrievedInterface::class);
+    \expect($payment->getUserId())->toBeString();
     \expect($payment->getCurrency())->toBeString();
     \expect($payment->getAmountInMinor())->toBeInt();
     \expect($payment->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);

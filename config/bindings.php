@@ -16,7 +16,6 @@ return [
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
     Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
-    Interfaces\Payment\PaymentUserRetrievedInterface::class => Entities\Payment\PaymentRetrieved\PaymentUserRetrieved::class,
     Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
     Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,
     Interfaces\Payment\PaymentAuthorizedInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorized::class,

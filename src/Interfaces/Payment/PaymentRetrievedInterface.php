@@ -7,7 +7,6 @@ namespace TrueLayer\Interfaces\Payment;
 use DateTimeInterface;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Interfaces\UserInterface;
 
 interface PaymentRetrievedInterface extends ArrayableInterface
 {
@@ -32,9 +31,9 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getPaymentMethod(): PaymentMethodInterface;
 
     /**
-     * @return PaymentUserRetrievedInterface|null
+     * @return string
      */
-    public function getUser(): ?PaymentUserRetrievedInterface;
+    public function getUserId(): string;
 
     /**
      * @return DateTimeInterface
