@@ -306,7 +306,7 @@ $url = $client->payment()
 ```php
 $payment = $client->getPayment($paymentId);
 $payment->getId();
-$payment->getUser();
+$payment->getUserId();
 $payment->getAmountInMinor();
 $payment->getCreatedAt(); 
 $payment->getCurrency();
