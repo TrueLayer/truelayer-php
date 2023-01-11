@@ -41,7 +41,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
     $payoutBeneficiary = $client->payoutBeneficiary()->paymentSource()
         ->paymentSourceId($payment->getPaymentSource()->getId())
         ->reference('Test reference')
-        ->userId($payment->getUser()->getId());
+        ->userId($payment->getUserId());
 
     $response = $client->payout()
         ->amountInMinor(1)
@@ -66,7 +66,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
     \expect($beneficiary)->toBeInstanceOf(PaymentSourceBeneficiaryInterface::class);
     \expect($beneficiary->getPaymentSourceId())->toBe($payment->getPaymentSource()->getId());
     \expect($beneficiary->getReference())->toBe('Test reference');
-    \expect($beneficiary->getUserId())->toBe($payment->getUser()->getId());
+    \expect($beneficiary->getUserId())->toBe($payment->getUserId());
 });
 
 \it('creates an open loop payout', function () {
