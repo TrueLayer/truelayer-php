@@ -74,13 +74,13 @@ class Signing
      */
     public static function getSigner(): Signer
     {
-        return \TrueLayer\Signing\Signer::signWithKey(self::$kid, self::$private);
+        return \TrueLayer\Signing\Signer::signWithKey(self::getKid(), self::getPrivate());
     }
 
     /**
-     * @param string      $body
+     * @param string $body
      * @param string|null $path
-     * @param array|null  $headers
+     * @param array|null $headers
      *
      * @return string
      */
@@ -105,7 +105,7 @@ class Signing
     /**
      * @param string|null $body
      * @param string|null $path
-     * @param array|null  $headers
+     * @param array|null $headers
      *
      * @return string[]
      */

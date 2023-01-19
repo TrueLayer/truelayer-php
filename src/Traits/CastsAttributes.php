@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use DateTimeInterface;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
@@ -30,8 +30,8 @@ trait CastsAttributes
      * @param mixed[]      $data
      * @param mixed[]|null $casts
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return mixed[]
      */
@@ -72,7 +72,7 @@ trait CastsAttributes
                 $partData = Arr::get($data, $path);
 
                 if ($partData !== null) {
-                    if ($abstract === DateTimeInterface::class) {
+                    if ($abstract === \DateTimeInterface::class) {
                         if (\is_string($partData)) {
                             $partData = $this->toDateTime($partData);
                         }
@@ -91,13 +91,28 @@ trait CastsAttributes
     /**
      * @param string $dateTime
      *
-     * @return DateTimeInterface|null
+     * @return \DateTimeInterface|null
      */
-    protected function toDateTime(string $dateTime): ?DateTimeInterface
+    protected function toDateTime(string $dateTime): ?\DateTimeInterface
     {
+        if (empty($dateTime)) {
+            return null;
+        }
+
         try {
-            return new \DateTime($dateTime);
+            return Carbon::parse($dateTime);
         } catch (\Exception $e) {
+            // php 7.4 will not parse strings with nanoseconds
+            // we downgrade to microseconds and retry
+            $subsecond = Str::after($dateTime, '.');
+            $subsecond = Str::before($subsecond, 'Z');
+
+            if (Str::length($subsecond) > 6) {
+                $dateTime = \substr_replace($dateTime, '', -1, 3);
+
+                return $this->toDateTime($dateTime);
+            }
+
             return null;
         }
     }
@@ -108,8 +123,8 @@ trait CastsAttributes
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return T
      */
