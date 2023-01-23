@@ -82,6 +82,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
         'custom-header' => 'test',
         'content-type' => 'application/json',
     ]);
+    $_SERVER['HTTP_X_TL_Webhook_Timestamp'] = '2020-05-18T10:17:47Z';
 
     \rawClient([Signing::getPublicKeysResponse()])->create()->webhook()->execute();
 
@@ -97,6 +98,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     $_SERVER['HTTP_TL_SIGNATURE'] = Signing::sign(\json_encode($_POST), '/foo', [
         'content-type' => 'application/json',
     ]);
+    $_SERVER['HTTP_X_TL_Webhook_Timestamp'] = '2020-05-18T10:17:47Z';
 
     $handler = new WebhookHandler();
 
