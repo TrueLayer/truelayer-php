@@ -9,7 +9,6 @@ use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Validation\ValidType;
 
 class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
@@ -40,9 +39,9 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     protected PaymentMethodInterface $paymentMethod;
 
     /**
-     * @var UserInterface
+     * @var string
      */
-    protected UserInterface $user;
+    protected string $userId;
 
     /**
      * @var DateTimeInterface
@@ -53,7 +52,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
      * @var class-string[]
      */
     protected array $casts = [
-        'user' => UserInterface::class,
         'payment_method' => PaymentMethodInterface::class,
         'created_at' => DateTimeInterface::class,
     ];
@@ -67,7 +65,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
         'created_at',
         'amount_in_minor',
         'currency',
-        'user',
+        'user.id' => 'user_id',
         'payment_method',
     ];
 
@@ -83,7 +81,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'amount_in_minor' => 'required|int|min:1',
             'currency' => 'required|string',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
-            'user' => ['required', ValidType::of(UserInterface::class)],
+            'user.id' => 'required|string',
         ];
     }
 
@@ -120,11 +118,11 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     }
 
     /**
-     * @return UserInterface
+     * @return string
      */
-    public function getUser(): UserInterface
+    public function getUserId(): string
     {
-        return $this->user;
+        return $this->userId;
     }
 
     /**

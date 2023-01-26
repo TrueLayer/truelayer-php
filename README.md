@@ -306,24 +306,12 @@ $url = $client->payment()
 ```php
 $payment = $client->getPayment($paymentId);
 $payment->getId();
+$payment->getUserId();
 $payment->getAmountInMinor();
 $payment->getCreatedAt(); 
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->toArray();
-```
-
-<a name="get-the-user"></a>
-
-## Get the user
-
-```php
-$user = $client->getPayment($paymentId)->getUser();
-$user->getId();
-$user->getName();
-$user->getEmail();
-$user->getPhone();
-$user->toArray();
 ```
 
 <a name="get-the-payment-method"></a>
