@@ -54,7 +54,7 @@ class CreatePayment
 
     public function merchantBeneficiary(MerchantAccountInterface $account): MerchantBeneficiaryInterface
     {
-        return $this->client->beneficiary()->merchantAccount($account);
+        return $this->client->beneficiary()->merchantAccount($account)->reference('TEST');
     }
 
     /**

@@ -21,11 +21,17 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     protected string $accountHolderName;
 
     /**
+     * @var string
+     */
+    protected string $reference;
+
+    /**
      * @var string[]
      */
     protected array $arrayFields = [
         'merchant_account_id',
         'account_holder_name',
+        'reference',
         'type',
     ];
 
@@ -35,6 +41,7 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     protected array $rules = [
         'merchant_account_id' => 'required|string',
         'account_holder_name' => 'nullable|string',
+        'reference' => 'required|string',
     ];
 
     /**
@@ -73,6 +80,26 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     public function accountHolderName(string $name): MerchantBeneficiary
     {
         $this->accountHolderName = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReference(): ?string
+    {
+        return $this->reference ?? null;
+    }
+
+    /**
+     * @param string $reference
+     *
+     * @return $this
+     */
+    public function reference(string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

@@ -13,6 +13,7 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 
 \it('creates a merchant payment', function () {
@@ -33,6 +34,10 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($created->getId())->toBeString();
     \expect($created->getResourceToken())->toBeString();
     \expect($created->getUserId())->toBeString();
+
+    $paymentMethod = $created->getDetails()->getPaymentMethod();
+    \expect($paymentMethod)->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
+    \expect($paymentMethod->getBeneficiary()->getReference())->toBe('TEST');
 
     return $created;
 });

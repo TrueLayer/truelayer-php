@@ -336,6 +336,7 @@ if ($method instanceof BankTransferPaymentMethodInterface) {
     }
     
     if ($beneficiary instanceof MerchantBeneficiaryInterface) {
+        $beneficiary->getReference();
         $beneficiary->getMerchantAccountId();
     }
 }

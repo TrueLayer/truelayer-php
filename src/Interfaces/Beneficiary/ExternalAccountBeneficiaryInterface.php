@@ -20,21 +20,4 @@ interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface, Payo
      * @return $this
      */
     public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): self;
-
-    /**
-     * @return string|null
-     */
-    public function getReference(): ?string;
-
-    /**
-     * @param string $reference
-     *
-     * @return $this
-     */
-    public function reference(string $reference): self;
-
-    /**
-     * @return string
-     */
-    public function getType(): string;
 }
