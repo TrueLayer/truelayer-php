@@ -22,6 +22,18 @@ interface BeneficiaryInterface extends ArrayableInterface, HasAttributesInterfac
     public function accountHolderName(string $name): self;
 
     /**
+     * @return string|null
+     */
+    public function getReference(): ?string;
+
+    /**
+     * @param string $reference
+     *
+     * @return $this
+     */
+    public function reference(string $reference): self;
+
+    /**
      * @return string
      */
     public function getType(): string;

@@ -17,9 +17,4 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
      * @return MerchantBeneficiaryInterface
      */
     public function merchantAccountId(string $id): MerchantBeneficiaryInterface;
-
-    /**
-     * @return string
-     */
-    public function getType(): string;
 }
