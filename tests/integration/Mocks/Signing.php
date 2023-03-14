@@ -78,9 +78,9 @@ class Signing
     }
 
     /**
-     * @param string $body
+     * @param string      $body
      * @param string|null $path
-     * @param array|null $headers
+     * @param array|null  $headers
      *
      * @return string
      */
@@ -105,7 +105,7 @@ class Signing
     /**
      * @param string|null $body
      * @param string|null $path
-     * @param array|null $headers
+     * @param array|null  $headers
      *
      * @return string[]
      */

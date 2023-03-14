@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 
-interface PaymentSettledEventInterface extends EventInterface
+interface PaymentSettledEventInterface extends PaymentEventInterface
 {
     /**
      * The payment's settlement risk-rating. Only available for closed-loop EUR payments in Private Beta and subject to change.
@@ -23,7 +22,7 @@ interface PaymentSettledEventInterface extends EventInterface
     public function getPaymentSource(): PaymentSourceInterface;
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getSettledAt(): DateTimeInterface;
+    public function getSettledAt(): \DateTimeInterface;
 }

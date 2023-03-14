@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\RefundExecutedInterface;
 
 final class RefundExecuted extends RefundRetrieved implements RefundExecutedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $executedAt;
+    protected \DateTimeInterface $executedAt;
 
     /**
      * @return mixed[]
@@ -20,7 +19,7 @@ final class RefundExecuted extends RefundRetrieved implements RefundExecutedInte
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'executed_at' => DateTimeInterface::class,
+            'executed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -45,9 +44,9 @@ final class RefundExecuted extends RefundRetrieved implements RefundExecutedInte
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface
+    public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
     }

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Webhook\RefundExecutedEventInterface;
 
 class RefundExecutedEvent extends RefundEvent implements RefundExecutedEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $executedAt;
+    protected \DateTimeInterface $executedAt;
 
     /**
      * @return mixed[]
@@ -20,7 +19,7 @@ class RefundExecutedEvent extends RefundEvent implements RefundExecutedEventInte
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'executed_at' => DateTimeInterface::class,
+            'executed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -45,9 +44,9 @@ class RefundExecutedEvent extends RefundEvent implements RefundExecutedEventInte
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface
+    public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
     }

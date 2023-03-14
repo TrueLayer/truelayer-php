@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
-use DateTimeInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -28,14 +27,14 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected PaymentSourceInterface $paymentSource;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $executedAt;
+    protected \DateTimeInterface $executedAt;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $settledAt;
+    protected \DateTimeInterface $settledAt;
 
     /**
      * @return mixed[]
@@ -43,8 +42,8 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'executed_at' => DateTimeInterface::class,
-            'settled_at' => DateTimeInterface::class,
+            'executed_at' => \DateTimeInterface::class,
+            'settled_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
         ]);
     }
@@ -74,9 +73,9 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface
+    public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
     }
@@ -90,9 +89,9 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getSettledAt(): DateTimeInterface
+    public function getSettledAt(): \DateTimeInterface
     {
         return $this->settledAt;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
 
 interface EventInterface extends HasAttributesInterface
@@ -12,9 +11,9 @@ interface EventInterface extends HasAttributesInterface
     /**
      * Get the time that the webhook was sent to you.
      *
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getTimestamp(): DateTimeInterface;
+    public function getTimestamp(): \DateTimeInterface;
 
     /**
      * Get the JSON web signature with a detached payload of the form {HEADER}..{SIGNATURE}.

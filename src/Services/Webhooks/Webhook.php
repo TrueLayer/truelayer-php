@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use Exception;
-use ReflectionException;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Entities\Webhook\Event;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -67,7 +65,7 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *
@@ -83,7 +81,7 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *
@@ -204,7 +202,7 @@ class Webhook implements WebhookInterface
 
         try {
             return $this->entityFactory->make(EventInterface::class, $data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // If we do not recognise the data structure as valid for any of the existing entities,
             // We create the base event entity which will be passed to the default handler.
             if ($e instanceof ValidationException || $e instanceof InvalidArgumentException) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use DateTimeInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use TrueLayer\Constants\DateTime;
@@ -156,7 +155,7 @@ trait ArrayableAttributes
             return $value->toArray();
         }
 
-        if ($value instanceof DateTimeInterface) {
+        if ($value instanceof \DateTimeInterface) {
             return $value->format(DateTime::FORMAT);
         }
 

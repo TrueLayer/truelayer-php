@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 
 final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements PaymentExecutedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $executedAt;
+    protected \DateTimeInterface $executedAt;
 
     /**
      * @return mixed[]
@@ -20,7 +19,7 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'executed_at' => DateTimeInterface::class,
+            'executed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -45,9 +44,9 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface
+    public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
     }

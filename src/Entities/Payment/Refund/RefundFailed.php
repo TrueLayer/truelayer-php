@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\RefundFailedInterface;
 
 final class RefundFailed extends RefundRetrieved implements RefundFailedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $failedAt;
+    protected \DateTimeInterface $failedAt;
 
     /**
      * @var string
@@ -25,7 +24,7 @@ final class RefundFailed extends RefundRetrieved implements RefundFailedInterfac
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'failed_at' => DateTimeInterface::class,
+            'failed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -52,9 +51,9 @@ final class RefundFailed extends RefundRetrieved implements RefundFailedInterfac
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface
+    public function getFailedAt(): \DateTimeInterface
     {
         return $this->failedAt;
     }

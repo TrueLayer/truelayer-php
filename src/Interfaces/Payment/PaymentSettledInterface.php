@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use DateTimeInterface;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -20,14 +19,14 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
     public function getPaymentSource(): PaymentSourceInterface;
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getSettledAt(): DateTimeInterface;
+    public function getSettledAt(): \DateTimeInterface;
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface;
+    public function getExecutedAt(): \DateTimeInterface;
 
     /**
      * @return ConfigurationInterface|null

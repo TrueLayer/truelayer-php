@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
-use DateTimeInterface;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
@@ -44,16 +43,16 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     protected string $userId;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $createdAt;
+    protected \DateTimeInterface $createdAt;
 
     /**
      * @var class-string[]
      */
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
-        'created_at' => DateTimeInterface::class,
+        'created_at' => \DateTimeInterface::class,
     ];
 
     /**
@@ -126,9 +125,9 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }

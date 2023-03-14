@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payout\PayoutRetrieved;
 
-use DateTimeInterface;
 use TrueLayer\Entities\Payout\PayoutRetrieved;
 use TrueLayer\Interfaces\Payout\PayoutFailedInterface;
 
 final class PayoutFailed extends PayoutRetrieved implements PayoutFailedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $failedAt;
+    protected \DateTimeInterface $failedAt;
 
     /**
      * @var string
@@ -37,7 +36,7 @@ final class PayoutFailed extends PayoutRetrieved implements PayoutFailedInterfac
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'failed_at' => DateTimeInterface::class,
+            'failed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -53,9 +52,9 @@ final class PayoutFailed extends PayoutRetrieved implements PayoutFailedInterfac
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface
+    public function getFailedAt(): \DateTimeInterface
     {
         return $this->failedAt;
     }

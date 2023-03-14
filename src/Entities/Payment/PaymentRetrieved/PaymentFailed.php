@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
-use DateTimeInterface;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Validation\AllowedConstant;
@@ -12,9 +11,9 @@ use TrueLayer\Validation\AllowedConstant;
 final class PaymentFailed extends _PaymentWithAuthorizationConfig implements PaymentFailedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $failedAt;
+    protected \DateTimeInterface $failedAt;
 
     /**
      * @var string
@@ -32,7 +31,7 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'failed_at' => DateTimeInterface::class,
+            'failed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -61,9 +60,9 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface
+    public function getFailedAt(): \DateTimeInterface
     {
         return $this->failedAt;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
-use DateTimeInterface;
 use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
@@ -37,15 +36,15 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
     protected string $status;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $createdAt;
+    protected \DateTimeInterface $createdAt;
 
     /**
      * @var class-string[]
      */
     protected array $casts = [
-        'created_at' => DateTimeInterface::class,
+        'created_at' => \DateTimeInterface::class,
     ];
 
     /**
@@ -108,9 +107,9 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }

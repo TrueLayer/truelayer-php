@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
-
 interface PaymentFailedEventInterface extends PaymentEventInterface
 {
     /**
      * Get the date of payment failure.
      *
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface;
+    public function getFailedAt(): \DateTimeInterface;
 
     /**
      * An enum identifying where the payment failed in its lifecycle.

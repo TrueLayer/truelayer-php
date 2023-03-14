@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payout;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
 
 interface PayoutRetrievedInterface extends HasAttributesInterface
@@ -40,7 +39,7 @@ interface PayoutRetrievedInterface extends HasAttributesInterface
     public function getStatus(): string;
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): DateTimeInterface;
+    public function getCreatedAt(): \DateTimeInterface;
 }

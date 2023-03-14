@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Util;
 
-use Closure;
-
 final class Retry
 {
     /**
-     * @var Closure|null
+     * @var \Closure|null
      */
-    public static ?Closure $testSleeper = null;
+    public static ?\Closure $testSleeper = null;
 
     /**
-     * @var Closure|null
+     * @var \Closure|null
      */
-    private ?Closure $when = null;
+    private ?\Closure $when = null;
 
     /**
      * @var int
@@ -24,11 +22,11 @@ final class Retry
     private int $maxRetries = 4;
 
     /**
-     * @param Closure $when
+     * @param \Closure $when
      *
      * @return $this
      */
-    public function when(Closure $when): self
+    public function when(\Closure $when): self
     {
         $this->when = $when;
 
@@ -48,26 +46,26 @@ final class Retry
     }
 
     /**
-     * @param Closure $closure
+     * @param \Closure $closure
      *
      * @throws \Exception
      *
      * @return mixed
      */
-    public function start(Closure $closure)
+    public function start(\Closure $closure)
     {
         return $this->attempt($closure, 0);
     }
 
     /**
-     * @param Closure $closure
-     * @param int     $attempt
+     * @param \Closure $closure
+     * @param int      $attempt
      *
      * @throws \Exception
      *
      * @return mixed|void
      */
-    private function attempt(Closure $closure, int $attempt)
+    private function attempt(\Closure $closure, int $attempt)
     {
         try {
             return $closure($attempt);
