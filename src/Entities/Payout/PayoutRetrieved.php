@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payout;
 
-use DateTimeInterface;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
@@ -43,16 +42,16 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     protected string $status;
 
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $createdAt;
+    protected \DateTimeInterface $createdAt;
 
     /**
      * @var string[]
      */
     protected array $casts = [
         'beneficiary' => PayoutBeneficiaryInterface::class,
-        'created_at' => DateTimeInterface::class,
+        'created_at' => \DateTimeInterface::class,
     ];
 
     /**
@@ -133,9 +132,9 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettledEventInterface;
 use TrueLayer\Validation\ValidType;
@@ -12,9 +11,9 @@ use TrueLayer\Validation\ValidType;
 class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $settledAt;
+    protected \DateTimeInterface $settledAt;
 
     /**
      * @var string
@@ -32,7 +31,7 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'settled_at' => DateTimeInterface::class,
+            'settled_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
         ]);
     }
@@ -62,9 +61,9 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getSettledAt(): DateTimeInterface
+    public function getSettledAt(): \DateTimeInterface
     {
         return $this->settledAt;
     }

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Webhook\EventInterface;
 
 class Event extends Entity implements EventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $timestamp;
+    protected \DateTimeInterface $timestamp;
 
     /**
      * @var string
@@ -70,13 +69,13 @@ class Event extends Entity implements EventInterface
      * @var string[]
      */
     protected array $casts = [
-        'timestamp' => DateTimeInterface::class,
+        'timestamp' => \DateTimeInterface::class,
     ];
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getTimestamp(): DateTimeInterface
+    public function getTimestamp(): \DateTimeInterface
     {
         return $this->timestamp;
     }

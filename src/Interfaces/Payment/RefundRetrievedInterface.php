@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\ArrayableInterface;
 
 interface RefundRetrievedInterface extends ArrayableInterface
@@ -30,9 +29,9 @@ interface RefundRetrievedInterface extends ArrayableInterface
     public function getReference(): string;
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): DateTimeInterface;
+    public function getCreatedAt(): \DateTimeInterface;
 
     /**
      * @return string

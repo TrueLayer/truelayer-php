@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Webhook\RefundFailedEventInterface;
 
 class RefundFailedEvent extends RefundEvent implements RefundFailedEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $failedAt;
+    protected \DateTimeInterface $failedAt;
 
     /**
      * @var string
@@ -25,7 +24,7 @@ class RefundFailedEvent extends RefundEvent implements RefundFailedEventInterfac
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
-            'failed_at' => DateTimeInterface::class,
+            'failed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -52,9 +51,9 @@ class RefundFailedEvent extends RefundEvent implements RefundFailedEventInterfac
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface
+    public function getFailedAt(): \DateTimeInterface
     {
         return $this->failedAt;
     }

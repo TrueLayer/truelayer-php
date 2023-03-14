@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
-
 interface RefundFailedEventInterface extends RefundEventInterface
 {
     /**
      * Get the date of refund failure.
      *
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface;
+    public function getFailedAt(): \DateTimeInterface;
 
     /**
      * Get the reason for the refund failure.

@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use Closure;
 use Illuminate\Support\Arr;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionNamedType;
 use TrueLayer\Exceptions\WebhookHandlerException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Interfaces\Webhook\EventInterface;
@@ -18,14 +13,14 @@ use TrueLayer\Interfaces\Webhook\WebhookHandlerManagerInterface;
 class WebhookHandlerManager implements WebhookHandlerManagerInterface
 {
     /**
-     * @var array<string, Closure[]>
+     * @var array<string, \Closure[]>
      */
     private array $handlers = [];
 
     /**
      * @param callable|class-string $handler
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
      */
@@ -39,7 +34,7 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
             throw new WebhookHandlerException('The provided webhook handler is not callable');
         }
 
-        $closure = Closure::fromCallable($handler);
+        $closure = \Closure::fromCallable($handler);
         $type = $this->getHandlerParameterType($closure);
 
         $typeHandlers = $this->handlers[$type] ?? [];
@@ -52,7 +47,7 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
      *
      * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      *
      * @return void
      */
@@ -78,7 +73,7 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
     /**
      * @param EventInterface $event
      *
-     * @return Closure[]
+     * @return \Closure[]
      */
     private function getFor(EventInterface $event): array
     {
@@ -94,16 +89,16 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
     }
 
     /**
-     * @param Closure $handler
+     * @param \Closure $handler
      *
      * @throws WebhookHandlerInvalidArgumentException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      *
      * @return class-string
      */
-    private function getHandlerParameterType(Closure $handler): string
+    private function getHandlerParameterType(\Closure $handler): string
     {
-        $ref = new ReflectionFunction($handler);
+        $ref = new \ReflectionFunction($handler);
         $parameters = $ref->getParameters();
 
         if (\count($parameters) !== 1) {
@@ -112,7 +107,7 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
 
         $type = $parameters[0]->getType();
         /** @var class-string|null $typeName */
-        $typeName = $type instanceof ReflectionNamedType ? $type->getName() : null;
+        $typeName = $type instanceof \ReflectionNamedType ? $type->getName() : null;
 
         if (!$typeName || !\is_subclass_of($typeName, EventInterface::class) && $typeName !== EventInterface::class) {
             throw new WebhookHandlerInvalidArgumentException('Webhook handler argument should be of type ' . EventInterface::class);
@@ -127,13 +122,13 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
      * @param class-string $class
      *
      * @throws WebhookHandlerException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      *
      * @return mixed
      */
     private function instantiateHandler(string $class)
     {
-        $constructor = (new ReflectionClass($class))->getConstructor();
+        $constructor = (new \ReflectionClass($class))->getConstructor();
 
         if ($constructor && $constructor->getNumberOfParameters() > 0) {
             throw new WebhookHandlerException("Could not instantiate webhook handler: {$class}");

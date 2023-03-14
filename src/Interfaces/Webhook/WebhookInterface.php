@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use ReflectionException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Exceptions\WebhookHandlerException;
@@ -15,7 +14,7 @@ interface WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *
@@ -26,7 +25,7 @@ interface WebhookInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *

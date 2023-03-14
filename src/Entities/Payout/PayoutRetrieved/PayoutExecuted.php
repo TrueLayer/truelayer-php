@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payout\PayoutRetrieved;
 
-use DateTimeInterface;
 use TrueLayer\Entities\Payout\PayoutRetrieved;
 use TrueLayer\Interfaces\Payout\PayoutExecutedInterface;
 
 final class PayoutExecuted extends PayoutRetrieved implements PayoutExecutedInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $executedAt;
+    protected \DateTimeInterface $executedAt;
 
     /**
      * @return mixed[]
@@ -31,7 +30,7 @@ final class PayoutExecuted extends PayoutRetrieved implements PayoutExecutedInte
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'executed_at' => DateTimeInterface::class,
+            'executed_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -46,9 +45,9 @@ final class PayoutExecuted extends PayoutRetrieved implements PayoutExecutedInte
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface
+    public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
     }

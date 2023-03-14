@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Payment;
 
-use DateTimeInterface;
-
 interface RefundFailedInterface extends RefundRetrievedInterface
 {
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getFailedAt(): DateTimeInterface;
+    public function getFailedAt(): \DateTimeInterface;
 
     /**
      * @return string|null

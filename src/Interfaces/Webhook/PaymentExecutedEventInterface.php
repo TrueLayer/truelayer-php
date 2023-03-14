@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
-
 interface PaymentExecutedEventInterface extends PaymentEventInterface
 {
     /**
      * Get the payment execution date.
      *
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getExecutedAt(): DateTimeInterface;
+    public function getExecutedAt(): \DateTimeInterface;
 
     /**
      * The payment's settlement risk-rating. Only available for closed-loop EUR payments in Private Beta and subject to change.
