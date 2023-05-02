@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
+use Http\Discovery\Psr17Factory;
+use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18Client;
+use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use PsrDiscovery\Discover;
 use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Interfaces\Configuration\ConfigInterface;
 
@@ -15,52 +18,32 @@ trait HttpClient
     /**
      * @param ConfigInterface $config
      *
+     * @return ClientInterface
      * @throws MissingHttpImplementationException
      *
-     * @return ClientInterface
      */
     private function discoverHttpClient(ConfigInterface $config): ClientInterface
     {
-        if ($client = $config->getHttpClient()) {
-            return $client;
-        }
-
         try {
-            $client = Discover::httpClient();
+            return $config->getHttpClient() ?? Psr18ClientDiscovery::find();
         } catch (\Exception $exception) {
             throw new MissingHttpImplementationException('Could not discover a PSR-18 HTTP client implementation', 0, $exception);
         }
-
-        if (!($client instanceof ClientInterface)) {
-            throw new MissingHttpImplementationException('Please provide a PSR-18 HTTP client implementation such as Guzzle');
-        }
-
-        return $client;
     }
 
     /**
      * @param ConfigInterface $config
      *
+     * @return RequestFactoryInterface
      * @throws MissingHttpImplementationException
      *
-     * @return RequestFactoryInterface
      */
     private function discoverHttpRequestFactory(ConfigInterface $config): RequestFactoryInterface
     {
-        if ($factory = $config->getHttpRequestFactory()) {
-            return $factory;
-        }
-
         try {
-            $factory = Discover::httpRequestFactory();
+            return $config->getHttpRequestFactory() ?? Psr17FactoryDiscovery::findRequestFactory();
         } catch (\Exception $exception) {
             throw new MissingHttpImplementationException('Could not discover a PSR-17 HTTP request factory implementation', 0, $exception);
         }
-
-        if (!($factory instanceof RequestFactoryInterface)) {
-            throw new MissingHttpImplementationException('Please provide a PSR-17 HTTP request factory implementation such as Guzzle');
-        }
-
-        return $factory;
     }
 }
