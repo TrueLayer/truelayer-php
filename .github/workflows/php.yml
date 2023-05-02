@@ -66,6 +66,9 @@ jobs:
           echo TEST_KID=${{ secrets.TEST_KID }} >> .env
           echo TEST_PEM=${{ secrets.TEST_PEM }} >> .env
 
+      - name: Run Acceptance Tests
+        run: composer acceptance-tests
+
       - name: Test HTTP Clients
         run: |
           composer require symfony/http-client --dev
@@ -79,8 +82,3 @@ jobs:
           composer require php-http/curl-client --dev
           composer remove guzzlehttp/guzzle --dev
           composer run acceptance-tests -- --filter "retrieves merchant accounts"
-
-      - name: Run Acceptance Tests
-        run: |
-          composer require guzzlehttp/guzzle --dev
-          composer acceptance-tests
