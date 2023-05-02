@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use Http\Discovery\Psr17Factory;
 use Http\Discovery\Psr17FactoryDiscovery;
-use Http\Discovery\Psr18Client;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -18,9 +16,9 @@ trait HttpClient
     /**
      * @param ConfigInterface $config
      *
-     * @return ClientInterface
      * @throws MissingHttpImplementationException
      *
+     * @return ClientInterface
      */
     private function discoverHttpClient(ConfigInterface $config): ClientInterface
     {
@@ -34,9 +32,9 @@ trait HttpClient
     /**
      * @param ConfigInterface $config
      *
-     * @return RequestFactoryInterface
      * @throws MissingHttpImplementationException
      *
+     * @return RequestFactoryInterface
      */
     private function discoverHttpRequestFactory(ConfigInterface $config): RequestFactoryInterface
     {

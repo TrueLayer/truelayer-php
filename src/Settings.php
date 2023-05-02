@@ -11,7 +11,7 @@ final class Settings
      */
     private static ?string $tlAgent = null;
 
-    public static function tlAgent(string $tlAgent)
+    public static function tlAgent(string $tlAgent): void
     {
         self::$tlAgent = $tlAgent;
     }
