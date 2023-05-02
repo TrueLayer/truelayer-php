@@ -8,11 +8,13 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
+use TrueLayer\Settings;
 
 final class ApiClient implements ApiClientInterface
 {
@@ -32,9 +34,9 @@ final class ApiClient implements ApiClientInterface
     private string $baseUri;
 
     /**
-     * @param HttpClientInterface     $httpClient
+     * @param HttpClientInterface $httpClient
      * @param RequestFactoryInterface $httpRequestFactory
-     * @param string                  $baseUri
+     * @param string $baseUri
      */
     public function __construct(HttpClientInterface $httpClient, RequestFactoryInterface $httpRequestFactory, string $baseUri)
     {
@@ -54,19 +56,25 @@ final class ApiClient implements ApiClientInterface
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      * @throws ClientExceptionInterface
      *
-     * @return mixed
+     * @throws ApiRequestJsonSerializationException
      */
     public function send(ApiRequestInterface $apiRequest)
     {
         $httpRequest = $this->httpRequestFactory->createRequest($apiRequest->getMethod(), $this->baseUri . $apiRequest->getUri());
         $httpRequest->getBody()->write($apiRequest->getJsonPayload());
-        $httpRequest = $httpRequest->withHeader('Content-Type', 'application/json');
 
-        foreach ($apiRequest->getHeaders() as $key => $val) {
+        $headers = $apiRequest->getHeaders();
+        $headers['Content-Type'] = 'application/json';
+
+        if ($tlAgent = Settings::getTlAgent()) {
+            $headers[CustomHeaders::TL_AGENT] = $tlAgent;
+        }
+
+        foreach ($headers as $key => $val) {
             $httpRequest = $httpRequest->withHeader($key, $val);
         }
 

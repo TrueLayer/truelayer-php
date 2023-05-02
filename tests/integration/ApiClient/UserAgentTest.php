@@ -18,3 +18,14 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     \expect($authRequestUserAgent)->toBe($userAgent);
     \expect($apiRequestUserAgent)->toBe($userAgent);
 });
+
+\it('uses custom agent header', function () {
+    \TrueLayer\Settings::tlAgent('test');
+    \client(PaymentResponse::executed())->getPayment('1');
+
+    $authRequestUserAgent = \getSentHttpRequests()[0]->getHeaderLine(CustomHeaders::TL_AGENT);
+    $apiRequestUserAgent = \getSentHttpRequests()[1]->getHeaderLine(CustomHeaders::TL_AGENT);
+
+    \expect($authRequestUserAgent)->toBe('test');
+    \expect($apiRequestUserAgent)->toBe('test');
+});
