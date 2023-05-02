@@ -72,11 +72,11 @@ final class AccessToken implements AccessTokenInterface
      * @param array<string>|null           $scopes
      */
     public function __construct(ApiClientInterface $api,
-        ?EncryptedCacheInterface $cache,
-        ValidatorFactory $validatorFactory,
-        string $clientId,
-        string $clientSecret,
-        ?array $scopes = [])
+                                ?EncryptedCacheInterface $cache,
+                                ValidatorFactory $validatorFactory,
+                                string $clientId,
+                                string $clientSecret,
+                                ?array $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -87,9 +87,9 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return string|null
      */
@@ -192,7 +192,7 @@ final class AccessToken implements AccessTokenInterface
 
         try {
             $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Exception $e) {
             throw new ValidationException($validator);
         }
     }

@@ -52,8 +52,8 @@ class JwksManager implements JwksManagerInterface
      * @param ValidatorFactory             $validatorFactory
      */
     public function __construct(ApiClientInterface $api,
-        ?EncryptedCacheInterface $cache,
-        ValidatorFactory $validatorFactory)
+                                ?EncryptedCacheInterface $cache,
+                                ValidatorFactory $validatorFactory)
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -61,11 +61,11 @@ class JwksManager implements JwksManagerInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
      * @throws SignerException
+     * @throws ValidationException
      *
      * @return mixed[]
      */
@@ -164,7 +164,7 @@ class JwksManager implements JwksManagerInterface
 
         try {
             $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Exception $e) {
             throw new ValidationException($validator);
         }
     }

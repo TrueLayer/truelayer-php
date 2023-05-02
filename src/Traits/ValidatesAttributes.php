@@ -6,7 +6,6 @@ namespace TrueLayer\Traits;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
 
 trait ValidatesAttributes
 {
@@ -71,7 +70,7 @@ trait ValidatesAttributes
             $validator->validate();
 
             return $this;
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
             throw new \TrueLayer\Exceptions\ValidationException($validator);
         }
     }
