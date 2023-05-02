@@ -81,4 +81,6 @@ jobs:
           composer run acceptance-tests -- --filter "retrieves merchant accounts"
 
       - name: Run Acceptance Tests
-        run: composer acceptance-tests
+        run: |
+          composer require guzzlehttp/guzzle --dev
+          composer acceptance-tests
