@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Auth\AccessTokenInterface;
@@ -19,21 +19,17 @@ use TrueLayer\Services\Auth\AccessToken;
 use TrueLayer\Services\Client\Client;
 use TrueLayer\Services\Client\ClientConfig;
 use TrueLayer\Signing\Signer;
+use TrueLayer\Traits\HttpClient;
 use TrueLayer\Traits\MakeValidatorFactory;
 
 final class ClientFactory implements ClientFactoryInterface
 {
-    use MakeValidatorFactory;
+    use MakeValidatorFactory, HttpClient;
 
     /**
      * @var ValidatorFactory
      */
     private ValidatorFactory $validatorFactory;
-
-    /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $httpClient;
 
     /**
      * @var AccessTokenInterface
@@ -49,13 +45,13 @@ final class ClientFactory implements ClientFactoryInterface
      * @param ClientConfigInterface $config
      *
      * @throws SignerException
+     * @throws MissingHttpImplementationException
      *
      * @return ClientInterface
      */
     public function make(ClientConfigInterface $config): ClientInterface
     {
         $this->validatorFactory = $this->makeValidatorFactory();
-        $this->makeHttpClient($config);
         $this->makeAuthToken($config);
         $this->makeApiClient($config);
 
@@ -71,20 +67,12 @@ final class ClientFactory implements ClientFactoryInterface
     }
 
     /**
-     * Build the HTTP client.
-     *
-     * @param ClientConfigInterface $config
-     */
-    private function makeHttpClient(ClientConfigInterface $config): void
-    {
-        $this->httpClient = $config->getHttpClient();
-    }
-
-    /**
      * Build the auth token service
      * Handles the auth token retrieval & manages expiration.
      *
      * @param ClientConfigInterface $config
+     *
+     * @throws MissingHttpImplementationException
      */
     private function makeAuthToken(ClientConfigInterface $config): void
     {
@@ -92,7 +80,12 @@ final class ClientFactory implements ClientFactoryInterface
             ? Endpoints::AUTH_PROD_URL
             : Endpoints::AUTH_SANDBOX_URL;
 
-        $authClient = new ApiClient($this->httpClient, $authBaseUri);
+        $authClient = new ApiClient(
+            $this->discoverHttpClient($config),
+            $this->discoverHttpRequestFactory($config),
+            $authBaseUri
+        );
+
         $authClient = new Decorators\ExponentialBackoffDecorator($authClient);
         $authClient = new Decorators\TLAgentDecorator($authClient);
 
@@ -113,6 +106,7 @@ final class ClientFactory implements ClientFactoryInterface
      * @param ClientConfigInterface $config
      *
      * @throws SignerException
+     * @throws MissingHttpImplementationException
      */
     private function makeApiClient(ClientConfigInterface $config): void
     {
@@ -130,7 +124,12 @@ final class ClientFactory implements ClientFactoryInterface
             ? Endpoints::API_PROD_URL
             : Endpoints::API_SANDBOX_URL;
 
-        $this->apiClient = new ApiClient($this->httpClient, $apiBaseUri);
+        $this->apiClient = new ApiClient(
+            $this->discoverHttpClient($config),
+            $this->discoverHttpRequestFactory($config),
+            $apiBaseUri
+        );
+
         $this->apiClient = new Decorators\AccessTokenDecorator($this->apiClient, $this->authToken);
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
         $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);

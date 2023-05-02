@@ -6,6 +6,7 @@ namespace TrueLayer\Factories;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Interfaces\Configuration\ConfigInterface;
 use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
 use TrueLayer\Interfaces\Webhook\JwksManagerInterface;
@@ -18,14 +19,17 @@ use TrueLayer\Services\Webhooks\Webhook;
 use TrueLayer\Services\Webhooks\WebhookConfig;
 use TrueLayer\Services\Webhooks\WebhookHandlerManager;
 use TrueLayer\Services\Webhooks\WebhookVerifier;
+use TrueLayer\Traits\HttpClient;
 use TrueLayer\Traits\MakeValidatorFactory;
 
 class WebhookFactory implements WebhookVerifierFactoryInterface
 {
-    use MakeValidatorFactory;
+    use MakeValidatorFactory, HttpClient;
 
     /**
      * @param ConfigInterface $config
+     *
+     * @throws MissingHttpImplementationException
      *
      * @return WebhookInterface
      */
@@ -46,6 +50,8 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
      * @param ConfigInterface  $config
      * @param ValidatorFactory $validatorFactory
      *
+     * @throws MissingHttpImplementationException
+     *
      * @return JwksManagerInterface
      */
     private function makeJwks(ConfigInterface $config, ValidatorFactory $validatorFactory): JwksManagerInterface
@@ -54,7 +60,12 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
             ? Endpoints::WEBHOOKS_PROD_URL
             : Endpoints::WEBHOOKS_SANDBOX_URL;
 
-        $jwksClient = new ApiClient($config->getHttpClient(), $webhooksBaseUri);
+        $jwksClient = new ApiClient(
+            $this->discoverHttpClient($config),
+            $this->discoverHttpRequestFactory($config),
+            $webhooksBaseUri
+        );
+
         $jwksClient = new Decorators\ExponentialBackoffDecorator($jwksClient);
 
         return new JwksManager($jwksClient, $config->getCache(), $validatorFactory);

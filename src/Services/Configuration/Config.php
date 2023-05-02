@@ -6,6 +6,7 @@ namespace TrueLayer\Services\Configuration;
 
 use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Constants\Encryption;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -21,9 +22,14 @@ abstract class Config implements ConfigInterface
     private bool $useProduction = false;
 
     /**
-     * @var HttpClientInterface
+     * @var HttpClientInterface|null
      */
-    private HttpClientInterface $httpClient;
+    private ?HttpClientInterface $httpClient = null;
+
+    /**
+     * @var RequestFactoryInterface|null
+     */
+    private ?RequestFactoryInterface $httpRequestFactory = null;
 
     /**
      * @var EncryptedCacheInterface|null
@@ -51,9 +57,9 @@ abstract class Config implements ConfigInterface
     }
 
     /**
-     * @return HttpClientInterface
+     * @return HttpClientInterface|null
      */
-    public function getHttpClient(): HttpClientInterface
+    public function getHttpClient(): ?HttpClientInterface
     {
         return $this->httpClient;
     }
@@ -68,6 +74,26 @@ abstract class Config implements ConfigInterface
         $this->httpClient = $httpClient;
 
         return $this;
+    }
+
+    /**
+     * @param RequestFactoryInterface $httpRequestFactory
+     *
+     * @return $this
+     */
+    public function httpRequestFactory(RequestFactoryInterface $httpRequestFactory): self
+    {
+        $this->httpRequestFactory = $httpRequestFactory;
+
+        return $this;
+    }
+
+    /**
+     * @return ?RequestFactoryInterface
+     */
+    public function getHttpRequestFactory(): ?RequestFactoryInterface
+    {
+        return $this->httpRequestFactory;
     }
 
     /**

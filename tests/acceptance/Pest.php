@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpClient\Psr18Client;
 use TrueLayer\Client;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Exceptions\SignerException;
@@ -26,7 +25,6 @@ function client(): ClientInterface
         ->clientSecret($_ENV['TEST_CLIENT_SECRET'])
         ->keyId($_ENV['TEST_KID'])
         ->pemBase64($_ENV['TEST_PEM'])
-        ->httpClient(new Psr18Client())
         ->create();
 }
 

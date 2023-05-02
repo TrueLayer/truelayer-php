@@ -55,22 +55,21 @@ This package simplifies working with the TrueLayer API, by:
 
 ### Installation
 
+The library will require an HTTP client that implements [PSR-18](https://www.php-fig.org/psr/psr-18/).
+
 ```
 composer require truelayer/client
 ```
 
-### Initialisation
+If a PSR-18 client isn't installed, Composer will let you know. You can simply require one, such as Guzzle:
 
-You will need to provide your own HTTP client that implements [PSR-18](https://www.php-fig.org/psr/psr-18/). If your
-application does not already have one, you can use a client such as [Guzzle](https://docs.guzzlephp.org/en/stable/):
-
-```php
-composer require guzzlehttp/guzzle:^7.0
-
-$httpClient = new \GuzzleHttp\Client();
+```
+composer require guzzlehttp/guzzle truelayer/client
 ```
 
-You will also need to go to the TrueLayer console and create your credentials which you can then provide to the Client
+### Initialisation
+
+You will need to go to the TrueLayer console and create your credentials which you can then provide to the Client
 configurator:
 
 ```php
@@ -79,7 +78,6 @@ $client = \TrueLayer\Client::configure()
     ->clientSecret($clientSecret)
     ->keyId($kid)
     ->pemFile($pemFilePath) // Or ->pem($contents) Or ->pemBase64($contents)
-    ->httpClient($httpClient)
     ->create();
 ```
 
@@ -100,6 +98,15 @@ the library with the `scopes()` method:
 $client = \TrueLayer\Client::configure()
     ...
     ->scopes('foo', 'bar')
+    ->create(); 
+```
+
+If needed, you can also provide your own HTTP client instance:
+
+```php
+$client = \TrueLayer\Client::configure()
+    ...
+    ->httpClient($myPSR18Client)
     ->create(); 
 ```
 
