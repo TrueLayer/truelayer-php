@@ -66,7 +66,8 @@
         "process-timeout": 0,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true
         }
     }
 }

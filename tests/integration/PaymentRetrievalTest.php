@@ -154,6 +154,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
 \it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
     $payment = \client(PaymentResponse::settled())->getPayment('1');
+    \var_dump($payment->toArray());
     $paymentSource = $payment->getPaymentSource();
 
     \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
@@ -168,11 +169,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:51.382114Z');
     \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
     \expect($payment->getMetadata())->toBeArray();
-    var_dump($payment->getMetadata());
+    \var_dump($payment->getMetadata());
     \expect($payment->getMetadata())->toMatchArray([
-        "metadata_key_1" => "metadata_value_1",
-        "metadata_key_2" => "metadata_value_2",
-        "metadata_key_3" => "metadata_value_3",
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
     ]);
 
     \expect($paymentSource->getId())->toBeString();

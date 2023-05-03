@@ -103,9 +103,9 @@ class CreatePayment
             ->amountInMinor(1)
             ->currency(Currencies::GBP)
             ->metadata([
-                "metadata_key_1" => "metadata_value_1",
-                "metadata_key_2" => "metadata_value_2",
-                "metadata_key_3" => "metadata_value_3",
+                'metadata_key_1' => 'metadata_value_1',
+                'metadata_key_2' => 'metadata_value_2',
+                'metadata_key_3' => 'metadata_value_3',
             ])
             ->paymentMethod($paymentMethod);
     }
