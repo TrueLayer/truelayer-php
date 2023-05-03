@@ -28,6 +28,11 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     protected string $currency;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $metadata;
+
+    /**
      * @var string
      */
     protected string $status;
@@ -64,6 +69,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
         'created_at',
         'amount_in_minor',
         'currency',
+        'metadata',
         'user.id' => 'user_id',
         'payment_method',
     ];
@@ -79,6 +85,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
             'currency' => 'required|string',
+            'metadata' => 'array',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user.id' => 'required|string',
         ];
@@ -106,6 +113,14 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     public function getCurrency(): string
     {
         return $this->currency;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array
+    {
+        return $this->metadata ?? [];
     }
 
     /**

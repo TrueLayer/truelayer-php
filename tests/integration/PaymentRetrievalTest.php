@@ -167,6 +167,13 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:48.014149Z');
     \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:51.382114Z');
     \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
+    \expect($payment->getMetadata())->toBeArray();
+    var_dump($payment->getMetadata());
+    \expect($payment->getMetadata())->toMatchArray([
+        "metadata_key_1" => "metadata_value_1",
+        "metadata_key_2" => "metadata_value_2",
+        "metadata_key_3" => "metadata_value_3",
+    ]);
 
     \expect($paymentSource->getId())->toBeString();
     \expect($paymentSource->getAccountHolderName())->toBe('Bob');

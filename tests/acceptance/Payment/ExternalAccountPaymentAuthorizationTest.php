@@ -57,6 +57,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
     \expect($payment->getAuthorizationFlowNextAction())->toBeInstanceOf(ProviderSelectionActionInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->getMetadata())->toBeArray();
 
     return $created;
 })->depends('it starts payment authorization');
