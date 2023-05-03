@@ -7,6 +7,7 @@ namespace TrueLayer\Interfaces\Client;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
@@ -74,10 +75,10 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentRetrievedInterface
      */
@@ -87,11 +88,11 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
@@ -101,19 +102,19 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return RefundRequestInterface
      */
@@ -123,11 +124,11 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $refundId
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return RefundRetrievedInterface
      */
@@ -136,11 +137,11 @@ interface ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
@@ -164,11 +165,11 @@ interface ClientInterface
     public function getPayout(string $id): Payout\PayoutRetrievedInterface;
 
     /**
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return MerchantAccountInterface[]
      */
@@ -177,17 +178,19 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return MerchantAccountInterface
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface;
 
     /**
+     * @throws MissingHttpImplementationException
+     *
      * @return WebhookInterface
      */
     public function webhook(): WebhookInterface;

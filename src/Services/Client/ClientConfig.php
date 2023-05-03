@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Services\Client;
 
 use TrueLayer\Constants\Scopes;
+use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Client\ClientFactoryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
@@ -214,6 +215,7 @@ class ClientConfig extends Config implements ClientConfigInterface
 
     /**
      * @throws SignerException
+     * @throws MissingHttpImplementationException
      *
      * @return ClientInterface
      */

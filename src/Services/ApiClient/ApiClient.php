@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\ApiClient;
 
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Constants\ResponseStatusCodes;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
+use TrueLayer\Settings;
 
 final class ApiClient implements ApiClientInterface
 {
@@ -22,17 +24,24 @@ final class ApiClient implements ApiClientInterface
     private HttpClientInterface $httpClient;
 
     /**
+     * @var RequestFactoryInterface
+     */
+    private RequestFactoryInterface $httpRequestFactory;
+
+    /**
      * @var string
      */
     private string $baseUri;
 
     /**
-     * @param HttpClientInterface $httpClient
-     * @param string              $baseUri
+     * @param HttpClientInterface     $httpClient
+     * @param RequestFactoryInterface $httpRequestFactory
+     * @param string                  $baseUri
      */
-    public function __construct(HttpClientInterface $httpClient, string $baseUri)
+    public function __construct(HttpClientInterface $httpClient, RequestFactoryInterface $httpRequestFactory, string $baseUri)
     {
         $this->httpClient = $httpClient;
+        $this->httpRequestFactory = $httpRequestFactory;
         $this->baseUri = $baseUri;
     }
 
@@ -55,14 +64,19 @@ final class ApiClient implements ApiClientInterface
      */
     public function send(ApiRequestInterface $apiRequest)
     {
-        $apiRequest->header('Content-Type', 'application/json');
+        $httpRequest = $this->httpRequestFactory->createRequest($apiRequest->getMethod(), $this->baseUri . $apiRequest->getUri());
+        $httpRequest->getBody()->write($apiRequest->getJsonPayload());
 
-        $httpRequest = new Request(
-            $apiRequest->getMethod(),
-            $this->baseUri . $apiRequest->getUri(),
-            $apiRequest->getHeaders(),
-            $apiRequest->getJsonPayload()
-        );
+        $headers = $apiRequest->getHeaders();
+        $headers['Content-Type'] = 'application/json';
+
+        if ($tlAgent = Settings::getTlAgent()) {
+            $headers[CustomHeaders::TL_AGENT] = $tlAgent;
+        }
+
+        foreach ($headers as $key => $val) {
+            $httpRequest = $httpRequest->withHeader($key, $val);
+        }
 
         $response = $this->httpClient->sendRequest($httpRequest);
 

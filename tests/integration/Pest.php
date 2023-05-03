@@ -33,11 +33,11 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
  *
  * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
@@ -66,10 +66,10 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
+ * @throws ApiResponseUnsuccessfulException
  *
  * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
@@ -90,10 +90,10 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
+ * @throws ApiResponseUnsuccessfulException
  *
  * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  */
@@ -124,18 +124,21 @@ function getSentHttpRequests(): array
  */
 function getRequestPayload(int $requestIndex)
 {
-    return \json_decode(\getSentHttpRequests()[$requestIndex]->getBody()->getContents(), true);
+    $body = \getSentHttpRequests()[$requestIndex]->getBody();
+    $body->rewind();
+
+    return \json_decode($body->getContents(), true);
 }
 
 /**
  * @param string $body
  *
- * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
+ * @throws ApiRequestJsonSerializationException
  *
  * @return WebhookInterface
  */
