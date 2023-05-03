@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Configuration;
 
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
+use Psr\Http\Message\RequestFactoryInterface as HttpRequestFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
@@ -24,9 +25,9 @@ interface ConfigInterface
     public function useProduction(bool $useProduction): self;
 
     /**
-     * @return HttpClientInterface
+     * @return HttpClientInterface|null
      */
-    public function getHttpClient(): HttpClientInterface;
+    public function getHttpClient(): ?HttpClientInterface;
 
     /**
      * @param HttpClientInterface $httpClient
@@ -34,6 +35,18 @@ interface ConfigInterface
      * @return $this
      */
     public function httpClient(HttpClientInterface $httpClient): self;
+
+    /**
+     * @param HttpRequestFactoryInterface $httpRequestFactory
+     *
+     * @return $this
+     */
+    public function httpRequestFactory(HttpRequestFactoryInterface $httpRequestFactory): self;
+
+    /**
+     * @return ?HttpRequestFactoryInterface
+     */
+    public function getHttpRequestFactory(): ?HttpRequestFactoryInterface;
 
     /**
      * @return EncryptedCacheInterface|null

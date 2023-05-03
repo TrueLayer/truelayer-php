@@ -6,9 +6,9 @@ namespace TrueLayer\Constants;
 
 class RequestMethods
 {
-    public const POST = 'post';
-    public const PUT = 'put';
-    public const PATCH = 'patch';
-    public const DELETE = 'delete';
-    public const GET = 'get';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
+    public const DELETE = 'DELETE';
+    public const GET = 'GET';
 }

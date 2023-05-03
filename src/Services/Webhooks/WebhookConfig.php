@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
+use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Interfaces\Configuration\WebhookConfigInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
 use TrueLayer\Interfaces\Webhook\WebhookVerifierFactoryInterface;
@@ -25,6 +26,8 @@ class WebhookConfig extends Config implements WebhookConfigInterface
     }
 
     /**
+     * @throws MissingHttpImplementationException
+     *
      * @return WebhookInterface
      */
     public function create(): WebhookInterface

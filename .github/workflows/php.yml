@@ -58,11 +58,27 @@ jobs:
       - name: Integration Tests
         run: composer integration-tests
 
-      - name: Acceptance Tests
+      - name: Setup Acceptance Tests
         run: |
           touch .env
           echo TEST_CLIENT_ID=${{ secrets.TEST_CLIENT_ID }} >> .env
           echo TEST_CLIENT_SECRET=${{ secrets.TEST_CLIENT_SECRET }} >> .env
           echo TEST_KID=${{ secrets.TEST_KID }} >> .env
           echo TEST_PEM=${{ secrets.TEST_PEM }} >> .env
-          composer acceptance-tests
+
+      - name: Run Acceptance Tests
+        run: composer acceptance-tests
+
+      - name: Test HTTP Clients
+        run: |
+          composer require symfony/http-client --dev
+          composer remove guzzlehttp/guzzle --dev
+          composer run acceptance-tests -- --filter "retrieves merchant accounts"
+
+          composer require guzzlehttp/guzzle --dev
+          composer remove symfony/http-client --dev
+          composer run acceptance-tests -- --filter "retrieves merchant accounts"
+
+          composer require php-http/curl-client --dev
+          composer remove guzzlehttp/guzzle --dev
+          composer run acceptance-tests -- --filter "retrieves merchant accounts"

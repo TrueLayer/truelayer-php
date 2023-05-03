@@ -86,9 +86,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return UserInterface
      */
@@ -98,9 +98,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return AccountIdentifierBuilderInterface
      */
@@ -110,9 +110,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return BeneficiaryBuilderInterface
      */
@@ -122,9 +122,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderFilterInterface
      */
@@ -134,9 +134,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return ProviderSelectionBuilderInterface
      */
@@ -146,9 +146,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentMethodBuilderInterface
      */
@@ -158,9 +158,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     * @throws Exceptions\InvalidArgumentException
-     * @throws Exceptions\InvalidArgumentException
      *
      * @return PaymentRequestInterface
      */
@@ -172,12 +172,12 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
      *
      * @return PaymentRetrievedInterface
      */
@@ -192,12 +192,12 @@ final class Client implements ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return AuthorizationFlowAuthorizingInterface
      */
@@ -213,12 +213,12 @@ final class Client implements ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return AuthorizationFlowResponseInterface
      */
@@ -240,8 +240,8 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return RefundRequestInterface
      */
@@ -254,11 +254,11 @@ final class Client implements ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $refundId
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return RefundRetrievedInterface
      */
@@ -274,11 +274,11 @@ final class Client implements ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
@@ -302,9 +302,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws ValidationException
+     * @throws ValidationException
      * @throws InvalidArgumentException
-     * @throws ValidationException
-     * @throws ValidationException
      *
      * @return Payout\PayoutRequestInterface
      */
@@ -314,9 +314,9 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws ValidationException
+     * @throws ValidationException
      * @throws InvalidArgumentException
-     * @throws ValidationException
-     * @throws ValidationException
      *
      * @return Payout\BeneficiaryBuilderInterface
      */
@@ -333,12 +333,12 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
      *
      * @return MerchantAccountInterface[]
      */
@@ -352,12 +352,12 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @throws Exceptions\SignerException
      * @throws Exceptions\ValidationException
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
+     * @throws Exceptions\SignerException
      *
      * @return MerchantAccountInterface
      */
@@ -369,6 +369,8 @@ final class Client implements ClientInterface
     }
 
     /**
+     * @throws Exceptions\MissingHttpImplementationException
+     *
      * @return WebhookInterface
      */
     public function webhook(): WebhookInterface
