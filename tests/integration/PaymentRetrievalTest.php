@@ -61,6 +61,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     \expect($next)->toBeInstanceOf(ProviderSelectionActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::PROVIDER_SELECTION);
@@ -95,6 +100,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     $next = $payment->getAuthorizationFlowNextAction();
 
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
     \expect($next)->toBeInstanceOf(RedirectActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
     \expect($next->getUri())->toStartWith('https://');
@@ -114,6 +124,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
     \expect($next)->toBeInstanceOf(WaitActionInterface::class);
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::WAIT);
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     \assertPaymentCommon($payment);
 });
@@ -130,6 +145,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     \assertPaymentCommon($payment);
 });
@@ -147,6 +167,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-04T14:12:07.705938Z');
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     \assertPaymentCommon($payment);
 });
@@ -154,7 +179,6 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
 \it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
     $payment = \client(PaymentResponse::settled())->getPayment('1');
-    \var_dump($payment->toArray());
     $paymentSource = $payment->getPaymentSource();
 
     \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
@@ -169,7 +193,6 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:51.382114Z');
     \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
     \expect($payment->getMetadata())->toBeArray();
-    \var_dump($payment->getMetadata());
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
@@ -227,6 +250,11 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:26:48.849469Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     \assertPaymentCommon($payment);
 });

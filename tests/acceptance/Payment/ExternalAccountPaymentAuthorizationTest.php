@@ -23,6 +23,11 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($created->getId())->toBeString();
     \expect($created->getResourceToken())->toBeString();
     \expect($created->getUserId())->toBeString();
+    \expect($created->getDetails()->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 });
 
 \it('creates a SCAN payment', function () {
@@ -32,6 +37,11 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($created->getId())->toBeString();
     \expect($created->getResourceToken())->toBeString();
     \expect($created->getUserId())->toBeString();
+    \expect($created->getDetails()->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     return $created;
 });
@@ -57,7 +67,11 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
     \expect($payment->getAuthorizationFlowNextAction())->toBeInstanceOf(ProviderSelectionActionInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
-    \expect($payment->getMetadata())->toBeArray();
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     return $created;
 })->depends('it starts payment authorization');
@@ -83,6 +97,11 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($payment)->toBeInstanceOf(PaymentAuthorizingInterface::class);
     \expect($payment->getAuthorizationFlowNextAction())->toBeInstanceOf(RedirectActionInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 
     return $created;
 })->depends('it submits provider');
