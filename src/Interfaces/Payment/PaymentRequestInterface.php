@@ -25,6 +25,13 @@ interface PaymentRequestInterface extends HasAttributesInterface
     public function currency(string $currency): PaymentRequestInterface;
 
     /**
+     * @param array<string, string> $metadata
+     *
+     * @return PaymentRequestInterface
+     */
+    public function metadata(array $metadata): PaymentRequestInterface;
+
+    /**
      * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface

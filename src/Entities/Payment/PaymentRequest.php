@@ -43,6 +43,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected UserInterface $user;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $metadata;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
@@ -56,6 +61,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected array $arrayFields = [
         'amount_in_minor',
         'currency',
+        'metadata',
         'payment_method',
         'user',
     ];
@@ -68,6 +74,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         return [
             'amount_in_minor' => 'required|int|min:1',
             'currency' => ['required', 'string'],
+            'metadata' => 'array',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
         ];
@@ -93,6 +100,18 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     public function currency(string $currency): PaymentRequestInterface
     {
         $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, string> $metadata
+     *
+     * @return PaymentRequestInterface
+     */
+    public function metadata(array $metadata): PaymentRequestInterface
+    {
+        $this->metadata = $metadata;
 
         return $this;
     }

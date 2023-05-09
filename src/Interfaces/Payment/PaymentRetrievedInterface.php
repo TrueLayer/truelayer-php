@@ -25,6 +25,11 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getCurrency(): string;
 
     /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
+
+    /**
      * @return PaymentMethodInterface
      */
     public function getPaymentMethod(): PaymentMethodInterface;

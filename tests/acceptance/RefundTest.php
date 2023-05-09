@@ -8,7 +8,7 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 
-function assertRefundCommon(RefundRetrievedInterface $refund)
+function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
 {
     \expect($refund)->toBeInstanceOf(RefundRetrievedInterface::class);
     \expect($refund->getId())->toBeString();
@@ -63,10 +63,10 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     $refunds = \client()->getRefunds($paymentCreated);
 
     \expect(\count($refunds))->toBeGreaterThan(0);
-    \assertRefundCommon($refunds[0]);
+    \assertRefundCommonAcceptance($refunds[0]);
 
     $refund = \client()->getRefund($paymentCreated, $refunds[0]->getId());
-    \assertRefundCommon($refund);
+    \assertRefundCommonAcceptance($refund);
 })->depends('it creates a refund');
 
 \it('creates a refund from a payment', function (PaymentCreatedInterface $paymentCreated) {
@@ -88,8 +88,8 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     $refunds = $payment->getRefunds();
 
     \expect(\count($refunds))->toBeGreaterThan(0);
-    \assertRefundCommon($refunds[0]);
+    \assertRefundCommonAcceptance($refunds[0]);
 
     $refund = \client()->getRefund($paymentCreated, $refunds[0]->getId());
-    \assertRefundCommon($refund);
+    \assertRefundCommonAcceptance($refund);
 })->depends('it creates a refund');

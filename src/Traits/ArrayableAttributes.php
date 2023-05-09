@@ -55,10 +55,15 @@ trait ArrayableAttributes
      */
     protected function setValues(array $data): self
     {
-        $data = $this->flatten($data);
+        $maybeUsingDotNotation = [];
 
         foreach ($data as $key => $value) {
-            $key = $this->arrayFields()[$key] ?? $key;
+            if (!$this->set($key, $value)) {
+                $maybeUsingDotNotation[$key] = $value;
+            }
+        }
+
+        foreach ($this->flatten($maybeUsingDotNotation) as $key => $value) {
             $this->set($key, $value);
         }
 
@@ -71,21 +76,29 @@ trait ArrayableAttributes
      * @param string $key   the instance property name or the setter name
      * @param mixed  $value The instance property value
      *
-     * @return self
+     * @return bool
      */
-    protected function set(string $key, $value): self
+    protected function set(string $key, $value): bool
     {
-        $property = Str::camel($key);
+        $property = Str::camel($this->arrayFields()[$key] ?? $key);
 
-        if ($value !== null) {
-            if (\method_exists($this, $property)) {
-                $this->{$property}($value);
-            } elseif (\property_exists($this, $property)) {
-                $this->{$property} = $value;
-            }
+        if ($value === null) {
+            return false;
         }
 
-        return $this;
+        if (\method_exists($this, $property)) {
+            $this->{$property}($value);
+
+            return true;
+        }
+
+        if (\property_exists($this, $property)) {
+            $this->{$property} = $value;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

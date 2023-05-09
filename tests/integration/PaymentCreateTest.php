@@ -17,6 +17,11 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     \expect(\getRequestPayload(1))->toMatchArray([
         'amount_in_minor' => 1,
         'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
         'payment_method' => [
             'type' => PaymentMethods::BANK_TRANSFER,
             'beneficiary' => [
