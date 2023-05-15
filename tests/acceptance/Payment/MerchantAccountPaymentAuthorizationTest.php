@@ -11,6 +11,7 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterfac
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
@@ -113,3 +114,21 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
     return $created;
 })->depends('it submits provider');
+
+\it('creates payment without metadata', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user())
+        ->create();
+
+    $fetched = $payment->getDetails();
+
+    \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($payment->getId())->toBeString();
+    \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
+    \expect($fetched->getId())->toBeString();
+});
