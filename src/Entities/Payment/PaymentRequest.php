@@ -74,7 +74,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         return [
             'amount_in_minor' => 'required|int|min:1',
             'currency' => ['required', 'string'],
-            'metadata' => 'array',
+            'metadata' => 'nullable|array',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user' => ['required', ValidType::of(UserInterface::class)],
         ];
@@ -141,11 +141,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @throws ValidationException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws ValidationException
      *
      * @return PaymentCreatedInterface
      */

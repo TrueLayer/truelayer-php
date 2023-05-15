@@ -85,7 +85,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
             'created_at' => 'required|date',
             'amount_in_minor' => 'required|int|min:1',
             'currency' => 'required|string',
-            'metadata' => 'array',
+            'metadata' => 'nullable|array',
             'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
             'user.id' => 'required|string',
         ];
