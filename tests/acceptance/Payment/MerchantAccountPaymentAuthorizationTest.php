@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Arr;
+use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
@@ -136,8 +137,9 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 \it('creates payment with idempotency key', function () {
     $helper = \paymentHelper();
 
-    $requestOptions = $helper->client()->requestOptions()
-        ->idempotencyKey('test-idempotency-key');
+    $requestOptions = \paymentHelper()->client()->requestOptions()->idempotencyKey(
+        Uuid::uuid1()->toString()
+    );
 
     $payment1 = $helper->client()->payment()
         ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
@@ -162,10 +164,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
         ->amountInMinor(10)
         ->currency('GBP')
         ->user($helper->user())
-        ->requestOptions(
-            $helper->client()->requestOptions()
-                ->idempotencyKey('second-idempotency-key')
-        )
+        ->requestOptions($helper->client()->requestOptions()->idempotencyKey(Uuid::uuid1()->toString()))
         ->create()
         ->getId();
 
