@@ -127,6 +127,22 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \expect($refund->getId())->toBe('56bbff85-9504-4cba-a63b-c781745ad3ed');
 });
 
+it('sends custom idempotency key on refund creation', function () {
+    $client = \client([PaymentResponse::settled(), RefundResponse::created()]);
+
+    /** @var PaymentSettledInterface $payment */
+    $payment = $client->getPayment('b9a7d0e9-4de9-425a-b282-cf2a4f998c5d');
+
+    $requestOptions = $client->requestOptions()->idempotencyKey('refund-test-idempotency-key');
+    $payment->refund()
+        ->amountInMinor(1)
+        ->reference('TESTING')
+        ->requestOptions($requestOptions)
+        ->create();
+
+    \expect(getRequestIdempotencyKey(2))->toBe('refund-test-idempotency-key');
+});
+
 \it('retrieves refund from payment', function () {
     $client = \client([PaymentResponse::settled(), RefundResponse::pending()]);
 

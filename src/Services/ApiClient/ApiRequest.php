@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\ApiClient;
 
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Constants\RequestMethods;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 final class ApiRequest implements ApiRequestInterface
 {
@@ -63,7 +65,7 @@ final class ApiRequest implements ApiRequestInterface
      */
     public function getUri(): string
     {
-        return (string) $this->uri;
+        return (string)$this->uri;
     }
 
     /**
@@ -95,9 +97,9 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
+     * @return string
      * @throws ApiRequestJsonSerializationException
      *
-     * @return string
      */
     public function getJsonPayload(): string
     {
@@ -132,11 +134,11 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     *@throws ApiResponseUnsuccessfulException
+     * @return mixed
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed
+     * @throws ApiResponseUnsuccessfulException
      */
     public function post()
     {
@@ -146,11 +148,11 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     *@throws ApiResponseUnsuccessfulException
+     * @return mixed
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed
+     * @throws ApiResponseUnsuccessfulException
      */
     public function get()
     {
@@ -170,5 +172,22 @@ final class ApiRequest implements ApiRequestInterface
             RequestMethods::PATCH,
             RequestMethods::DELETE,
         ]);
+    }
+
+    /**
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return ApiRequestInterface
+     */
+    public function requestOptions(RequestOptionsInterface $requestOptions = null): ApiRequestInterface
+    {
+        if (!$requestOptions) {
+            return $this;
+        }
+        
+        if ($customIdempotencyKey = $requestOptions->getIdempotencyKey()) {
+            $this->header(CustomHeaders::IDEMPOTENCY_KEY, $customIdempotencyKey);
+        }
+
+        return $this;
     }
 }

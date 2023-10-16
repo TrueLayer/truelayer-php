@@ -9,21 +9,22 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Api\PayoutsApiInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 final class PayoutsApi extends Api implements PayoutsApiInterface
 {
     /**
      * @param mixed[] $payoutRequest
-     *
-     * @throws SignerException
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
-     * @return mixed[]
+     * @throws SignerException
      */
-    public function create(array $payoutRequest): array
+    public function create(array $payoutRequest, RequestOptionsInterface $requestOptions = null): array
     {
-        return (array) $this->request()
+        return (array)$this->request()
+            ->requestOptions($requestOptions)
             ->uri(Endpoints::PAYOUTS_CREATE)
             ->payload($payoutRequest)
             ->post();
@@ -32,16 +33,16 @@ final class PayoutsApi extends Api implements PayoutsApiInterface
     /**
      * @param string $id
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function retrieve(string $id): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYOUTS_RETRIEVE);
 
-        return (array) $this->request()->uri($uri)->get();
+        return (array)$this->request()->uri($uri)->get();
     }
 }

@@ -16,6 +16,7 @@ use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\PayoutRequestInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 use TrueLayer\Validation\ValidType;
 
@@ -42,6 +43,11 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
      * @var PayoutBeneficiaryInterface
      */
     protected PayoutBeneficiaryInterface $beneficiary;
+
+    /**
+     * @var RequestOptionsInterface|null
+     */
+    protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
      * @var string[]
@@ -122,18 +128,30 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @throws ValidationException
+     * @param RequestOptionsInterface $requestOptions
+     * @return $this
+     */
+    public function requestOptions(RequestOptionsInterface $requestOptions): PayoutRequestInterface
+    {
+        $this->requestOptions = $requestOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return PayoutCreatedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      *
-     * @return PayoutCreatedInterface
+     * @throws ValidationException
      */
     public function create(): PayoutCreatedInterface
     {
         $data = $this->getApiFactory()->payoutsApi()->create(
-            $this->validate()->toArray()
+            $this->validate()->toArray(),
+            $this->requestOptions
         );
 
         return $this->make(PayoutCreatedInterface::class, $data);

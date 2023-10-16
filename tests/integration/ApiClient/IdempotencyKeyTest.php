@@ -27,7 +27,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $sentRequests->shift(); // Remove access token request
 
     $idempotencyKeys = $sentRequests
-        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
         ->unique()
         ->count();
 
@@ -41,7 +41,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $sentRequests->shift(); // Remove access token request
 
     $idempotencyKeys = $sentRequests
-        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
         ->unique()
         ->count();
 
@@ -52,3 +52,53 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $error = ErrorResponse::idempotencyKeyReuse();
     \request([$error, $error, $error])->post();
 })->throws(ApiResponseUnsuccessfulException::class);
+
+\it('uses custom idempotency key when provided', function () {
+    $requestOptions = \client()
+        ->requestOptions()
+        ->idempotencyKey('test-idempotency-key');
+
+    \request()
+        ->requestOptions($requestOptions)
+        ->post();
+
+    expect(getRequestIdempotencyKey(1))->toBe('test-idempotency-key');
+});
+
+\it('retries requests with same custom idempotency key', function () {
+    $responses = [
+        ErrorResponse::providerError(),
+        ErrorResponse::idempotencyKeyConcurrencyConflict(),
+        ErrorResponse::conflict(),
+        new Response(200),
+    ];
+
+    $requestOptions = \client()
+        ->requestOptions()
+        ->idempotencyKey('test-idempotency-key');
+
+    \request($responses)
+        ->requestOptions($requestOptions)
+        ->post();
+
+    $sentRequests = Collection::make(\getSentHttpRequests());
+    $sentRequests->shift(); // Remove access token request
+
+    $idempotencyKeys = $sentRequests
+        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->unique()
+        ->count();
+
+    \expect($idempotencyKeys)->toBe(1);
+});
+
+\it('does not retry on key reuse error', function () {
+    $requestOptions = \client()
+        ->requestOptions()
+        ->idempotencyKey('test-idempotency-key');
+
+    \request([ErrorResponse::idempotencyKeyReuse(), new Response(200)])
+        ->requestOptions($requestOptions)
+        ->post();
+})->throws(ApiResponseUnsuccessfulException::class);
+

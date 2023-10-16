@@ -20,19 +20,21 @@ final class IdempotencyKeyDecorator extends BaseApiClientDecorator
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return mixed
+     * @throws ApiRequestJsonSerializationException
      */
     public function send(ApiRequestInterface $apiRequest)
     {
-        if (!$apiRequest->modifiesResources()) {
+        $hasCustomIdempotencyKey = !empty($apiRequest->getHeaders()[CustomHeaders::IDEMPOTENCY_KEY]);
+
+        if ($hasCustomIdempotencyKey || !$apiRequest->modifiesResources()) {
             return $this->next->send($apiRequest);
         }
 
         return Retry::max(self::MAX_RETRIES)
-            ->when(fn ($e) => $this->isIdempotencyKeyReuseError($e))
+            ->when(fn($e) => $this->isIdempotencyKeyReuseError($e))
             ->start(function () use ($apiRequest) {
                 $this->addHeaders($apiRequest);
 

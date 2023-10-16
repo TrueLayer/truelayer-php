@@ -7,6 +7,7 @@ namespace TrueLayer\Interfaces\ApiClient;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 interface ApiRequestInterface
 {
@@ -40,9 +41,9 @@ interface ApiRequestInterface
     public function getPayload(): array;
 
     /**
+     * @return string
      * @throws ApiRequestJsonSerializationException
      *
-     * @return string
      */
     public function getJsonPayload(): string;
 
@@ -60,20 +61,20 @@ interface ApiRequestInterface
     public function getHeaders(): array;
 
     /**
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return mixed
+     * @throws ApiRequestJsonSerializationException
      */
     public function post();
 
     /**
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return mixed
+     * @throws ApiRequestJsonSerializationException
      */
     public function get();
 
@@ -81,4 +82,10 @@ interface ApiRequestInterface
      * @return bool
      */
     public function modifiesResources(): bool;
+
+    /**
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return ApiRequestInterface
+     */
+    public function requestOptions(?RequestOptionsInterface $requestOptions): ApiRequestInterface;
 }

@@ -9,21 +9,22 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Api\PaymentsApiInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 final class PaymentsApi extends Api implements PaymentsApiInterface
 {
     /**
      * @param mixed[] $paymentRequest
-     *
-     * @throws SignerException
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
-     * @return mixed[]
+     * @throws SignerException
      */
-    public function create(array $paymentRequest): array
+    public function create(array $paymentRequest, RequestOptionsInterface $requestOptions = null): array
     {
-        return (array) $this->request()
+        return (array)$this->request()
+            ->requestOptions($requestOptions)
             ->uri(Endpoints::PAYMENTS_CREATE)
             ->payload($paymentRequest)
             ->post();
@@ -32,37 +33,37 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
     /**
      * @param string $id
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function retrieve(string $id): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_RETRIEVE);
 
-        return (array) $this->request()->uri($uri)->get();
+        return (array)$this->request()->uri($uri)->get();
     }
 
     /**
      * @param string $id
      * @param string $returnUri
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function startAuthorizationFlow(string $id, string $returnUri): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_START_AUTH_FLOW);
 
-        return (array) $this->request()
+        return (array)$this->request()
             ->uri($uri)
             ->payload([
-                'provider_selection' => (object) [],
+                'provider_selection' => (object)[],
                 'redirect' => ['return_uri' => $returnUri],
             ])
             ->post();
@@ -72,37 +73,37 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      * @param string $id
      * @param string $providerId
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function submitProvider(string $id, string $providerId): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_SUBMIT_PROVIDER);
 
-        return (array) $this->request()
+        return (array)$this->request()
             ->uri($uri)
             ->payload(['provider_id' => $providerId])
             ->post();
     }
 
     /**
-     * @param string  $paymentId
+     * @param string $paymentId
      * @param mixed[] $refundRequest
-     *
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     *
-     * @return mixed[]
      */
-    public function createRefund(string $paymentId, array $refundRequest): array
+    public function createRefund(string $paymentId, array $refundRequest, RequestOptionsInterface $requestOptions = null): array
     {
         $uri = \str_replace('{id}', $paymentId, Endpoints::PAYMENTS_REFUNDS_CREATE);
 
-        return (array) $this->request()
+        return (array)$this->request()
+            ->requestOptions($requestOptions)
             ->uri($uri)
             ->payload($refundRequest)
             ->post();
@@ -112,11 +113,11 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      * @param string $paymentId
      * @param string $refundId
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function retrieveRefund(string $paymentId, string $refundId): array
     {
@@ -126,23 +127,23 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
             Endpoints::PAYMENTS_REFUNDS_RETRIEVE
         );
 
-        return (array) $this->request()->uri($uri)->get();
+        return (array)$this->request()->uri($uri)->get();
     }
 
     /**
      * @param string $paymentId
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed[]
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return mixed[]
+     * @throws ApiRequestJsonSerializationException
      */
     public function retrieveRefunds(string $paymentId): array
     {
         $uri = \str_replace('{id}', $paymentId, Endpoints::PAYMENTS_REFUNDS_RETRIEVE_ALL);
 
-        $response = (array) $this->request()->uri($uri)->get();
+        $response = (array)$this->request()->uri($uri)->get();
 
         return isset($response['items']) && \is_array($response['items'])
             ? $response['items']

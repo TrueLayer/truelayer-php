@@ -93,3 +93,30 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     \expect($response)->toBeInstanceOf(PayoutCreatedInterface::class);
     \expect($response->getId())->toBe('ca9a3154-9151-44cf-b7cb-073c9e12ef91');
 });
+
+\it('uses custom idempotency key', function () {
+    $client = \client(PayoutResponse::created());
+
+    $accountIdentifier = $client->accountIdentifier()
+        ->iban()
+        ->iban('GB29NWBK60161331926819');
+
+    $beneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountHolderName('Test')
+        ->reference('Test reference')
+        ->accountIdentifier($accountIdentifier);
+
+    $requestOptions = $client->requestOptions()->idempotencyKey('payout-test-idempotency-key');
+
+    $client->payout()
+        ->amountInMinor(1)
+        ->currency('GBP')
+        ->merchantAccountId('1234')
+        ->beneficiary($beneficiary)
+        ->requestOptions($requestOptions)
+        ->create();
+
+    $sentIdempotencyKey = getRequestHeader(1, \TrueLayer\Constants\CustomHeaders::IDEMPOTENCY_KEY)[0];
+
+    expect($sentIdempotencyKey)->toBe('payout-test-idempotency-key');
+});

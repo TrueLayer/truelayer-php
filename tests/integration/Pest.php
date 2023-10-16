@@ -5,6 +5,7 @@ declare(strict_types=1);
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
@@ -33,13 +34,13 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws ApiRequestJsonSerializationException
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  *
- * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
+ * @throws ApiRequestJsonSerializationException
  */
 function rawClient(array $mockResponses = [])
 {
@@ -66,12 +67,12 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @return \TrueLayer\Interfaces\Client\ClientInterface
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  *
- * @return \TrueLayer\Interfaces\Client\ClientInterface
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
  */
 function client($mockResponses = [])
 {
@@ -90,12 +91,12 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  *
- * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
  */
 function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequestInterface
 {
@@ -131,16 +132,35 @@ function getRequestPayload(int $requestIndex)
 }
 
 /**
+ * @param int $requestIndex
+ * @param string $name
+ * @return string[]
+ */
+function getRequestHeader(int $requestIndex, string $name): array
+{
+    return \getSentHttpRequests()[$requestIndex]->getHeader($name);
+}
+
+/**
+ * @param int $requestIndex
+ * @return string
+ */
+function getRequestIdempotencyKey(int $requestIndex): string
+{
+    return getRequestHeader($requestIndex, CustomHeaders::IDEMPOTENCY_KEY)[0];
+}
+
+/**
  * @param string $body
  *
- * @throws ApiResponseUnsuccessfulException
+ * @return WebhookInterface
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  *
- * @return WebhookInterface
+ * @throws ApiResponseUnsuccessfulException
  */
 function webhook(string $body): WebhookInterface
 {
