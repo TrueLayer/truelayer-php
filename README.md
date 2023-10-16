@@ -1059,7 +1059,7 @@ $client->payment()
     ->amountInMinor(10)
     ->currency('GBP')
     ->user($user)
-    ->requestOptions($requestOptions) // set the requestOptions
+    ->requestOptions($requestOptions) 
     ->create();
 
 // Creating a refund with a custom idempotency key
@@ -1067,7 +1067,7 @@ $client->refund()
     ->payment($paymentId)
     ->amountInMinor(1)
     ->reference('My reference')
-    ->requestOptions($requestOptions) // set the requestOptions
+    ->requestOptions($requestOptions) 
     ->create();
 
 // Creating a payout with a custom idempotency key
@@ -1076,7 +1076,7 @@ $client->payout()
     ->currency(Currencies::GBP)
     ->merchantAccountId($accountId)
     ->beneficiary($payoutBeneficiary)
-    ->requestOptions($requestOptions) // set the requestOptions
+    ->requestOptions($requestOptions) 
     ->create();
 ```
 
