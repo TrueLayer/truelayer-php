@@ -1050,7 +1050,7 @@ By default, the client will generate and manage idempotency keys for you. Howeve
 to set your own idempotency keys and you can do this by using the `requestOptions` setter when creating a resource.
 
 ```php
-// Create a RequestionOptionsInterface instance and set your custom idempotency key
+// Create a RequestOptionsInterface instance and set your custom idempotency key
 $requestOptions = $client->requestOptions()->idempotencyKey('my-custom-idempotency-key');
 
 // Creating a payment with a custom idempotency key
