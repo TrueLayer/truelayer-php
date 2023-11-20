@@ -7,28 +7,28 @@ namespace TrueLayer\Interfaces\Api;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 interface PaymentsApiInterface
 {
     /**
      * @param mixed[] $paymentRequest
-     *
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
-     * @return mixed[]
      */
-    public function create(array $paymentRequest): array;
+    public function create(array $paymentRequest, ?RequestOptionsInterface $requestOptions): array;
 
     /**
      * @param string $id
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function retrieve(string $id): array;
 
@@ -36,11 +36,11 @@ interface PaymentsApiInterface
      * @param string $id
      * @param string $returnUri
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function startAuthorizationFlow(string $id, string $returnUri): array;
 
@@ -48,46 +48,45 @@ interface PaymentsApiInterface
      * @param string $id
      * @param string $providerId
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function submitProvider(string $id, string $providerId): array;
 
     /**
-     * @param string  $paymentId
+     * @param string $paymentId
      * @param mixed[] $refundRequest
-     *
-     * @throws ApiRequestJsonSerializationException
+     * @param RequestOptionsInterface|null $requestOptions
+     * @return mixed[]
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     *
-     * @return mixed[]
+     * @throws ApiRequestJsonSerializationException
      */
-    public function createRefund(string $paymentId, array $refundRequest): array;
+    public function createRefund(string $paymentId, array $refundRequest, ?RequestOptionsInterface $requestOptions): array;
 
     /**
      * @param string $paymentId
      * @param string $refundId
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed[]
+     * @throws ApiResponseUnsuccessfulException
      */
     public function retrieveRefund(string $paymentId, string $refundId): array;
 
     /**
      * @param string $paymentId
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return mixed[]
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
      *
-     * @return mixed[]
+     * @throws ApiRequestJsonSerializationException
      */
     public function retrieveRefunds(string $paymentId): array;
 }

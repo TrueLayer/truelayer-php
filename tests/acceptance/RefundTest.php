@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Arr;
+use Ramsey\Uuid\Uuid;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
@@ -26,7 +27,7 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
 
         $account = Arr::first(
             $helper->client()->getMerchantAccounts(),
-            fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+            fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
         );
 
         $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -80,6 +81,42 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
         ->getId();
 
     \expect($refundId)->toBeString();
+})->depends('it creates a refund');
+
+\it('creates refunds with a custom idempotency key', function (PaymentCreatedInterface $paymentCreated) {
+    /** @var PaymentSettledInterface $payment */
+    $payment = $paymentCreated->getDetails();
+
+    $requestOptions = \paymentHelper()->client()->requestOptions()->idempotencyKey(
+        Uuid::uuid1()->toString()
+    );
+
+    $refund1 = $payment->refund()
+        ->amountInMinor(1)
+        ->reference('refund')
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $refund2 = $payment->refund()
+        ->amountInMinor(1)
+        ->reference('refund')
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $refund3 = $payment->refund()
+        ->amountInMinor(1)
+        ->reference('refund')
+        ->requestOptions(
+            \paymentHelper()->client()->requestOptions()->idempotencyKey(Uuid::uuid1()->toString())
+        )
+        ->create()
+        ->getId();
+
+    \expect($refund1)->toBe($refund2);
+    \expect($refund1)->not->toBe($refund3);
+    \expect($refund2)->not->toBe($refund3);
 })->depends('it creates a refund');
 
 \it('retrieves refunds from payment', function (PaymentCreatedInterface $paymentCreated) {

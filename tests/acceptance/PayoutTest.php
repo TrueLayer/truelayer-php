@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Arr;
+use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
@@ -16,7 +17,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -74,7 +75,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -126,4 +127,55 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
     \expect($beneficiary)->toBeInstanceOf(ExternalAccountBeneficiaryInterface::class);
     \expect($beneficiary->getAccountHolderName())->toBe('Test name');
     \expect($beneficiary->getReference())->toBe('Test reference');
+});
+
+\it('creates a payout with custom idempotency key', function () {
+    $client = \client();
+
+    $requestOptions = \paymentHelper()->client()->requestOptions()->idempotencyKey(
+        Uuid::uuid1()->toString()
+    );
+
+    $account = Arr::first(
+        $client->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountIdentifier(
+            $client->accountIdentifier()->iban()->iban('GB29NWBK60161331926819')
+        )
+        ->accountHolderName('Test name')
+        ->reference('Test reference');
+
+    $payout1 = $client->payout()
+        ->amountInMinor(1)
+        ->currency(Currencies::GBP)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $payout2 = $client->payout()
+        ->amountInMinor(1)
+        ->currency(Currencies::GBP)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $payout3 = $client->payout()
+        ->amountInMinor(1)
+        ->currency(Currencies::GBP)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->requestOptions($client->requestOptions()->idempotencyKey(Uuid::uuid1()->toString()))
+        ->create()
+        ->getId();
+
+    \expect($payout1)->toBe($payout2);
+    \expect($payout1)->not->toBe($payout3);
+    \expect($payout2)->not->toBe($payout3);
 });

@@ -33,8 +33,9 @@
 10. [Merchant accounts](#merchant-accounts)
 11. [Account identifiers](#account-identifiers)
 12. [Receiving webhook notifications](#webhooks)
-13. [Custom API calls](#custom-api-calls)
-14. [Error Handling](#error-handling)
+13. [Custom idempotency keys](#idempotency)
+14. [Custom API calls](#custom-api-calls)
+15. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -1039,6 +1040,44 @@ if ($accountIdentifier instanceof NrbDetailsInterface) {
 if ($accountIdentifier instanceof BbanDetailsInterface) {
     $accountIdentifier->getBban();
 }
+```
+
+<a name="idempotency"></a>
+
+# Custom idempotency keys
+
+By default, the client will generate and manage idempotency keys for you. However, there are cases when you might want
+to set your own idempotency keys and you can do this by using the `requestOptions` setter when creating a resource.
+
+```php
+// Create a RequestOptionsInterface instance and set your custom idempotency key
+$requestOptions = $client->requestOptions()->idempotencyKey('my-custom-idempotency-key');
+
+// Creating a payment with a custom idempotency key
+$client->payment()
+    ->paymentMethod($method)
+    ->amountInMinor(10)
+    ->currency('GBP')
+    ->user($user)
+    ->requestOptions($requestOptions) 
+    ->create();
+
+// Creating a refund with a custom idempotency key
+$client->refund()
+    ->payment($paymentId)
+    ->amountInMinor(1)
+    ->reference('My reference')
+    ->requestOptions($requestOptions) 
+    ->create();
+
+// Creating a payout with a custom idempotency key
+$client->payout()
+    ->amountInMinor(1)
+    ->currency(Currencies::GBP)
+    ->merchantAccountId($accountId)
+    ->beneficiary($payoutBeneficiary)
+    ->requestOptions($requestOptions) 
+    ->create();
 ```
 
 <a name="custom-api-calls"></a>

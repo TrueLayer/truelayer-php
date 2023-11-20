@@ -88,3 +88,17 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     \expect($payment->getId())->toBe(PaymentResponse::CREATED['id']);
     \expect($payment->getUserId())->toBe(PaymentResponse::CREATED['user']['id']);
 });
+
+it('sends custom idempotency key on payment creation', function () {
+    $client = \client([PaymentResponse::created(), PaymentResponse::created()]);
+    $factory = new CreatePayment($client);
+
+    $requestOptions = $client->requestOptions()->idempotencyKey('payment-test-idempotency-key');
+
+    $payment1 = $factory
+        ->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))
+        ->requestOptions($requestOptions)
+        ->create();
+
+    \expect(getRequestIdempotencyKey(1))->toBe('payment-test-idempotency-key');
+});

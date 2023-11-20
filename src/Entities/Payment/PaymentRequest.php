@@ -14,6 +14,7 @@ use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 use TrueLayer\Validation\ValidType;
@@ -46,6 +47,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
      * @var array<string, string>
      */
     protected array $metadata;
+
+    /**
+     * @var RequestOptionsInterface|null
+     */
+    protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
      * @var string[]
@@ -141,18 +147,30 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @throws SignerException
+     * @param RequestOptionsInterface $requestOptions
+     * @return $this
+     */
+    public function requestOptions(RequestOptionsInterface $requestOptions): PaymentRequestInterface
+    {
+        $this->requestOptions = $requestOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return PaymentCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
-     * @return PaymentCreatedInterface
+     * @throws SignerException
      */
     public function create(): PaymentCreatedInterface
     {
         $data = $this->getApiFactory()->paymentsApi()->create(
-            $this->validate()->toArray()
+            $this->validate()->toArray(),
+            $this->requestOptions
         );
 
         return $this->make(PaymentCreatedInterface::class, $data);

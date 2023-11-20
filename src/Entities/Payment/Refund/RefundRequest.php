@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundCreatedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Services\Util\PaymentId;
 use TrueLayer\Traits\ProvidesApiFactory;
 
@@ -36,6 +37,11 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
      * @var string
      */
     protected string $reference;
+
+    /**
+     * @var RequestOptionsInterface|null
+     */
+    protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
      * @var string[]
@@ -61,9 +67,9 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     /**
      * @param string|PaymentRetrievedInterface|PaymentCreatedInterface $payment
      *
+     * @return RefundRequestInterface
      * @throws InvalidArgumentException
      *
-     * @return RefundRequestInterface
      */
     public function payment($payment): RefundRequestInterface
     {
@@ -97,19 +103,32 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
-     * @throws SignerException
+     * @param RequestOptionsInterface $requestOptions
+     * @return RefundRequestInterface
+     */
+    public function requestOptions(RequestOptionsInterface $requestOptions): RefundRequestInterface
+    {
+        $this->requestOptions = $requestOptions;
+
+        return $this;
+    }
+
+
+    /**
+     * @return RefundCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
      *
-     * @return RefundCreatedInterface
+     * @throws SignerException
      */
     public function create(): RefundCreatedInterface
     {
         $data = $this->getApiFactory()->paymentsApi()->createRefund(
             $this->paymentId,
-            $this->validate()->toArray()
+            $this->validate()->toArray(),
+            $this->requestOptions
         );
 
         return $this->make(RefundCreatedInterface::class, $data);

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Arr;
+use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
@@ -22,7 +23,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -131,4 +132,43 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($payment->getId())->toBeString();
     \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
     \expect($fetched->getId())->toBeString();
+});
+
+\it('creates payment with idempotency key', function () {
+    $helper = \paymentHelper();
+
+    $requestOptions = \paymentHelper()->client()->requestOptions()->idempotencyKey(
+        Uuid::uuid1()->toString()
+    );
+
+    $payment1 = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user())
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $payment2 = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user())
+        ->requestOptions($requestOptions)
+        ->create()
+        ->getId();
+
+    $payment3 = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user())
+        ->requestOptions($helper->client()->requestOptions()->idempotencyKey(Uuid::uuid1()->toString()))
+        ->create()
+        ->getId();
+
+    \expect($payment1)->toBe($payment2);
+    \expect($payment1)->not->toBe($payment3);
+    \expect($payment2)->not->toBe($payment3);
 });

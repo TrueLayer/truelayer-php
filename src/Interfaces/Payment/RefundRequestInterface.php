@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Payment;
 
 use TrueLayer\Interfaces\HasAttributesInterface;
+use TrueLayer\Interfaces\RequestOptionsInterface;
 
 interface RefundRequestInterface extends HasAttributesInterface
 {
@@ -28,6 +29,12 @@ interface RefundRequestInterface extends HasAttributesInterface
      * @return RefundRequestInterface
      */
     public function reference(string $reference): RefundRequestInterface;
+
+    /**
+     * @param RequestOptionsInterface $requestOptions
+     * @return RefundRequestInterface
+     */
+    public function requestOptions(RequestOptionsInterface $requestOptions): RefundRequestInterface;
 
     /**
      * @return RefundCreatedInterface
