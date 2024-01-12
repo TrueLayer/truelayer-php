@@ -61,9 +61,9 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::PROVIDER_SELECTION);
     \expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
 
-    $config = getAuthorizationFlowConfig($created->getId());
-    expect($config)->not->toHaveKeys(['form', 'scheme_selection', 'user_account_selection']);
-    expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
+    $config = \getAuthorizationFlowConfig($created->getId());
+    \expect($config)->not->toHaveKeys(['form', 'scheme_selection', 'user_account_selection']);
+    \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
 
     return $created;
 })->only();
@@ -84,10 +84,10 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($next->getType())->toBe(AuthorizationFlowActionTypes::PROVIDER_SELECTION);
     \expect($next->getProviders()[0])->toBeInstanceOf(ProviderInterface::class);
 
-    $config = getAuthorizationFlowConfig($created->getId());
-    expect($config)->not->toHaveKeys(['scheme_selection', 'user_account_selection']);
-    expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
-    expect($config['form']['input_types'])->toBeEmpty();
+    $config = \getAuthorizationFlowConfig($created->getId());
+    \expect($config)->not->toHaveKeys(['scheme_selection', 'user_account_selection']);
+    \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
+    \expect($config['form']['input_types'])->toBeEmpty();
 
     return $created;
 })->only();
@@ -100,14 +100,14 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
         ->useHPPCapabilities()
         ->start();
 
-    $config = getAuthorizationFlowConfig($created->getId());
+    $config = \getAuthorizationFlowConfig($created->getId());
 
-    expect($config)->not->toHaveKey('user_account_selection');
-    expect($config['provider_selection'])->toBeArray();
-    expect($config['scheme_selection'])->toBeArray();
-    expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
-    expect($config['redirect'])->not->toHaveKey('direct_return_uri');
-    expect($config['form']['input_types'])->toContain(FormInputTypes::SELECT, FormInputTypes::TEXT, FormInputTypes::TEXT_WITH_IMAGE);
+    \expect($config)->not->toHaveKey('user_account_selection');
+    \expect($config['provider_selection'])->toBeArray();
+    \expect($config['scheme_selection'])->toBeArray();
+    \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
+    \expect($config['redirect'])->not->toHaveKey('direct_return_uri');
+    \expect($config['form']['input_types'])->toContain(FormInputTypes::SELECT, FormInputTypes::TEXT, FormInputTypes::TEXT_WITH_IMAGE);
 })->only();
 
 \it('starts payment authorization with all capabilities', function () {
@@ -122,14 +122,14 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
         ->formInputTypes([FormInputTypes::TEXT])
         ->start();
 
-    $config = getAuthorizationFlowConfig($created->getId());
+    $config = \getAuthorizationFlowConfig($created->getId());
 
-    expect($config['user_account_selection'])->toBeArray();
-    expect($config['provider_selection'])->toBeArray();
-    expect($config['scheme_selection'])->toBeArray();
-    expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
-    expect($config['redirect']['direct_return_uri'])->toBe('https://console.truelayer.com/direct-return-page');
-    expect($config['form']['input_types'])->toContain(FormInputTypes::TEXT);
+    \expect($config['user_account_selection'])->toBeArray();
+    \expect($config['provider_selection'])->toBeArray();
+    \expect($config['scheme_selection'])->toBeArray();
+    \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
+    \expect($config['redirect']['direct_return_uri'])->toBe('https://console.truelayer.com/direct-return-page');
+    \expect($config['form']['input_types'])->toContain(FormInputTypes::TEXT);
 })->only();
 
 \it('retrieves payment as authorizing - provider selection', function (PaymentCreatedInterface $created) {
@@ -218,12 +218,15 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
 /**
  * Get the authorization flow config by calling the api directly as we don't yet have the config object mapped in the lib.
+ *
  * @param string $paymentId
- * @return array
+ *
  * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
  * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws \TrueLayer\Exceptions\SignerException
+ *
+ * @return array
  */
 function getAuthorizationFlowConfig(string $paymentId): array
 {

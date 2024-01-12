@@ -15,6 +15,7 @@ interface StartAuthorizationFlowRequestInterface extends HasAttributesInterface
 {
     /**
      * @param string $paymentId
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function paymentId(string $paymentId): StartAuthorizationFlowRequestInterface;
@@ -41,28 +42,32 @@ interface StartAuthorizationFlowRequestInterface extends HasAttributesInterface
 
     /**
      * @param string $returnUri
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function returnUri(string $returnUri): StartAuthorizationFlowRequestInterface;
 
     /**
      * @param string $directReturnUri
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function directReturnUri(string $directReturnUri): StartAuthorizationFlowRequestInterface;
 
     /**
      * @param string[] $types
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function formInputTypes(array $types): StartAuthorizationFlowRequestInterface;
 
     /**
-     * @return AuthorizationFlowResponseInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function start(): AuthorizationFlowResponseInterface;
 }

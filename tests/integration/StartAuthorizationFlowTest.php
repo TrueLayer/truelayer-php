@@ -16,7 +16,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->returnUri('https://foo.bar')
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":null}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
 });
 
 \it('sends direct return uri', function () {
@@ -25,7 +25,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->directReturnUri('https://foo.baz')
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":"https:\/\/foo.baz"},"form":{"input_types":null}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":"https:\/\/foo.baz"},"form":{"input_types":[]}}');
 });
 
 \it('sends provider selection', function () {
@@ -34,7 +34,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableProviderSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":null}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
 });
 
 \it('sends scheme selection', function () {
@@ -43,7 +43,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableSchemeSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":{},"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":null}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":{},"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
 });
 
 \it('sends user account selection', function () {
@@ -52,7 +52,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableUserAccountSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":{},"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":null}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":{},"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
 });
 
 \it('sends form inputs', function () {
@@ -71,7 +71,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->start();
 
     \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":{},"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":["text","text_with_image","select"]}}');
-})->only();
+});
 
 \it('handles authorizing response', function () {
     /** @var AuthorizationFlowAuthorizingInterface $result */
@@ -79,14 +79,14 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->returnUri('https://foo.bar')
         ->start();
 
-    expect($result)->toBeInstanceOf(AuthorizationFlowAuthorizingInterface::class);
-    expect($result->getStatus())->toBe(AuthorizationFlowStatusTypes::AUTHORIZING);
+    \expect($result)->toBeInstanceOf(AuthorizationFlowAuthorizingInterface::class);
+    \expect($result->getStatus())->toBe(AuthorizationFlowStatusTypes::AUTHORIZING);
 
     /** @var RedirectActionInterface $nextAction */
     $nextAction = $result->getNextAction();
-    expect($nextAction)->toBeInstanceOf(RedirectActionInterface::class);
-    expect($nextAction->getUri())->toBe('https://pay-mock-connect.t7r.dev/login/a7d5f4a5-f2d7-464a-af26-22f6f417d0e9#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhN2Q1ZjRhNS1mMmQ3LTQ2NGEtYWYyNi0yMmY2ZjQxN2QwZTkiLCJzY29wZSI6InBheS1tb2NrLWNvbm5lY3QtYXBpIiwibmJmIjoxNjQzOTgzNzM3LCJleHAiOjE2NDM5ODczMzcsImlzcyI6Imh0dHBzOi8vcGF5LW1vY2stY29ubmVjdC50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9wYXktbW9jay1jb25uZWN0LnQ3ci5kZXYifQ.l_qafIgtWJGxZcsQNOeASYa9xeKij2GBbbKBpQKET98');
-    expect($nextAction->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
+    \expect($nextAction)->toBeInstanceOf(RedirectActionInterface::class);
+    \expect($nextAction->getUri())->toBe('https://pay-mock-connect.t7r.dev/login/a7d5f4a5-f2d7-464a-af26-22f6f417d0e9#token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhN2Q1ZjRhNS1mMmQ3LTQ2NGEtYWYyNi0yMmY2ZjQxN2QwZTkiLCJzY29wZSI6InBheS1tb2NrLWNvbm5lY3QtYXBpIiwibmJmIjoxNjQzOTgzNzM3LCJleHAiOjE2NDM5ODczMzcsImlzcyI6Imh0dHBzOi8vcGF5LW1vY2stY29ubmVjdC50N3IuZGV2IiwiYXVkIjoiaHR0cHM6Ly9wYXktbW9jay1jb25uZWN0LnQ3ci5kZXYifQ.l_qafIgtWJGxZcsQNOeASYa9xeKij2GBbbKBpQKET98');
+    \expect($nextAction->getType())->toBe(AuthorizationFlowActionTypes::REDIRECT);
 });
 
 \it('handles failed response', function () {
@@ -95,8 +95,8 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->returnUri('https://foo.bar')
         ->start();
 
-    expect($result)->toBeInstanceOf(AuthorizationFlowAuthorizationFailedInterface::class);
-    expect($result->getStatus())->toBe(AuthorizationFlowStatusTypes::FAILED);
-    expect($result->getFailureStage())->toBe(PaymentStatus::AUTHORIZING);
-    expect($result->getFailureReason())->toBe('provider_rejected');
-})->only();
+    \expect($result)->toBeInstanceOf(AuthorizationFlowAuthorizationFailedInterface::class);
+    \expect($result->getStatus())->toBe(AuthorizationFlowStatusTypes::FAILED);
+    \expect($result->getFailureStage())->toBe(PaymentStatus::AUTHORIZING);
+    \expect($result->getFailureReason())->toBe('provider_rejected');
+});

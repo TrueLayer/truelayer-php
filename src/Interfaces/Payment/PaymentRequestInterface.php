@@ -48,6 +48,7 @@ interface PaymentRequestInterface extends HasAttributesInterface
 
     /**
      * @param RequestOptionsInterface $requestOptions
+     *
      * @return PaymentRequestInterface
      */
     public function requestOptions(RequestOptionsInterface $requestOptions): PaymentRequestInterface;

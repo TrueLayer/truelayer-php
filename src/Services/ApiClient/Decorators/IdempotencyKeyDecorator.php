@@ -20,10 +20,10 @@ final class IdempotencyKeyDecorator extends BaseApiClientDecorator
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @return mixed
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed
      */
     public function send(ApiRequestInterface $apiRequest)
     {
@@ -34,7 +34,7 @@ final class IdempotencyKeyDecorator extends BaseApiClientDecorator
         }
 
         return Retry::max(self::MAX_RETRIES)
-            ->when(fn($e) => $this->isIdempotencyKeyReuseError($e))
+            ->when(fn ($e) => $this->isIdempotencyKeyReuseError($e))
             ->start(function () use ($apiRequest) {
                 $this->addHeaders($apiRequest);
 

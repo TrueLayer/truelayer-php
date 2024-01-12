@@ -80,10 +80,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return HppInterface
      * @throws ValidationException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface
     {
@@ -95,19 +95,20 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     /**
      * @param string $returnUri
      *
-     * @return AuthorizationFlowAuthorizingInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
+     *
      * @deprecated
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface
     {
         $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), [
-            'provider_selection' => (object)[],
+            'provider_selection' => (object) [],
             'redirect' => ['return_uri' => $returnUri],
         ]);
 
@@ -115,9 +116,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return StartAuthorizationFlowRequestInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return StartAuthorizationFlowRequestInterface
      */
     public function authorizationFlow(): StartAuthorizationFlowRequestInterface
     {
@@ -126,13 +128,13 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {

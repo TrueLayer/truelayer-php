@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
-use ArrayObject;
 use TrueLayer\Constants\FormInputTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -28,19 +27,19 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     protected string $paymentId;
 
     /**
-     * @var ArrayObject<string, mixed>|null
+     * @var \ArrayObject<string, mixed>|null
      */
-    protected ?ArrayObject $userAccountSelection;
+    protected ?\ArrayObject $userAccountSelection;
 
     /**
-     * @var ArrayObject<string, mixed>|null
+     * @var \ArrayObject<string, mixed>|null
      */
-    protected ?ArrayObject $providerSelection;
+    protected ?\ArrayObject $providerSelection;
 
     /**
-     * @var ArrayObject<string, mixed>|null
+     * @var \ArrayObject<string, mixed>|null
      */
-    protected ?ArrayObject $schemeSelection;
+    protected ?\ArrayObject $schemeSelection;
 
     /**
      * @var string
@@ -57,7 +56,6 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
      */
     protected array $formInputTypes = [];
 
-
     protected array $arrayFields = [
         'user_account_selection',
         'provider_selection',
@@ -73,9 +71,9 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     protected function rules(): array
     {
         return [
-            'user_account_selection' => ['nullable', ValidType::of(ArrayObject::class)],
-            'provider_selection' => ['nullable', ValidType::of(ArrayObject::class)],
-            'scheme_selection' => ['nullable', ValidType::of(ArrayObject::class)],
+            'user_account_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
+            'provider_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
+            'scheme_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
             'redirect.return_uri' => ['required', 'string'],
             'redirect.direct_return_uri' => ['nullable', 'string'],
             'form.input_types' => ['nullable', 'array'],
@@ -85,6 +83,7 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
 
     /**
      * @param string $paymentId
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function paymentId(string $paymentId): StartAuthorizationFlowRequestInterface
@@ -104,7 +103,7 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
             ->formInputTypes([
                 FormInputTypes::TEXT,
                 FormInputTypes::TEXT_WITH_IMAGE,
-                FormInputTypes::SELECT
+                FormInputTypes::SELECT,
             ]);
 
         return $this;
@@ -115,7 +114,8 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
      */
     public function enableProviderSelection(): StartAuthorizationFlowRequestInterface
     {
-        $this->providerSelection = new ArrayObject();
+        $this->providerSelection = new \ArrayObject();
+
         return $this;
     }
 
@@ -124,7 +124,8 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
      */
     public function enableSchemeSelection(): StartAuthorizationFlowRequestInterface
     {
-        $this->schemeSelection = new ArrayObject();
+        $this->schemeSelection = new \ArrayObject();
+
         return $this;
     }
 
@@ -133,47 +134,55 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
      */
     public function enableUserAccountSelection(): StartAuthorizationFlowRequestInterface
     {
-        $this->userAccountSelection = new ArrayObject();
+        $this->userAccountSelection = new \ArrayObject();
+
         return $this;
     }
 
     /**
      * @param string $returnUri
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function returnUri(string $returnUri): StartAuthorizationFlowRequestInterface
     {
         $this->returnUri = $returnUri;
+
         return $this;
     }
 
     /**
      * @param string $directReturnUri
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function directReturnUri(string $directReturnUri): StartAuthorizationFlowRequestInterface
     {
         $this->directReturnUri = $directReturnUri;
+
         return $this;
     }
 
     /**
      * @param string[] $types
+     *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function formInputTypes(array $types): StartAuthorizationFlowRequestInterface
     {
         $this->formInputTypes = $types;
+
         return $this;
     }
 
     /**
-     * @return AuthorizationFlowResponseInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function start(): AuthorizationFlowResponseInterface
     {
