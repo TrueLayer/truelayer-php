@@ -34,7 +34,7 @@ interface PaymentsApiInterface
 
     /**
      * @param string $id
-     * @param string $returnUri
+     * @param mixed[] $authorizationFlowRequest
      *
      * @return mixed[]
      * @throws SignerException
@@ -42,7 +42,7 @@ interface PaymentsApiInterface
      *
      * @throws ApiResponseUnsuccessfulException
      */
-    public function startAuthorizationFlow(string $id, string $returnUri): array;
+    public function startAuthorizationFlow(string $id, array $authorizationFlowRequest): array;
 
     /**
      * @param string $id

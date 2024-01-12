@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
@@ -200,15 +201,31 @@ final class Client implements ClientInterface
      * @throws InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ValidationException
+     *
+     * @deprecated
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface
     {
         $paymentId = PaymentId::find($payment);
-        $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, $returnUri);
+        $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, [
+            'provider_selection' => (object)[],
+            'redirect' => ['return_uri' => $returnUri],
+        ]);
 
         return $this->entityFactory->make(AuthorizationFlowAuthorizingInterface::class, $data);
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @return StartAuthorizationFlowRequestInterface
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     */
+    public function paymentAuthorizationFlow($payment): StartAuthorizationFlowRequestInterface
+    {
+        return $this->entityFactory->make(StartAuthorizationFlowRequestInterface::class)
+            ->paymentId(PaymentId::find($payment));
     }
 
     /**

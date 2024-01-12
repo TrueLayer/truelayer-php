@@ -27,7 +27,7 @@
         6. [Failed Status](#status-failed)
         7. [Authorization flow config](#auth-flow-config)
         8. [Source of funds](#source-of-funds)
-7. [Authorizing a payment - TODO](#authorizing-payment)
+7. [Authorizing a payment](#authorizing-payment)
 8. [Refunds](#refunds)
 9. [Payouts](#payouts)
 10. [Merchant accounts](#merchant-accounts)
@@ -571,6 +571,58 @@ if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentS
        // See 'Account identifiers' for available methods.
     }
 }
+```
+
+<a name="authorizing-payment"></a>
+
+# Authorizing a payment
+
+## Using the Hosted Payments Page
+
+You are encouraged to use our [HPP](https://docs.truelayer.com/docs/hosted-payment-page) which collects all payment
+information required from your users and guides them through the payment authorisation journey. To do this simply
+redirect to the HPP after creating a payment. See [Redirecting to HPP](#redirect-to-hpp) to get started.
+
+## Manually starting the authorization flow
+
+In some cases you may want to start the authorization flow manually (for example if you want to render your own provider
+selection screen).
+
+This library has incomplete support for the authorization flow. To complete the authorization flow, you will need to
+eventually redirect the user to the HPP or implement missing features using direct API calls (
+see [Custom API calls](#custom-api-calls)).
+
+```php
+use TrueLayer\Constants\FormInputTypes;
+
+$payment = $client->payment()->create();
+
+// If you are planning to start the authorization flow manually then hand over to the HPP:
+$payment->authorizationFlow()
+    ->returnUri($myReturnUri)
+    ->useHPPCapabilities()
+    ->start();
+
+// If you are planning to build a fully custom UI, you need to manually specify which features your UI is able to support:
+$payment->authorizationFlow()
+    ->returnUri($myReturnUri)
+    ->enableProviderSelection() // Can the UI render a provider selection screen?
+    ->enableSchemeSelection() // Can the UI render a scheme selection screen?
+    ->enableUserAccountSelection() // Can the UI render a user account selection screen?
+    ->formInputTypes([FormInputTypes::TEXT, FormInputTypes::TEXT_WITH_IMAGE, FormInputTypes::SELECT]) // Can the UI render form inputs for the end user to interact with? Which input types can it handle?
+    ->start();
+```
+
+Once the authorization flow has been started, refer to [Authorizing payments](#status-authorizing) to understand how to
+handle the returned actions.
+
+### Submitting a provider
+
+If your payment requires selecting a provider as its next action, you can render the provider list and then submit the
+user selection using the `submitProvider` method:
+
+```php
+$client->submitPaymentProvider($payment, $provider);
 ```
 
 <a name="refunds"></a>

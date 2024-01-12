@@ -120,15 +120,18 @@ function getSentHttpRequests(): array
 
 /**
  * @param int $requestIndex
+ * @param bool $asArray
  *
  * @return mixed
  */
-function getRequestPayload(int $requestIndex)
+function getRequestPayload(int $requestIndex, bool $asArray = true)
 {
     $body = \getSentHttpRequests()[$requestIndex]->getBody();
     $body->rewind();
 
-    return \json_decode($body->getContents(), true);
+    return $asArray
+        ? \json_decode($body->getContents(), true)
+        : $body->getContents();
 }
 
 /**

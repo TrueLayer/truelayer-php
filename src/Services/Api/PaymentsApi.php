@@ -48,7 +48,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
 
     /**
      * @param string $id
-     * @param string $returnUri
+     * @param mixed[] $authorizationFlowRequest
      *
      * @return mixed[]
      * @throws SignerException
@@ -56,16 +56,13 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      *
      * @throws ApiResponseUnsuccessfulException
      */
-    public function startAuthorizationFlow(string $id, string $returnUri): array
+    public function startAuthorizationFlow(string $id, array $authorizationFlowRequest): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_START_AUTH_FLOW);
 
         return (array)$this->request()
             ->uri($uri)
-            ->payload([
-                'provider_selection' => (object)[],
-                'redirect' => ['return_uri' => $returnUri],
-            ])
+            ->payload($authorizationFlowRequest)
             ->post();
     }
 
