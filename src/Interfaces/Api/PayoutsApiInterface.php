@@ -12,23 +12,25 @@ use TrueLayer\Interfaces\RequestOptionsInterface;
 interface PayoutsApiInterface
 {
     /**
-     * @param mixed[] $payoutRequest
+     * @param mixed[]                      $payoutRequest
      * @param RequestOptionsInterface|null $requestOptions
-     * @return mixed[]
+     *
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
      */
     public function create(array $payoutRequest, ?RequestOptionsInterface $requestOptions): array;
 
     /**
      * @param string $id
      *
-     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
      */
     public function retrieve(string $id): array;
 }

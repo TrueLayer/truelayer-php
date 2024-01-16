@@ -148,6 +148,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
 
     /**
      * @param RequestOptionsInterface $requestOptions
+     *
      * @return $this
      */
     public function requestOptions(RequestOptionsInterface $requestOptions): PaymentRequestInterface
@@ -158,13 +159,13 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @return PaymentCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws ValidationException
-     *
      * @throws SignerException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {

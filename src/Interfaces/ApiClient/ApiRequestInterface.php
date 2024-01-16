@@ -41,9 +41,9 @@ interface ApiRequestInterface
     public function getPayload(): array;
 
     /**
-     * @return string
      * @throws ApiRequestJsonSerializationException
      *
+     * @return string
      */
     public function getJsonPayload(): string;
 
@@ -61,20 +61,20 @@ interface ApiRequestInterface
     public function getHeaders(): array;
 
     /**
-     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed
      */
     public function post();
 
     /**
-     * @return mixed
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed
      */
     public function get();
 
@@ -85,6 +85,7 @@ interface ApiRequestInterface
 
     /**
      * @param RequestOptionsInterface|null $requestOptions
+     *
      * @return ApiRequestInterface
      */
     public function requestOptions(?RequestOptionsInterface $requestOptions): ApiRequestInterface;

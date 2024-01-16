@@ -17,7 +17,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -75,7 +75,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -138,7 +138,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()

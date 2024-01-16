@@ -14,16 +14,18 @@ use TrueLayer\Interfaces\RequestOptionsInterface;
 final class PayoutsApi extends Api implements PayoutsApiInterface
 {
     /**
-     * @param mixed[] $payoutRequest
+     * @param mixed[]                      $payoutRequest
      * @param RequestOptionsInterface|null $requestOptions
-     * @return mixed[]
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function create(array $payoutRequest, RequestOptionsInterface $requestOptions = null): array
     {
-        return (array)$this->request()
+        return (array) $this->request()
             ->requestOptions($requestOptions)
             ->uri(Endpoints::PAYOUTS_CREATE)
             ->payload($payoutRequest)
@@ -33,16 +35,16 @@ final class PayoutsApi extends Api implements PayoutsApiInterface
     /**
      * @param string $id
      *
-     * @return mixed[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
      */
     public function retrieve(string $id): array
     {
         $uri = \str_replace('{id}', $id, Endpoints::PAYOUTS_RETRIEVE);
 
-        return (array)$this->request()->uri($uri)->get();
+        return (array) $this->request()->uri($uri)->get();
     }
 }

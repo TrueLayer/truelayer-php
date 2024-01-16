@@ -34,13 +34,13 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws \TrueLayer\Exceptions\ApiRequestValidationException
  * @throws ApiResponseUnsuccessfulException
  * @throws \TrueLayer\Exceptions\ApiResponseValidationException
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
- *
  * @throws ApiRequestJsonSerializationException
+ *
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -67,12 +67,12 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Client\ClientInterface
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
- *
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ *
+ * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
 function client($mockResponses = [])
 {
@@ -91,12 +91,12 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  * @throws SignerException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
- *
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ *
+ * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
  */
 function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequestInterface
 {
@@ -119,21 +119,25 @@ function getSentHttpRequests(): array
 }
 
 /**
- * @param int $requestIndex
+ * @param int  $requestIndex
+ * @param bool $asArray
  *
  * @return mixed
  */
-function getRequestPayload(int $requestIndex)
+function getRequestPayload(int $requestIndex, bool $asArray = true)
 {
     $body = \getSentHttpRequests()[$requestIndex]->getBody();
     $body->rewind();
 
-    return \json_decode($body->getContents(), true);
+    return $asArray
+        ? \json_decode($body->getContents(), true)
+        : $body->getContents();
 }
 
 /**
- * @param int $requestIndex
+ * @param int    $requestIndex
  * @param string $name
+ *
  * @return string[]
  */
 function getRequestHeader(int $requestIndex, string $name): array
@@ -143,24 +147,25 @@ function getRequestHeader(int $requestIndex, string $name): array
 
 /**
  * @param int $requestIndex
+ *
  * @return string
  */
 function getRequestIdempotencyKey(int $requestIndex): string
 {
-    return getRequestHeader($requestIndex, CustomHeaders::IDEMPOTENCY_KEY)[0];
+    return \getRequestHeader($requestIndex, CustomHeaders::IDEMPOTENCY_KEY)[0];
 }
 
 /**
  * @param string $body
  *
- * @return WebhookInterface
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
- *
  * @throws ApiResponseUnsuccessfulException
+ *
+ * @return WebhookInterface
  */
 function webhook(string $body): WebhookInterface
 {

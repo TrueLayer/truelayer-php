@@ -27,7 +27,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $sentRequests->shift(); // Remove access token request
 
     $idempotencyKeys = $sentRequests
-        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
         ->unique()
         ->count();
 
@@ -41,7 +41,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $sentRequests->shift(); // Remove access token request
 
     $idempotencyKeys = $sentRequests
-        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
         ->unique()
         ->count();
 
@@ -62,7 +62,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
         ->requestOptions($requestOptions)
         ->post();
 
-    expect(getRequestIdempotencyKey(1))->toBe('test-idempotency-key');
+    \expect(\getRequestIdempotencyKey(1))->toBe('test-idempotency-key');
 });
 
 \it('retries requests with same custom idempotency key', function () {
@@ -85,7 +85,7 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
     $sentRequests->shift(); // Remove access token request
 
     $idempotencyKeys = $sentRequests
-        ->map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
+        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
         ->unique()
         ->count();
 
@@ -101,4 +101,3 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
         ->requestOptions($requestOptions)
         ->post();
 })->throws(ApiResponseUnsuccessfulException::class);
-

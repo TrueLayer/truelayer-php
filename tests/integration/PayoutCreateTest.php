@@ -116,7 +116,7 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
         ->requestOptions($requestOptions)
         ->create();
 
-    $sentIdempotencyKey = getRequestHeader(1, \TrueLayer\Constants\CustomHeaders::IDEMPOTENCY_KEY)[0];
+    $sentIdempotencyKey = \getRequestHeader(1, \TrueLayer\Constants\CustomHeaders::IDEMPOTENCY_KEY)[0];
 
-    expect($sentIdempotencyKey)->toBe('payout-test-idempotency-key');
+    \expect($sentIdempotencyKey)->toBe('payout-test-idempotency-key');
 });

@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
+use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 
 final class PaymentCreated extends Entity implements PaymentCreatedInterface, HasApiFactoryInterface
@@ -79,8 +80,8 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @throws InvalidArgumentException
      * @throws ValidationException
+     * @throws InvalidArgumentException
      *
      * @return HppInterface
      */
@@ -94,27 +95,44 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     /**
      * @param string $returnUri
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return AuthorizationFlowAuthorizingInterface
+     *
+     * @deprecated
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface
     {
-        $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), $returnUri);
+        $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), [
+            'provider_selection' => (object) [],
+            'redirect' => ['return_uri' => $returnUri],
+        ]);
 
         return $this->make(AuthorizationFlowAuthorizingInterface::class, $data);
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return StartAuthorizationFlowRequestInterface
+     */
+    public function authorizationFlow(): StartAuthorizationFlowRequestInterface
+    {
+        return $this->make(StartAuthorizationFlowRequestInterface::class)
+            ->paymentId($this->getId());
+    }
+
+    /**
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentRetrievedInterface
      */

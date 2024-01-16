@@ -65,7 +65,7 @@ final class ApiRequest implements ApiRequestInterface
      */
     public function getUri(): string
     {
-        return (string)$this->uri;
+        return (string) $this->uri;
     }
 
     /**
@@ -97,9 +97,9 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return string
      * @throws ApiRequestJsonSerializationException
      *
+     * @return string
      */
     public function getJsonPayload(): string
     {
@@ -134,11 +134,11 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return mixed
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed
      */
     public function post()
     {
@@ -148,11 +148,11 @@ final class ApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @return mixed
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed
      */
     public function get()
     {
@@ -176,6 +176,7 @@ final class ApiRequest implements ApiRequestInterface
 
     /**
      * @param RequestOptionsInterface|null $requestOptions
+     *
      * @return ApiRequestInterface
      */
     public function requestOptions(RequestOptionsInterface $requestOptions = null): ApiRequestInterface
@@ -183,7 +184,7 @@ final class ApiRequest implements ApiRequestInterface
         if (!$requestOptions) {
             return $this;
         }
-        
+
         if ($customIdempotencyKey = $requestOptions->getIdempotencyKey()) {
             $this->header(CustomHeaders::IDEMPOTENCY_KEY, $customIdempotencyKey);
         }

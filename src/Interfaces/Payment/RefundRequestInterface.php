@@ -32,6 +32,7 @@ interface RefundRequestInterface extends HasAttributesInterface
 
     /**
      * @param RequestOptionsInterface $requestOptions
+     *
      * @return RefundRequestInterface
      */
     public function requestOptions(RequestOptionsInterface $requestOptions): RefundRequestInterface;

@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
@@ -61,18 +62,17 @@ final class Client implements ClientInterface
     private ClientConfigInterface $config;
 
     /**
-     * @param ApiClientInterface $apiClient
-     * @param ApiFactoryInterface $apiFactory
+     * @param ApiClientInterface     $apiClient
+     * @param ApiFactoryInterface    $apiFactory
      * @param EntityFactoryInterface $entityFactory
-     * @param ClientConfigInterface $config
+     * @param ClientConfigInterface  $config
      */
     public function __construct(
-        ApiClientInterface     $apiClient,
-        ApiFactoryInterface    $apiFactory,
+        ApiClientInterface $apiClient,
+        ApiFactoryInterface $apiFactory,
         EntityFactoryInterface $entityFactory,
-        ClientConfigInterface  $config
-    )
-    {
+        ClientConfigInterface $config
+    ) {
         $this->apiClient = $apiClient;
         $this->apiFactory = $apiFactory;
         $this->entityFactory = $entityFactory;
@@ -88,11 +88,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return UserInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return UserInterface
      */
     public function user(): UserInterface
     {
@@ -100,11 +100,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return AccountIdentifierBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return AccountIdentifierBuilderInterface
      */
     public function accountIdentifier(): AccountIdentifierBuilderInterface
     {
@@ -112,11 +112,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return BeneficiaryBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return BeneficiaryBuilderInterface
      */
     public function beneficiary(): BeneficiaryBuilderInterface
     {
@@ -124,11 +124,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return ProviderFilterInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return ProviderFilterInterface
      */
     public function providerFilter(): ProviderFilterInterface
     {
@@ -136,11 +136,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return ProviderSelectionBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return ProviderSelectionBuilderInterface
      */
     public function providerSelection(): ProviderSelectionBuilderInterface
     {
@@ -148,11 +148,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return PaymentMethodBuilderInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return PaymentMethodBuilderInterface
      */
     public function paymentMethod(): PaymentMethodBuilderInterface
     {
@@ -160,11 +160,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return PaymentRequestInterface
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\ValidationException
-     *
      * @throws Exceptions\InvalidArgumentException
+     *
+     * @return PaymentRequestInterface
      */
     public function payment(): PaymentRequestInterface
     {
@@ -174,14 +174,14 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @return PaymentRetrievedInterface
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
-     *
      * @throws Exceptions\ValidationException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getPayment(string $id): PaymentRetrievedInterface
     {
@@ -192,37 +192,56 @@ final class Client implements ClientInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string $returnUri
+     * @param string                                                   $returnUri
      *
-     * @return AuthorizationFlowAuthorizingInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
+     *
+     * @deprecated
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface
     {
         $paymentId = PaymentId::find($payment);
-        $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, $returnUri);
+        $data = $this->apiFactory->paymentsApi()->startAuthorizationFlow($paymentId, [
+            'provider_selection' => (object) [],
+            'redirect' => ['return_uri' => $returnUri],
+        ]);
 
         return $this->entityFactory->make(AuthorizationFlowAuthorizingInterface::class, $data);
     }
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string|ProviderInterface $provider
      *
-     * @return AuthorizationFlowResponseInterface
+     * @throws InvalidArgumentException
+     * @throws ValidationException
+     *
+     * @return StartAuthorizationFlowRequestInterface
+     */
+    public function paymentAuthorizationFlow($payment): StartAuthorizationFlowRequestInterface
+    {
+        return $this->entityFactory->make(StartAuthorizationFlowRequestInterface::class)
+            ->paymentId(PaymentId::find($payment));
+    }
+
+    /**
+     * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
+     * @param string|ProviderInterface                                 $provider
+     *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ValidationException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface
     {
@@ -242,10 +261,10 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return RefundRequestInterface
      * @throws ValidationException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return RefundRequestInterface
      */
     public function refund(): RefundRequestInterface
     {
@@ -254,15 +273,15 @@ final class Client implements ClientInterface
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string $refundId
+     * @param string                                                   $refundId
      *
-     * @return RefundRetrievedInterface
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return RefundRetrievedInterface
      */
     public function getRefund($payment, string $refundId): RefundRetrievedInterface
     {
@@ -276,13 +295,13 @@ final class Client implements ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @return mixed[]
      * @throws SignerException
      * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return mixed[]
      */
     public function getRefunds($payment): array
     {
@@ -304,11 +323,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return Payout\PayoutRequestInterface
      * @throws ValidationException
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return Payout\PayoutRequestInterface
      */
     public function payout(): Payout\PayoutRequestInterface
     {
@@ -316,11 +335,11 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return Payout\BeneficiaryBuilderInterface
      * @throws ValidationException
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return Payout\BeneficiaryBuilderInterface
      */
     public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface
     {
@@ -335,14 +354,14 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return MerchantAccountInterface[]
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
-     *
      * @throws Exceptions\ValidationException
+     *
+     * @return MerchantAccountInterface[]
      */
     public function getMerchantAccounts(): array
     {
@@ -354,14 +373,14 @@ final class Client implements ClientInterface
     /**
      * @param string $id
      *
-     * @return MerchantAccountInterface
      * @throws Exceptions\ApiRequestJsonSerializationException
      * @throws Exceptions\ApiResponseUnsuccessfulException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\InvalidArgumentException
      * @throws Exceptions\SignerException
-     *
      * @throws Exceptions\ValidationException
+     *
+     * @return MerchantAccountInterface
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface
     {
@@ -371,9 +390,9 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return WebhookInterface
      * @throws Exceptions\MissingHttpImplementationException
      *
+     * @return WebhookInterface
      */
     public function webhook(): WebhookInterface
     {
@@ -381,9 +400,10 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return RequestOptionsInterface
      * @throws InvalidArgumentException
      * @throws ValidationException
+     *
+     * @return RequestOptionsInterface
      */
     public function requestOptions(): RequestOptionsInterface
     {

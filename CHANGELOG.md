@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2024-01-12
+
+### Added
+
+- New `$client->paymentAuthorizationFlow()` and `$createdPayment->authorizationFlow()` methods for starting the
+  authorization flow that are better aligned with TrueLayer APIs
+- Missing documentation for starting payment authorization
+
+### Changed
+
+- Deprecated `$client->startPaymentAuthorization()` and `$createdPayment->startAuthorization()`
+
 ## [1.4.0] - 2023-11-20
 
 ### Added

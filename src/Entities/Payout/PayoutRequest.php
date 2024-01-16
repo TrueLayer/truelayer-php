@@ -129,6 +129,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
 
     /**
      * @param RequestOptionsInterface $requestOptions
+     *
      * @return $this
      */
     public function requestOptions(RequestOptionsInterface $requestOptions): PayoutRequestInterface
@@ -139,13 +140,13 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @return PayoutCreatedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     *
      * @throws ValidationException
+     *
+     * @return PayoutCreatedInterface
      */
     public function create(): PayoutCreatedInterface
     {
