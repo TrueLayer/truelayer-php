@@ -62,7 +62,7 @@ final class User extends Entity implements UserInterface
     ];
 
     /**
-     * @return array
+     * @return mixed[]
      */
     protected function rules(): array
     {
@@ -176,7 +176,7 @@ final class User extends Entity implements UserInterface
     {
         $this->address = $address ?: $this->entityFactory->make(AddressInterface::class);
 
-        return $this->getAddress();
+        return $this->address;
     }
     /**
      * @return string|null

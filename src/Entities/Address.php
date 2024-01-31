@@ -51,19 +51,16 @@ class Address extends Entity implements AddressInterface
     ];
 
     /**
-     * @return array
+     * @var string[]
      */
-    protected function rules(): array
-    {
-        return [
-            'address_line1' => 'string|required',
-            'address_line2' => 'string|nullable',
-            'city' => 'string|required',
-            'state' => 'string|required',
-            'zip' => 'string|required',
-            'country_code' => 'string|required',
-        ];
-    }
+    protected array $rules = [
+        'address_line1' => 'string|required',
+        'address_line2' => 'string|nullable',
+        'city' => 'string|required',
+        'state' => 'string|required',
+        'zip' => 'string|required',
+        'country_code' => 'string|required',
+    ];
 
     /**
      * @return string
