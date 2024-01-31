@@ -69,6 +69,26 @@ class CreatePayment
             ->email('alice@truelayer.com');
     }
 
+    public function userWithAddress(): UserInterface
+    {
+        $user = $this->user();
+        $address = $user->addressBuilder()
+            ->addressLine1("The Gilbert")
+            ->city("London")
+            ->state("London")
+            ->zip("EC2A 1PX")
+            ->countryCode("GB");
+
+        return $this->user()
+            ->address($address);
+    }
+
+    public function userWithDateOfBirth(string $date): UserInterface
+    {
+        return $this->user()
+            ->dateOfBirth($date);
+    }
+
     /**
      * @param BeneficiaryInterface $beneficiary
      *

@@ -67,6 +67,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'name' => 'Alice',
             'phone' => '+447837485713',
             'email' => 'alice@truelayer.com',
+            'address' => null,
+            'date_of_birth' => null,
         ],
     ]);
 
@@ -76,9 +78,63 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'name' => null,
             'phone' => null,
             'email' => null,
+            'address' => null,
+            'date_of_birth' => null,
         ],
     ]);
 });
+
+\it('sends the right user address', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+    $factory->payment($factory->newUserWithAddress(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => null,
+                'city' => 'London',
+                'state' => 'London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('sends the right date of birth', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $factory->payment($factory->newUserWithDateOfBirth("2024-01-01"), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => null,
+            'date_of_birth' => "2024-01-01",
+        ],
+    ]);
+});
+
+\it('should throw when sending an invalid user date of birth', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $factory->payment($factory->newUserWithDateOfBirth("invalid data"), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+})->throws(TrueLayer\Exceptions\ValidationException::class);
 
 \it('parses payment creation response correctly', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);

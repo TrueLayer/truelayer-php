@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces;
 
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\ValidationException;
+
 interface UserInterface extends ArrayableInterface, HasAttributesInterface
 {
     /**
@@ -53,4 +56,36 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
      * @return UserInterface
      */
     public function phone(string $phone): UserInterface;
+
+    /**
+     * @return AddressInterface|null
+     */
+    public function getAddress(): ?AddressInterface;
+
+    /**
+     * @param AddressInterface $address
+     *
+     * @return UserInterface
+     */
+    public function address(AddressInterface $address): UserInterface;
+
+    /**
+     * @throws ValidationException
+     * @throws InvalidArgumentException
+     *
+     * @return AddressInterface
+     */
+    public function addressBuilder(): AddressInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getDateOfBirth(): ?string;
+
+    /**
+     * @param string $dateOfBirth
+     *
+     * @return UserInterface
+     */
+    public function dateOfBirth(string $dateOfBirth): UserInterface;
 }
