@@ -63,19 +63,11 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
     public function getAddress(): ?AddressInterface;
 
     /**
-     * @param AddressInterface $address
-     *
-     * @return UserInterface
-     */
-    public function address(AddressInterface $address): UserInterface;
-
-    /**
-     * @throws ValidationException
-     * @throws InvalidArgumentException
+     * @param AddressInterface|null $address
      *
      * @return AddressInterface
      */
-    public function addressBuilder(): AddressInterface;
+    public function address(?AddressInterface $address): AddressInterface;
 
     /**
      * @return string|null

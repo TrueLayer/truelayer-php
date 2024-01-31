@@ -165,28 +165,19 @@ final class User extends Entity implements UserInterface
     }
 
     /**
-     * @param AddressInterface $address
+     * @param AddressInterface|null $address
      *
-     * @return UserInterface
-     */
-    public function address(AddressInterface $address): UserInterface
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
      * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return AddressInterface
      */
-    public function addressBuilder(): AddressInterface
+    public function address(?AddressInterface $address = null): AddressInterface
     {
-        return $this->entityFactory->make(AddressInterface::class);
-    }
+        $this->address = $address ?: $this->entityFactory->make(AddressInterface::class);
 
+        return $this->getAddress();
+    }
     /**
      * @return string|null
      */
