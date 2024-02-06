@@ -63,11 +63,11 @@ class Address extends Entity implements AddressInterface
     ];
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAddressLine1(): string
+    public function getAddressLine1(): ?string
     {
-        return $this->addressLine1;
+        return $this->addressLine1 ?? null;
     }
 
     /**
@@ -103,11 +103,11 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
-        return $this->city;
+        return $this->city ?? null;
     }
 
     /**
@@ -123,11 +123,11 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getState(): string
+    public function getState(): ?string
     {
-        return $this->state;
+        return $this->state ?? null;
     }
 
     /**
@@ -143,11 +143,11 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZip(): string
+    public function getZip(): ?string
     {
-        return $this->zip;
+        return $this->zip ?? null;
     }
 
     /**
@@ -163,11 +163,11 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCountryCode(): string
+    public function getCountryCode(): ?string
     {
-        return $this->countryCode;
+        return $this->countryCode ?? null;
     }
 
     /**

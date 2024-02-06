@@ -72,15 +72,14 @@ class CreatePayment
     public function userWithAddress(): UserInterface
     {
         $user = $this->user();
-        $address = $user->addressBuilder()
-            ->addressLine1("The Gilbert")
-            ->city("London")
-            ->state("London")
-            ->zip("EC2A 1PX")
-            ->countryCode("GB");
+        $user->address()
+            ->addressLine1('The Gilbert')
+            ->city('London')
+            ->state('London')
+            ->zip('EC2A 1PX')
+            ->countryCode('GB');
 
-        return $this->user()
-            ->address($address);
+        return $user;
     }
 
     public function userWithDateOfBirth(string $date): UserInterface

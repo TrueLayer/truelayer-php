@@ -62,11 +62,11 @@ class CreatePayment
         $user = $this->newUser();
 
         $user->address()
-            ->addressLine1("The Gilbert")
-            ->city("London")
-            ->state("London")
-            ->zip("EC2A 1PX")
-            ->countryCode("GB");
+            ->addressLine1('The Gilbert')
+            ->city('London')
+            ->state('London')
+            ->zip('EC2A 1PX')
+            ->countryCode('GB');
 
         return $user;
     }

@@ -178,6 +178,7 @@ final class User extends Entity implements UserInterface
 
         return $this->address;
     }
+
     /**
      * @return string|null
      */

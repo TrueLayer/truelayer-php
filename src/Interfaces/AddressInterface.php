@@ -7,9 +7,9 @@ namespace TrueLayer\Interfaces;
 interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAddressLine1(): string;
+    public function getAddressLine1(): ?string;
 
     /**
      * @param string $addressLine1
@@ -31,9 +31,9 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
     public function addressLine2(string $addressLine2): AddressInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string;
+    public function getCity(): ?string;
 
     /**
      * @param string $city
@@ -43,9 +43,9 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
     public function city(string $city): AddressInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getState(): string;
+    public function getState(): ?string;
 
     /**
      * @param string $state
@@ -55,9 +55,9 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
     public function state(string $state): AddressInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZip(): string;
+    public function getZip(): ?string;
 
     /**
      * @param string $zip
@@ -67,9 +67,9 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
     public function zip(string $zip): AddressInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCountryCode(): string;
+    public function getCountryCode(): ?string;
 
     /**
      * @param string $countryCode

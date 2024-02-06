@@ -114,7 +114,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         PaymentResponse::created(),
     ]);
 
-    $factory->payment($factory->newUserWithDateOfBirth("2024-01-01"), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+    $factory->payment($factory->newUserWithDateOfBirth('2024-01-01'), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'user' => [
@@ -123,7 +123,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'phone' => '+447837485713',
             'email' => 'alice@truelayer.com',
             'address' => null,
-            'date_of_birth' => "2024-01-01",
+            'date_of_birth' => '2024-01-01',
         ],
     ]);
 });
@@ -133,7 +133,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         PaymentResponse::created(),
     ]);
 
-    $factory->payment($factory->newUserWithDateOfBirth("invalid data"), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+    $factory->payment($factory->newUserWithDateOfBirth('invalid data'), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 })->throws(TrueLayer\Exceptions\ValidationException::class);
 
 \it('parses payment creation response correctly', function () {
