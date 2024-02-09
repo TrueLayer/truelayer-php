@@ -66,7 +66,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
 
     return $created;
-})->only();
+});
 
 \it('starts payment authorization', function () {
     $created = \paymentHelper()->create();
@@ -90,7 +90,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($config['form']['input_types'])->toBeEmpty();
 
     return $created;
-})->only();
+});
 
 \it('starts payment authorization with hpp capabilities', function () {
     $created = \paymentHelper()->create();
@@ -108,7 +108,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
     \expect($config['redirect'])->not->toHaveKey('direct_return_uri');
     \expect($config['form']['input_types'])->toContain(FormInputTypes::SELECT, FormInputTypes::TEXT, FormInputTypes::TEXT_WITH_IMAGE);
-})->only();
+});
 
 \it('starts payment authorization with all capabilities', function () {
     $created = \paymentHelper()->create();
@@ -130,7 +130,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($config['redirect']['return_uri'])->toBe('https://console.truelayer.com/redirect-page');
     \expect($config['redirect']['direct_return_uri'])->toBe('https://console.truelayer.com/direct-return-page');
     \expect($config['form']['input_types'])->toContain(FormInputTypes::TEXT);
-})->only();
+});
 
 \it('retrieves payment as authorizing - provider selection', function (PaymentCreatedInterface $created) {
     /** @var PaymentAuthorizingInterface $payment */

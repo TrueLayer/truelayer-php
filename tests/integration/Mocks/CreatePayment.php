@@ -60,7 +60,6 @@ class CreatePayment
     public function newUserWithAddress(): UserInterface
     {
         $user = $this->newUser();
-
         $user->address()
             ->addressLine1('The Gilbert')
             ->city('London')
