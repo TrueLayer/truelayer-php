@@ -207,7 +207,21 @@ $beneficiary = $client->beneficiary()->externalAccount()
 $user = $client->user()
     ->name('Jane Doe')
     ->phone('+44123456789')
-    ->email('jane.doe@truelayer.com');
+    ->email('jane.doe@truelayer.com')
+    ->dateOfBirth('2024-01-01');
+```
+
+You are also able to set the user's address:
+
+```php
+$address = $client->user()
+    ->address()
+    ->addressLine1('The Gilbert')
+    ->addressLine2('City of')
+    ->city('London')
+    ->state('London')
+    ->zip('EC2A 1PX')
+    ->countryCode('GB');
 ```
 
 <a name="creating-a-payment-method"></a>
