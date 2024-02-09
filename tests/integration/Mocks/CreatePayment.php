@@ -57,15 +57,22 @@ class CreatePayment
             ->email('alice@truelayer.com');
     }
 
-    public function newUserWithAddress(): UserInterface
+    public function newUserWithAddress($a): UserInterface
     {
         $user = $this->newUser();
-        $user->address()
-            ->addressLine1('The Gilbert')
-            ->city('London')
-            ->state('London')
-            ->zip('EC2A 1PX')
-            ->countryCode('GB');
+        $address = $user->address()
+            ->addressLine1($a['addressLine1'])
+            ->city($a['city'])
+            ->zip($a['zip'])
+            ->countryCode($a['countryCode']);
+
+        if (array_key_exists('addressLine2', $a)) {
+            $address->addressLine2($a['addressLine2']);
+        }
+
+        if (array_key_exists('state', $a)) {
+           $address->state($a['state']);
+        }
 
         return $user;
     }

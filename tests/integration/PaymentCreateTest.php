@@ -88,7 +88,80 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $factory = CreatePayment::responses([
         PaymentResponse::created(),
     ]);
-    $factory->payment($factory->newUserWithAddress(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'addressLine2' => 'City of',
+        'city' => 'London',
+        'state' => 'Greater London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => 'Greater London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('ensures user address state is optional', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'addressLine2' => 'City of',
+        'city' => 'London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => null,
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('ensures user address addressLine2 is optional', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'city' => 'London',
+        'state' => 'Greater London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'user' => [
@@ -100,7 +173,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'address_line1' => 'The Gilbert',
                 'address_line2' => null,
                 'city' => 'London',
-                'state' => 'London',
+                'state' => 'Greater London',
                 'zip' => 'EC2A 1PX',
                 'country_code' => 'GB',
             ],

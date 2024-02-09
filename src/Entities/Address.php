@@ -57,7 +57,7 @@ class Address extends Entity implements AddressInterface
         'address_line1' => 'string|required',
         'address_line2' => 'string|nullable',
         'city' => 'string|required',
-        'state' => 'string|required',
+        'state' => 'string|nullable',
         'zip' => 'string|required',
         'country_code' => 'string|required',
     ];
