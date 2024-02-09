@@ -67,6 +67,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'name' => 'Alice',
             'phone' => '+447837485713',
             'email' => 'alice@truelayer.com',
+            'address' => null,
+            'date_of_birth' => null,
         ],
     ]);
 
@@ -76,9 +78,136 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'name' => null,
             'phone' => null,
             'email' => null,
+            'address' => null,
+            'date_of_birth' => null,
         ],
     ]);
 });
+
+\it('sends the right user address', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'addressLine2' => 'City of',
+        'city' => 'London',
+        'state' => 'Greater London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => 'Greater London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('ensures user address state is optional', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'addressLine2' => 'City of',
+        'city' => 'London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => null,
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('ensures user address addressLine2 is optional', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+    $address = [
+        'addressLine1' => 'The Gilbert',
+        'city' => 'London',
+        'state' => 'Greater London',
+        'zip' => 'EC2A 1PX',
+        'countryCode' => 'GB',
+    ];
+    $factory->payment($factory->newUserWithAddress($address), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => null,
+                'city' => 'London',
+                'state' => 'Greater London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => null,
+        ],
+    ]);
+});
+
+\it('sends the right date of birth', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $factory->payment($factory->newUserWithDateOfBirth('2024-01-01'), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'user' => [
+            'id' => null,
+            'name' => 'Alice',
+            'phone' => '+447837485713',
+            'email' => 'alice@truelayer.com',
+            'address' => null,
+            'date_of_birth' => '2024-01-01',
+        ],
+    ]);
+});
+
+\it('should throw when sending an invalid user date of birth', function () {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $factory->payment($factory->newUserWithDateOfBirth('invalid data'), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+})->throws(TrueLayer\Exceptions\ValidationException::class);
 
 \it('parses payment creation response correctly', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);

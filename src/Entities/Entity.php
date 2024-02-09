@@ -23,7 +23,7 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
     /**
      * @var EntityFactoryInterface
      */
-    private EntityFactoryInterface $entityFactory;
+    protected EntityFactoryInterface $entityFactory;
 
     /**
      * @param ValidatorFactory       $validatorFactory

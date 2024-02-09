@@ -134,6 +134,53 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($fetched->getId())->toBeString();
 });
 
+\it('creates payment with user address', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->userWithAddress())
+        ->create();
+
+    $fetched = $payment->getDetails();
+
+    \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($payment->getId())->toBeString();
+    \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
+    \expect($fetched->getId())->toBeString();
+});
+
+\it('creates payment with valid user date of birth', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->userWithDateOfBirth('2024-01-01'))
+        ->create();
+
+    $fetched = $payment->getDetails();
+
+    \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($payment->getId())->toBeString();
+    \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
+    \expect($fetched->getId())->toBeString();
+});
+
+\it('throws exception when creating payment with invalid user date of birth', function () {
+    $helper = \paymentHelper();
+
+    $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->userWithDateOfBirth('invalid date'))
+        ->create();
+})->throws(TrueLayer\Exceptions\ValidationException::class);
+
 \it('creates payment with idempotency key', function () {
     $helper = \paymentHelper();
 

@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use TrueLayer\Entities;
-use TrueLayer\Entities\User;
 use TrueLayer\Interfaces;
 
 return [
-    Interfaces\UserInterface::class => User::class,
     Interfaces\HppInterface::class => 'makeHpp',
+
+    Interfaces\AddressInterface::class => Entities\Address::class,
+    Interfaces\UserInterface::class => Entities\User::class,
 
     Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Beneficiary\BeneficiaryBuilder::class,
     Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
