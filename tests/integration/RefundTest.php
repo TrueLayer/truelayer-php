@@ -35,7 +35,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     ]);
 
     \expect(\getSentHttpRequests()[1]->getMethod())->toBe('POST');
-    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/payments/1234/refunds');
+    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/v3/payments/1234/refunds');
 });
 
 \it('retrieves id on creation', function () {
@@ -52,7 +52,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \client(RefundResponse::pending())->getRefund('123', '456');
 
     \expect(\getSentHttpRequests()[1]->getMethod())->toBe('GET');
-    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/payments/123/refunds/456');
+    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/v3/payments/123/refunds/456');
 });
 
 \it('retrieves pending refund', function () {
@@ -92,7 +92,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \client(RefundResponse::all())->getRefunds('123');
 
     \expect(\getSentHttpRequests()[1]->getMethod())->toBe('GET');
-    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/payments/123/refunds');
+    \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/v3/payments/123/refunds');
 });
 
 \it('retrieves all refunds', function () {
@@ -123,7 +123,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     ]);
 
     \expect(\getSentHttpRequests()[2]->getMethod())->toBe('POST');
-    \expect(\getSentHttpRequests()[2]->getUri()->getPath())->toBe('/payments/b9a7d0e9-4de9-425a-b282-cf2a4f998c5d/refunds');
+    \expect(\getSentHttpRequests()[2]->getUri()->getPath())->toBe('/v3/payments/b9a7d0e9-4de9-425a-b282-cf2a4f998c5d/refunds');
     \expect($refund->getId())->toBe('56bbff85-9504-4cba-a63b-c781745ad3ed');
 });
 

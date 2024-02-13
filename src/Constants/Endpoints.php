@@ -20,18 +20,18 @@ class Endpoints
     public const JWKS = '/.well-known/jwks';
 
     public const TOKEN = '/connect/token';
-    public const PAYMENTS_CREATE = '/payments';
-    public const PAYMENTS_RETRIEVE = '/payments/{id}';
-    public const PAYMENTS_START_AUTH_FLOW = '/payments/{id}/authorization-flow';
-    public const PAYMENTS_SUBMIT_PROVIDER = '/payments/{id}/authorization-flow/actions/provider-selection';
-    public const PAYMENTS_REFUNDS_CREATE = '/payments/{id}/refunds';
-    public const PAYMENTS_REFUNDS_RETRIEVE_ALL = '/payments/{id}/refunds';
-    public const PAYMENTS_REFUNDS_RETRIEVE = '/payments/{id}/refunds/{refund_id}';
-    public const PAYMENTS_PROVIDER_RETURN = '/payments-provider-return';
+    public const PAYMENTS_CREATE = '/v3/payments';
+    public const PAYMENTS_RETRIEVE = '/v3/payments/{id}';
+    public const PAYMENTS_START_AUTH_FLOW = '/v3/payments/{id}/authorization-flow';
+    public const PAYMENTS_SUBMIT_PROVIDER = '/v3/payments/{id}/authorization-flow/actions/provider-selection';
+    public const PAYMENTS_REFUNDS_CREATE = '/v3/payments/{id}/refunds';
+    public const PAYMENTS_REFUNDS_RETRIEVE_ALL = '/v3/payments/{id}/refunds';
+    public const PAYMENTS_REFUNDS_RETRIEVE = '/v3/payments/{id}/refunds/{refund_id}';
+    public const PAYMENTS_PROVIDER_RETURN = '/v3/payments-provider-return';
 
-    public const MERCHANT_ACCOUNTS = '/merchant-accounts';
-    public const TRANSACTIONS = '/merchant-accounts/{id}/transactions';
+    public const MERCHANT_ACCOUNTS = '/v3/merchant-accounts';
+    public const TRANSACTIONS = '/v3/merchant-accounts/{id}/transactions';
 
-    public const PAYOUTS_CREATE = '/payouts';
-    public const PAYOUTS_RETRIEVE = '/payouts/{id}';
+    public const PAYOUTS_CREATE = '/v3/payouts';
+    public const PAYOUTS_RETRIEVE = '/v3/payouts/{id}';
 }
