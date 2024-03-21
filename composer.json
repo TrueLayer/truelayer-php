@@ -40,7 +40,6 @@
         "truelayer/signing": "^1.0.0",
         "ramsey/uuid": "^3.7|^4.1",
         "illuminate/support": "^v6.0|^v7.0|^v8.0|^v9.0",
-        "illuminate/encryption": "^v6.0|^v7.0|^v8.0|^v9.0",
         "php-http/discovery": "^1.15.1"
     },
     "suggest": {

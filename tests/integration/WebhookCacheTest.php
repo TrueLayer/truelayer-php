@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Carbon;
 use Jose\Component\KeyManagement\JWKFactory;
 use TrueLayer\Constants\Encryption;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
+use TrueLayer\Services\Util\Encryption\Encrypter;
 use TrueLayer\Tests\Integration\Mocks\Signing;
 use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 
