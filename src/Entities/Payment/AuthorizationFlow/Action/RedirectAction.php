@@ -8,7 +8,6 @@ use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Validation\ValidType;
 
 class RedirectAction extends Action implements RedirectActionInterface
 {
@@ -37,17 +36,6 @@ class RedirectAction extends Action implements RedirectActionInterface
         'uri',
         'metadata' => 'provider',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'uri' => 'required|url',
-            'metadata' => ['nullable', ValidType::of(ProviderInterface::class)],
-        ];
-    }
 
     /**
      * @return string

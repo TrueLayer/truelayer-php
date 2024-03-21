@@ -52,21 +52,6 @@ final class Provider extends Entity implements ProviderInterface
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'string',
-            'display_name' => 'string',
-            'icon_uri' => 'url',
-            'logo_uri' => 'url',
-            'bg_color' => 'regex:/^#[a-fA-F0-9]{6}$/',
-            'country_code' => 'string',
-        ];
-    }
-
-    /**
      * @return string|null
      */
     public function getId(): ?string

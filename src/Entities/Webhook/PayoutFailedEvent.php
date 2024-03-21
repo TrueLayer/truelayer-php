@@ -40,17 +40,6 @@ class PayoutFailedEvent extends PayoutEvent implements PayoutFailedEventInterfac
     }
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'failed_at' => 'required|date',
-            'failure_reason' => 'nullable|string',
-        ]);
-    }
-
-    /**
      * @return \DateTimeInterface
      */
     public function getFailedAt(): \DateTimeInterface

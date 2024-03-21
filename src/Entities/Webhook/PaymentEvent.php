@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Webhook;
 
 use TrueLayer\Interfaces\Webhook\PaymentEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Validation\ValidType;
 
 class PaymentEvent extends Event implements PaymentEventInterface
 {
@@ -38,17 +37,6 @@ class PaymentEvent extends Event implements PaymentEventInterface
         return \array_merge(parent::arrayFields(), [
             'payment_id',
             'payment_method',
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'payment_id' => 'required|string',
-            'payment_method' => [ValidType::of(PaymentMethodInterface::class)],
         ]);
     }
 

@@ -7,12 +7,10 @@ namespace TrueLayer\Entities\Payment\PaymentMethod;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
-use TrueLayer\Validation\ValidType;
 
 class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMethodInterface
 {
@@ -49,17 +47,6 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'beneficiary' => ['required', ValidType::of(BeneficiaryInterface::class)],
-            'provider_selection' => ['nullable', ValidType::of(ProviderSelectionInterface::class)],
-        ];
-    }
-
-    /**
      * @param BeneficiaryInterface $beneficiary
      *
      * @return BankTransferPaymentMethodInterface
@@ -92,10 +79,9 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return ProviderSelectionInterface
+     *
+     * @throws InvalidArgumentException
      */
     public function getProviderSelection(): ProviderSelectionInterface
     {

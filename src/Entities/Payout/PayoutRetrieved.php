@@ -7,7 +7,6 @@ namespace TrueLayer\Entities\Payout;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
-use TrueLayer\Validation\ValidType;
 
 abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterface
 {
@@ -66,22 +65,6 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
         'status',
         'created_at',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-            'merchant_account_id' => 'required|string',
-            'amount_in_minor' => 'required|int|min:1',
-            'currency' => 'required|string',
-            'beneficiary' => ['required', ValidType::of(PayoutBeneficiaryInterface::class)],
-            'status' => 'required|string',
-            'created_at' => 'required|date',
-        ];
-    }
 
     /**
      * @return string

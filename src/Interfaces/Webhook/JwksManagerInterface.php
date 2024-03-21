@@ -7,7 +7,6 @@ namespace TrueLayer\Interfaces\Webhook;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 
 interface JwksManagerInterface
 {
@@ -20,7 +19,6 @@ interface JwksManagerInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiRequestJsonSerializationException
      * @throws SignerException
-     * @throws ValidationException
      */
     public function retrieve(): void;
 

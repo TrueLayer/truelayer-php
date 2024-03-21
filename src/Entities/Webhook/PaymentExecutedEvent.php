@@ -40,18 +40,6 @@ class PaymentExecutedEvent extends PaymentEvent implements PaymentExecutedEventI
     }
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'executed_at' => 'required|date',
-            'settlement_risk' => 'nullable|array',
-            'settlement_risk.category' => 'nullable|string',
-        ]);
-    }
-
-    /**
      * @return \DateTimeInterface
      */
     public function getExecutedAt(): \DateTimeInterface

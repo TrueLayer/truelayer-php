@@ -27,11 +27,6 @@ class MandatePaymentMethod extends Entity implements MandatePaymentMethodInterfa
         'mandate_id',
     ];
 
-    protected array $rules = [
-        'type' => 'required|string',
-        'mandate_id' => 'required|string',
-    ];
-
     /**
      * @return string
      */

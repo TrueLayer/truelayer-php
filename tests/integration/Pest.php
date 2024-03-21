@@ -34,13 +34,8 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws \TrueLayer\Exceptions\ApiRequestValidationException
- * @throws ApiResponseUnsuccessfulException
- * @throws \TrueLayer\Exceptions\ApiResponseValidationException
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
- * @throws ApiRequestJsonSerializationException
- *
  * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
+ * @throws SignerException
  */
 function rawClient(array $mockResponses = [])
 {
@@ -67,12 +62,9 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @throws SignerException
- * @throws ApiRequestJsonSerializationException
- * @throws ApiResponseUnsuccessfulException
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
- *
  * @return \TrueLayer\Interfaces\Client\ClientInterface
+ *
+ * @throws SignerException
  */
 function client($mockResponses = [])
 {
@@ -91,12 +83,8 @@ function client($mockResponses = [])
  *
  * @param array $mockResponses
  *
- * @throws SignerException
- * @throws ApiRequestJsonSerializationException
- * @throws ApiResponseUnsuccessfulException
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
  *
- * @return \TrueLayer\Interfaces\ApiClient\ApiRequestInterface
+ * @throws SignerException
  */
 function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequestInterface
 {
@@ -119,7 +107,7 @@ function getSentHttpRequests(): array
 }
 
 /**
- * @param int  $requestIndex
+ * @param int $requestIndex
  * @param bool $asArray
  *
  * @return mixed
@@ -135,7 +123,7 @@ function getRequestPayload(int $requestIndex, bool $asArray = true)
 }
 
 /**
- * @param int    $requestIndex
+ * @param int $requestIndex
  * @param string $name
  *
  * @return string[]
@@ -158,14 +146,14 @@ function getRequestIdempotencyKey(int $requestIndex): string
 /**
  * @param string $body
  *
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @return WebhookInterface
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  *
- * @return WebhookInterface
+ * @throws \TrueLayer\Exceptions\InvalidArgumentException
  */
 function webhook(string $body): WebhookInterface
 {

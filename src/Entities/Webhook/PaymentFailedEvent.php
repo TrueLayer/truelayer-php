@@ -46,18 +46,6 @@ class PaymentFailedEvent extends PaymentEvent implements PaymentFailedEventInter
     }
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'failed_at' => 'required|date',
-            'failure_stage' => 'required|string',
-            'failure_reason' => 'nullable|string',
-        ]);
-    }
-
-    /**
      * @return \DateTimeInterface
      */
     public function getFailedAt(): \DateTimeInterface

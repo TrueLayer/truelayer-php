@@ -27,17 +27,6 @@ final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowRespon
     }
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'failure_stage' => 'required|string',
-            'failure_reason' => 'nullable|string',
-        ]);
-    }
-
-    /**
      * @return string
      */
     public function getFailureStage(): string

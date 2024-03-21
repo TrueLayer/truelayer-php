@@ -8,7 +8,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 
@@ -50,13 +49,11 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function requestOptions(RequestOptionsInterface $requestOptions): PayoutRequestInterface;
 
     /**
-     * @throws ValidationException
+     * @return PayoutCreatedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     *
-     * @return PayoutCreatedInterface
      */
     public function create(): PayoutCreatedInterface;
 }

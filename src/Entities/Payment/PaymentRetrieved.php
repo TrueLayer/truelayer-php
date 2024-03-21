@@ -8,7 +8,6 @@ use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
-use TrueLayer\Validation\ValidType;
 
 class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
 {
@@ -73,23 +72,6 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
         'user.id' => 'user_id',
         'payment_method',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-            'status' => 'required|string',
-            'created_at' => 'required|date',
-            'amount_in_minor' => 'required|int|min:1',
-            'currency' => 'required|string',
-            'metadata' => 'nullable|array',
-            'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
-            'user.id' => 'required|string',
-        ];
-    }
 
     /**
      * @return string

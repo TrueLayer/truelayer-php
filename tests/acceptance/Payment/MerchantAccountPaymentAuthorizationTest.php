@@ -23,7 +23,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -169,17 +169,6 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
     \expect($fetched->getId())->toBeString();
 });
-
-\it('throws exception when creating payment with invalid user date of birth', function () {
-    $helper = \paymentHelper();
-
-    $helper->client()->payment()
-        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
-        ->amountInMinor(10)
-        ->currency('GBP')
-        ->user($helper->userWithDateOfBirth('invalid date'))
-        ->create();
-})->throws(TrueLayer\Exceptions\ValidationException::class);
 
 \it('creates payment with idempotency key', function () {
     $helper = \paymentHelper();

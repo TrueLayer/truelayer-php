@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\AccountIdentifier;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\AccountIdentifier\IbanInterface;
@@ -15,10 +14,9 @@ use TrueLayer\Interfaces\AccountIdentifier\ScanInterface;
 final class AccountIdentifierBuilder extends EntityBuilder implements AccountIdentifierBuilderInterface
 {
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return ScanInterface
+     * @throws InvalidArgumentException
+     *
      */
     public function sortCodeAccountNumber(): ScanInterface
     {
@@ -26,10 +24,9 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return IbanInterface
+     * @throws InvalidArgumentException
+     *
      */
     public function iban(): IbanInterface
     {
@@ -39,10 +36,9 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
     /**
      * @param mixed[] $data
      *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return AccountIdentifierInterface
+     * @throws InvalidArgumentException
+     *
      */
     public function fill(array $data): AccountIdentifierInterface
     {

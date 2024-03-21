@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Factories;
 
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
@@ -20,16 +19,10 @@ use TrueLayer\Services\Client\Client;
 use TrueLayer\Services\Client\ClientConfig;
 use TrueLayer\Signing\Signer;
 use TrueLayer\Traits\HttpClient;
-use TrueLayer\Traits\MakeValidatorFactory;
 
 final class ClientFactory implements ClientFactoryInterface
 {
-    use MakeValidatorFactory, HttpClient;
-
-    /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
+    use HttpClient;
 
     /**
      * @var AccessTokenInterface
@@ -44,19 +37,18 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @param ClientConfigInterface $config
      *
-     * @throws SignerException
+     * @return ClientInterface
      * @throws MissingHttpImplementationException
      *
-     * @return ClientInterface
+     * @throws SignerException
      */
     public function make(ClientConfigInterface $config): ClientInterface
     {
-        $this->validatorFactory = $this->makeValidatorFactory();
         $this->makeAuthToken($config);
         $this->makeApiClient($config);
 
         $apiFactory = new ApiFactory($this->apiClient);
-        $entityFactory = new EntityFactory($this->validatorFactory, $config, $apiFactory);
+        $entityFactory = new EntityFactory($config, $apiFactory);
 
         return new Client(
             $this->apiClient,
@@ -92,7 +84,6 @@ final class ClientFactory implements ClientFactoryInterface
         $this->authToken = new AccessToken(
             $authClient,
             $config->getCache(),
-            $this->validatorFactory,
             $config->getClientId(),
             $config->getClientSecret(),
             $config->getScopes(),
@@ -101,7 +92,7 @@ final class ClientFactory implements ClientFactoryInterface
 
     /**
      * Build the API client
-     * Handles API calls, including signing, validation & error handling.
+     * Handles API calls, including signing & error handling.
      *
      * @param ClientConfigInterface $config
      *

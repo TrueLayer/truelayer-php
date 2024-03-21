@@ -22,16 +22,6 @@ final class RefundCreated extends Entity implements RefundCreatedInterface
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getId(): string

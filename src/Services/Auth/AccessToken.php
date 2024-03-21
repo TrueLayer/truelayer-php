@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Auth;
 
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Carbon;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Auth\AccessTokenInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
@@ -27,11 +25,6 @@ final class AccessToken implements AccessTokenInterface
      * @var EncryptedCacheInterface|null
      */
     private ?EncryptedCacheInterface $cache;
-
-    /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
 
     /**
      * @var string
@@ -64,34 +57,30 @@ final class AccessToken implements AccessTokenInterface
     private ?int $retrievedAt = null;
 
     /**
-     * @param ApiClientInterface           $api
+     * @param ApiClientInterface $api
      * @param EncryptedCacheInterface|null $cache
-     * @param ValidatorFactory             $validatorFactory
-     * @param string                       $clientId
-     * @param string                       $clientSecret
-     * @param array<string>|null           $scopes
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param array<string>|null $scopes
      */
-    public function __construct(ApiClientInterface $api,
-        ?EncryptedCacheInterface $cache,
-        ValidatorFactory $validatorFactory,
-        string $clientId,
-        string $clientSecret,
-        ?array $scopes = [])
+    public function __construct(ApiClientInterface       $api,
+                                ?EncryptedCacheInterface $cache,
+                                string                   $clientId,
+                                string                   $clientSecret,
+                                ?array                   $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;
-        $this->validatorFactory = $validatorFactory;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->scopes = $scopes ?? [];
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws ValidationException
-     *
      * @return string|null
+     * @throws ApiResponseUnsuccessfulException
+     *
+     * @throws ApiRequestJsonSerializationException
      */
     public function getAccessToken(): ?string
     {
@@ -161,39 +150,18 @@ final class AccessToken implements AccessTokenInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     * @throws ValidationException
      */
     private function retrieve(): void
     {
         /** @var array{access_token: string, expires_in: int} $data */
         $data = (new AccessTokenApi($this->api))->retrieve($this->clientId, $this->clientSecret, $this->scopes);
-        $this->validate($data);
 
         $this->accessToken = $data['access_token'];
         $this->expiresIn = $data['expires_in'];
-        $this->retrievedAt = (int) Carbon::now()->timestamp;
+        $this->retrievedAt = (int)Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::AUTH_TOKEN, $this->toArray(), $this->getExpiresIn());
-        }
-    }
-
-    /**
-     * @param mixed[] $data
-     *
-     * @throws ValidationException
-     */
-    private function validate(array $data): void
-    {
-        $validator = $this->validatorFactory->make($data, [
-            'access_token' => 'required|string',
-            'expires_in' => 'required|int',
-        ]);
-
-        try {
-            $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            throw new ValidationException($validator);
         }
     }
 

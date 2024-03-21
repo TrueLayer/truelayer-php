@@ -7,7 +7,6 @@ namespace TrueLayer\Services\Webhooks;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Entities\Webhook\Event;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Exceptions\WebhookHandlerException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
@@ -51,8 +50,8 @@ class Webhook implements WebhookInterface
     private array $headers;
 
     /**
-     * @param WebhookVerifierInterface       $verifier
-     * @param EntityFactoryInterface         $entityFactory
+     * @param WebhookVerifierInterface $verifier
+     * @param EntityFactoryInterface $entityFactory
      * @param WebhookHandlerManagerInterface $handlerManager
      */
     public function __construct(WebhookVerifierInterface $verifier, EntityFactoryInterface $entityFactory, WebhookHandlerManagerInterface $handlerManager)
@@ -65,11 +64,11 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @throws \ReflectionException
+     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *
-     * @return WebhookInterface
+     * @throws \ReflectionException
      */
     public function handler($handler): WebhookInterface
     {
@@ -81,11 +80,11 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @throws \ReflectionException
+     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
      *
-     * @return WebhookInterface
+     * @throws \ReflectionException
      */
     public function handlers(...$handlers): WebhookInterface
     {
@@ -132,7 +131,6 @@ class Webhook implements WebhookInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookVerificationFailedException
      */
@@ -158,9 +156,9 @@ class Webhook implements WebhookInterface
     }
 
     /**
+     * @return mixed[]
      * @throws WebhookHandlerInvalidArgumentException
      *
-     * @return mixed[]
      */
     private function getDecodedBody(): array
     {
@@ -185,11 +183,9 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @return EventInterface
      * @throws WebhookHandlerInvalidArgumentException
-     *
-     * s     * @return EventInterface
+     * @throws InvalidArgumentException
      */
     private function getEventEntity(): EventInterface
     {
@@ -205,7 +201,7 @@ class Webhook implements WebhookInterface
         } catch (\Exception $e) {
             // If we do not recognise the data structure as valid for any of the existing entities,
             // We create the base event entity which will be passed to the default handler.
-            if ($e instanceof ValidationException || $e instanceof InvalidArgumentException) {
+            if ($e instanceof InvalidArgumentException) {
                 return $this->entityFactory->makeConcrete(Event::class)->fill($data);
             }
             throw $e;

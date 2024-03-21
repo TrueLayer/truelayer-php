@@ -20,17 +20,7 @@ final class PayoutCreated extends Entity implements PayoutCreatedInterface
     protected array $arrayFields = [
         'id',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-        ];
-    }
-
+    
     /**
      * @return string
      */

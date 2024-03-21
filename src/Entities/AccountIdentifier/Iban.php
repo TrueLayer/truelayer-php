@@ -24,13 +24,6 @@ final class Iban extends Entity implements IbanInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'iban' => 'required|alpha_num|max:34|min:4',
-    ];
-
-    /**
      * @return string
      */
     public function getIban(): string

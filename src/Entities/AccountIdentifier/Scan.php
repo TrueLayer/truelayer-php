@@ -28,15 +28,7 @@ final class Scan extends Entity implements ScanInterface
         'sort_code',
         'account_number',
     ];
-
-    /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'sort_code' => 'required|numeric|digits:6',
-        'account_number' => 'required|numeric|digits:8',
-    ];
-
+    
     /**
      * @return string
      */

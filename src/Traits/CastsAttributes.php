@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 
 // TODO: Refactor castData
 trait CastsAttributes
@@ -30,7 +29,6 @@ trait CastsAttributes
      * @param mixed[]      $data
      * @param mixed[]|null $casts
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return mixed[]
@@ -123,7 +121,6 @@ trait CastsAttributes
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return T

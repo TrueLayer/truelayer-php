@@ -33,12 +33,6 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
         'scheme_id',
     ];
 
-    protected array $rules = [
-        'type' => 'required|string',
-        'provider_id' => 'required|string',
-        'scheme_id' => 'required|string',
-    ];
-
     /**
      * @return string
      */

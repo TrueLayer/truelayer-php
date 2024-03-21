@@ -8,7 +8,6 @@ use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
 use TrueLayer\Interfaces\Webhook\JwksManagerInterface;
@@ -37,9 +36,9 @@ class WebhookVerifier implements WebhookVerifierInterface
     }
 
     /**
-     * @param string                $path
+     * @param string $path
      * @param array<string, string> $headers
-     * @param string                $body
+     * @param string $body
      *
      * @throws WebhookVerificationFailedException
      */
@@ -60,9 +59,9 @@ class WebhookVerifier implements WebhookVerifierInterface
      * TL keys have changed. We re-fetch them and attempt to verify again.
      * A second verification fail is simply re-thrown.
      *
-     * @param string                $path
+     * @param string $path
      * @param array<string, string> $headers
-     * @param string                $body
+     * @param string $body
      *
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
@@ -73,7 +72,6 @@ class WebhookVerifier implements WebhookVerifierInterface
      * @throws RequestPathNotFoundException
      * @throws RequiredHeaderMissingException
      * @throws SignerException
-     * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
      */
     private function verifyWithRetry(string $path, array $headers, string $body): void
@@ -91,9 +89,9 @@ class WebhookVerifier implements WebhookVerifierInterface
     }
 
     /**
-     * @param string                $path
+     * @param string $path
      * @param array<string, string> $headers
-     * @param string                $body
+     * @param string $body
      *
      * @throws InvalidSignatureException
      * @throws WebhookHandlerInvalidArgumentException

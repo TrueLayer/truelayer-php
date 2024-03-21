@@ -28,18 +28,7 @@ class RefundEvent extends Event implements RefundEventInterface
             'refund_id',
         ]);
     }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'payment_id' => 'required|string',
-            'refund_id' => 'required|string',
-        ]);
-    }
-
+    
     /**
      * @return string
      */

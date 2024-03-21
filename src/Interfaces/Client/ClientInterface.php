@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
@@ -77,27 +76,25 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws SignerException
-     * @throws ValidationException
+     * @return PaymentRetrievedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return PaymentRetrievedInterface
+     * @throws SignerException
      */
     public function getPayment(string $id): PaymentRetrievedInterface;
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string                                                   $returnUri
-     *
-     * @throws ApiRequestJsonSerializationException
-     * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
-     * @throws SignerException
-     * @throws ValidationException
+     * @param string $returnUri
      *
      * @return AuthorizationFlowAuthorizingInterface
      *
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     *
+     * @throws ApiRequestJsonSerializationException
      * @deprecated
      */
     public function startPaymentAuthorization($payment, string $returnUri): AuthorizationFlowAuthorizingInterface;
@@ -105,59 +102,53 @@ interface ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return StartAuthorizationFlowRequestInterface
+     *
+     * @throws InvalidArgumentException
      */
     public function paymentAuthorizationFlow($payment): StartAuthorizationFlowRequestInterface;
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string|ProviderInterface                                 $provider
+     * @param string|ProviderInterface $provider
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return AuthorizationFlowResponseInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      *
-     * @return AuthorizationFlowResponseInterface
+     * @throws ApiRequestJsonSerializationException
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
-     * @throws ValidationException
-     * @throws InvalidArgumentException
-     *
      * @return RefundRequestInterface
+     * @throws InvalidArgumentException
      */
     public function refund(): RefundRequestInterface;
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
-     * @param string                                                   $refundId
+     * @param string $refundId
      *
-     * @throws SignerException
-     * @throws ValidationException
+     * @return RefundRetrievedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      *
-     * @return RefundRetrievedInterface
+     * @throws SignerException
      */
     public function getRefund($payment, string $refundId): RefundRetrievedInterface;
 
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws SignerException
-     * @throws ValidationException
+     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      *
-     * @return mixed[]
+     * @throws SignerException
      */
     public function getRefunds($payment): array;
 
@@ -179,33 +170,31 @@ interface ClientInterface
     public function getPayout(string $id): Payout\PayoutRetrievedInterface;
 
     /**
-     * @throws ApiRequestJsonSerializationException
+     * @return MerchantAccountInterface[]
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      *
-     * @return MerchantAccountInterface[]
+     * @throws ApiRequestJsonSerializationException
      */
     public function getMerchantAccounts(): array;
 
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
+     * @return MerchantAccountInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      *
-     * @return MerchantAccountInterface
+     * @throws ApiRequestJsonSerializationException
      */
     public function getMerchantAccount(string $id): MerchantAccountInterface;
 
     /**
+     * @return WebhookInterface
      * @throws MissingHttpImplementationException
      *
-     * @return WebhookInterface
      */
     public function webhook(): WebhookInterface;
 
@@ -215,10 +204,9 @@ interface ClientInterface
     public function hostedPaymentsPage(): HppInterface;
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return RequestOptionsInterface
+     *
+     * @throws InvalidArgumentException
      */
     public function requestOptions(): RequestOptionsInterface;
 }

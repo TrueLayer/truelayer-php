@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Factories;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 
 interface EntityFactoryInterface
 {
@@ -13,12 +12,10 @@ interface EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null    $data
-     *
-     * @throws ValidationException
-     * @throws InvalidArgumentException
+     * @param mixed[]|null $data
      *
      * @return T
+     * @throws InvalidArgumentException
      */
     public function make(string $abstract, array $data = null);
 
@@ -27,9 +24,9 @@ interface EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
+     * @return T
      * @throws InvalidArgumentException
      *
-     * @return T
      */
     public function makeConcrete(string $concrete);
 
@@ -37,12 +34,10 @@ interface EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]         $data
-     *
-     * @throws ValidationException
-     * @throws InvalidArgumentException
+     * @param mixed[] $data
      *
      * @return T[]
+     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array;
 }

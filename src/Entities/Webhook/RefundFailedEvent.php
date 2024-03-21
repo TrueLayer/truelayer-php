@@ -38,18 +38,7 @@ class RefundFailedEvent extends RefundEvent implements RefundFailedEventInterfac
             'failure_reason',
         ]);
     }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'failed_at' => 'required|date',
-            'failure_reason' => 'nullable|string',
-        ]);
-    }
-
+    
     /**
      * @return \DateTimeInterface
      */

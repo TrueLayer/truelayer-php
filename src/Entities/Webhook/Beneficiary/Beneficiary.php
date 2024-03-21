@@ -20,14 +20,7 @@ class Beneficiary extends Entity implements BeneficiaryInterface
     protected array $arrayFields = [
         'type',
     ];
-
-    /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'type' => 'required|string',
-    ];
-
+    
     /**
      * @return string
      */

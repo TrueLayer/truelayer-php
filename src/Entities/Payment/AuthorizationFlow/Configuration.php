@@ -20,14 +20,7 @@ class Configuration extends Entity implements ConfigurationInterface
     protected array $arrayFields = [
         'redirect.return_uri' => 'redirect_return_uri',
     ];
-
-    /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'redirect.return_uri' => 'required_if:redirect.status,supported',
-    ];
-
+    
     /**
      * @return string|null
      */

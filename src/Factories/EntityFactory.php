@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Factories;
 
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Support\Arr;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces;
 
 final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 {
-    /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
-
     /**
      * @var Interfaces\Factories\ApiFactoryInterface|null
      */
@@ -41,16 +34,14 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private array $discriminations;
 
     /**
-     * @param ValidatorFactory                              $validatorFactory
-     * @param Interfaces\Configuration\ConfigInterface      $sdkConfig
+     * @param Interfaces\Configuration\ConfigInterface $sdkConfig
      * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
-        ValidatorFactory $validatorFactory,
         Interfaces\Configuration\ConfigInterface $sdkConfig,
         Interfaces\Factories\ApiFactoryInterface $apiFactory = null
-    ) {
-        $this->validatorFactory = $validatorFactory;
+    )
+    {
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;
 
@@ -63,13 +54,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null    $data
-     *
-     * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @param mixed[]|null $data
      *
      * @return T
      * @return T implements
+     * @throws InvalidArgumentException
+     *
      */
     public function make(string $abstract, array $data = null)
     {
@@ -102,12 +92,10 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]         $data
-     *
-     * @throws ValidationException
-     * @throws InvalidArgumentException
+     * @param mixed[] $data
      *
      * @return T[]
+     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -121,9 +109,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
+     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
      *
-     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -139,9 +127,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
+     * @return T
      * @throws InvalidArgumentException
      *
-     * @return T
      */
     public function makeConcrete(string $concrete)
     {
@@ -149,9 +137,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         // is_subclass_of so we need to rely on the instanceof operator.
         $instance = null;
 
-        if (\is_subclass_of($concrete, Entities\Entity::class)) {
-            $instance = new $concrete($this->validatorFactory, $this);
-        } elseif (\is_subclass_of($concrete, Entities\EntityBuilder::class)) {
+        if (\is_subclass_of($concrete, Entities\Entity::class) || \is_subclass_of($concrete, Entities\EntityBuilder::class)) {
             $instance = new $concrete($this);
         }
 

@@ -8,7 +8,6 @@ use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
-use TrueLayer\Validation\ValidType;
 
 final class AuthorizationFlow extends Entity implements AuthorizationFlowInterface
 {
@@ -31,17 +30,6 @@ final class AuthorizationFlow extends Entity implements AuthorizationFlowInterfa
         'actions.next' => 'next_action',
         'configuration' => 'configuration',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'actions.next' => ['nullable', ValidType::of(ActionInterface::class)],
-            'configuration' => ['nullable', ValidType::of(ConfigurationInterface::class)],
-        ];
-    }
 
     /**
      * @return ConfigurationInterface|null

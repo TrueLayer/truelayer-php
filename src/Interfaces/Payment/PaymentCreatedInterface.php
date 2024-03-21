@@ -8,7 +8,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
@@ -38,31 +37,29 @@ interface PaymentCreatedInterface extends ArrayableInterface
     /**
      * @param string $returnUri
      *
-     * @throws ApiResponseUnsuccessfulException
-     * @throws InvalidArgumentException
-     * @throws SignerException
-     * @throws ValidationException
-     * @throws ApiRequestJsonSerializationException
-     *
      * @return AuthorizationFlowAuthorizingInterface
      *
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @throws ApiResponseUnsuccessfulException
      * @deprecated
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface;
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
-     *
      * @return StartAuthorizationFlowRequestInterface
+     *
+     * @throws InvalidArgumentException
      */
     public function authorizationFlow(): StartAuthorizationFlowRequestInterface;
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return PaymentRetrievedInterface
      * @throws ApiRequestJsonSerializationException
      *
-     * @return PaymentRetrievedInterface
+     * @throws ApiResponseUnsuccessfulException
      */
     public function getDetails(): PaymentRetrievedInterface;
 }

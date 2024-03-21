@@ -56,18 +56,6 @@ class Event extends Entity implements EventInterface
     /**
      * @var string[]
      */
-    protected array $rules = [
-        'timestamp' => 'required|date',
-        'signature' => 'required|string',
-        'type' => 'required|string',
-        'event_id' => 'required|string',
-        'event_version' => 'required|int',
-        'body' => 'required|string',
-    ];
-
-    /**
-     * @var string[]
-     */
     protected array $casts = [
         'timestamp' => \DateTimeInterface::class,
     ];
