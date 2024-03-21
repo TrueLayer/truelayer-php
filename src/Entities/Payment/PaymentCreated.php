@@ -70,8 +70,9 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return HppInterface
      * @throws InvalidArgumentException
+     *
+     * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface
     {
@@ -83,19 +84,19 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     /**
      * @param string $returnUri
      *
-     * @return AuthorizationFlowAuthorizingInterface
-     *
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return AuthorizationFlowAuthorizingInterface
+     *
      * @deprecated
      */
     public function startAuthorization(string $returnUri): AuthorizationFlowAuthorizingInterface
     {
         $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow($this->getId(), [
-            'provider_selection' => (object)[],
+            'provider_selection' => (object) [],
             'redirect' => ['return_uri' => $returnUri],
         ]);
 
@@ -103,9 +104,9 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return StartAuthorizationFlowRequestInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return StartAuthorizationFlowRequestInterface
      */
     public function authorizationFlow(): StartAuthorizationFlowRequestInterface
     {
@@ -114,12 +115,12 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @return PaymentRetrievedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return PaymentRetrievedInterface
      */
     public function getDetails(): PaymentRetrievedInterface
     {

@@ -17,18 +17,18 @@ interface BeneficiaryBuilderInterface
     /**
      * @param MerchantAccountInterface|null $merchantAccount
      *
-     * @return MerchantBeneficiaryInterface
      * @throws InvalidArgumentException
      *
+     * @return MerchantBeneficiaryInterface
      */
     public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface;
 
     /**
      * @param mixed[] $data
      *
-     * @return BeneficiaryInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return BeneficiaryInterface
      */
     public function fill(array $data): BeneficiaryInterface;
 }

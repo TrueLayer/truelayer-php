@@ -14,9 +14,9 @@ use TrueLayer\Interfaces\AccountIdentifier\ScanInterface;
 final class AccountIdentifierBuilder extends EntityBuilder implements AccountIdentifierBuilderInterface
 {
     /**
-     * @return ScanInterface
      * @throws InvalidArgumentException
      *
+     * @return ScanInterface
      */
     public function sortCodeAccountNumber(): ScanInterface
     {
@@ -24,9 +24,9 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
     }
 
     /**
-     * @return IbanInterface
      * @throws InvalidArgumentException
      *
+     * @return IbanInterface
      */
     public function iban(): IbanInterface
     {
@@ -36,9 +36,9 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
     /**
      * @param mixed[] $data
      *
-     * @return AccountIdentifierInterface
      * @throws InvalidArgumentException
      *
+     * @return AccountIdentifierInterface
      */
     public function fill(array $data): AccountIdentifierInterface
     {

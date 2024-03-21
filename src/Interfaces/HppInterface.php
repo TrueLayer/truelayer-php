@@ -92,7 +92,6 @@ interface HppInterface extends ArrayableInterface
 
     /**
      * @return string
-     *
      */
     public function toUrl(): string;
 

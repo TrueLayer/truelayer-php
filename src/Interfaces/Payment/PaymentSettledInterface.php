@@ -33,31 +33,31 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
     public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
 
     /**
-     * @return RefundRequestInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return RefundRequestInterface
      */
     public function refund(): RefundRequestInterface;
 
     /**
      * @param string $refundId
      *
-     * @return RefundRetrievedInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return RefundRetrievedInterface
      */
     public function getRefund(string $refundId): RefundRetrievedInterface;
 
     /**
-     * @return RefundRetrievedInterface[]
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return RefundRetrievedInterface[]
      */
     public function getRefunds(): array;
 }

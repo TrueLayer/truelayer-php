@@ -125,12 +125,12 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @return PayoutCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     *
      * @throws SignerException
+     *
+     * @return PayoutCreatedInterface
      */
     public function create(): PayoutCreatedInterface
     {

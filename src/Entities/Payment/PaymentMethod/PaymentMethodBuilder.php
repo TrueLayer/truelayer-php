@@ -12,9 +12,9 @@ use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 class PaymentMethodBuilder extends EntityBuilder implements PaymentMethodBuilderInterface
 {
     /**
-     * @return BankTransferPaymentMethodInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return BankTransferPaymentMethodInterface
      */
     public function bankTransfer(): BankTransferPaymentMethodInterface
     {

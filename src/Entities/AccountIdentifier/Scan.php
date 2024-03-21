@@ -28,7 +28,7 @@ final class Scan extends Entity implements ScanInterface
         'sort_code',
         'account_number',
     ];
-    
+
     /**
      * @return string
      */

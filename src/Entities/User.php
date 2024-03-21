@@ -150,8 +150,9 @@ final class User extends Entity implements UserInterface
     /**
      * @param AddressInterface|null $address
      *
-     * @return AddressInterface
      * @throws InvalidArgumentException
+     *
+     * @return AddressInterface
      */
     public function address(?AddressInterface $address = null): AddressInterface
     {

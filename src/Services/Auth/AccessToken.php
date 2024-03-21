@@ -57,17 +57,17 @@ final class AccessToken implements AccessTokenInterface
     private ?int $retrievedAt = null;
 
     /**
-     * @param ApiClientInterface $api
+     * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param array<string>|null $scopes
+     * @param string                       $clientId
+     * @param string                       $clientSecret
+     * @param array<string>|null           $scopes
      */
-    public function __construct(ApiClientInterface       $api,
-                                ?EncryptedCacheInterface $cache,
-                                string                   $clientId,
-                                string                   $clientSecret,
-                                ?array                   $scopes = [])
+    public function __construct(ApiClientInterface $api,
+        ?EncryptedCacheInterface $cache,
+        string $clientId,
+        string $clientSecret,
+        ?array $scopes = [])
     {
         $this->api = $api;
         $this->cache = $cache;
@@ -77,10 +77,10 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @return string|null
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return string|null
      */
     public function getAccessToken(): ?string
     {
@@ -158,7 +158,7 @@ final class AccessToken implements AccessTokenInterface
 
         $this->accessToken = $data['access_token'];
         $this->expiresIn = $data['expires_in'];
-        $this->retrievedAt = (int)Carbon::now()->timestamp;
+        $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::AUTH_TOKEN, $this->toArray(), $this->getExpiresIn());

@@ -34,14 +34,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private array $discriminations;
 
     /**
-     * @param Interfaces\Configuration\ConfigInterface $sdkConfig
+     * @param Interfaces\Configuration\ConfigInterface      $sdkConfig
      * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
         Interfaces\Configuration\ConfigInterface $sdkConfig,
         Interfaces\Factories\ApiFactoryInterface $apiFactory = null
-    )
-    {
+    ) {
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;
 
@@ -54,12 +53,12 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
      *
      * @return T
      * @return T implements
-     * @throws InvalidArgumentException
-     *
      */
     public function make(string $abstract, array $data = null)
     {
@@ -92,10 +91,11 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @template T of object
      *
      * @param class-string<T> $abstract
-     * @param mixed[] $data
+     * @param mixed[]         $data
+     *
+     * @throws InvalidArgumentException
      *
      * @return T[]
-     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array
     {
@@ -109,9 +109,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     }
 
     /**
-     * @return Interfaces\HppInterface
      * @throws InvalidArgumentException
      *
+     * @return Interfaces\HppInterface
      */
     private function makeHpp(): Interfaces\HppInterface
     {
@@ -127,9 +127,9 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
-     * @return T
      * @throws InvalidArgumentException
      *
+     * @return T
      */
     public function makeConcrete(string $concrete)
     {

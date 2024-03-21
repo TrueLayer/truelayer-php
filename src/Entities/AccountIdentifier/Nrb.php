@@ -22,7 +22,7 @@ final class Nrb extends Entity implements NrbInterface
         'type',
         'nrb',
     ];
-    
+
     /**
      * @return string
      */

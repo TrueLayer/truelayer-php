@@ -40,7 +40,7 @@ class JwksManager implements JwksManagerInterface
     private ?int $retrievedAt = null;
 
     /**
-     * @param ApiClientInterface $api
+     * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
      */
     public function __construct(ApiClientInterface $api, ?EncryptedCacheInterface $cache)
@@ -50,11 +50,12 @@ class JwksManager implements JwksManagerInterface
     }
 
     /**
-     * @return mixed[]
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
      * @throws SignerException
+     *
+     * @return mixed[]
      */
     public function getJsonKeys(): array
     {
@@ -103,7 +104,7 @@ class JwksManager implements JwksManagerInterface
      */
     public function hasCache(): bool
     {
-        return (bool)$this->cache;
+        return (bool) $this->cache;
     }
 
     /**
@@ -126,8 +127,8 @@ class JwksManager implements JwksManagerInterface
     {
         $data = (new WebhooksApi($this->api))->jwks();
 
-        $this->keys = (array)$data['keys'];
-        $this->retrievedAt = (int)Carbon::now()->timestamp;
+        $this->keys = (array) $data['keys'];
+        $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::JWKS_KEYS, $this->toArray(), self::CACHE_TTL);

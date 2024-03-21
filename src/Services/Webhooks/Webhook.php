@@ -50,8 +50,8 @@ class Webhook implements WebhookInterface
     private array $headers;
 
     /**
-     * @param WebhookVerifierInterface $verifier
-     * @param EntityFactoryInterface $entityFactory
+     * @param WebhookVerifierInterface       $verifier
+     * @param EntityFactoryInterface         $entityFactory
      * @param WebhookHandlerManagerInterface $handlerManager
      */
     public function __construct(WebhookVerifierInterface $verifier, EntityFactoryInterface $entityFactory, WebhookHandlerManagerInterface $handlerManager)
@@ -64,11 +64,11 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
-     *
      * @throws \ReflectionException
+     *
+     * @return WebhookInterface
      */
     public function handler($handler): WebhookInterface
     {
@@ -80,11 +80,11 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
-     *
      * @throws \ReflectionException
+     *
+     * @return WebhookInterface
      */
     public function handlers(...$handlers): WebhookInterface
     {
@@ -156,9 +156,9 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @return mixed[]
      * @throws WebhookHandlerInvalidArgumentException
      *
+     * @return mixed[]
      */
     private function getDecodedBody(): array
     {
@@ -183,9 +183,10 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @return EventInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws InvalidArgumentException
+     *
+     * @return EventInterface
      */
     private function getEventEntity(): EventInterface
     {

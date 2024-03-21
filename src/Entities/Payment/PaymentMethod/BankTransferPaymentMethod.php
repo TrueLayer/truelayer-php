@@ -79,9 +79,9 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     }
 
     /**
-     * @return ProviderSelectionInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return ProviderSelectionInterface
      */
     public function getProviderSelection(): ProviderSelectionInterface
     {

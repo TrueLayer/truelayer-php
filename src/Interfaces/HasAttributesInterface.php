@@ -11,9 +11,9 @@ interface HasAttributesInterface extends ArrayableInterface
     /**
      * @param mixed[] $data
      *
-     * @return $this
      * @throws InvalidArgumentException
      *
+     * @return $this
      */
     public function fill(array $data): self;
 }

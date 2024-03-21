@@ -199,7 +199,6 @@ final class Hpp extends Entity implements HppInterface
 
     /**
      * @return string
-     *
      */
     public function toUrl(): string
     {
@@ -207,13 +206,12 @@ final class Hpp extends Entity implements HppInterface
         unset($params['base_url']);
 
         return $this->baseUrl . '#' . \http_build_query(
-                $params, '', '&', PHP_QUERY_RFC3986
-            );
+            $params, '', '&', PHP_QUERY_RFC3986
+        );
     }
 
     /**
      * @return string
-     *
      */
     public function __toString(): string
     {

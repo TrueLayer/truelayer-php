@@ -20,7 +20,7 @@ class Beneficiary extends Entity implements BeneficiaryInterface
     protected array $arrayFields = [
         'type',
     ];
-    
+
     /**
      * @return string
      */

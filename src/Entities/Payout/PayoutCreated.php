@@ -20,7 +20,7 @@ final class PayoutCreated extends Entity implements PayoutCreatedInterface
     protected array $arrayFields = [
         'id',
     ];
-    
+
     /**
      * @return string
      */

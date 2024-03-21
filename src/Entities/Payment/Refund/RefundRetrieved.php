@@ -58,7 +58,7 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
         'status',
         'created_at',
     ];
-    
+
     /**
      * @return string
      */

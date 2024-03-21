@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Tests\Integration\Mocks\CreatePayment;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 

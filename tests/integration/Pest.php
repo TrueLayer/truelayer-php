@@ -34,8 +34,9 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws SignerException
+ *
+ * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -62,9 +63,9 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return \TrueLayer\Interfaces\Client\ClientInterface
- *
  * @throws SignerException
+ *
+ * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
 function client($mockResponses = [])
 {
@@ -82,7 +83,6 @@ function client($mockResponses = [])
  * Create a new request with a mocked successful response.
  *
  * @param array $mockResponses
- *
  *
  * @throws SignerException
  */
@@ -107,7 +107,7 @@ function getSentHttpRequests(): array
 }
 
 /**
- * @param int $requestIndex
+ * @param int  $requestIndex
  * @param bool $asArray
  *
  * @return mixed
@@ -123,7 +123,7 @@ function getRequestPayload(int $requestIndex, bool $asArray = true)
 }
 
 /**
- * @param int $requestIndex
+ * @param int    $requestIndex
  * @param string $name
  *
  * @return string[]
@@ -146,14 +146,14 @@ function getRequestIdempotencyKey(int $requestIndex): string
 /**
  * @param string $body
  *
- * @return WebhookInterface
  * @throws SignerException
  * @throws WebhookHandlerInvalidArgumentException
  * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
- *
  * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ *
+ * @return WebhookInterface
  */
 function webhook(string $body): WebhookInterface
 {

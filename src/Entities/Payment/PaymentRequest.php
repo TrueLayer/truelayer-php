@@ -143,12 +143,12 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @return PaymentCreatedInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {

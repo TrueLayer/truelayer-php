@@ -61,11 +61,11 @@ interface StartAuthorizationFlowRequestInterface extends HasAttributesInterface
     public function formInputTypes(array $types): StartAuthorizationFlowRequestInterface;
 
     /**
-     * @return AuthorizationFlowResponseInterface
      * @throws SignerException
      * @throws ApiResponseUnsuccessfulException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function start(): AuthorizationFlowResponseInterface;
 }

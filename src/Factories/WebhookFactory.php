@@ -27,9 +27,9 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
     /**
      * @param ConfigInterface $config
      *
-     * @return WebhookInterface
      * @throws MissingHttpImplementationException
      *
+     * @return WebhookInterface
      */
     public function make(ConfigInterface $config): WebhookInterface
     {
@@ -46,9 +46,9 @@ class WebhookFactory implements WebhookVerifierFactoryInterface
     /**
      * @param ConfigInterface $config
      *
-     * @return JwksManagerInterface
      * @throws MissingHttpImplementationException
      *
+     * @return JwksManagerInterface
      */
     private function makeJwks(ConfigInterface $config): JwksManagerInterface
     {

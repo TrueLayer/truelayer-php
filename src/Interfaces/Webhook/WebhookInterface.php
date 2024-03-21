@@ -13,22 +13,22 @@ interface WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
-     *
      * @throws \ReflectionException
+     *
+     * @return WebhookInterface
      */
     public function handler($handler): WebhookInterface;
 
     /**
      * @param callable|class-string ...$handlers
      *
-     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
-     *
      * @throws \ReflectionException
+     *
+     * @return WebhookInterface
      */
     public function handlers(...$handlers): WebhookInterface;
 
@@ -49,9 +49,9 @@ interface WebhookInterface
     /**
      * @param mixed[] $headers
      *
-     * @return WebhookInterface
      * @throws WebhookHandlerInvalidArgumentException
      *
+     * @return WebhookInterface
      */
     public function headers(array $headers): WebhookInterface;
 

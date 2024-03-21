@@ -12,10 +12,11 @@ interface EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
      *
      * @return T
-     * @throws InvalidArgumentException
      */
     public function make(string $abstract, array $data = null);
 
@@ -24,9 +25,9 @@ interface EntityFactoryInterface
      *
      * @param class-string<T> $concrete
      *
-     * @return T
      * @throws InvalidArgumentException
      *
+     * @return T
      */
     public function makeConcrete(string $concrete);
 
@@ -34,10 +35,11 @@ interface EntityFactoryInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[] $data
+     * @param mixed[]         $data
+     *
+     * @throws InvalidArgumentException
      *
      * @return T[]
-     * @throws InvalidArgumentException
      */
     public function makeMany(string $abstract, array $data): array;
 }

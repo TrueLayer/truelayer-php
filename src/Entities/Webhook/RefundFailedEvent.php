@@ -38,7 +38,7 @@ class RefundFailedEvent extends RefundEvent implements RefundFailedEventInterfac
             'failure_reason',
         ]);
     }
-    
+
     /**
      * @return \DateTimeInterface
      */

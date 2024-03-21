@@ -22,9 +22,9 @@ interface BeneficiaryBuilderInterface
     /**
      * @param mixed[] $data
      *
-     * @return PayoutBeneficiaryInterface
      * @throws InvalidArgumentException
      *
+     * @return PayoutBeneficiaryInterface
      */
     public function fill(array $data): PayoutBeneficiaryInterface;
 }

@@ -158,12 +158,12 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     }
 
     /**
-     * @return AuthorizationFlowResponseInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     *
      * @throws ApiRequestJsonSerializationException
+     *
+     * @return AuthorizationFlowResponseInterface
      */
     public function start(): AuthorizationFlowResponseInterface
     {

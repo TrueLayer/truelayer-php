@@ -15,9 +15,9 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {
     /**
-     * @return ExternalAccountBeneficiaryInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return ExternalAccountBeneficiaryInterface
      */
     public function externalAccount(): ExternalAccountBeneficiaryInterface
     {
@@ -27,9 +27,9 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
     /**
      * @param MerchantAccountInterface|null $merchantAccount
      *
-     * @return MerchantBeneficiaryInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return MerchantBeneficiaryInterface
      */
     public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface
     {
@@ -45,9 +45,9 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
     /**
      * @param mixed[] $data
      *
-     * @return BeneficiaryInterface
-     *
      * @throws InvalidArgumentException
+     *
+     * @return BeneficiaryInterface
      */
     public function fill(array $data): BeneficiaryInterface
     {

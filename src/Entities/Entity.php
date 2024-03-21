@@ -26,16 +26,16 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      */
     public function __construct(
         EntityFactoryInterface $entityFactory
-    )
-    {
+    ) {
         $this->entityFactory = $entityFactory;
     }
 
     /**
      * @param mixed[] $data
      *
-     * @return $this
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function fill(array $data): self
     {
@@ -49,10 +49,11 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
+     * @param mixed[]|null    $data
+     *
+     * @throws InvalidArgumentException
      *
      * @return T
-     * @throws InvalidArgumentException
      */
     protected function make(string $abstract, array $data = null)
     {
@@ -63,11 +64,11 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null $data
-     *
-     * @return T[]
+     * @param mixed[]|null    $data
      *
      * @throws InvalidArgumentException
+     *
+     * @return T[]
      */
     protected function makeMany(string $abstract, array $data = null)
     {

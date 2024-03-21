@@ -83,8 +83,9 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @return RefundRequestInterface
      * @throws InvalidArgumentException
+     *
+     * @return RefundRequestInterface
      */
     public function refund(): RefundRequestInterface
     {
@@ -95,12 +96,12 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     /**
      * @param string $refundId
      *
-     * @return RefundRetrievedInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return RefundRetrievedInterface
      */
     public function getRefund(string $refundId): RefundRetrievedInterface
     {
@@ -110,12 +111,12 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @return RefundRetrievedInterface[]
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
-     *
      * @throws ApiResponseUnsuccessfulException
+     *
+     * @return RefundRetrievedInterface[]
      */
     public function getRefunds(): array
     {

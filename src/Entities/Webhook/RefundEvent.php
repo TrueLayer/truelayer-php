@@ -28,7 +28,7 @@ class RefundEvent extends Event implements RefundEventInterface
             'refund_id',
         ]);
     }
-    
+
     /**
      * @return string
      */
