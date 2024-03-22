@@ -75,10 +75,6 @@ jobs:
           composer remove guzzlehttp/guzzle --dev
           composer run acceptance-tests -- --filter "retrieves merchant accounts"
 
-          composer require guzzlehttp/guzzle --dev
-          composer remove symfony/http-client --dev
-          composer run acceptance-tests -- --filter "retrieves merchant accounts"
-
           composer require php-http/curl-client --dev
           composer remove guzzlehttp/guzzle --dev
           composer run acceptance-tests -- --filter "retrieves merchant accounts"
