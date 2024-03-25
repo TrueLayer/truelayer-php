@@ -252,7 +252,7 @@ class Encrypter
      */
     protected function validMac(array $payload): bool
     {
-        if (!isset($payload['iv']) || !is_string($payload['iv'])) {
+        if (!isset($payload['iv']) || !\is_string($payload['iv']) || !\is_string($payload['mac'])) {
             return false;
         }
 
