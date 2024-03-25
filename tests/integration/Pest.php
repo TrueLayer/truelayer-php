@@ -34,9 +34,9 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
+ * @return TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws SignerException
  *
- * @return \TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -46,11 +46,11 @@ function rawClient(array $mockResponses = [])
 
     $handlerStack = HandlerStack::create(new MockHandler($mockResponses));
 
-    $handlerStack->push(\GuzzleHttp\Middleware::history($httpTransactions));
+    $handlerStack->push(GuzzleHttp\Middleware::history($httpTransactions));
 
     $mockClient = new HttpClient(['handler' => $handlerStack]);
 
-    return \TrueLayer\Client::configure()
+    return TrueLayer\Client::configure()
         ->clientId('client_id')
         ->clientSecret('client_secret')
         ->keyId('123')
@@ -63,9 +63,9 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
+ * @return TrueLayer\Interfaces\Client\ClientInterface
  * @throws SignerException
  *
- * @return \TrueLayer\Interfaces\Client\ClientInterface
  */
 function client($mockResponses = [])
 {
@@ -89,7 +89,7 @@ function client($mockResponses = [])
 function request($mockResponses = []): TrueLayer\Interfaces\ApiClient\ApiRequestInterface
 {
     if (empty($mockResponses)) {
-        $mockResponses = new \GuzzleHttp\Psr7\Response(200, [], 'OK');
+        $mockResponses = new GuzzleHttp\Psr7\Response(200, [], 'OK');
     }
 
     return \client($mockResponses)->getApiClient()->request()
@@ -103,11 +103,11 @@ function getSentHttpRequests(): array
 {
     global $httpTransactions;
 
-    return \Illuminate\Support\Arr::pluck($httpTransactions, 'request');
+    return array_map(fn($transaction) => $transaction['request'], $httpTransactions);
 }
 
 /**
- * @param int  $requestIndex
+ * @param int $requestIndex
  * @param bool $asArray
  *
  * @return mixed
@@ -123,7 +123,7 @@ function getRequestPayload(int $requestIndex, bool $asArray = true)
 }
 
 /**
- * @param int    $requestIndex
+ * @param int $requestIndex
  * @param string $name
  *
  * @return string[]
@@ -146,14 +146,14 @@ function getRequestIdempotencyKey(int $requestIndex): string
 /**
  * @param string $body
  *
- * @throws SignerException
+ * @return WebhookInterface
  * @throws WebhookHandlerInvalidArgumentException
- * @throws \TrueLayer\Signing\Exceptions\InvalidArgumentException
+ * @throws TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
+ * @throws TrueLayer\Exceptions\InvalidArgumentException
  *
- * @return WebhookInterface
+ * @throws SignerException
  */
 function webhook(string $body): WebhookInterface
 {
