@@ -43,12 +43,11 @@
 
 This package simplifies working with the TrueLayer API, by:
 
-1. Handling authentication, including token expiry, invalidation and caching
+1. Handling authentication (including token expiry) and caching
 2. Signing requests
 3. Managing idempotency keys, including retrying on conflicts
 4. Retrying failed requests, where it makes sense to do so
-5. Validating your data
-6. Providing type-hinted methods and classes to work with
+5. Providing type-hinted methods and classes to work with
 
 <a name="getting-started"></a>
 
@@ -1203,16 +1202,6 @@ Thrown if the request data cannot be json encoded prior to calling the APIs.
 
 ```php
 \TrueLayer\Exceptions\ApiRequestJsonSerializationException
-```
-
-### ValidationException
-
-Thrown if the data you provide to the client library or the API response data is invalid.
-
-```php
-\TrueLayer\Exceptions\ValidationException
-
-$e->getErrors(); // Get the validation errors as an array
 ```
 
 ### InvalidArgumentException

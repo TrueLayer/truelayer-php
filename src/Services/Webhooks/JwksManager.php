@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -50,10 +50,10 @@ class JwksManager implements JwksManagerInterface
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */

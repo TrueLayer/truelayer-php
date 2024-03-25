@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Factories;
 
-use Illuminate\Support\Arr;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces;
+use TrueLayer\Services\Util\Arr;
 
 final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 {

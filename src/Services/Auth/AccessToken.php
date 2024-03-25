@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Auth;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -77,8 +77,8 @@ final class AccessToken implements AccessTokenInterface
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return string|null
      */
