@@ -42,7 +42,7 @@ class Arr
     /**
      * Return the first element in an array passing a given truth test.
      *
-     * @param iterable $array
+     * @param mixed[] $array
      * @param callable|null $callback
      * @param mixed $default
      * @return mixed
@@ -57,8 +57,6 @@ class Arr
             foreach ($array as $item) {
                 return $item;
             }
-
-            return $default;
         }
 
         foreach ($array as $key => $value) {
@@ -151,42 +149,6 @@ class Arr
         $keys = \array_keys($array);
 
         return \array_keys($keys) !== $keys;
-    }
-
-    /**
-     * Pluck an array of values from an array.
-     *
-     * @param iterable $array
-     * @param string|array|int|null $value
-     * @param string|array|null $key
-     * @return array
-     */
-    public static function pluck($array, $value, $key = null)
-    {
-        $results = [];
-
-        [$value, $key] = static::explodePluckParameters($value, $key);
-
-        foreach ($array as $item) {
-            $itemValue = data_get($item, $value);
-
-            // If the key is "null", we will just append the value to the array and keep
-            // looping. Otherwise we will key the array using the value of the key we
-            // received from the developer. Then we'll return the final array form.
-            if (is_null($key)) {
-                $results[] = $itemValue;
-            } else {
-                $itemKey = data_get($item, $key);
-
-                if (is_object($itemKey) && method_exists($itemKey, '__toString')) {
-                    $itemKey = (string)$itemKey;
-                }
-
-                $results[$itemKey] = $itemValue;
-            }
-        }
-
-        return $results;
     }
 
     /**
