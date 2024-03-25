@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
@@ -17,13 +16,14 @@ use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Services\Util\Arr;
 
 \it('creates a merchant payment', function () {
     $helper = \paymentHelper();
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);

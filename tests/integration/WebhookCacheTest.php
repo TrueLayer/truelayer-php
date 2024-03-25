@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Carbon;
 use Jose\Component\KeyManagement\JWKFactory;
 use TrueLayer\Constants\Encryption;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
@@ -19,7 +19,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     $cacheData['retrieved_at'] = Carbon::now()->timestamp;
     $cacheData = $encrypter->encrypt($cacheData);
 
-    $cache = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cache = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cache->shouldReceive('has')->andReturnTrue();
     $cache->shouldReceive('set')->andReturnTrue();
     $cache->shouldReceive('get')->andReturn($cacheData);
@@ -47,7 +47,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     $cacheData['retrieved_at'] = Carbon::now()->subDay()->timestamp;
     $cacheData = $encrypter->encrypt($cacheData);
 
-    $cache = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cache = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cache->shouldReceive('has')->andReturnTrue();
     $cache->shouldReceive('set')->andReturnTrue();
     $cache->shouldReceive('get')->andReturn($cacheData);
@@ -69,7 +69,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 });
 
 \it('fetches keys if keys are not cached', function () {
-    $cache = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cache = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cache->shouldReceive('has')->andReturnFalse();
     $cache->shouldReceive('set')->andReturnTrue();
 
@@ -102,7 +102,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     ];
     $cacheData = $encrypter->encrypt($cacheData);
 
-    $cache = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cache = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cache->shouldReceive('has')->andReturnTrue();
     $cache->shouldReceive('set')->andReturnTrue();
     $cache->shouldReceive('get')->andReturn($cacheData);
@@ -141,7 +141,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     ];
     $cacheData = $encrypter->encrypt($cacheData);
 
-    $cache = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cache = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cache->shouldReceive('has')->andReturnTrue();
     $cache->shouldReceive('set')->andReturnTrue();
     $cache->shouldReceive('get')->andReturn($cacheData);

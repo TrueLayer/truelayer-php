@@ -25,7 +25,7 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param CacheInterface $cache
-     * @param Encrypter $encrypter
+     * @param Encrypter      $encrypter
      */
     public function __construct(CacheInterface $cache, Encrypter $encrypter)
     {
@@ -35,10 +35,11 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param string $key
-     * @param null $default
+     * @param null   $default
+     *
+     * @throws DecryptException|InvalidArgumentException
      *
      * @return mixed
-     * @throws DecryptException|InvalidArgumentException
      */
     public function get(string $key, $default = null)
     {
@@ -56,14 +57,14 @@ final class EncryptedCache implements EncryptedCacheInterface
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
+     * @param string   $key
+     * @param mixed    $value
      * @param int|null $ttl
      *
-     * @return bool
      * @throws EncryptException
-     *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function set(string $key, $value, ?int $ttl = null): bool
     {
@@ -79,9 +80,9 @@ final class EncryptedCache implements EncryptedCacheInterface
     /**
      * @param string $key
      *
-     * @return bool
      * @throws InvalidArgumentException
      *
+     * @return bool
      */
     public function delete(string $key): bool
     {

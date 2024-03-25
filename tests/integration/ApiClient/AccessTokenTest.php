@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Carbon;
 use TrueLayer\Tests\Integration\Mocks;
 
 \it('appends access token', function () {
@@ -61,7 +61,7 @@ use TrueLayer\Tests\Integration\Mocks;
         Mocks\AuthResponse::success(), // Retrieve the access token
         Mocks\ErrorResponse::unauthenticated(), // Reject the access token in the api call
         Mocks\AuthResponse::success('_SECOND_'), // Retrieve new access token
-        new Response(200), ] // Accept the access token in the api call
+        new Response(200),] // Accept the access token in the api call
     )
         ->create();
 
@@ -77,15 +77,15 @@ use TrueLayer\Tests\Integration\Mocks;
 \it('reuses cached access token across requests',
     function () {
         $okResponse = new Response(200);
-        $encrypter = new \TrueLayer\Services\Util\Encryption\Encrypter(\hex2bin('31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b'), \TrueLayer\Constants\Encryption::ALGORITHM);
+        $encrypter = new TrueLayer\Services\Util\Encryption\Encrypter(\hex2bin('31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b'), TrueLayer\Constants\Encryption::ALGORITHM);
 
-        $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+        $cacheMock = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
         $cacheMock->shouldReceive('has')->andReturnTrue();
         $cacheMock->shouldReceive('set')->andReturnTrue();
         $cacheMock->shouldReceive('get')->andReturn($encrypter->encrypt([
             'access_token' => Mocks\AuthResponse::ACCESS_TOKEN,
             'expires_in' => 3600,
-            'retrieved_at' => (int) Carbon::now()->timestamp,
+            'retrieved_at' => (int)Carbon::now()->timestamp,
         ]));
         $client1 = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
             ->cache($cacheMock, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
@@ -108,15 +108,15 @@ use TrueLayer\Tests\Integration\Mocks;
 
 \it('fetches a new token if the cached one is expired', function () {
     $okResponse = new Response(200);
-    $encrypter = new \TrueLayer\Services\Util\Encryption\Encrypter(\hex2bin('31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b'), \TrueLayer\Constants\Encryption::ALGORITHM);
+    $encrypter = new TrueLayer\Services\Util\Encryption\Encrypter(\hex2bin('31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b'), TrueLayer\Constants\Encryption::ALGORITHM);
 
-    $cacheMock = Mockery::mock(\Psr\SimpleCache\CacheInterface::class);
+    $cacheMock = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
     $cacheMock->shouldReceive('has')->andReturnTrue();
     $cacheMock->shouldReceive('set')->andReturnTrue();
     $cacheMock->shouldReceive('get')->andReturn($encrypter->encrypt([
         'access_token' => 'expired-token',
         'expires_in' => 3600,
-        'retrieved_at' => (int) Carbon::now()->timestamp - 5000,
+        'retrieved_at' => (int)Carbon::now()->timestamp - 5000,
     ]));
 
     $client = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
@@ -136,7 +136,7 @@ use TrueLayer\Tests\Integration\Mocks;
     $client->getApiClient()->request()->uri('/test')->post();
 
     $requestedScope = \getRequestPayload(0)['scope'];
-    \expect($requestedScope)->toBe(\TrueLayer\Constants\Scopes::DEFAULT);
+    \expect($requestedScope)->toBe(TrueLayer\Constants\Scopes::DEFAULT);
 });
 
 \it('uses custom scopes if provided', function () {
