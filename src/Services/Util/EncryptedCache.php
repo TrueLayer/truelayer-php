@@ -25,7 +25,7 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param CacheInterface $cache
-     * @param Encrypter      $encrypter
+     * @param Encrypter $encrypter
      */
     public function __construct(CacheInterface $cache, Encrypter $encrypter)
     {
@@ -35,37 +35,35 @@ final class EncryptedCache implements EncryptedCacheInterface
 
     /**
      * @param string $key
-     * @param null   $default
-     *
-     * @throws InvalidArgumentException
-     * @throws DecryptException
+     * @param null $default
      *
      * @return mixed
+     * @throws DecryptException|InvalidArgumentException
      */
     public function get(string $key, $default = null)
     {
-        $encryptedValue = $this->cache->get($key, $default);
+        try {
+            $encryptedValue = $this->cache->get($key, $default);
+        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
 
         if (!\is_string($encryptedValue)) {
             throw new InvalidArgumentException('The cached value must be string.');
         }
 
-        try {
-            return $this->encrypter->decrypt($encryptedValue);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            throw new DecryptException($e->getMessage(), $e->getCode(), $e->getPrevious());
-        }
+        return $this->encrypter->decrypt($encryptedValue);
     }
 
     /**
-     * @param string   $key
-     * @param mixed    $value
+     * @param string $key
+     * @param mixed $value
      * @param int|null $ttl
      *
-     * @throws InvalidArgumentException
+     * @return bool
      * @throws EncryptException
      *
-     * @return bool
+     * @throws InvalidArgumentException
      */
     public function set(string $key, $value, ?int $ttl = null): bool
     {
@@ -73,8 +71,6 @@ final class EncryptedCache implements EncryptedCacheInterface
             $encryptedValue = $this->encrypter->encrypt($value);
 
             return $this->cache->set($key, $encryptedValue, $ttl);
-        } catch (\Illuminate\Contracts\Encryption\EncryptException $e) {
-            throw new EncryptException($e->getMessage(), $e->getCode(), $e->getPrevious());
         } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
@@ -83,13 +79,17 @@ final class EncryptedCache implements EncryptedCacheInterface
     /**
      * @param string $key
      *
+     * @return bool
      * @throws InvalidArgumentException
      *
-     * @return bool
      */
     public function delete(string $key): bool
     {
-        return $this->cache->delete($key);
+        try {
+            return $this->cache->delete($key);
+        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
     }
 
     /**
@@ -97,6 +97,10 @@ final class EncryptedCache implements EncryptedCacheInterface
      */
     public function has($key): bool
     {
-        return $this->cache->has($key);
+        try {
+            return $this->cache->has($key);
+        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
     }
 }
