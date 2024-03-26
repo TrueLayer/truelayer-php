@@ -36,15 +36,6 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'merchant_account_id' => 'required|string',
-        'account_holder_name' => 'nullable|string',
-        'reference' => 'nullable|string',
-    ];
-
-    /**
      * @return string|null
      */
     public function getMerchantAccountId(): ?string

@@ -10,12 +10,10 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
-use TrueLayer\Validation\ValidType;
 
 final class StartAuthorizationFlowRequest extends Entity implements StartAuthorizationFlowRequestInterface, HasApiFactoryInterface
 {
@@ -64,22 +62,6 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
         'redirect.direct_return_uri' => 'directReturnUri',
         'form.input_types' => 'formInputTypes',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'user_account_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
-            'provider_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
-            'scheme_selection' => ['nullable', ValidType::of(\ArrayObject::class)],
-            'redirect.return_uri' => ['required', 'string'],
-            'redirect.direct_return_uri' => ['nullable', 'string'],
-            'form.input_types' => ['nullable', 'array'],
-            'form.input_types.*' => ['string'],
-        ];
-    }
 
     /**
      * @param string $paymentId
@@ -176,11 +158,10 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowResponseInterface
      */
@@ -188,7 +169,7 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     {
         $data = $this->getApiFactory()->paymentsApi()->startAuthorizationFlow(
             $this->paymentId,
-            $this->validate()->toArray(),
+            $this->toArray(),
         );
 
         return $this->make(AuthorizationFlowResponseInterface::class, $data);

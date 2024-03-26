@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Payout;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 
 interface BeneficiaryBuilderInterface
@@ -23,7 +22,6 @@ interface BeneficiaryBuilderInterface
     /**
      * @param mixed[] $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return PayoutBeneficiaryInterface

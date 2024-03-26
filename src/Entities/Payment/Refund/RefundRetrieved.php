@@ -60,21 +60,6 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-            'amount_in_minor' => 'required|int|min:1',
-            'currency' => 'required|string',
-            'reference' => 'required|string',
-            'status' => 'required|string',
-            'created_at' => 'required|date',
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getId(): string

@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace TrueLayer\Factories;
 
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Illuminate\Support\Arr;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Entities;
 use TrueLayer\Entities\Hpp;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces;
+use TrueLayer\Services\Util\Arr;
 
 final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
 {
-    /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
-
     /**
      * @var Interfaces\Factories\ApiFactoryInterface|null
      */
@@ -41,16 +34,13 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
     private array $discriminations;
 
     /**
-     * @param ValidatorFactory                              $validatorFactory
      * @param Interfaces\Configuration\ConfigInterface      $sdkConfig
      * @param Interfaces\Factories\ApiFactoryInterface|null $apiFactory
      */
     public function __construct(
-        ValidatorFactory $validatorFactory,
         Interfaces\Configuration\ConfigInterface $sdkConfig,
         Interfaces\Factories\ApiFactoryInterface $apiFactory = null
     ) {
-        $this->validatorFactory = $validatorFactory;
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;
 
@@ -66,7 +56,6 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param mixed[]|null    $data
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return T
      * @return T implements
@@ -104,7 +93,6 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @param class-string<T> $abstract
      * @param mixed[]         $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return T[]
@@ -149,9 +137,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
         // is_subclass_of so we need to rely on the instanceof operator.
         $instance = null;
 
-        if (\is_subclass_of($concrete, Entities\Entity::class)) {
-            $instance = new $concrete($this->validatorFactory, $this);
-        } elseif (\is_subclass_of($concrete, Entities\EntityBuilder::class)) {
+        if (\is_subclass_of($concrete, Entities\Entity::class) || \is_subclass_of($concrete, Entities\EntityBuilder::class)) {
             $instance = new $concrete($this);
         }
 

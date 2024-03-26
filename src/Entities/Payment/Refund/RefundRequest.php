@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
@@ -51,18 +50,6 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
         'amount_in_minor',
         'reference',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'payment_id' => 'required|string',
-            'amount_in_minor' => 'required|int|min:1',
-            'reference' => 'required|string',
-        ];
-    }
 
     /**
      * @param string|PaymentRetrievedInterface|PaymentCreatedInterface $payment
@@ -115,11 +102,10 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     * @throws ValidationException
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundCreatedInterface
      */
@@ -127,7 +113,7 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     {
         $data = $this->getApiFactory()->paymentsApi()->createRefund(
             $this->paymentId,
-            $this->validate()->toArray(),
+            $this->toArray(),
             $this->requestOptions
         );
 

@@ -201,14 +201,6 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
-\it('should throw when sending an invalid user date of birth', function () {
-    $factory = CreatePayment::responses([
-        PaymentResponse::created(),
-    ]);
-
-    $factory->payment($factory->newUserWithDateOfBirth('invalid data'), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
-})->throws(TrueLayer\Exceptions\ValidationException::class);
-
 \it('parses payment creation response correctly', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
     $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();

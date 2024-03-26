@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces;
 
-use TrueLayer\Exceptions\ValidationException;
-
 interface HppInterface extends ArrayableInterface
 {
     /**
@@ -93,15 +91,11 @@ interface HppInterface extends ArrayableInterface
     public function getTertiaryColour(): ?string;
 
     /**
-     * @throws ValidationException
-     *
      * @return string
      */
     public function toUrl(): string;
 
     /**
-     * @throws ValidationException
-     *
      * @return string
      */
     public function __toString(): string;

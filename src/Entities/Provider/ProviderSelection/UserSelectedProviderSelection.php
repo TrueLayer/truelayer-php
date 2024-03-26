@@ -8,7 +8,6 @@ use TrueLayer\Constants\ProviderSelectionTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
-use TrueLayer\Validation\ValidType;
 
 final class UserSelectedProviderSelection extends Entity implements UserSelectedProviderSelectionInterface
 {
@@ -31,16 +30,6 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
         'type',
         'filter',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'filter' => ['nullable', ValidType::of(ProviderFilterInterface::class)],
-        ];
-    }
 
     /**
      * @return ProviderFilterInterface|null

@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
@@ -47,15 +46,6 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'id' => 'required|string',
-        'user.id' => 'required|string',
-        'resource_token' => 'required|string',
-    ];
-
-    /**
      * @return string
      */
     public function getId(): string
@@ -80,7 +70,6 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return HppInterface
@@ -95,11 +84,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     /**
      * @param string $returnUri
      *
-     * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowAuthorizingInterface
      *
@@ -117,7 +105,6 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return StartAuthorizationFlowRequestInterface
      */
@@ -128,11 +115,10 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     }
 
     /**
-     * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return PaymentRetrievedInterface
      */

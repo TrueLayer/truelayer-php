@@ -8,14 +8,12 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
-use TrueLayer\Validation\ValidType;
 
 final class PaymentSettled extends _PaymentWithAuthorizationConfig implements PaymentSettledInterface, HasApiFactoryInterface
 {
@@ -45,18 +43,6 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
             'executed_at' => \DateTimeInterface::class,
             'settled_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'payment_source' => [ValidType::of(PaymentSourceInterface::class)],
-            'executed_at' => 'required|date',
-            'settled_at' => 'required|date',
         ]);
     }
 
@@ -97,7 +83,6 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return RefundRequestInterface
@@ -111,11 +96,10 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     /**
      * @param string $refundId
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return RefundRetrievedInterface
      */
@@ -127,11 +111,10 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return RefundRetrievedInterface[]
      */

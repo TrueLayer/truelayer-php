@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
@@ -77,10 +76,9 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
      *
      * @return PaymentRetrievedInterface
      */
@@ -90,11 +88,10 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $returnUri
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowAuthorizingInterface
      *
@@ -106,7 +103,6 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return StartAuthorizationFlowRequestInterface
      */
@@ -116,18 +112,16 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string|ProviderInterface                                 $provider
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return AuthorizationFlowResponseInterface
      */
     public function submitPaymentProvider($payment, $provider): AuthorizationFlowResponseInterface;
 
     /**
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return RefundRequestInterface
@@ -138,11 +132,10 @@ interface ClientInterface
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      * @param string                                                   $refundId
      *
-     * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return RefundRetrievedInterface
      */
@@ -151,11 +144,10 @@ interface ClientInterface
     /**
      * @param string|PaymentCreatedInterface|PaymentRetrievedInterface $payment
      *
-     * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return mixed[]
      */
@@ -179,11 +171,10 @@ interface ClientInterface
     public function getPayout(string $id): Payout\PayoutRetrievedInterface;
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface[]
      */
@@ -192,11 +183,10 @@ interface ClientInterface
     /**
      * @param string $id
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return MerchantAccountInterface
      */
@@ -216,7 +206,6 @@ interface ClientInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return RequestOptionsInterface
      */

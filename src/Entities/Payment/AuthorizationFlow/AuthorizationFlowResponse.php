@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
-use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
-use TrueLayer\Validation\AllowedConstant;
-use TrueLayer\Validation\ValidType;
 
 abstract class AuthorizationFlowResponse extends Entity implements AuthorizationFlowResponseInterface
 {
@@ -38,17 +35,6 @@ abstract class AuthorizationFlowResponse extends Entity implements Authorization
         'status',
         'authorization_flow',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'status' => ['required', AllowedConstant::in(AuthorizationFlowStatusTypes::class)],
-            'authorization_flow' => ['nullable', ValidType::of(AuthorizationFlowInterface::class)],
-        ];
-    }
 
     /**
      * @return ActionInterface|null

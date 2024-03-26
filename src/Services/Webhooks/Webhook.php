@@ -7,7 +7,6 @@ namespace TrueLayer\Services\Webhooks;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Entities\Webhook\Event;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Exceptions\WebhookHandlerException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
@@ -65,9 +64,9 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string $handler
      *
-     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     * @throws \ReflectionException
      *
      * @return WebhookInterface
      */
@@ -81,9 +80,9 @@ class Webhook implements WebhookInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @throws \ReflectionException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookHandlerException
+     * @throws \ReflectionException
      *
      * @return WebhookInterface
      */
@@ -132,7 +131,6 @@ class Webhook implements WebhookInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws WebhookVerificationFailedException
      */
@@ -185,11 +183,10 @@ class Webhook implements WebhookInterface
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * s     * @return EventInterface
+     * @return EventInterface
      */
     private function getEventEntity(): EventInterface
     {
@@ -205,7 +202,7 @@ class Webhook implements WebhookInterface
         } catch (\Exception $e) {
             // If we do not recognise the data structure as valid for any of the existing entities,
             // We create the base event entity which will be passed to the default handler.
-            if ($e instanceof ValidationException || $e instanceof InvalidArgumentException) {
+            if ($e instanceof InvalidArgumentException) {
                 return $this->entityFactory->makeConcrete(Event::class)->fill($data);
             }
             throw $e;

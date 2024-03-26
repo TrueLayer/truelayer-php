@@ -34,16 +34,6 @@ final class RefundExecuted extends RefundRetrieved implements RefundExecutedInte
     }
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'executed_at' => 'required|date',
-        ]);
-    }
-
-    /**
      * @return \DateTimeInterface
      */
     public function getExecutedAt(): \DateTimeInterface

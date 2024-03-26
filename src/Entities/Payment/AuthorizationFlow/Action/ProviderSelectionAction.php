@@ -8,7 +8,6 @@ use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Validation\ValidType;
 
 class ProviderSelectionAction extends Action implements ProviderSelectionActionInterface
 {
@@ -31,16 +30,6 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
     protected array $casts = [
         'providers.*' => ProviderInterface::class,
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'providers.*' => [ValidType::of(ProviderInterface::class)],
-        ];
-    }
 
     /**
      * @return ProviderInterface[]

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
-use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
-use TrueLayer\Validation\AllowedConstant;
 
 final class PaymentFailed extends _PaymentWithAuthorizationConfig implements PaymentFailedInterface
 {
@@ -44,18 +42,6 @@ final class PaymentFailed extends _PaymentWithAuthorizationConfig implements Pay
             'failed_at',
             'failure_stage',
             'failure_reason',
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'failed_at' => 'required|date',
-            'failure_stage' => ['required', AllowedConstant::in(PaymentStatus::class)],
-            'failure_reason' => 'nullable|string',
         ]);
     }
 

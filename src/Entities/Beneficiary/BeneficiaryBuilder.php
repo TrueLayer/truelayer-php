@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Beneficiary;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
@@ -17,7 +16,6 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
 {
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return ExternalAccountBeneficiaryInterface
      */
@@ -30,7 +28,6 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
      * @param MerchantAccountInterface|null $merchantAccount
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return MerchantBeneficiaryInterface
      */
@@ -49,7 +46,6 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
      * @param mixed[] $data
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return BeneficiaryInterface
      */

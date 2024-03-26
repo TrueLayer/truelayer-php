@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
@@ -17,7 +16,6 @@ use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
-use TrueLayer\Validation\ValidType;
 
 final class PaymentRequest extends Entity implements PaymentRequestInterface, HasApiFactoryInterface
 {
@@ -71,20 +69,6 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'payment_method',
         'user',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'amount_in_minor' => 'required|int|min:1',
-            'currency' => ['required', 'string'],
-            'metadata' => 'nullable|array',
-            'payment_method' => ['required', ValidType::of(PaymentMethodInterface::class)],
-            'user' => ['required', ValidType::of(UserInterface::class)],
-        ];
-    }
 
     /**
      * @param int $amount
@@ -159,18 +143,17 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     * @throws ValidationException
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return PaymentCreatedInterface
      */
     public function create(): PaymentCreatedInterface
     {
         $data = $this->getApiFactory()->paymentsApi()->create(
-            $this->validate()->toArray(),
+            $this->toArray(),
             $this->requestOptions
         );
 

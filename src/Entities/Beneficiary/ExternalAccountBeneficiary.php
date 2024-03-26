@@ -8,7 +8,6 @@ use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Validation\ValidType;
 
 final class ExternalAccountBeneficiary extends Entity implements ExternalAccountBeneficiaryInterface
 {
@@ -43,18 +42,6 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
         'reference',
         'type',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'account_holder_name' => 'nullable|string',
-            'reference' => 'required|string',
-            'account_identifier' => ['required', ValidType::of(AccountIdentifierInterface::class)],
-        ];
-    }
 
     /**
      * @return string|null

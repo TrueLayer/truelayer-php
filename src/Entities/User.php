@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace TrueLayer\Entities;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AddressInterface;
 use TrueLayer\Interfaces\UserInterface;
-use TrueLayer\Validation\ValidType;
 
 final class User extends Entity implements UserInterface
 {
@@ -60,21 +58,6 @@ final class User extends Entity implements UserInterface
     protected array $casts = [
         'address' => AddressInterface::class,
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'string|nullable',
-            'name' => 'string|nullable|required_without:id',
-            'email' => 'string|nullable|email|required_without_all:phone,id',
-            'phone' => 'string|nullable|required_without_all:email,id',
-            'address' => ['nullable', ValidType::of(AddressInterface::class)],
-            'date_of_birth' => 'string|nullable|date',
-        ];
-    }
 
     /**
      * @return string|null
@@ -167,7 +150,6 @@ final class User extends Entity implements UserInterface
     /**
      * @param AddressInterface|null $address
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return AddressInterface

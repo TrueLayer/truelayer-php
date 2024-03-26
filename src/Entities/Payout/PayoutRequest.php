@@ -9,7 +9,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
@@ -18,7 +17,6 @@ use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\PayoutRequestInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
-use TrueLayer\Validation\ValidType;
 
 final class PayoutRequest extends Entity implements PayoutRequestInterface, HasApiFactoryInterface
 {
@@ -65,19 +63,6 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         'currency',
         'beneficiary',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'merchant_account_id' => 'required|string',
-            'amount_in_minor' => 'required|int|min:1',
-            'currency' => 'required|string',
-            'beneficiary' => ['required', ValidType::of(PayoutBeneficiaryInterface::class)],
-        ];
-    }
 
     /**
      * @param int $amount
@@ -140,18 +125,17 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
-     * @throws ValidationException
+     * @throws SignerException
      *
      * @return PayoutCreatedInterface
      */
     public function create(): PayoutCreatedInterface
     {
         $data = $this->getApiFactory()->payoutsApi()->create(
-            $this->validate()->toArray(),
+            $this->toArray(),
             $this->requestOptions
         );
 

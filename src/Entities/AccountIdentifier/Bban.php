@@ -24,13 +24,6 @@ final class Bban extends Entity implements BbanInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'bban' => 'required|alpha_num|max:30',
-    ];
-
-    /**
      * @return string
      */
     public function getBban(): string

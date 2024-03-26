@@ -24,13 +24,6 @@ final class Nrb extends Entity implements NrbInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'nrb' => 'required|numeric|digits:26',
-    ];
-
-    /**
      * @return string
      */
     public function getNrb(): string

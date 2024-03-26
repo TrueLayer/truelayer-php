@@ -51,18 +51,6 @@ class Address extends Entity implements AddressInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'address_line1' => 'string|required',
-        'address_line2' => 'string|nullable',
-        'city' => 'string|required',
-        'state' => 'string|nullable',
-        'zip' => 'string|required',
-        'country_code' => 'string|required',
-    ];
-
-    /**
      * @return string|null
      */
     public function getAddressLine1(): ?string

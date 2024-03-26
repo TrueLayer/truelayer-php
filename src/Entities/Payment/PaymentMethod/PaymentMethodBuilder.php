@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Payment\PaymentMethod;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 
@@ -14,7 +13,6 @@ class PaymentMethodBuilder extends EntityBuilder implements PaymentMethodBuilder
 {
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return BankTransferPaymentMethodInterface
      */

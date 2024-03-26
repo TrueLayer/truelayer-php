@@ -8,7 +8,6 @@ use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Exceptions\WebhookVerificationFailedException;
 use TrueLayer\Interfaces\Webhook\JwksManagerInterface;
@@ -73,7 +72,6 @@ class WebhookVerifier implements WebhookVerifierInterface
      * @throws RequestPathNotFoundException
      * @throws RequiredHeaderMissingException
      * @throws SignerException
-     * @throws ValidationException
      * @throws WebhookHandlerInvalidArgumentException
      */
     private function verifyWithRetry(string $path, array $headers, string $body): void

@@ -22,13 +22,6 @@ class Beneficiary extends Entity implements BeneficiaryInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'type' => 'required|string',
-    ];
-
-    /**
      * @return string
      */
     public function getType(): string

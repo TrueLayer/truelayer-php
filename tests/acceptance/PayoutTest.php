@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
@@ -11,13 +10,14 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterfac
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
+use TrueLayer\Services\Util\Arr;
 
 \it('creates a closed loop payout', function () {
     $helper = \paymentHelper();
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -75,7 +75,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -138,7 +138,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()

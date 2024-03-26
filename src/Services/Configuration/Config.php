@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Configuration;
 
-use Illuminate\Encryption\Encrypter;
 use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -13,6 +12,7 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\Configuration\ConfigInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Services\Util\EncryptedCache;
+use TrueLayer\Services\Util\Encryption\Encrypter;
 
 abstract class Config implements ConfigInterface
 {

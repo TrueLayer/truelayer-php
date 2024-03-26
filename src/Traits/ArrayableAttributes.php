@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\ArrayableInterface;
+use TrueLayer\Services\Util\Arr;
+use TrueLayer\Services\Util\Str;
 
 trait ArrayableAttributes
 {

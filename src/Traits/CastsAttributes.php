@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
+use TrueLayer\Services\Util\Arr;
+use TrueLayer\Services\Util\Str;
 
 // TODO: Refactor castData
 trait CastsAttributes
@@ -30,7 +29,6 @@ trait CastsAttributes
      * @param mixed[]      $data
      * @param mixed[]|null $casts
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return mixed[]
@@ -102,17 +100,6 @@ trait CastsAttributes
         try {
             return Carbon::parse($dateTime);
         } catch (\Exception $e) {
-            // php 7.4 will not parse strings with nanoseconds
-            // we downgrade to microseconds and retry
-            $subsecond = Str::after($dateTime, '.');
-            $subsecond = Str::before($subsecond, 'Z');
-
-            if (Str::length($subsecond) > 6) {
-                $dateTime = \substr_replace($dateTime, '', -1, 3);
-
-                return $this->toDateTime($dateTime);
-            }
-
             return null;
         }
     }
@@ -123,7 +110,6 @@ trait CastsAttributes
      * @param class-string<T> $abstract
      * @param mixed[]|null    $data
      *
-     * @throws ValidationException
      * @throws InvalidArgumentException
      *
      * @return T

@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Webhook;
 
 use TrueLayer\Interfaces\Webhook\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\PayoutEventInterface;
-use TrueLayer\Validation\ValidType;
 
 class PayoutEvent extends Event implements PayoutEventInterface
 {
@@ -35,17 +34,6 @@ class PayoutEvent extends Event implements PayoutEventInterface
         return \array_merge(parent::arrayFields(), [
             'payout_id',
             'beneficiary',
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'payout_id' => 'required|string',
-            'beneficiary' => [ValidType::of(BeneficiaryInterface::class)],
         ]);
     }
 

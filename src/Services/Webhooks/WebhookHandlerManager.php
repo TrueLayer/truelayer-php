@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use Illuminate\Support\Arr;
 use TrueLayer\Exceptions\WebhookHandlerException;
 use TrueLayer\Exceptions\WebhookHandlerInvalidArgumentException;
 use TrueLayer\Interfaces\Webhook\EventInterface;
 use TrueLayer\Interfaces\Webhook\WebhookHandlerManagerInterface;
+use TrueLayer\Services\Util\Arr;
 
 class WebhookHandlerManager implements WebhookHandlerManagerInterface
 {
@@ -45,9 +45,9 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
     /**
      * @param callable|class-string ...$handlers
      *
-     * @throws WebhookHandlerException
      * @throws WebhookHandlerInvalidArgumentException
      * @throws \ReflectionException
+     * @throws WebhookHandlerException
      *
      * @return void
      */
@@ -91,8 +91,8 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
     /**
      * @param \Closure $handler
      *
-     * @throws WebhookHandlerInvalidArgumentException
      * @throws \ReflectionException
+     * @throws WebhookHandlerInvalidArgumentException
      *
      * @return class-string
      */
@@ -121,8 +121,8 @@ class WebhookHandlerManager implements WebhookHandlerManagerInterface
      *
      * @param class-string $class
      *
-     * @throws WebhookHandlerException
      * @throws \ReflectionException
+     * @throws WebhookHandlerException
      *
      * @return mixed
      */

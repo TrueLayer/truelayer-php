@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Services\Util\Arr;
 
 function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
 {
@@ -27,7 +27,7 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
 
         $account = Arr::first(
             $helper->client()->getMerchantAccounts(),
-            fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+            fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
         );
 
         $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -54,7 +54,7 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
         \expect($response->getId())->toBeString();
 
         return $created;
-    } catch (\TrueLayer\Exceptions\ApiResponseUnsuccessfulException $e) {
+    } catch (TrueLayer\Exceptions\ApiResponseUnsuccessfulException $e) {
         throw $e;
     }
 });

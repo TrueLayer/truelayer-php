@@ -21,13 +21,6 @@ final class RequestOptions extends Entity implements RequestOptionsInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'idempotency_key' => 'nullable|string',
-    ];
-
-    /**
      * @param string $idempotencyKey
      *
      * @return RequestOptionsInterface

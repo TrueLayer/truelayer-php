@@ -7,7 +7,6 @@ namespace TrueLayer\Entities\MerchantAccount;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Validation\ValidType;
 
 final class MerchantAccount extends Entity implements MerchantAccountInterface
 {
@@ -56,22 +55,6 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
         'current_balance_in_minor',
         'account_holder_name',
     ];
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-            'currency' => 'required|string',
-            'account_identifiers' => 'required|array',
-            'account_identifiers.*' => [ValidType::of(AccountIdentifierInterface::class)],
-            'available_balance_in_minor' => 'required|int',
-            'current_balance_in_minor' => 'required|int',
-            'account_holder_name' => 'required|string',
-        ];
-    }
 
     /**
      * @return string|null

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Services\Webhooks;
 
-use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use TrueLayer\Constants\CacheKeys;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Exceptions\TLPublicKeysNotFound;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\EncryptedCacheInterface;
 use TrueLayer\Interfaces\Webhook\JwksManagerInterface;
@@ -32,11 +30,6 @@ class JwksManager implements JwksManagerInterface
     private ?EncryptedCacheInterface $cache;
 
     /**
-     * @var ValidatorFactory
-     */
-    private ValidatorFactory $validatorFactory;
-
-    /**
      * @var mixed[]|null
      */
     private ?array $keys = null;
@@ -49,23 +42,18 @@ class JwksManager implements JwksManagerInterface
     /**
      * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
-     * @param ValidatorFactory             $validatorFactory
      */
-    public function __construct(ApiClientInterface $api,
-        ?EncryptedCacheInterface $cache,
-        ValidatorFactory $validatorFactory)
+    public function __construct(ApiClientInterface $api, ?EncryptedCacheInterface $cache)
     {
         $this->api = $api;
         $this->cache = $cache;
-        $this->validatorFactory = $validatorFactory;
     }
 
     /**
-     * @throws ValidationException
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
      * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
@@ -134,38 +122,16 @@ class JwksManager implements JwksManagerInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws ApiRequestJsonSerializationException
      * @throws SignerException
-     * @throws ValidationException
      */
     public function retrieve(): void
     {
         $data = (new WebhooksApi($this->api))->jwks();
-        $this->validate($data);
 
         $this->keys = (array) $data['keys'];
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
             $this->cache->set(CacheKeys::JWKS_KEYS, $this->toArray(), self::CACHE_TTL);
-        }
-    }
-
-    /**
-     * @param mixed[] $data
-     *
-     * @throws ValidationException
-     */
-    private function validate(array $data): void
-    {
-        $validator = $this->validatorFactory->make($data, [
-            'keys.*.kty' => 'required|string|in:RSA,EC',
-            'keys.*.alg' => 'required|string|in:RS512,ES512',
-            'keys.*.kid' => 'required|string',
-        ]);
-
-        try {
-            $validator->validate();
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            throw new ValidationException($validator);
         }
     }
 

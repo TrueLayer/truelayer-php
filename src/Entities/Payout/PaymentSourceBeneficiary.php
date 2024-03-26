@@ -35,18 +35,6 @@ final class PaymentSourceBeneficiary extends Entity implements PaymentSourceBene
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'payment_source_id' => 'required|string',
-            'user_id' => 'nullable|string',
-            'reference' => 'nullable|string',
-        ];
-    }
-
-    /**
      * @return string|null
      */
     public function getPaymentSourceId(): ?string

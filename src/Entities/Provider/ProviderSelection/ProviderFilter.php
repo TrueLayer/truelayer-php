@@ -46,20 +46,6 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'countries.*' => 'string',
-            'release_channel' => 'string',
-            'customer_segments.*' => 'string',
-            'provider_ids.*' => 'string',
-            'excludes.provider_ids.*' => 'string',
-        ];
-    }
-
-    /**
      * @param string[] $countries
      *
      * @return ProviderFilterInterface

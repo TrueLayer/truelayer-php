@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces;
 
-use Illuminate\Contracts\Support\Arrayable;
-
-/**
- * @extends Arrayable<string|int, mixed>
- */
-interface ArrayableInterface extends Arrayable
+interface ArrayableInterface
 {
+    /**
+     * Get the instance as an array.
+     *
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Collection;
 use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
@@ -23,29 +22,23 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
     \request($responses)->post();
 
-    $sentRequests = Collection::make(\getSentHttpRequests());
-    $sentRequests->shift(); // Remove access token request
+    $sentRequests = \getSentHttpRequests();
+    \array_shift($sentRequests);
+    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = array_unique($idempotencyKeys);
 
-    $idempotencyKeys = $sentRequests
-        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
-        ->unique()
-        ->count();
-
-    \expect($idempotencyKeys)->toBe(1);
+    \expect(count($idempotencyKeys))->toBe(1);
 });
 
 \it('regenerates idempotency key on reuse error', function () {
     \request([ErrorResponse::idempotencyKeyReuse(), new Response(200)])->post();
 
-    $sentRequests = Collection::make(\getSentHttpRequests());
-    $sentRequests->shift(); // Remove access token request
+    $sentRequests = \getSentHttpRequests();
+    \array_shift($sentRequests);
+    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = array_unique($idempotencyKeys);
 
-    $idempotencyKeys = $sentRequests
-        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
-        ->unique()
-        ->count();
-
-    \expect($idempotencyKeys)->toBe(2);
+    \expect(count($idempotencyKeys))->toBe(2);
 });
 
 \it('regenerates idempotency key only once', function () {
@@ -81,15 +74,12 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
         ->requestOptions($requestOptions)
         ->post();
 
-    $sentRequests = Collection::make(\getSentHttpRequests());
-    $sentRequests->shift(); // Remove access token request
+    $sentRequests = \getSentHttpRequests();
+    \array_shift($sentRequests);
+    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = array_unique($idempotencyKeys);
 
-    $idempotencyKeys = $sentRequests
-        ->map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY))
-        ->unique()
-        ->count();
-
-    \expect($idempotencyKeys)->toBe(1);
+    \expect(count($idempotencyKeys))->toBe(1);
 });
 
 \it('does not retry on key reuse error', function () {

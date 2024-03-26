@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Arr;
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
@@ -17,13 +16,14 @@ use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Services\Util\Arr;
 
 \it('creates a merchant payment', function () {
     $helper = \paymentHelper();
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -169,17 +169,6 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
     \expect($fetched->getId())->toBeString();
 });
-
-\it('throws exception when creating payment with invalid user date of birth', function () {
-    $helper = \paymentHelper();
-
-    $helper->client()->payment()
-        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
-        ->amountInMinor(10)
-        ->currency('GBP')
-        ->user($helper->userWithDateOfBirth('invalid date'))
-        ->create();
-})->throws(TrueLayer\Exceptions\ValidationException::class);
 
 \it('creates payment with idempotency key', function () {
     $helper = \paymentHelper();

@@ -7,7 +7,6 @@ namespace TrueLayer\Interfaces\Payment;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
 
@@ -62,10 +61,9 @@ interface StartAuthorizationFlowRequestInterface extends HasAttributesInterface
     public function formInputTypes(array $types): StartAuthorizationFlowRequestInterface;
 
     /**
-     * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
      *
      * @return AuthorizationFlowResponseInterface
      */

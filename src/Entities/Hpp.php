@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities;
 
-use Illuminate\Support\Str;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\HppInterface;
+use TrueLayer\Services\Util\Str;
 
 final class Hpp extends Entity implements HppInterface
 {
@@ -56,19 +55,6 @@ final class Hpp extends Entity implements HppInterface
         'c_primary' => 'primary_colour',
         'c_secondary' => 'secondary_colour',
         'c_tertiary' => 'tertiary_colour',
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'base_url' => 'required|url',
-        'payment_id' => 'required|string',
-        'resource_token' => 'required|string',
-        'return_uri' => 'required|url',
-        'c_primary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
-        'c_secondary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
-        'c_tertiary' => 'regex:/^([0-9A-F]{3}){1,2}$/i',
     ];
 
     /**
@@ -212,13 +198,11 @@ final class Hpp extends Entity implements HppInterface
     }
 
     /**
-     * @throws ValidationException
-     *
      * @return string
      */
     public function toUrl(): string
     {
-        $params = $this->validate()->toArray();
+        $params = $this->toArray();
         unset($params['base_url']);
 
         return $this->baseUrl . '#' . \http_build_query(
@@ -227,8 +211,6 @@ final class Hpp extends Entity implements HppInterface
     }
 
     /**
-     * @throws ValidationException
-     *
      * @return string
      */
     public function __toString(): string

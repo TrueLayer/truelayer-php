@@ -22,13 +22,6 @@ class Configuration extends Entity implements ConfigurationInterface
     ];
 
     /**
-     * @var string[]
-     */
-    protected array $rules = [
-        'redirect.return_uri' => 'required_if:redirect.status,supported',
-    ];
-
-    /**
      * @return string|null
      */
     public function getRedirectReturnUri(): ?string

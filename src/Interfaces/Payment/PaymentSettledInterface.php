@@ -8,7 +8,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 
 interface PaymentSettledInterface extends PaymentRetrievedInterface
@@ -35,7 +34,6 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return RefundRequestInterface
      */
@@ -44,22 +42,20 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
     /**
      * @param string $refundId
      *
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundRetrievedInterface
      */
     public function getRefund(string $refundId): RefundRetrievedInterface;
 
     /**
-     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
+     * @throws ApiRequestJsonSerializationException
      *
      * @return RefundRetrievedInterface[]
      */

@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\AccountIdentifier;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\AccountIdentifier\IbanInterface;
@@ -16,7 +15,6 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
 {
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return ScanInterface
      */
@@ -27,7 +25,6 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return IbanInterface
      */
@@ -40,7 +37,6 @@ final class AccountIdentifierBuilder extends EntityBuilder implements AccountIde
      * @param mixed[] $data
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return AccountIdentifierInterface
      */

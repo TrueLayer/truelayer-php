@@ -6,7 +6,6 @@ namespace TrueLayer\Entities\Webhook;
 
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettledEventInterface;
-use TrueLayer\Validation\ValidType;
 
 class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInterface
 {
@@ -33,18 +32,6 @@ class PaymentSettledEvent extends PaymentEvent implements PaymentSettledEventInt
         return \array_merge_recursive(parent::casts(), [
             'settled_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return \array_merge(parent::rules(), [
-            'settled_at' => 'required|date',
-            'settlement_risk.category' => 'nullable|string',
-            'payment_source' => [ValidType::of(PaymentSourceInterface::class)],
         ]);
     }
 

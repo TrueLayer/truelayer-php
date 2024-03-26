@@ -22,16 +22,6 @@ final class PayoutCreated extends Entity implements PayoutCreatedInterface
     ];
 
     /**
-     * @return mixed[]
-     */
-    protected function rules(): array
-    {
-        return [
-            'id' => 'required|string',
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getId(): string

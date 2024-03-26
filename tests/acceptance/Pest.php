@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Str;
 use Symfony\Component\Dotenv\Dotenv;
 use TrueLayer\Client;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\Client\ClientInterface;
+use TrueLayer\Services\Util\Str;
 use TrueLayer\Tests\Acceptance\Payment\CreatePayment;
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../../.env');
 
 /**
+ * @return ClientInterface
  * @throws SignerException
  *
- * @return ClientInterface
  */
 function client(): ClientInterface
 {
@@ -29,9 +29,9 @@ function client(): ClientInterface
 }
 
 /**
+ * @return CreatePayment
  * @throws SignerException
  *
- * @return CreatePayment
  */
 function paymentHelper(): CreatePayment
 {
@@ -45,7 +45,7 @@ function bankAction(string $redirectUri, string $action): void
     $id = Str::before($id, '#token');
     $token = Str::after($redirectUri, '#token=');
 
-    $result = (new \GuzzleHttp\Client())->post("{$url}/api/single-immediate-payments/{$id}/action", [
+    $result = (new GuzzleHttp\Client())->post("{$url}/api/single-immediate-payments/{$id}/action", [
         'headers' => [
             'authorization' => "Bearer {$token}",
         ],

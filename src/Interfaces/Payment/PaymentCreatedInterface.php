@@ -8,7 +8,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
@@ -38,11 +37,10 @@ interface PaymentCreatedInterface extends ArrayableInterface
     /**
      * @param string $returnUri
      *
-     * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
-     * @throws ValidationException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return AuthorizationFlowAuthorizingInterface
      *
@@ -52,15 +50,14 @@ interface PaymentCreatedInterface extends ArrayableInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return StartAuthorizationFlowRequestInterface
      */
     public function authorizationFlow(): StartAuthorizationFlowRequestInterface;
 
     /**
-     * @throws ApiResponseUnsuccessfulException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return PaymentRetrievedInterface
      */

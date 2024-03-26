@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Beneficiary;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Exceptions\ValidationException;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 
 interface BeneficiaryBuilderInterface
@@ -28,7 +27,6 @@ interface BeneficiaryBuilderInterface
      * @param mixed[] $data
      *
      * @throws InvalidArgumentException
-     * @throws ValidationException
      *
      * @return BeneficiaryInterface
      */
