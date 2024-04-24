@@ -96,9 +96,9 @@ class ProviderFilter extends Entity implements ProviderFilterInterface
     /**
      * @return array|string[]
      */
-    public function getExcludesProviderIds(): array
+    public function getExcludesProviderIds(): ?array
     {
-        return $this->excludesProviderIds ?? [];
+        return $this->excludesProviderIds ?? null;
     }
 
     /**
