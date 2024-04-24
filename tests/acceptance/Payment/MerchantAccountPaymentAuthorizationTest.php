@@ -208,3 +208,39 @@ use TrueLayer\Services\Util\Arr;
     \expect($payment1)->not->toBe($payment3);
     \expect($payment2)->not->toBe($payment3);
 });
+
+\it('creates payment without excluded provider ids', function () {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $filter = $helper->client()->providerFilter()
+        ->countries([\TrueLayer\Constants\Countries::ES])
+        ->releaseChannel(\TrueLayer\Constants\ReleaseChannels::GENERAL_AVAILABILITY);
+
+    $providerSelection = $helper->client()->providerSelection()
+        ->userSelected()
+        ->filter($filter);
+
+    $paymentMethod = $helper->client()->paymentMethod()->bankTransfer()
+        ->beneficiary($helper->merchantBeneficiary($account))
+        ->providerSelection($providerSelection);
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user(), $account->getCurrency()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getId())->toBeString();
+    \expect($created->getResourceToken())->toBeString();
+    \expect($created->getUserId())->toBeString();
+
+    $paymentMethod = $created->getDetails()->getPaymentMethod();
+    \expect($paymentMethod)->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
+    \expect($paymentMethod->getBeneficiary()->getReference())->toBe('TEST');
+
+    return $created;
+})->only();
