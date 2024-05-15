@@ -49,6 +49,11 @@ return [
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
 
+    Interfaces\Scheme\SchemeSelectionBuilderInterface::class => Entities\Provider\SchemeSelection\SchemeSelectionBuilder::class,
+    Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantOnlySchemeSelection::class,
+    Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantPreferredSchemeSelection::class,
+    Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\UserSelectedSchemeSelection::class,
+
     Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
     Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
     Interfaces\AccountIdentifier\ScanDetailsInterface::class => Entities\AccountIdentifier\Iban::class,

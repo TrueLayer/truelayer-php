@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Psr7\Response;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\AccountIdentifier\BbanDetailsInterface;
@@ -20,7 +21,13 @@ use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
+use TrueLayer\Interfaces\Scheme\InstantOnlySchemeSelectionInterface;
+use TrueLayer\Interfaces\Scheme\InstantPreferredSchemeSelectionInterface;
+use TrueLayer\Interfaces\Scheme\InstantSchemeSelectionInterface;
+use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 function assertPaymentCommon(PaymentRetrievedInterface $payment)
@@ -266,3 +273,39 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
     \expect($payment->getAuthorizationFlowConfig())->toBeNull();
 });
+
+\it('handles payment with scheme selection', function (Response $mockResponse, string $expectedType, string $expectedTypeValue, bool $expectedAllowedRemitterFee = null) {
+    /** @var BankTransferPaymentMethodInterface $method */
+    $method = \client($mockResponse)->getPayment('1')->getPaymentMethod();
+
+    /** @var UserSelectedProviderSelectionInterface $selection */
+    $providerSelection = $method->getProviderSelection();
+    $schemeSelection = $providerSelection->getSchemeSelection();
+
+
+    \expect($schemeSelection)->toBeInstanceOf($expectedType);
+    \expect($schemeSelection->getType())->toBe($expectedTypeValue);
+    if ($expectedAllowedRemitterFee !== null) {
+        /** @var InstantSchemeSelectionInterface $selection */
+        $selection = $schemeSelection;
+        \expect($selection->getAllowRemitterFee())->toBe($expectedAllowedRemitterFee);
+    }
+})->with([
+    'user selected' => [
+        'response' => PaymentResponse::executedWithUserSelectedSchemeSelection(),
+        'expectedType' => UserSelectedSchemeSelectionInterface::class,
+        'expectedTypeValue' => 'user_selected',
+    ],
+    'instant only' => [
+        'response' => PaymentResponse::executedWithInstantOnlySchemeSelection(),
+        'expectedType' => InstantOnlySchemeSelectionInterface::class,
+        'expectedTypeValue' => 'instant_only',
+        'expectedAllowedRemitterFee' => true,
+    ],
+    'instant preferred' => [
+        'response' => PaymentResponse::executedWithInstantPreferredSchemeSelection(),
+        'expectedType' => InstantPreferredSchemeSelectionInterface::class,
+        'expectedTypeValue' => 'instant_preferred',
+        'expectedAllowedRemitterFee' => true,
+    ]
+]);

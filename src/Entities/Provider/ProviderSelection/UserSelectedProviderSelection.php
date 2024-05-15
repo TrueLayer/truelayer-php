@@ -8,6 +8,7 @@ use TrueLayer\Constants\ProviderSelectionTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
+use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 
 final class UserSelectedProviderSelection extends Entity implements UserSelectedProviderSelectionInterface
 {
@@ -17,10 +18,16 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
     protected ProviderFilterInterface $filter;
 
     /**
+     * @var SchemeSelectionInterface
+     */
+    protected SchemeSelectionInterface $schemeSelection;
+
+    /**
      * @var mixed[]
      */
     protected array $casts = [
         'filter' => ProviderFilterInterface::class,
+        'scheme_selection' => SchemeSelectionInterface::class,
     ];
 
     /**
@@ -29,6 +36,7 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
     protected array $arrayFields = [
         'type',
         'filter',
+        'scheme_selection'
     ];
 
     /**
@@ -48,6 +56,24 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
     {
         $this->filter = $filter;
 
+        return $this;
+    }
+
+    /**
+     * @return SchemeSelectionInterface|null
+     */
+    public function getSchemeSelection(): ?SchemeSelectionInterface
+    {
+        return $this->schemeSelection ?? null;
+    }
+
+    /**
+     * @param SchemeSelectionInterface $schemeSelection
+     * @return $this
+     */
+    public function schemeSelection(SchemeSelectionInterface $schemeSelection): self
+    {
+        $this->schemeSelection = $schemeSelection;
         return $this;
     }
 
