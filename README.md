@@ -227,9 +227,43 @@ $address = $client->user()
 
 ### 3. Creating a payment method
 
+You can create a bank transfer payment method with minimal configuration:
+
 ```php
 $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->beneficiary($beneficiary);
+```
+
+Optionally, you can filter the providers that will be returned in the authorisation flow:
+
+```php
+use TrueLayer\Constants\Countries;
+use TrueLayer\Constants\CustomerSegments;
+use TrueLayer\Constants\ReleaseChannels;
+
+// You can filter the providers that will be returned:
+$filter = $client->providerFilter()
+    ->countries([Countries::GB, Countries::ES])
+    ->customerSegments([CustomerSegments::RETAIL, CustomerSegments::CORPORATE])
+    ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
+    ->excludesProviderIds(['provider-id'])
+
+// You can also filter providers by the schemes they support:
+$schemeSelection = $client->schemeSelection()->userSelected(); // Let the user select. You must provide your own UI for this.
+$schemeSelection = $client->schemeSelection()->instantOnly(); // Only allow providers that support instant payments
+$schemeSelection = $client->schemeSelection()->instantPreferred(); // Prefer providers that allow instant payments, but allow defaulting back to non-instant payments if unavailable.
+
+// For instant only and instant preferred, you can also allow or disallow remitter fees:
+$schemeSelection->allowRemitterFee(true); // Unless explicitly set, this will default to false.
+
+// Create the provider selection configuration
+$providerSelection = $client->providerSelection()->userSelected()
+    ->filter($filter)
+    ->schemeSelection($schemeSelection);
+
+// Create the payment method
+$paymentMethod = $client->paymentMethod()->bankTransfer()
+    ->providerSelection($providerSelection);
 ```
 
 <a name="creating-the-payment"></a>

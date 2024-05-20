@@ -29,6 +29,14 @@ class CreatePayment
     }
 
     /**
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface
+    {
+        return $this->client;
+    }
+
+    /**
      * @return ExternalAccountBeneficiaryInterface
      */
     public function sortCodeBeneficiary(): ExternalAccountBeneficiaryInterface
@@ -117,7 +125,7 @@ class CreatePayment
     }
 
     /**
-     * @param UserInterface          $user
+     * @param UserInterface $user
      * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface

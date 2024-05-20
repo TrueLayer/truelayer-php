@@ -243,4 +243,4 @@ use TrueLayer\Services\Util\Arr;
     \expect($paymentMethod->getBeneficiary()->getReference())->toBe('TEST');
 
     return $created;
-})->only();
+});

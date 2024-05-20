@@ -10,6 +10,7 @@ use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
 use TrueLayer\Constants\RefundStatus;
+use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Constants\WebhookEventTypes;
 use TrueLayer\Interfaces;
 
@@ -53,6 +54,12 @@ return [
     Interfaces\Provider\ProviderSelectionInterface::class => [
         'discriminate_on' => 'type',
         PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
+    ],
+    Interfaces\Scheme\SchemeSelectionInterface::class => [
+        'discriminate_on' => 'type',
+        SchemeSelectionTypes::INSTANT_ONLY => Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class,
+        SchemeSelectionTypes::INSTANT_PREFERRED => Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class,
+        SchemeSelectionTypes::USER_SELECTED => Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class,
     ],
     Interfaces\Payout\PayoutBeneficiaryInterface::class => [
         'discriminate_on' => 'type',
