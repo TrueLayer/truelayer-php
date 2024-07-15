@@ -37,11 +37,34 @@ use TrueLayer\Services\Util\Arr;
     \expect($created->getResourceToken())->toBeString();
     \expect($created->getUserId())->toBeString();
 
+    /** @var BankTransferPaymentMethodInterface $paymentMethod */
     $paymentMethod = $created->getDetails()->getPaymentMethod();
     \expect($paymentMethod)->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
     \expect($paymentMethod->getBeneficiary()->getReference())->toBe('TEST');
+    \expect($paymentMethod->isPaymentRetryEnabled())->toBe(false);
 
     return $created;
+});
+
+\it('creates a merchant payment with retry enabled', function () {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account);
+
+    $created = $helper->create(
+        $helper->bankTransferMethod($merchantBeneficiary)->enablePaymentRetry(), $helper->user(), $account->getCurrency()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+
+    /** @var BankTransferPaymentMethodInterface $paymentMethod */
+    $paymentMethod = $created->getDetails()->getPaymentMethod();
+    \expect($paymentMethod->isPaymentRetryEnabled())->toBe(true);
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {

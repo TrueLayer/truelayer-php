@@ -266,6 +266,14 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->providerSelection($providerSelection);
 ```
 
+You can also enable payment retries, but make sure you can handle the `attempt_failed` payment status beforehand:
+
+```php
+$paymentMethod = $client->paymentMethod()->bankTransfer()
+    ->enablePaymentRetry()
+    ->beneficiary($beneficiary);
+```
+
 <a name="creating-the-payment"></a>
 
 ### 4. Creating the payment

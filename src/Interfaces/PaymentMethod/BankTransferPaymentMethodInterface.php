@@ -32,4 +32,14 @@ interface BankTransferPaymentMethodInterface extends PaymentMethodInterface
      * @return ProviderSelectionInterface
      */
     public function getProviderSelection(): ProviderSelectionInterface;
+
+    /**
+     * @return BankTransferPaymentMethodInterface
+     */
+    public function enablePaymentRetry(): BankTransferPaymentMethodInterface;
+
+    /**
+     * @return bool
+     */
+    public function isPaymentRetryEnabled(): bool;
 }
