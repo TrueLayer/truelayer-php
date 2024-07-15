@@ -282,9 +282,9 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     $providerSelection = $method->getProviderSelection();
     $schemeSelection = $providerSelection->getSchemeSelection();
 
-
     \expect($schemeSelection)->toBeInstanceOf($expectedType);
     \expect($schemeSelection->getType())->toBe($expectedTypeValue);
+
     if ($expectedAllowedRemitterFee !== null) {
         /** @var InstantSchemeSelectionInterface $selection */
         $selection = $schemeSelection;
@@ -309,3 +309,16 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
         'expectedAllowedRemitterFee' => true,
     ]
 ]);
+
+it('handles retry field correctly - empty object serialisation', function () {
+    $payment1 = \client(PaymentResponse::authorizationRequiredWithRetryField())->getPayment('1');
+    /** @var BankTransferPaymentMethodInterface $method */
+    $method1 = $payment1->getPaymentMethod();
+
+    $payment2 = \client(PaymentResponse::authorizationRequired())->getPayment('1');
+    /** @var BankTransferPaymentMethodInterface $method */
+    $method2 = $payment2->getPaymentMethod();
+
+    expect($method1->isPaymentRetryEnabled())->toBe(true);
+    expect($method2->isPaymentRetryEnabled())->toBe(false);
+});

@@ -54,6 +54,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 ],
                 'scheme_selection' => null,
             ],
+            'retry' => null,
         ],
     ]);
 });
@@ -201,6 +202,24 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'date_of_birth' => '2024-01-01',
         ],
     ]);
+});
+
+\it('does not send retry field', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+    $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    $payload = json_decode(\getRequestPayload(1, false), false);
+    expect($payload->payment_method->retry)->toBeNull();
+});
+
+\it('sends retry field', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+    $method = $factory->bankTransferMethod($factory->sortCodeBeneficiary())->enablePaymentRetry();
+    $factory->payment($factory->newUser(), $method)->create();
+
+    $payload = json_decode(\getRequestPayload(1, false), false);
+
+    expect($payload->payment_method->retry)->toBeInstanceOf(stdClass::class);
 });
 
 \it('parses payment creation response correctly', function () {
