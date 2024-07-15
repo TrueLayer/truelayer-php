@@ -93,4 +93,5 @@ class PaymentResponse
     {
         return new Response(200, [], '{"id":"401cfaa1-8d44-4306-a2f9-a0a6e365f570","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"7ed73602-c8bc-4b2f-8a96-9490a6ea5983"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-06T22:25:43.899669Z","status":"failed","authorization_flow":{"configuration":{"provider_selection":{},"redirect":{"return_uri":"https://penny.t7r.dev/redirect/v3"}}},"failed_at":"2022-02-06T22:26:48.849469Z","failure_stage":"authorizing","failure_reason":"authorization_failed"}');
     }
+
 }
