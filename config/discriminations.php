@@ -23,6 +23,7 @@ return [
         PaymentStatus::EXECUTED => Interfaces\Payment\PaymentExecutedInterface::class,
         PaymentStatus::SETTLED => Interfaces\Payment\PaymentSettledInterface::class,
         PaymentStatus::FAILED => Interfaces\Payment\PaymentFailedInterface::class,
+        PaymentStatus::ATTEMPT_FAILED => Interfaces\Payment\PaymentAttemptFailedInterface::class,
     ],
     Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface::class => [
         'discriminate_on' => 'status',

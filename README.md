@@ -25,8 +25,9 @@
         4. [Executed Status](#status-executed)
         5. [Settled Status](#status-settled)
         6. [Failed Status](#status-failed)
-        7. [Authorization flow config](#auth-flow-config)
-        8. [Source of funds](#source-of-funds)
+        7. [Attempt Failed Status](#status-attempt-failed)
+        8. [Authorization flow config](#auth-flow-config)
+        9. [Source of funds](#source-of-funds)
 7. [Authorizing a payment](#authorizing-payment)
 8. [Refunds](#refunds)
 9. [Payouts](#payouts)
@@ -418,7 +419,8 @@ $payment->isAuthorizing();
 $payment->isAuthorized(); // Will also return false when the payment has progressed to executed, failed or settled states.
 $payment->isExecuted(); // Will also return false when the payment has progressed to failed or settled states.
 $payment->isSettled(); 
-$payment->isFailed();
+$payment->isFailed(); // Payment has failed
+$payment->isAttemptFailed(); // Payment attempt has failed, only available if payment retries are enabled.
 ```
 
 Or you can get the status as a string and compare it to the provided constants in `PaymentStatus`:
@@ -580,6 +582,23 @@ if ($payment instanceof PaymentSettledInterface) {
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 
 if ($payment instanceof PaymentFailedInterface) {
+    $payment->getFailedAt(); // The date and time the payment failed at
+    $payment->getFailureStage(); // The status the payment was when it failed, one of `authorization_required`, `authorizing` or `authorized`
+    $payment->getFailureReason(); // The reason the payment failed. Handle unexpected values gracefully as an unknown failure.
+    $payment->getAuthorizationFlowConfig(); // see authorization flow config
+}
+```
+
+<a name="status-attempt-failed"></a>
+
+### Attempt Failed Status
+
+> Status only available when you enable payment retries.
+
+```php
+use TrueLayer\Interfaces\Payment\PaymentAttemptFailedInterface;
+
+if ($payment instanceof PaymentAttemptFailedInterface) {
     $payment->getFailedAt(); // The date and time the payment failed at
     $payment->getFailureStage(); // The status the payment was when it failed, one of `authorization_required`, `authorizing` or `authorized`
     $payment->getFailureReason(); // The reason the payment failed. Handle unexpected values gracefully as an unknown failure.

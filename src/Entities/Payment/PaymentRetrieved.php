@@ -180,6 +180,14 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     /**
      * @return bool
      */
+    public function isAttemptFailed(): bool
+    {
+        return $this->getStatus() === PaymentStatus::ATTEMPT_FAILED;
+    }
+
+    /**
+     * @return bool
+     */
     public function isSettled(): bool
     {
         return $this->getStatus() === PaymentStatus::SETTLED;

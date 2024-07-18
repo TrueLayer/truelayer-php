@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 
-use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
@@ -37,13 +36,5 @@ class ProviderSelectionAction extends Action implements ProviderSelectionActionI
     public function getProviders(): array
     {
         return $this->providers;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return AuthorizationFlowActionTypes::PROVIDER_SELECTION;
     }
 }

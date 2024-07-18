@@ -11,5 +11,6 @@ class PaymentStatus
     public const AUTHORIZED = 'authorized';
     public const EXECUTED = 'executed';
     public const FAILED = 'failed';
+    public const ATTEMPT_FAILED = 'attempt_failed';
     public const SETTLED = 'settled';
 }

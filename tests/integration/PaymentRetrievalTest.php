@@ -13,6 +13,7 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActio
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
+use TrueLayer\Interfaces\Payment\PaymentAttemptFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
@@ -254,6 +255,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(true);
+    \expect($payment->isAttemptFailed())->toBe(false);
     \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:26:48.849469Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
@@ -262,6 +264,26 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
         'metadata_key_2' => 'metadata_value_2',
         'metadata_key_3' => 'metadata_value_3',
     ]);
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment attempt failed', function () {
+    /** @var PaymentAttemptFailedInterface $payment */
+    $payment = \client(PaymentResponse::attemptFailed())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentAttemptFailedInterface::class);
+    \expect($payment->getAuthorizationFlowConfig())->toBeInstanceOf(ConfigurationInterface::class);
+    \expect($payment->isAuthorizationRequired())->toBe(false);
+    \expect($payment->isAuthorizing())->toBe(false);
+    \expect($payment->isAuthorized())->toBe(false);
+    \expect($payment->isExecuted())->toBe(false);
+    \expect($payment->isSettled())->toBe(false);
+    \expect($payment->isFailed())->toBe(false);
+    \expect($payment->isAttemptFailed())->toBe(true);
+    \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:26:48.849469Z');
+    \expect($payment->getFailureStage())->toBe('authorizing');
+    \expect($payment->getFailureReason())->toBe('authorization_failed');
 
     \assertPaymentCommon($payment);
 });

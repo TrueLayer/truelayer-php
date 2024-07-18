@@ -5,12 +5,27 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
+use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ActionInterface;
 
-abstract class Action extends Entity implements ActionInterface
+class Action extends Entity implements ActionInterface
 {
+    /**
+     * @var string
+     */
+    protected string $type;
+
+    /**
+     * @var string[]
+     */
+    protected array $arrayFields = [
+        'type',
+    ];
+
     /**
      * @return string
      */
-    abstract public function getType(): string;
+    public function getType(): string
+    {
+        return $this->type;
+    }
 }
