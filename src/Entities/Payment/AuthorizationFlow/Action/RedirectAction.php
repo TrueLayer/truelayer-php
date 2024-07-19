@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 
-use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Entities\Payment\AuthorizationFlow\Action;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
@@ -43,14 +42,6 @@ class RedirectAction extends Action implements RedirectActionInterface
     public function getUri(): string
     {
         return $this->uri;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return AuthorizationFlowActionTypes::REDIRECT;
     }
 
     /**

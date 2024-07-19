@@ -8,4 +8,8 @@ use TrueLayer\Interfaces\ArrayableInterface;
 
 interface ActionInterface extends ArrayableInterface
 {
+    /**
+     * @return string
+     */
+    public function getType(): string;
 }

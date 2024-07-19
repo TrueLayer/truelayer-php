@@ -5,10 +5,12 @@ declare(strict_types=1);
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
+use TrueLayer\Constants\Endpoints;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
+use TrueLayer\Interfaces\Payment\PaymentAttemptFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
@@ -44,27 +46,6 @@ use TrueLayer\Services\Util\Arr;
     \expect($paymentMethod->isPaymentRetryEnabled())->toBe(false);
 
     return $created;
-});
-
-\it('creates a merchant payment with retry enabled', function () {
-    $helper = \paymentHelper();
-
-    $account = Arr::first(
-        $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
-    );
-
-    $merchantBeneficiary = $helper->merchantBeneficiary($account);
-
-    $created = $helper->create(
-        $helper->bankTransferMethod($merchantBeneficiary)->enablePaymentRetry(), $helper->user(), $account->getCurrency()
-    );
-
-    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
-
-    /** @var BankTransferPaymentMethodInterface $paymentMethod */
-    $paymentMethod = $created->getDetails()->getPaymentMethod();
-    \expect($paymentMethod->isPaymentRetryEnabled())->toBe(true);
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {
@@ -266,4 +247,47 @@ use TrueLayer\Services\Util\Arr;
     \expect($paymentMethod->getBeneficiary()->getReference())->toBe('TEST');
 
     return $created;
+});
+
+\it('handles a merchant payment with retry enabled', function () {
+    $helper = \paymentHelper();
+    $client = $helper->client();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account);
+    $paymentMethod = $helper->bankTransferMethod($merchantBeneficiary)->enablePaymentRetry();
+    $created = $helper->create($paymentMethod, $helper->user(), $account->getCurrency());
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+
+    /** @var BankTransferPaymentMethodInterface $paymentMethod */
+    $paymentMethod = $created->getDetails()->getPaymentMethod();
+    \expect($paymentMethod->isPaymentRetryEnabled())->toBe(true);
+
+    $payload = $client->paymentAuthorizationFlow($created)
+        ->returnUri('https://console.truelayer.com/redirect-page')
+        ->enableProviderSelection()
+        ->toArray();
+    $payload['retry'] = new stdClass();
+
+    $client->getApiClient()->request()
+        ->payload($payload)
+        ->uri(\str_replace('{id}', $created->getId(), Endpoints::PAYMENTS_START_AUTH_FLOW))
+        ->post();
+
+    $client->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+
+    /** @var RedirectActionInterface $next */
+    $next = $created->getDetails()->getAuthorizationFlowNextAction();
+    \bankAction($next->getUri(), 'RejectExecution');
+    \sleep(20);
+
+    /** @var PaymentAttemptFailedInterface $retrievedPayment */
+    $retrievedPayment = $created->getDetails();
+    expect($retrievedPayment)->toBeInstanceOf(PaymentAttemptFailedInterface::class);
+    expect($retrievedPayment->getPaymentMethod()->isPaymentRetryEnabled())->toBe(true);
 });

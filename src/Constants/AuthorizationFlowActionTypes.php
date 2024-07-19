@@ -9,4 +9,5 @@ class AuthorizationFlowActionTypes
     public const PROVIDER_SELECTION = 'provider_selection';
     public const REDIRECT = 'redirect';
     public const WAIT = 'wait';
+    public const RETRY = 'retry';
 }

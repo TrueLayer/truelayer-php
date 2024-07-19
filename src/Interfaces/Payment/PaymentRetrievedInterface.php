@@ -77,5 +77,10 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     /**
      * @return bool
      */
+    public function isAttemptFailed(): bool;
+
+    /**
+     * @return bool
+     */
     public function isSettled(): bool;
 }
