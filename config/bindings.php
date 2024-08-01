@@ -48,6 +48,7 @@ return [
 
     Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
     Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
+    Interfaces\Provider\PreselectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\PreselectedProviderSelection::class,
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
 
@@ -55,6 +56,7 @@ return [
     Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantOnlySchemeSelection::class,
     Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantPreferredSchemeSelection::class,
     Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\UserSelectedSchemeSelection::class,
+    Interfaces\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\PreselectedSchemeSelection::class,
 
     Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
     Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,

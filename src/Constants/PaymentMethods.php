@@ -11,4 +11,6 @@ class PaymentMethods
     public const MANDATE = 'mandate';
 
     public const PROVIDER_TYPE_USER_SELECTION = 'user_selected';
+
+    public const PROVIDER_TYPE_PRESELECTED = 'preselected';
 }

@@ -29,4 +29,9 @@ interface SchemeSelectionBuilderInterface
      * @return UserSelectedSchemeSelectionInterface
      */
     public function userSelected(): UserSelectedSchemeSelectionInterface;
+
+    /*
+     * @return PreselectedSchemeSelectionInterface
+     */
+    public function preselected(): PreselectedSchemeSelectionInterface;
 }

@@ -10,4 +10,9 @@ interface ProviderSelectionBuilderInterface
      * @return UserSelectedProviderSelectionInterface
      */
     public function userSelected(): UserSelectedProviderSelectionInterface;
+
+    /*
+     * @return PreselectedProviderSelectionInterface;
+     */
+    public function preselected(): PreselectedProviderSelectionInterface;
 }
