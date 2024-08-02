@@ -33,6 +33,7 @@ use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
+use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -150,6 +151,15 @@ final class Client implements ClientInterface
     public function schemeSelection(): SchemeSelectionBuilderInterface
     {
         return $this->entityFactory->make(SchemeSelectionBuilderInterface::class);
+    }
+
+    /**
+     * @return RemitterInterface
+     * @throws InvalidArgumentException
+     */
+    public function remitter(): RemitterInterface
+    {
+        return $this->entityFactory->make(RemitterInterface::class);
     }
 
     /**

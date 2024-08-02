@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
+use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -68,6 +69,11 @@ interface ClientInterface
      * @return SchemeSelectionBuilderInterface
      */
     public function schemeSelection(): SchemeSelectionBuilderInterface;
+
+    /**
+     * @return RemitterInterface
+     */
+    public function remitter(): RemitterInterface;
 
     /**
      * @return ProviderFilterInterface

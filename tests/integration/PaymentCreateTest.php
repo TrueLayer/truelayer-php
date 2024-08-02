@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\Countries;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
@@ -53,6 +54,72 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                     ],
                 ],
                 'scheme_selection' => null,
+            ],
+            'retry' => null,
+        ],
+    ]);
+});
+
+\it('sends correct payload on creation with preselected provider', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $ibanAccountIdentifier = $factory->getClient()
+        ->accountIdentifier()
+        ->iban()
+        ->iban('mock_iban');
+
+    $remitter = $factory->getClient()
+        ->remitter()
+        ->accountHolderName('John Doe')
+        ->accountIdentifier($ibanAccountIdentifier);
+
+    $selection = $factory->getClient()
+        ->providerSelection()
+        ->preselected()
+        ->providerId("mock-payments-gb-redirect")
+        ->remitter($remitter)
+        ->dataAccessToken('mock_access_token');
+
+    $paymentMethod = $factory->getClient()
+        ->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($factory->sortCodeBeneficiary())
+        ->providerSelection($selection);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
+        'payment_method' => [
+            'type' => PaymentMethods::BANK_TRANSFER,
+            'beneficiary' => [
+                'account_identifier' => [
+                    'account_number' => '12345678',
+                    'sort_code' => '010203',
+                    'type' => 'sort_code_account_number',
+                ],
+                'reference' => 'The ref',
+                'account_holder_name' => 'John Doe',
+                'type' => 'external_account',
+            ],
+            'provider_selection' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
+                'provider_id' => 'mock-payments-gb-redirect',
+                'scheme_selection' => null,
+                'remitter' => [
+                    'account_holder_name' => 'John Doe',
+                    'account_identifier' => [
+                        'type' => AccountIdentifierTypes::IBAN,
+                        'iban' => 'mock_iban',
+                    ]
+                ],
+                'data_access_token' => 'mock_access_token',
             ],
             'retry' => null,
         ],
@@ -293,3 +360,55 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ],
 ]);
 
+\it('sends provider preselected scheme selection', function (SchemeSelectionInterface $schemeSelection, array $expected) {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $providerSelection = $factory->getClient()
+        ->providerSelection()
+        ->preselected()
+        ->schemeSelection($schemeSelection);
+
+    $paymentMethod = $factory->getClient()->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($factory->sortCodeBeneficiary())
+        ->providerSelection($providerSelection);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1)['payment_method']['provider_selection'])->toMatchArray([
+        'scheme_selection' => $expected
+    ]);
+})->with([
+    'user selected' => [
+        'scheme' => fn() => \client()->schemeSelection()->userSelected(),
+        'expected' => ['type' => 'user_selected']
+    ],
+    'instant only: default remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantOnly(),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+    ],
+    'instant only: no remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+    ],
+    'instant only: allow remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true]
+    ],
+    'instant preferred: default remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+    ],
+    'instant preferred: no remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+    ],
+    'instant preferred: allow remitter fee' => [
+        'scheme' => fn() => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true]
+    ],
+    'preselected' => [
+        'scheme' => fn() => \client()->schemeSelection()->preselected(),
+        'expected' => ['type' => 'preselected']
+    ],
+]);
