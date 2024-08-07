@@ -78,11 +78,6 @@ return [
     Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
 
     Interfaces\Remitter\RemitterInterface::class => Entities\Remitter\Remitter::class,
-    Interfaces\Remitter\RemitterAccountIdentifierBuilderInterface::class => Entities\Remitter\RemitterAccountIdentifierBuilder::class,
-    Interfaces\Remitter\IbanRemitterInterface::class => Entities\Remitter\IbanRemitter::class,
-    Interfaces\Remitter\BbanRemitterInterface::class => Entities\Remitter\BbanRemitter::class,
-    Interfaces\Remitter\ScanRemitterInterface::class => Entities\Remitter\ScanRemitter::class,
-    Interfaces\Remitter\NrbRemitterInterface::class => Entities\Remitter\NrbRemitter::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 
