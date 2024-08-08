@@ -83,8 +83,9 @@ class CreatePayment
             ->accountIdentifier(
                 $this->client()
                     ->accountIdentifier()
-                    ->iban()
-                    ->iban('GB53CLRB04066200002723')
+                    ->sortCodeAccountNumber()
+                    ->accountNumber('12345678')
+                    ->sortCode('010203')
             )
             ->accountHolderName('John Doe');
     }

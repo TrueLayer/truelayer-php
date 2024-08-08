@@ -49,14 +49,17 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     return $created;
 });
 
-\it('creates an payment with a preselected provider', function () {
+\it('creates a payment with a preselected provider', function () {
     $helper = \paymentHelper();
 
-    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
-        ->providerSelection($helper->providerSelectionPreselected());
+    $paymentMethod = $helper->bankTransferMethod($helper->sortCodeBeneficiary())
+        ->providerSelection(
+            $helper->providerSelectionPreselected()
+                ->schemeSelection($helper->schemeSelection(SchemeSelectionTypes::PRESELECTED))
+        );
 
     $created = $helper->create(
-        $paymentMethod, $helper->user(), 'GBP'
+        $paymentMethod, $helper->user()
     );
 
     \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
@@ -70,17 +73,18 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     ]);
 });
 
-\it('creates an payment with a preselected provider and remitter set', function () {
+\it('creates a payment with a preselected provider and remitter set', function () {
     $helper = \paymentHelper();
 
     $providerSelection = $helper->providerSelectionPreselected()
-        ->remitter($helper->remitter());
+        ->remitter($helper->remitter())
+        ->schemeSelection($helper->schemeSelection(SchemeSelectionTypes::PRESELECTED));
 
-    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
+    $paymentMethod = $helper->bankTransferMethod($helper->sortCodeBeneficiary())
         ->providerSelection($providerSelection);
 
     $created = $helper->create(
-        $paymentMethod, $helper->user(), 'GBP'
+        $paymentMethod, $helper->user()
     );
 
     \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
@@ -94,7 +98,7 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     ]);
 });
 
-\it('creates an payment with a preselected provider and preselected scheme', function () {
+\it('creates a payment with a preselected provider and preselected scheme', function () {
     $helper = \paymentHelper();
 
     $schemeSelection = $helper->schemeSelection(SchemeSelectionTypes::PRESELECTED);
@@ -102,11 +106,11 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     $providerSelection = $helper->providerSelectionPreselected()
         ->schemeSelection($schemeSelection);
 
-    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
+    $paymentMethod = $helper->bankTransferMethod($helper->sortCodeBeneficiary())
         ->providerSelection($providerSelection);
 
     $created = $helper->create(
-        $paymentMethod, $helper->user(), 'GBP'
+        $paymentMethod, $helper->user()
     );
 
     \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
