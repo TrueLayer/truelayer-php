@@ -76,7 +76,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $selection = $factory->getClient()
         ->providerSelection()
         ->preselected()
-        ->providerId("mock-payments-gb-redirect")
+        ->providerId('mock-payments-gb-redirect')
         ->remitter($remitter)
         ->dataAccessToken('mock_access_token');
 
@@ -125,6 +125,131 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         ],
     ]);
 });
+
+\it('ensures preselected provider data access token is optional', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $ibanAccountIdentifier = $factory->getClient()
+        ->accountIdentifier()
+        ->iban()
+        ->iban('mock_iban');
+
+    $remitter = $factory->getClient()
+        ->remitter()
+        ->accountHolderName('John Doe')
+        ->accountIdentifier($ibanAccountIdentifier);
+
+    $selection = $factory->getClient()
+        ->providerSelection()
+        ->preselected()
+        ->providerId('mock-payments-gb-redirect')
+        ->remitter($remitter);
+
+    $paymentMethod = $factory->getClient()
+        ->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($factory->sortCodeBeneficiary())
+        ->providerSelection($selection);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
+        'payment_method' => [
+            'type' => PaymentMethods::BANK_TRANSFER,
+            'beneficiary' => [
+                'account_identifier' => [
+                    'account_number' => '12345678',
+                    'sort_code' => '010203',
+                    'type' => 'sort_code_account_number',
+                ],
+                'reference' => 'The ref',
+                'account_holder_name' => 'John Doe',
+                'type' => 'external_account',
+            ],
+            'provider_selection' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
+                'provider_id' => 'mock-payments-gb-redirect',
+                'scheme_selection' => null,
+                'remitter' => [
+                    'account_holder_name' => 'John Doe',
+                    'account_identifier' => [
+                        'type' => AccountIdentifierTypes::IBAN,
+                        'iban' => 'mock_iban',
+                    ]
+                ],
+                'data_access_token' => null,
+            ],
+            'retry' => null,
+        ],
+    ]);
+});
+
+\it('ensures preselected provider remitter is optional', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $ibanAccountIdentifier = $factory->getClient()
+        ->accountIdentifier()
+        ->iban()
+        ->iban('mock_iban');
+
+    $remitter = $factory->getClient()
+        ->remitter()
+        ->accountHolderName('John Doe')
+        ->accountIdentifier($ibanAccountIdentifier);
+
+    $selection = $factory->getClient()
+        ->providerSelection()
+        ->preselected()
+        ->providerId('mock-payments-gb-redirect')
+        ->dataAccessToken('mock-token');
+
+    $paymentMethod = $factory->getClient()
+        ->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($factory->sortCodeBeneficiary())
+        ->providerSelection($selection);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
+        'payment_method' => [
+            'type' => PaymentMethods::BANK_TRANSFER,
+            'beneficiary' => [
+                'account_identifier' => [
+                    'account_number' => '12345678',
+                    'sort_code' => '010203',
+                    'type' => 'sort_code_account_number',
+                ],
+                'reference' => 'The ref',
+                'account_holder_name' => 'John Doe',
+                'type' => 'external_account',
+            ],
+            'provider_selection' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
+                'provider_id' => 'mock-payments-gb-redirect',
+                'scheme_selection' => null,
+                'remitter' => null,
+                'data_access_token' => 'mock-token',
+            ],
+            'retry' => null,
+        ],
+    ]);
+});
+
 
 \it('sends correct user payload on creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created(), PaymentResponse::created()]);
@@ -408,7 +533,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true]
     ],
     'preselected' => [
-        'scheme' => fn() => \client()->schemeSelection()->preselected(),
-        'expected' => ['type' => 'preselected']
+        'scheme' => fn() => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service']
     ],
 ]);

@@ -6,6 +6,7 @@ use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\FormInputTypes;
+use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
@@ -46,6 +47,77 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     ]);
 
     return $created;
+});
+
+\it('creates an payment with a preselected provider', function () {
+    $helper = \paymentHelper();
+
+    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
+        ->providerSelection($helper->providerSelectionPreselected());
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user(), 'GBP'
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getId())->toBeString();
+    \expect($created->getResourceToken())->toBeString();
+    \expect($created->getUserId())->toBeString();
+    \expect($created->getDetails()->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
+});
+
+\it('creates an payment with a preselected provider and remitter set', function () {
+    $helper = \paymentHelper();
+
+    $providerSelection = $helper->providerSelectionPreselected()
+        ->remitter($helper->remitter());
+
+    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
+        ->providerSelection($providerSelection);
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user(), 'GBP'
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getId())->toBeString();
+    \expect($created->getResourceToken())->toBeString();
+    \expect($created->getUserId())->toBeString();
+    \expect($created->getDetails()->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
+});
+
+\it('creates an payment with a preselected provider and preselected scheme', function () {
+    $helper = \paymentHelper();
+
+    $schemeSelection = $helper->schemeSelection(SchemeSelectionTypes::PRESELECTED);
+
+    $providerSelection = $helper->providerSelectionPreselected()
+        ->schemeSelection($schemeSelection);
+
+    $paymentMethod = $helper->bankTransferMethod($helper->ibanBeneficiary())
+        ->providerSelection($providerSelection);
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user(), 'GBP'
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getId())->toBeString();
+    \expect($created->getResourceToken())->toBeString();
+    \expect($created->getUserId())->toBeString();
+    \expect($created->getDetails()->getMetadata())->toMatchArray([
+        'metadata_key_1' => 'metadata_value_1',
+        'metadata_key_2' => 'metadata_value_2',
+        'metadata_key_3' => 'metadata_value_3',
+    ]);
 });
 
 \it('starts payment authorization - deprecated method', function () {

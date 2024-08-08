@@ -10,12 +10,26 @@ use TrueLayer\Interfaces\Scheme\PreselectedSchemeSelectionInterface;
 
 class PreselectedSchemeSelection extends Entity implements PreselectedSchemeSelectionInterface
 {
+    protected string $schemeId;
+
     /**
      * @var string[]
      */
     protected array $arrayFields = [
         'type',
+        'scheme_id',
     ];
+
+    public function getSchemeId(): ?string
+    {
+        return $this->schemeId ?? null;
+    }
+
+    public function schemeId(string $schemeId): PreselectedSchemeSelectionInterface
+    {
+        $this->schemeId = $schemeId;
+        return $this;
+    }
 
     /**
      * @return string

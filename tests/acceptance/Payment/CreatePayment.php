@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Tests\Acceptance\Payment;
 
+use Error;
+use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
@@ -12,6 +14,9 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
+use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
+use TrueLayer\Interfaces\Remitter\RemitterInterface;
+use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 class CreatePayment
@@ -55,6 +60,45 @@ class CreatePayment
     public function merchantBeneficiary(MerchantAccountInterface $account): MerchantBeneficiaryInterface
     {
         return $this->client->beneficiary()->merchantAccount($account)->reference('TEST');
+    }
+
+    /**
+     * @return PreselectedProviderSelectionInterface
+     */
+    public function providerSelectionPreselected(): PreselectedProviderSelectionInterface
+    {
+        return $this->client
+            ->providerSelection()
+            ->preselected()
+            ->providerId('mock-payments-gb-redirect');
+    }
+
+    /**
+     * @return RemitterInterface
+     */
+    public function remitter(): RemitterInterface
+    {
+        return $this->client
+            ->remitter()
+            ->accountIdentifier(
+                $this->client()
+                    ->accountIdentifier()
+                    ->iban()
+                    ->iban('GB53CLRB04066200002723')
+            )
+            ->accountHolderName('John Doe');
+    }
+
+    public function schemeSelection(string $type): SchemeSelectionInterface
+    {
+        if ($type == SchemeSelectionTypes::PRESELECTED) {
+            return $this->client
+                ->schemeSelection()
+                ->preselected()
+                ->schemeId('faster_payments_service');
+        }
+
+        throw new Error('Unknown scheme selection type');
     }
 
     /**
