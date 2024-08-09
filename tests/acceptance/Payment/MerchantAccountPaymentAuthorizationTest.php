@@ -25,7 +25,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -218,12 +218,12 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $filter = $helper->client()->providerFilter()
-        ->countries([\TrueLayer\Constants\Countries::ES])
-        ->releaseChannel(\TrueLayer\Constants\ReleaseChannels::GENERAL_AVAILABILITY);
+        ->countries([TrueLayer\Constants\Countries::ES])
+        ->releaseChannel(TrueLayer\Constants\ReleaseChannels::GENERAL_AVAILABILITY);
 
     $providerSelection = $helper->client()->providerSelection()
         ->userSelected()
@@ -255,7 +255,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -288,6 +288,6 @@ use TrueLayer\Services\Util\Arr;
 
     /** @var PaymentAttemptFailedInterface $retrievedPayment */
     $retrievedPayment = $created->getDetails();
-    expect($retrievedPayment)->toBeInstanceOf(PaymentAttemptFailedInterface::class);
-    expect($retrievedPayment->getPaymentMethod()->isPaymentRetryEnabled())->toBe(true);
+    \expect($retrievedPayment)->toBeInstanceOf(PaymentAttemptFailedInterface::class);
+    \expect($retrievedPayment->getPaymentMethod()->isPaymentRetryEnabled())->toBe(true);
 });

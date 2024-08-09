@@ -31,7 +31,7 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
      *
      * @return MerchantBeneficiaryInterface
      */
-    public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface
+    public function merchantAccount(?MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface
     {
         $beneficiary = $this->entityFactory->make(MerchantBeneficiaryInterface::class);
 

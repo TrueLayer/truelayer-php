@@ -6,6 +6,7 @@ namespace TrueLayer\Entities\Provider\ProviderSelection;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
 
@@ -19,5 +20,15 @@ class ProviderSelectionBuilder extends EntityBuilder implements ProviderSelectio
     public function userSelected(): UserSelectedProviderSelectionInterface
     {
         return $this->entityFactory->make(UserSelectedProviderSelectionInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return PreselectedProviderSelectionInterface
+     */
+    public function preselected(): PreselectedProviderSelectionInterface
+    {
+        return $this->entityFactory->make(PreselectedProviderSelectionInterface::class);
     }
 }

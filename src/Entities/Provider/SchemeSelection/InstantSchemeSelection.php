@@ -25,6 +25,7 @@ abstract class InstantSchemeSelection extends Entity implements InstantSchemeSel
     public function allowRemitterFee(bool $allow): InstantSchemeSelectionInterface
     {
         $this->allowRemitterFee = $allow;
+
         return $this;
     }
 
@@ -39,5 +40,5 @@ abstract class InstantSchemeSelection extends Entity implements InstantSchemeSel
     /**
      * @return string
      */
-    public abstract function getType(): string;
+    abstract public function getType(): string;
 }

@@ -61,7 +61,7 @@ use TrueLayer\Tests\Integration\Mocks;
         Mocks\AuthResponse::success(), // Retrieve the access token
         Mocks\ErrorResponse::unauthenticated(), // Reject the access token in the api call
         Mocks\AuthResponse::success('_SECOND_'), // Retrieve new access token
-        new Response(200),] // Accept the access token in the api call
+        new Response(200), ] // Accept the access token in the api call
     )
         ->create();
 
@@ -85,7 +85,7 @@ use TrueLayer\Tests\Integration\Mocks;
         $cacheMock->shouldReceive('get')->andReturn($encrypter->encrypt([
             'access_token' => Mocks\AuthResponse::ACCESS_TOKEN,
             'expires_in' => 3600,
-            'retrieved_at' => (int)Carbon::now()->timestamp,
+            'retrieved_at' => (int) Carbon::now()->timestamp,
         ]));
         $client1 = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
             ->cache($cacheMock, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
@@ -116,7 +116,7 @@ use TrueLayer\Tests\Integration\Mocks;
     $cacheMock->shouldReceive('get')->andReturn($encrypter->encrypt([
         'access_token' => 'expired-token',
         'expires_in' => 3600,
-        'retrieved_at' => (int)Carbon::now()->timestamp - 5000,
+        'retrieved_at' => (int) Carbon::now()->timestamp - 5000,
     ]));
 
     $client = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])

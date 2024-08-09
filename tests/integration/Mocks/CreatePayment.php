@@ -125,7 +125,7 @@ class CreatePayment
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface          $user
      * @param PaymentMethodInterface $paymentMethod
      *
      * @return PaymentRequestInterface

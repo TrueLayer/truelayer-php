@@ -27,7 +27,7 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
 
         $account = Arr::first(
             $helper->client()->getMerchantAccounts(),
-            fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+            fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
         );
 
         $merchantBeneficiary = $helper->merchantBeneficiary($account);

@@ -6,6 +6,8 @@ use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\FormInputTypes;
+use TrueLayer\Constants\SchemeSelectionTypes;
+use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
@@ -13,7 +15,10 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
+use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Interfaces\Scheme\PreselectedSchemeSelectionInterface;
 
 \it('creates an IBAN payment', function () {
     $helper = \paymentHelper();
@@ -46,6 +51,65 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     ]);
 
     return $created;
+});
+
+\it('creates a payment with a preselected provider', function () {
+    $helper = \paymentHelper();
+
+    $paymentMethod = $helper->bankTransferMethod($helper->sortCodeBeneficiary())
+        ->providerSelection(
+            $helper->providerSelectionPreselected()
+                ->schemeSelection($helper->schemeSelection(SchemeSelectionTypes::PRESELECTED))
+        );
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getDetails()->getPaymentMethod())->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
+
+    /**
+     * @var BankTransferPaymentMethodInterface $receivedPaymentMethod
+     */
+    $receivedPaymentMethod = $created->getDetails()->getPaymentMethod();
+
+    \expect($receivedPaymentMethod->getProviderSelection())->toBeInstanceOf(PreselectedProviderSelectionInterface::class);
+    \expect($receivedPaymentMethod->getProviderSelection()->getSchemeSelection())->toBeInstanceOf(PreselectedSchemeSelectionInterface::class);
+});
+
+\it('creates a payment with a preselected provider and remitter set', function () {
+    $helper = \paymentHelper();
+
+    $providerSelection = $helper->providerSelectionPreselected()
+        ->remitter($helper->remitter())
+        ->schemeSelection($helper->schemeSelection(SchemeSelectionTypes::PRESELECTED));
+
+    $paymentMethod = $helper->bankTransferMethod($helper->sortCodeBeneficiary())
+        ->providerSelection($providerSelection);
+
+    $created = $helper->create(
+        $paymentMethod, $helper->user()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getDetails()->getPaymentMethod())->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
+
+    /**
+     * @var BankTransferPaymentMethodInterface $receivedPaymentMethod
+     */
+    $receivedPaymentMethod = $created->getDetails()->getPaymentMethod();
+
+    \expect($receivedPaymentMethod->getProviderSelection())->toBeInstanceOf(PreselectedProviderSelectionInterface::class);
+
+    /**
+     * @var PreselectedProviderSelectionInterface $receivedProviderSelection
+     */
+    $receivedProviderSelection = $receivedPaymentMethod->getProviderSelection();
+
+    \expect($receivedProviderSelection->getProviderId())->toBe('mock-payments-gb-redirect');
+    \expect($receivedProviderSelection->getRemitter()->getAccountIdentifier())->toBeInstanceOf(ScanDetailsInterface::class);
+    \expect($receivedProviderSelection->getRemitter()->getAccountHolderName())->toBe('John Doe');
 });
 
 \it('starts payment authorization - deprecated method', function () {
@@ -221,10 +285,10 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
  *
  * @param string $paymentId
  *
- * @throws \TrueLayer\Exceptions\ApiRequestJsonSerializationException
- * @throws \TrueLayer\Exceptions\ApiResponseUnsuccessfulException
- * @throws \TrueLayer\Exceptions\InvalidArgumentException
- * @throws \TrueLayer\Exceptions\SignerException
+ * @throws TrueLayer\Exceptions\ApiRequestJsonSerializationException
+ * @throws TrueLayer\Exceptions\ApiResponseUnsuccessfulException
+ * @throws TrueLayer\Exceptions\InvalidArgumentException
+ * @throws TrueLayer\Exceptions\SignerException
  *
  * @return array
  */

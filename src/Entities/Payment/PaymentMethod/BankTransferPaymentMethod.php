@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentMethod;
 
-use stdClass;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -31,9 +30,9 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     protected ProviderSelectionInterface $providerSelection;
 
     /**
-     * @var stdClass|null
+     * @var \stdClass|null
      */
-    protected ?stdClass $retry;
+    protected ?\stdClass $retry;
 
     /**
      * @var string[]
@@ -41,7 +40,7 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     protected array $casts = [
         'provider_selection' => ProviderSelectionInterface::class,
         'beneficiary' => BeneficiaryInterface::class,
-        'retry' => stdClass::class,
+        'retry' => \stdClass::class,
     ];
 
     /**
@@ -87,9 +86,9 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     }
 
     /**
-     * @return ProviderSelectionInterface
      * @throws InvalidArgumentException
      *
+     * @return ProviderSelectionInterface
      */
     public function getProviderSelection(): ProviderSelectionInterface
     {
@@ -101,7 +100,7 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
      */
     public function enablePaymentRetry(): BankTransferPaymentMethodInterface
     {
-        $this->retry = new stdClass();
+        $this->retry = new \stdClass();
 
         return $this;
     }
@@ -110,7 +109,7 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     {
         $retry = $this->retry ?? null;
 
-        return !!$retry;
+        return (bool) $retry;
     }
 
     /**

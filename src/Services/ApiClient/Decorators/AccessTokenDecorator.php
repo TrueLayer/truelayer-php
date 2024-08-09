@@ -42,8 +42,8 @@ final class AccessTokenDecorator extends BaseApiClientDecorator
     public function send(ApiRequestInterface $apiRequest)
     {
         return Retry::max(self::MAX_RETRIES)
-            ->when(fn ($e) => ($e instanceof ApiResponseUnsuccessfulException) &&
-                $e->getStatusCode() === ResponseStatusCodes::UNAUTHORIZED
+            ->when(fn ($e) => ($e instanceof ApiResponseUnsuccessfulException)
+                && $e->getStatusCode() === ResponseStatusCodes::UNAUTHORIZED
             )
             ->start(function (int $attempt) use ($apiRequest) {
                 if ($attempt > 0) {

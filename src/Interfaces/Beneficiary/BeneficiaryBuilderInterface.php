@@ -21,7 +21,7 @@ interface BeneficiaryBuilderInterface
      *
      * @return MerchantBeneficiaryInterface
      */
-    public function merchantAccount(MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface;
+    public function merchantAccount(?MerchantAccountInterface $merchantAccount = null): MerchantBeneficiaryInterface;
 
     /**
      * @param mixed[] $data

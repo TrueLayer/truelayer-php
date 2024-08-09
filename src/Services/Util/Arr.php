@@ -22,7 +22,7 @@ class Arr
      * Determine if the given key exists in the provided array.
      *
      * @param \ArrayAccess<mixed, mixed>|mixed[] $array
-     * @param string|int|float $key
+     * @param string|int|float                   $key
      *
      * @return bool
      */
@@ -33,7 +33,7 @@ class Arr
         }
 
         if (\is_float($key)) {
-            $key = (string)$key;
+            $key = (string) $key;
         }
 
         return \array_key_exists($key, $array);
@@ -42,14 +42,15 @@ class Arr
     /**
      * Return the first element in an array passing a given truth test.
      *
-     * @param mixed[] $array
+     * @param mixed[]       $array
      * @param callable|null $callback
-     * @param mixed $default
+     * @param mixed         $default
+     *
      * @return mixed
      */
-    public static function first($array, callable $callback = null, $default = null)
+    public static function first($array, ?callable $callback = null, $default = null)
     {
-        if (is_null($callback)) {
+        if (\is_null($callback)) {
             if (empty($array)) {
                 return $default;
             }
@@ -72,7 +73,7 @@ class Arr
      * Flatten a multi-dimensional array into a single level.
      *
      * @param iterable $array
-     * @param int $depth
+     * @param int      $depth
      *
      * @return array
      */
@@ -101,8 +102,8 @@ class Arr
      * Get an item from an array using "dot" notation.
      *
      * @param \ArrayAccess<mixed, mixed>|mixed[] $array
-     * @param string|int|null $key
-     * @param mixed $default
+     * @param string|int|null                    $key
+     * @param mixed                              $default
      *
      * @return mixed
      */
@@ -120,11 +121,11 @@ class Arr
             return $array[$key];
         }
 
-        if (!\str_contains((string)$key, '.')) {
+        if (!\str_contains((string) $key, '.')) {
             return $array[$key] ?? $default;
         }
 
-        foreach (\explode('.', (string)$key) as $segment) {
+        foreach (\explode('.', (string) $key) as $segment) {
             if (static::accessible($array) && static::exists($array, $segment)) {
                 $array = $array[$segment];
             } else {
@@ -156,9 +157,9 @@ class Arr
      *
      * If no key is given to the method, the entire array will be replaced.
      *
-     * @param mixed[] $array
+     * @param mixed[]         $array
      * @param string|int|null $key
-     * @param mixed $value
+     * @param mixed           $value
      *
      * @return mixed[]|mixed
      */
@@ -168,7 +169,7 @@ class Arr
             return $array = $value;
         }
 
-        $keys = \explode('.', (string)$key);
+        $keys = \explode('.', (string) $key);
 
         foreach ($keys as $i => $key) {
             if (\count($keys) === 1) {

@@ -65,11 +65,11 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($defaultEvent1->getType())->toBe('payment_executed');
 
     \expect(
-        $defaultEvent1 === $defaultEvent2 &&
-        $defaultEvent1 === $paymentEvent1 &&
-        $defaultEvent1 === $paymentEvent2 &&
-        $defaultEvent1 === $executedEvent1 &&
-        $defaultEvent1 === $executedEvent2
+        $defaultEvent1 === $defaultEvent2
+        && $defaultEvent1 === $paymentEvent1
+        && $defaultEvent1 === $paymentEvent2
+        && $defaultEvent1 === $executedEvent1
+        && $defaultEvent1 === $executedEvent2
     )->toBeTrue();
 });
 
