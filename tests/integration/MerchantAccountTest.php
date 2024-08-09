@@ -11,7 +11,7 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     $accounts = \client(MerchantAccountResponse::accountsList())->getMerchantAccounts();
 
     \expect($accounts[0]->getId())->toBeString();
-    \expect($accounts[0]->getCurrency())->toBe(\TrueLayer\Constants\Currencies::EUR);
+    \expect($accounts[0]->getCurrency())->toBe(TrueLayer\Constants\Currencies::EUR);
     \expect($accounts[0]->getCurrentBalanceInMinor())->toBe(100000);
     \expect($accounts[0]->getAvailableBalanceInMinor())->toBe(100000);
     \expect($accounts[0]->getAccountHolderName())->toBe('John Doe');
@@ -23,7 +23,7 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     \expect($accountIdentifier->getType())->toBe(AccountIdentifierTypes::IBAN);
 
     \expect($accounts[1]->getId())->toBeString();
-    \expect($accounts[1]->getCurrency())->toBe(\TrueLayer\Constants\Currencies::GBP);
+    \expect($accounts[1]->getCurrency())->toBe(TrueLayer\Constants\Currencies::GBP);
     \expect($accounts[1]->getCurrentBalanceInMinor())->toBe(100001);
     \expect($accounts[1]->getAvailableBalanceInMinor())->toBe(100001);
     \expect($accounts[1]->getAccountHolderName())->toBe('John Doe');
@@ -40,7 +40,7 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     $account = \client(MerchantAccountResponse::account())->getMerchantAccount('1');
 
     \expect($account->getId())->toBeString();
-    \expect($account->getCurrency())->toBe(\TrueLayer\Constants\Currencies::EUR);
+    \expect($account->getCurrency())->toBe(TrueLayer\Constants\Currencies::EUR);
     \expect($account->getCurrentBalanceInMinor())->toBe(100000);
     \expect($account->getAvailableBalanceInMinor())->toBe(100000);
     \expect($account->getAccountHolderName())->toBe('John Doe');

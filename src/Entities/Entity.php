@@ -55,7 +55,7 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      *
      * @return T
      */
-    protected function make(string $abstract, array $data = null)
+    protected function make(string $abstract, ?array $data = null)
     {
         return $this->entityFactory->make($abstract, $data);
     }
@@ -70,7 +70,7 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      *
      * @return T[]
      */
-    protected function makeMany(string $abstract, array $data = null)
+    protected function makeMany(string $abstract, ?array $data = null)
     {
         return $data ?
             $this->entityFactory->makeMany($abstract, $data)

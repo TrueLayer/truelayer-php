@@ -28,6 +28,7 @@ class PreselectedSchemeSelection extends Entity implements PreselectedSchemeSele
     public function schemeId(string $schemeId): PreselectedSchemeSelectionInterface
     {
         $this->schemeId = $schemeId;
+
         return $this;
     }
 

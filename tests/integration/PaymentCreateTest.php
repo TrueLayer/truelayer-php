@@ -117,7 +117,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                     'account_identifier' => [
                         'type' => AccountIdentifierTypes::IBAN,
                         'iban' => 'mock_iban',
-                    ]
+                    ],
                 ],
                 'data_access_token' => 'mock_access_token',
             ],
@@ -182,7 +182,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                     'account_identifier' => [
                         'type' => AccountIdentifierTypes::IBAN,
                         'iban' => 'mock_iban',
-                    ]
+                    ],
                 ],
                 'data_access_token' => null,
             ],
@@ -249,7 +249,6 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         ],
     ]);
 });
-
 
 \it('sends correct user payload on creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created(), PaymentResponse::created()]);
@@ -400,8 +399,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $factory = CreatePayment::responses([PaymentResponse::created()]);
     $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
 
-    $payload = json_decode(\getRequestPayload(1, false), false);
-    expect($payload->payment_method->retry)->toBeNull();
+    $payload = \json_decode(\getRequestPayload(1, false), false);
+    \expect($payload->payment_method->retry)->toBeNull();
 });
 
 \it('sends retry field', function () {
@@ -409,9 +408,9 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $method = $factory->bankTransferMethod($factory->sortCodeBeneficiary())->enablePaymentRetry();
     $factory->payment($factory->newUser(), $method)->create();
 
-    $payload = json_decode(\getRequestPayload(1, false), false);
+    $payload = \json_decode(\getRequestPayload(1, false), false);
 
-    expect($payload->payment_method->retry)->toBeInstanceOf(stdClass::class);
+    \expect($payload->payment_method->retry)->toBeInstanceOf(stdClass::class);
 });
 
 \it('parses payment creation response correctly', function () {
@@ -452,36 +451,36 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $factory->payment($factory->newUser(), $paymentMethod)->create();
 
     \expect(\getRequestPayload(1)['payment_method']['provider_selection'])->toMatchArray([
-        'scheme_selection' => $expected
+        'scheme_selection' => $expected,
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn() => \client()->schemeSelection()->userSelected(),
-        'expected' => ['type' => 'user_selected']
+        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly(),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
 ]);
 
@@ -501,39 +500,39 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $factory->payment($factory->newUser(), $paymentMethod)->create();
 
     \expect(\getRequestPayload(1)['payment_method']['provider_selection'])->toMatchArray([
-        'scheme_selection' => $expected
+        'scheme_selection' => $expected,
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn() => \client()->schemeSelection()->userSelected(),
-        'expected' => ['type' => 'user_selected']
+        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly(),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
-        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true]
+        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred(),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn() => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
-        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true]
+        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
     'preselected' => [
-        'scheme' => fn() => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
-        'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service']
+        'scheme' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service'],
     ],
 ]);

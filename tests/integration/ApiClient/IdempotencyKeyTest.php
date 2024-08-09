@@ -24,10 +24,10 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
     $sentRequests = \getSentHttpRequests();
     \array_shift($sentRequests);
-    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
-    $idempotencyKeys = array_unique($idempotencyKeys);
+    $idempotencyKeys = \array_map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = \array_unique($idempotencyKeys);
 
-    \expect(count($idempotencyKeys))->toBe(1);
+    \expect(\count($idempotencyKeys))->toBe(1);
 });
 
 \it('regenerates idempotency key on reuse error', function () {
@@ -35,10 +35,10 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
     $sentRequests = \getSentHttpRequests();
     \array_shift($sentRequests);
-    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
-    $idempotencyKeys = array_unique($idempotencyKeys);
+    $idempotencyKeys = \array_map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = \array_unique($idempotencyKeys);
 
-    \expect(count($idempotencyKeys))->toBe(2);
+    \expect(\count($idempotencyKeys))->toBe(2);
 });
 
 \it('regenerates idempotency key only once', function () {
@@ -76,10 +76,10 @@ use TrueLayer\Tests\Integration\Mocks\ErrorResponse;
 
     $sentRequests = \getSentHttpRequests();
     \array_shift($sentRequests);
-    $idempotencyKeys = array_map(fn($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
-    $idempotencyKeys = array_unique($idempotencyKeys);
+    $idempotencyKeys = \array_map(fn ($r) => $r->getHeaderLine(CustomHeaders::IDEMPOTENCY_KEY), $sentRequests);
+    $idempotencyKeys = \array_unique($idempotencyKeys);
 
-    \expect(count($idempotencyKeys))->toBe(1);
+    \expect(\count($idempotencyKeys))->toBe(1);
 });
 
 \it('does not retry on key reuse error', function () {

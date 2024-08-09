@@ -20,7 +20,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 });
 
 \it('uses custom agent header', function () {
-    \TrueLayer\Settings::tlAgent('test');
+    TrueLayer\Settings::tlAgent('test');
     \client(PaymentResponse::executed())->getPayment('1');
 
     $authRequestUserAgent = \getSentHttpRequests()[0]->getHeaderLine(CustomHeaders::TL_AGENT);

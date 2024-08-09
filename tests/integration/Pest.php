@@ -34,9 +34,9 @@ Retry::$testSleeper = function (int $microseconds) use ($sleeps) {
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return TrueLayer\Interfaces\Configuration\ClientConfigInterface
  * @throws SignerException
  *
+ * @return TrueLayer\Interfaces\Configuration\ClientConfigInterface
  */
 function rawClient(array $mockResponses = [])
 {
@@ -63,9 +63,9 @@ function rawClient(array $mockResponses = [])
  *
  * @param array $mockResponses The responses returned by the 'server'
  *
- * @return TrueLayer\Interfaces\Client\ClientInterface
  * @throws SignerException
  *
+ * @return TrueLayer\Interfaces\Client\ClientInterface
  */
 function client($mockResponses = [])
 {
@@ -103,11 +103,11 @@ function getSentHttpRequests(): array
 {
     global $httpTransactions;
 
-    return array_map(fn($transaction) => $transaction['request'], $httpTransactions);
+    return \array_map(fn ($transaction) => $transaction['request'], $httpTransactions);
 }
 
 /**
- * @param int $requestIndex
+ * @param int  $requestIndex
  * @param bool $asArray
  *
  * @return mixed
@@ -123,7 +123,7 @@ function getRequestPayload(int $requestIndex, bool $asArray = true)
 }
 
 /**
- * @param int $requestIndex
+ * @param int    $requestIndex
  * @param string $name
  *
  * @return string[]
@@ -146,14 +146,14 @@ function getRequestIdempotencyKey(int $requestIndex): string
 /**
  * @param string $body
  *
- * @return WebhookInterface
  * @throws WebhookHandlerInvalidArgumentException
  * @throws TrueLayer\Signing\Exceptions\InvalidArgumentException
  * @throws ApiRequestJsonSerializationException
  * @throws ApiResponseUnsuccessfulException
  * @throws TrueLayer\Exceptions\InvalidArgumentException
- *
  * @throws SignerException
+ *
+ * @return WebhookInterface
  */
 function webhook(string $body): WebhookInterface
 {

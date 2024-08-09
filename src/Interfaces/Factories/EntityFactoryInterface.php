@@ -18,7 +18,7 @@ interface EntityFactoryInterface
      *
      * @return T
      */
-    public function make(string $abstract, array $data = null);
+    public function make(string $abstract, ?array $data = null);
 
     /**
      * @template T

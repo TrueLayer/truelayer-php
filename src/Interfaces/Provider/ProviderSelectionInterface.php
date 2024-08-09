@@ -17,6 +17,7 @@ interface ProviderSelectionInterface extends ArrayableInterface, HasAttributesIn
 
     /**
      * @param SchemeSelectionInterface $schemeSelection
+     *
      * @return ProviderSelectionInterface
      */
     public function schemeSelection(SchemeSelectionInterface $schemeSelection): ProviderSelectionInterface;

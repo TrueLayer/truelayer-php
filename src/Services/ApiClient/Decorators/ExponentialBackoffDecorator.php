@@ -45,8 +45,8 @@ final class ExponentialBackoffDecorator extends BaseApiClientDecorator
 
         // Allow retry on server errors or conflict errors
         return ($e instanceof ApiResponseUnsuccessfulException) && (
-            $e->getStatusCode() >= ResponseStatusCodes::INTERNAL_SERVER_ERROR ||
-            $e->getStatusCode() === ResponseStatusCodes::CONFLICT
+            $e->getStatusCode() >= ResponseStatusCodes::INTERNAL_SERVER_ERROR
+            || $e->getStatusCode() === ResponseStatusCodes::CONFLICT
         );
     }
 }

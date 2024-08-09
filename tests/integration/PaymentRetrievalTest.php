@@ -296,7 +296,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getAuthorizationFlowConfig())->toBeNull();
 });
 
-\it('handles payment with scheme selection', function (Response $mockResponse, string $expectedType, string $expectedTypeValue, bool $expectedAllowedRemitterFee = null) {
+\it('handles payment with scheme selection', function (Response $mockResponse, string $expectedType, string $expectedTypeValue, ?bool $expectedAllowedRemitterFee = null) {
     /** @var BankTransferPaymentMethodInterface $method */
     $method = \client($mockResponse)->getPayment('1')->getPaymentMethod();
 
@@ -329,10 +329,10 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
         'expectedType' => InstantPreferredSchemeSelectionInterface::class,
         'expectedTypeValue' => 'instant_preferred',
         'expectedAllowedRemitterFee' => true,
-    ]
+    ],
 ]);
 
-it('handles retry field correctly - empty object serialisation', function () {
+\it('handles retry field correctly - empty object serialisation', function () {
     $payment1 = \client(PaymentResponse::authorizationRequiredWithRetryField())->getPayment('1');
     /** @var BankTransferPaymentMethodInterface $method */
     $method1 = $payment1->getPaymentMethod();
@@ -341,6 +341,6 @@ it('handles retry field correctly - empty object serialisation', function () {
     /** @var BankTransferPaymentMethodInterface $method */
     $method2 = $payment2->getPaymentMethod();
 
-    expect($method1->isPaymentRetryEnabled())->toBe(true);
-    expect($method2->isPaymentRetryEnabled())->toBe(false);
+    \expect($method1->isPaymentRetryEnabled())->toBe(true);
+    \expect($method2->isPaymentRetryEnabled())->toBe(false);
 });

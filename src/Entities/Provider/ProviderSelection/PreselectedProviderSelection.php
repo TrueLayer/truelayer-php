@@ -87,6 +87,7 @@ final class PreselectedProviderSelection extends Entity implements PreselectedPr
     public function schemeSelection(SchemeSelectionInterface $schemeSelection): self
     {
         $this->schemeSelection = $schemeSelection;
+
         return $this;
     }
 
@@ -106,6 +107,7 @@ final class PreselectedProviderSelection extends Entity implements PreselectedPr
     public function dataAccessToken(string $dataAccessToken): self
     {
         $this->dataAccessToken = $dataAccessToken;
+
         return $this;
     }
 
@@ -125,6 +127,7 @@ final class PreselectedProviderSelection extends Entity implements PreselectedPr
     public function remitter(RemitterInterface $remitter): self
     {
         $this->remitter = $remitter;
+
         return $this;
     }
 
