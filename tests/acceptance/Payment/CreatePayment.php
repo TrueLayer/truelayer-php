@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Tests\Acceptance\Payment;
 
-use Error;
 use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
@@ -99,7 +98,7 @@ class CreatePayment
                 ->schemeId('faster_payments_service');
         }
 
-        throw new Error('Unknown scheme selection type');
+        throw new \Error('Unknown scheme selection type');
     }
 
     /**
@@ -152,7 +151,7 @@ class CreatePayment
      *
      * @return PaymentCreatedInterface
      */
-    public function create(PaymentMethodInterface $paymentMethod = null, UserInterface $user = null, string $currency = 'GBP'): PaymentCreatedInterface
+    public function create(?PaymentMethodInterface $paymentMethod = null, ?UserInterface $user = null, string $currency = 'GBP'): PaymentCreatedInterface
     {
         if (!$paymentMethod) {
             $paymentMethod = $this->bankTransferMethod($this->sortCodeBeneficiary());

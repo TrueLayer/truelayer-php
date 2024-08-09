@@ -22,12 +22,12 @@ use TrueLayer\Services\Util\Retry;
 
     Retry::max(5)->start(function () use (&$ran) {
         ++$ran;
-        throw new \Exception();
+        throw new Exception();
     });
 
     // One main execution, plus 5 retries
     \expect($ran)->toBe(6);
-})->throws(\Exception::class);
+})->throws(Exception::class);
 
 \it('retries until successful', function () {
     $ran = 0;
@@ -36,7 +36,7 @@ use TrueLayer\Services\Util\Retry;
         ++$ran;
 
         if ($ran <= 2) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         return 'OK';
@@ -53,11 +53,11 @@ use TrueLayer\Services\Util\Retry;
         ->when(fn () => false)
         ->start(function () use (&$ran) {
             ++$ran;
-            throw new \Exception();
+            throw new Exception();
         });
 
     \expect($ran)->toBe(1);
-})->throws(\Exception::class);
+})->throws(Exception::class);
 
 \it('does retry when when() returns true', function () {
     $ran = 0;
@@ -66,11 +66,11 @@ use TrueLayer\Services\Util\Retry;
         ->when(fn () => false)
         ->start(function () use (&$ran) {
             ++$ran;
-            throw new \Exception();
+            throw new Exception();
         });
 
     \expect($ran)->toBe(6);
-})->throws(\Exception::class);
+})->throws(Exception::class);
 
 \it('retries with exponential backoff delays', function () {
     global $sleeps;
@@ -79,7 +79,7 @@ use TrueLayer\Services\Util\Retry;
     $max = [2000000, 3000000, 5000000, 9000000];
 
     Retry::max(5)->start(function () {
-        throw new \Exception();
+        throw new Exception();
     });
 
     \expect($sleeps[0] >= $min[0] && $sleeps[0] <= $max[0])->toBeTrue();

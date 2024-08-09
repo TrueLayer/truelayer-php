@@ -13,6 +13,7 @@ interface PreselectedSchemeSelectionInterface extends SchemeSelectionInterface
 
     /**
      * @param string $schemeId
+     *
      * @return PreselectedSchemeSelectionInterface
      */
     public function schemeId(string $schemeId): PreselectedSchemeSelectionInterface;

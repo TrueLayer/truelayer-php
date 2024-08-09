@@ -26,7 +26,7 @@ return [
     Interfaces\Payment\PaymentAttemptFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentAttemptFailed::class,
     Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
 
-    TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface::class => Entities\Payment\AuthorizationFlow\StartAuthorizationFlowRequest::class,
+    Interfaces\Payment\StartAuthorizationFlowRequestInterface::class => Entities\Payment\AuthorizationFlow\StartAuthorizationFlowRequest::class,
     Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlow::class,
     Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\AuthorizationFlow\Configuration::class,
     Interfaces\Payment\AuthorizationFlow\ActionInterface::class => Entities\Payment\AuthorizationFlow\Action::class,

@@ -23,7 +23,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      *
      * @return mixed[]
      */
-    public function create(array $paymentRequest, RequestOptionsInterface $requestOptions = null): array
+    public function create(array $paymentRequest, ?RequestOptionsInterface $requestOptions = null): array
     {
         return (array) $this->request()
             ->requestOptions($requestOptions)
@@ -99,7 +99,7 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
      *
      * @return mixed[]
      */
-    public function createRefund(string $paymentId, array $refundRequest, RequestOptionsInterface $requestOptions = null): array
+    public function createRefund(string $paymentId, array $refundRequest, ?RequestOptionsInterface $requestOptions = null): array
     {
         $uri = \str_replace('{id}', $paymentId, Endpoints::PAYMENTS_REFUNDS_CREATE);
 

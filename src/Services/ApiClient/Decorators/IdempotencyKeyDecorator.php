@@ -62,8 +62,8 @@ final class IdempotencyKeyDecorator extends BaseApiClientDecorator
      */
     private function isIdempotencyKeyReuseError(\Exception $e): bool
     {
-        return ($e instanceof ApiResponseUnsuccessfulException) &&
-            $e->getStatusCode() === ResponseStatusCodes::UNPROCESSABLE_ENTITY &&
-            $e->getMessage() === 'Idempotency-Key Reuse';
+        return ($e instanceof ApiResponseUnsuccessfulException)
+            && $e->getStatusCode() === ResponseStatusCodes::UNPROCESSABLE_ENTITY
+            && $e->getMessage() === 'Idempotency-Key Reuse';
     }
 }

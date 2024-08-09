@@ -32,9 +32,8 @@ final class Remitter extends Entity implements RemitterInterface
      */
     protected array $arrayFields = [
         'account_holder_name',
-        'account_identifier'
+        'account_identifier',
     ];
-
 
     /**
      * @return string|null
@@ -46,11 +45,13 @@ final class Remitter extends Entity implements RemitterInterface
 
     /**
      * @param string $accountHolderName
+     *
      * @return RemitterInterface
      */
     public function accountHolderName(string $accountHolderName): RemitterInterface
     {
         $this->accountHolderName = $accountHolderName;
+
         return $this;
     }
 
@@ -64,11 +65,13 @@ final class Remitter extends Entity implements RemitterInterface
 
     /**
      * @param AccountIdentifierInterface $accountIdentifier
+     *
      * @return RemitterInterface
      */
     public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): RemitterInterface
     {
         $this->accountIdentifier = $accountIdentifier;
+
         return $this;
     }
 }

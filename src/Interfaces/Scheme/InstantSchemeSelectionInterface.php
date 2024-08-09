@@ -13,6 +13,7 @@ interface InstantSchemeSelectionInterface
      * Unless explicitly set, will default to false.
      *
      * @param bool $allow
+     *
      * @return InstantSchemeSelectionInterface
      */
     public function allowRemitterFee(bool $allow): InstantSchemeSelectionInterface;

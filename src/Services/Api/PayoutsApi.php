@@ -23,7 +23,7 @@ final class PayoutsApi extends Api implements PayoutsApiInterface
      *
      * @return mixed[]
      */
-    public function create(array $payoutRequest, RequestOptionsInterface $requestOptions = null): array
+    public function create(array $payoutRequest, ?RequestOptionsInterface $requestOptions = null): array
     {
         return (array) $this->request()
             ->requestOptions($requestOptions)

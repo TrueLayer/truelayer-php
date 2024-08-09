@@ -15,8 +15,9 @@ use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
 class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBuilderInterface
 {
     /**
-     * @return UserSelectedSchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return UserSelectedSchemeSelectionInterface
      */
     public function userSelected(): UserSelectedSchemeSelectionInterface
     {
@@ -24,8 +25,9 @@ class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBui
     }
 
     /**
-     * @return InstantOnlySchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return InstantOnlySchemeSelectionInterface
      */
     public function instantOnly(): InstantOnlySchemeSelectionInterface
     {
@@ -33,8 +35,9 @@ class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBui
     }
 
     /**
-     * @return InstantPreferredSchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return InstantPreferredSchemeSelectionInterface
      */
     public function instantPreferred(): InstantPreferredSchemeSelectionInterface
     {
@@ -42,8 +45,9 @@ class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBui
     }
 
     /**
-     * @return PreselectedSchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return PreselectedSchemeSelectionInterface
      */
     public function preselected(): PreselectedSchemeSelectionInterface
     {
