@@ -175,7 +175,7 @@ $beneficiary = $client->beneficiary()->merchantAccount($merchantAccount);
 ```
 
 If your merchant account is configured for payment verification then you have
-the option to enable automated remitter verification Merchant Account payment:
+the option to enable automated remitter verification for your Merchant Account payment:
 
 ```php
 $remitterVerification = $client
