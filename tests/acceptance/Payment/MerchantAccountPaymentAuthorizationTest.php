@@ -330,4 +330,4 @@ use TrueLayer\Services\Util\Arr;
     \expect($receivedRemitterVerification)->toBeInstanceOf(AutomatedRemitterVerificationInterface::class);
     \expect($receivedRemitterVerification->getRemitterName())->toBeTrue();
     \expect($receivedRemitterVerification->getRemitterDateOfBirth())->toBeFalse();
-})->only();
+});
