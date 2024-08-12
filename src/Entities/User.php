@@ -197,6 +197,7 @@ final class User extends Entity implements UserInterface
 
     /**
      * @param string $politicalExposure
+     *
      * @return UserInterface
      */
     public function politicalExposure(string $politicalExposure): UserInterface

@@ -85,6 +85,7 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $politicalExposure
+     *
      * @return UserInterface
      */
     public function politicalExposure(string $politicalExposure): UserInterface;
