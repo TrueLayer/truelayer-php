@@ -27,6 +27,7 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
 
     /**
      * @param RemitterVerificationInterface $verification
+     *
      * @return MerchantBeneficiaryInterface
      */
     public function verification(RemitterVerificationInterface $verification): MerchantBeneficiaryInterface;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Entities\Remitter\RemitterVerification;
 
 use TrueLayer\Constants\RemitterVerificationTypes;
@@ -40,11 +42,13 @@ final class AutomatedRemitterVerification extends Entity implements AutomatedRem
 
     /**
      * @param bool $remitterName
+     *
      * @return RemitterVerificationInterface
      */
     public function remitterName(bool $remitterName): RemitterVerificationInterface
     {
         $this->remitterName = $remitterName;
+
         return $this;
     }
 
@@ -60,11 +64,13 @@ final class AutomatedRemitterVerification extends Entity implements AutomatedRem
 
     /**
      * @param bool $remitterDateOfBirth
+     *
      * @return RemitterVerificationInterface
      */
     public function remitterDateOfBirth(bool $remitterDateOfBirth): RemitterVerificationInterface
     {
         $this->remitterDateOfBirth = $remitterDateOfBirth;
+
         return $this;
     }
 

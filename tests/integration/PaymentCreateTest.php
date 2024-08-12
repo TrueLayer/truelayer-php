@@ -626,4 +626,3 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => true],
     ],
 ]);
-

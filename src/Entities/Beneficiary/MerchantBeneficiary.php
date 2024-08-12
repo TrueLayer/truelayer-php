@@ -116,6 +116,7 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
 
     /**
      * @param RemitterVerificationInterface $verification
+     *
      * @return MerchantBeneficiary
      */
     public function verification(RemitterVerificationInterface $verification): MerchantBeneficiary

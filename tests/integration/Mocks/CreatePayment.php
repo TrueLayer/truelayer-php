@@ -55,8 +55,9 @@ class CreatePayment
     }
 
     /**
-     * @return MerchantBeneficiaryInterface
      * @throws \TrueLayer\Exceptions\InvalidArgumentException
+     *
+     * @return MerchantBeneficiaryInterface
      */
     public function merchantBeneficiary(): MerchantBeneficiaryInterface
     {

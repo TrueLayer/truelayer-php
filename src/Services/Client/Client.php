@@ -165,8 +165,9 @@ final class Client implements ClientInterface
     }
 
     /**
-     * @return RemitterVerificationBuilderInterface
      * @throws InvalidArgumentException
+     *
+     * @return RemitterVerificationBuilderInterface
      */
     public function remitterVerification(): RemitterVerificationBuilderInterface
     {

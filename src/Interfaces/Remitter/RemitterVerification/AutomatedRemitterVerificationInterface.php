@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TrueLayer\Interfaces\Remitter\RemitterVerification;
 
 interface AutomatedRemitterVerificationInterface extends RemitterVerificationInterface
@@ -11,6 +13,7 @@ interface AutomatedRemitterVerificationInterface extends RemitterVerificationInt
 
     /**
      * @param bool $remitterName
+     *
      * @return RemitterVerificationInterface
      */
     public function remitterName(bool $remitterName): RemitterVerificationInterface;
@@ -22,6 +25,7 @@ interface AutomatedRemitterVerificationInterface extends RemitterVerificationInt
 
     /**
      * @param bool $remitterDateOfBirth
+     *
      * @return RemitterVerificationInterface
      */
     public function remitterDateOfBirth(bool $remitterDateOfBirth): RemitterVerificationInterface;
