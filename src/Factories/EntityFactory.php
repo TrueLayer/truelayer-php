@@ -39,7 +39,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      */
     public function __construct(
         Interfaces\Configuration\ConfigInterface $sdkConfig,
-        Interfaces\Factories\ApiFactoryInterface $apiFactory = null
+        ?Interfaces\Factories\ApiFactoryInterface $apiFactory = null
     ) {
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;
@@ -60,7 +60,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      * @return T
      * @return T implements
      */
-    public function make(string $abstract, array $data = null)
+    public function make(string $abstract, ?array $data = null)
     {
         $abstract = $this->getTypeAbstract($abstract, $data);
         $concrete = $this->bindings[$abstract] ?? null;
@@ -164,7 +164,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      *
      * @return class-string
      */
-    private function getTypeAbstract(string $abstract, array $data = null): string
+    private function getTypeAbstract(string $abstract, ?array $data = null): string
     {
         if (isset($this->discriminations[$abstract]) && !empty($data)) {
             $typeConfig = $this->discriminations[$abstract];

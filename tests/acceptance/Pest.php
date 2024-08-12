@@ -14,9 +14,9 @@ $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/../../.env');
 
 /**
- * @return ClientInterface
  * @throws SignerException
  *
+ * @return ClientInterface
  */
 function client(): ClientInterface
 {
@@ -29,9 +29,9 @@ function client(): ClientInterface
 }
 
 /**
- * @return CreatePayment
  * @throws SignerException
  *
+ * @return CreatePayment
  */
 function paymentHelper(): CreatePayment
 {

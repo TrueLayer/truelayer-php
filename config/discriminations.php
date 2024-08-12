@@ -55,12 +55,14 @@ return [
     Interfaces\Provider\ProviderSelectionInterface::class => [
         'discriminate_on' => 'type',
         PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
+        PaymentMethods::PROVIDER_TYPE_PRESELECTED => Interfaces\Provider\PreselectedProviderSelectionInterface::class,
     ],
     Interfaces\Scheme\SchemeSelectionInterface::class => [
         'discriminate_on' => 'type',
         SchemeSelectionTypes::INSTANT_ONLY => Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class,
         SchemeSelectionTypes::INSTANT_PREFERRED => Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class,
         SchemeSelectionTypes::USER_SELECTED => Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class,
+        SchemeSelectionTypes::PRESELECTED => Interfaces\Scheme\PreselectedSchemeSelectionInterface::class,
     ],
     Interfaces\Payout\PayoutBeneficiaryInterface::class => [
         'discriminate_on' => 'type',

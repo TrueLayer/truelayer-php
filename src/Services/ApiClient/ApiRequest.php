@@ -179,7 +179,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return ApiRequestInterface
      */
-    public function requestOptions(RequestOptionsInterface $requestOptions = null): ApiRequestInterface
+    public function requestOptions(?RequestOptionsInterface $requestOptions = null): ApiRequestInterface
     {
         if (!$requestOptions) {
             return $this;

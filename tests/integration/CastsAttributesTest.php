@@ -8,11 +8,11 @@ use TrueLayer\Traits\CastsAttributes;
 $trait = new class() {
     use CastsAttributes;
 
-    protected function make(string $abstract, array $data = null)
+    protected function make(string $abstract, ?array $data = null)
     {
     }
 
-    public function test(string $dateTime = null)
+    public function test(?string $dateTime = null)
     {
         return $this->toDateTime($dateTime);
     }

@@ -9,4 +9,5 @@ class SchemeSelectionTypes
     public const USER_SELECTED = 'user_selected';
     public const INSTANT_ONLY = 'instant_only';
     public const INSTANT_PREFERRED = 'instant_preferred';
+    public const PRESELECTED = 'preselected';
 }

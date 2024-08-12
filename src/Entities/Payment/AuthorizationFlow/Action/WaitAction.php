@@ -9,5 +9,4 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
 
 class WaitAction extends Action implements WaitActionInterface
 {
-
 }

@@ -48,13 +48,13 @@ class Encrypter
      * @param string $key
      * @param string $cipher
      *
-     * @return void
      * @throws \RuntimeException
      *
+     * @return void
      */
     public function __construct(string $key, string $cipher = 'aes-128-cbc')
     {
-        $key = (string)$key;
+        $key = (string) $key;
 
         if (!static::supported($key, $cipher)) {
             $ciphers = \implode(', ', \array_keys(self::$supportedCiphers));
@@ -88,9 +88,9 @@ class Encrypter
      *
      * @param string $cipher
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public static function generateKey(string $cipher): string
     {
@@ -102,9 +102,9 @@ class Encrypter
      *
      * @param mixed $value
      *
-     * @return string
      * @throws EncryptException
      *
+     * @return string
      */
     public function encrypt(mixed $value): string
     {
@@ -139,11 +139,11 @@ class Encrypter
      * Decrypt the given value.
      *
      * @param string $payload
-     * @param bool $unserialize
+     * @param bool   $unserialize
      *
-     * @return mixed
      * @throws DecryptException
      *
+     * @return mixed
      */
     public function decrypt(string $payload, bool $unserialize = true): mixed
     {
@@ -181,7 +181,7 @@ class Encrypter
      * Create a MAC for the given value.
      *
      * @param string $iv
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $key
      *
      * @return string
@@ -196,9 +196,9 @@ class Encrypter
      *
      * @param string $payload
      *
-     * @return array{'iv':string, 'value':string, 'mac':string, 'tag':string}
      * @throws DecryptException
      *
+     * @return array{'iv':string, 'value':string, 'mac':string, 'tag':string}
      */
     protected function getJsonPayload(string $payload): array
     {
@@ -285,9 +285,9 @@ class Encrypter
      *
      * @param string|null $tag
      *
-     * @return void
      * @throws DecryptException
      *
+     * @return void
      */
     protected function ensureTagIsValid(?string $tag): void
     {

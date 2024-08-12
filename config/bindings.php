@@ -26,7 +26,7 @@ return [
     Interfaces\Payment\PaymentAttemptFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentAttemptFailed::class,
     Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
 
-    TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface::class => Entities\Payment\AuthorizationFlow\StartAuthorizationFlowRequest::class,
+    Interfaces\Payment\StartAuthorizationFlowRequestInterface::class => Entities\Payment\AuthorizationFlow\StartAuthorizationFlowRequest::class,
     Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlow::class,
     Interfaces\Payment\AuthorizationFlow\ConfigurationInterface::class => Entities\Payment\AuthorizationFlow\Configuration::class,
     Interfaces\Payment\AuthorizationFlow\ActionInterface::class => Entities\Payment\AuthorizationFlow\Action::class,
@@ -48,6 +48,7 @@ return [
 
     Interfaces\Provider\ProviderSelectionBuilderInterface::class => Entities\Provider\ProviderSelection\ProviderSelectionBuilder::class,
     Interfaces\Provider\UserSelectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\UserSelectedProviderSelection::class,
+    Interfaces\Provider\PreselectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\PreselectedProviderSelection::class,
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
 
@@ -55,6 +56,7 @@ return [
     Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantOnlySchemeSelection::class,
     Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantPreferredSchemeSelection::class,
     Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\UserSelectedSchemeSelection::class,
+    Interfaces\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\PreselectedSchemeSelection::class,
 
     Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
     Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
@@ -74,6 +76,8 @@ return [
     Interfaces\Payout\PayoutAuthorizedInterface::class => Entities\Payout\PayoutRetrieved\PayoutAuthorized::class,
     Interfaces\Payout\PayoutExecutedInterface::class => Entities\Payout\PayoutRetrieved\PayoutExecuted::class,
     Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
+
+    Interfaces\Remitter\RemitterInterface::class => Entities\Remitter\Remitter::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 

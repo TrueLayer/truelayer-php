@@ -267,6 +267,26 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->providerSelection($providerSelection);
 ```
 
+Alternatively, you can preselect the provider that is going to be used in the authorisation flow
+as well as the payment scheme that the payment is going to be sent on:
+
+```php
+// Preselect the payment scheme
+$schemeSelection = $client->schemeSelection()
+    ->preselected()
+    ->schemeId('faster_payments_service');
+
+// Preselect the provider
+$providerSelection = $client->providerSelection()
+    ->preselected()
+    ->providerId('mock-payments-gb-redirect')
+    ->schemeSelection($schemeSelection);
+
+// Create the payment method
+$paymentMethod = $client->paymentMethod()->bankTransfer()
+    ->providerSelection($providerSelection);
+```
+
 You can also enable payment retries, but make sure you can handle the `attempt_failed` payment status beforehand:
 
 ```php

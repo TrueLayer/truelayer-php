@@ -36,7 +36,7 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
     protected array $arrayFields = [
         'type',
         'filter',
-        'scheme_selection'
+        'scheme_selection',
     ];
 
     /**
@@ -69,11 +69,13 @@ final class UserSelectedProviderSelection extends Entity implements UserSelected
 
     /**
      * @param SchemeSelectionInterface $schemeSelection
+     *
      * @return $this
      */
     public function schemeSelection(SchemeSelectionInterface $schemeSelection): self
     {
         $this->schemeSelection = $schemeSelection;
+
         return $this;
     }
 

@@ -8,14 +8,16 @@ use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\Scheme\InstantOnlySchemeSelectionInterface;
 use TrueLayer\Interfaces\Scheme\InstantPreferredSchemeSelectionInterface;
+use TrueLayer\Interfaces\Scheme\PreselectedSchemeSelectionInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
 
 class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBuilderInterface
 {
     /**
-     * @return UserSelectedSchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return UserSelectedSchemeSelectionInterface
      */
     public function userSelected(): UserSelectedSchemeSelectionInterface
     {
@@ -23,8 +25,9 @@ class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBui
     }
 
     /**
-     * @return InstantOnlySchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return InstantOnlySchemeSelectionInterface
      */
     public function instantOnly(): InstantOnlySchemeSelectionInterface
     {
@@ -32,11 +35,22 @@ class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBui
     }
 
     /**
-     * @return InstantPreferredSchemeSelectionInterface
      * @throws InvalidArgumentException
+     *
+     * @return InstantPreferredSchemeSelectionInterface
      */
     public function instantPreferred(): InstantPreferredSchemeSelectionInterface
     {
         return $this->entityFactory->make(InstantPreferredSchemeSelectionInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return PreselectedSchemeSelectionInterface
+     */
+    public function preselected(): PreselectedSchemeSelectionInterface
+    {
+        return $this->entityFactory->make(PreselectedSchemeSelectionInterface::class);
     }
 }
