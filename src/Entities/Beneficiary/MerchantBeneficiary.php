@@ -109,6 +109,9 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
         return $this;
     }
 
+    /**
+     * @return RemitterVerificationInterface|null
+     */
     public function getVerification(): ?RemitterVerificationInterface
     {
         return $this->verification ?? null;
