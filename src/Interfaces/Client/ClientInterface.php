@@ -28,6 +28,7 @@ use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -74,6 +75,11 @@ interface ClientInterface
      * @return RemitterInterface
      */
     public function remitter(): RemitterInterface;
+
+    /**
+     * @return RemitterVerificationBuilderInterface
+     */
+    public function remitterVerification(): RemitterVerificationBuilderInterface;
 
     /**
      * @return ProviderFilterInterface

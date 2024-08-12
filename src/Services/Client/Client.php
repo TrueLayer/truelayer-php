@@ -34,6 +34,7 @@ use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -161,6 +162,15 @@ final class Client implements ClientInterface
     public function remitter(): RemitterInterface
     {
         return $this->entityFactory->make(RemitterInterface::class);
+    }
+
+    /**
+     * @return RemitterVerificationBuilderInterface
+     * @throws InvalidArgumentException
+     */
+    public function remitterVerification(): RemitterVerificationBuilderInterface
+    {
+        return $this->entityFactory->make(RemitterVerificationBuilderInterface::class);
     }
 
     /**

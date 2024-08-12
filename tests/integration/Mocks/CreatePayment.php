@@ -10,6 +10,7 @@ use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
@@ -49,6 +50,19 @@ class CreatePayment
         return $this->client->beneficiary()
             ->externalAccount()
             ->accountIdentifier($accountIdentifier)
+            ->reference('The ref')
+            ->accountHolderName('John Doe');
+    }
+
+    /**
+     * @return MerchantBeneficiaryInterface
+     * @throws \TrueLayer\Exceptions\InvalidArgumentException
+     */
+    public function merchantBeneficiary(): MerchantBeneficiaryInterface
+    {
+        return $this->client->beneficiary()
+            ->merchantAccount()
+            ->merchantAccountId('a2dcee6d-7a00-414d-a1e6-8a2b23169e00')
             ->reference('The ref')
             ->accountHolderName('John Doe');
     }

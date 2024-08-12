@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
@@ -18,6 +19,7 @@ use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface;
 use TrueLayer\Services\Util\Arr;
 
 \it('creates a merchant payment', function () {
@@ -291,3 +293,41 @@ use TrueLayer\Services\Util\Arr;
     \expect($retrievedPayment)->toBeInstanceOf(PaymentAttemptFailedInterface::class);
     \expect($retrievedPayment->getPaymentMethod()->isPaymentRetryEnabled())->toBe(true);
 });
+
+\it('creates a merchant payment with automated remitter verification', function () {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account)
+        ->verification($helper->remitterVerification()->automated()->remitterName(true));
+
+    $created = $helper->create(
+        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+
+    /**
+     * @var BankTransferPaymentMethodInterface $receivedPaymentMethod
+     */
+    $receivedPaymentMethod = $created->getDetails()->getPaymentMethod();
+    \expect($receivedPaymentMethod)->toBeInstanceOf(BankTransferPaymentMethodInterface::class);
+
+    /**
+     * @var MerchantBeneficiaryInterface $receivedBeneficiary
+     */
+    $receivedBeneficiary = $receivedPaymentMethod->getBeneficiary();
+    \expect($receivedBeneficiary)->toBeInstanceOf(MerchantBeneficiaryInterface::class);
+
+    /**
+     * @var AutomatedRemitterVerificationInterface $receivedRemitterVerification
+     */
+    $receivedRemitterVerification = $receivedBeneficiary->getVerification();
+    \expect($receivedRemitterVerification)->toBeInstanceOf(AutomatedRemitterVerificationInterface::class);
+    \expect($receivedRemitterVerification->getRemitterName())->toBeTrue();
+    \expect($receivedRemitterVerification->getRemitterDateOfBirth())->toBeFalse();
+})->only();
