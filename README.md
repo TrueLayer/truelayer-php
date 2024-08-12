@@ -853,6 +853,23 @@ $payout = $client->payout()
 $payout->getId();
 ```
 
+## Creating a payout to a preselected business account
+
+```php
+$beneficiary = $client->payoutBeneficiary()
+    ->businessAccount()
+    ->reference('My reference');
+
+$payout = $client->payout()
+    ->amountInMinor(1)
+    ->beneficiary($beneficiary)
+    ->currency(\TrueLayer\Constants\Currencies::GBP)
+    ->merchantAccountId($merchantAccount->getId())
+    ->create();
+
+$payout->getId();
+```
+
 ## Retrieving a payout
 
 ```php

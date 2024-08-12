@@ -70,6 +70,7 @@ return [
     Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
 
     Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
+    Interfaces\Payout\BusinessAccountBeneficiaryInterface::class => Entities\Payout\BusinessAccountBeneficiary::class,
     Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,

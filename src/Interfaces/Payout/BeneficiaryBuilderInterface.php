@@ -20,6 +20,11 @@ interface BeneficiaryBuilderInterface
     public function paymentSource(): PaymentSourceBeneficiaryInterface;
 
     /**
+     * @return BusinessAccountBeneficiaryInterface
+     */
+    public function businessAccount(): BusinessAccountBeneficiaryInterface;
+
+    /**
      * @param mixed[] $data
      *
      * @throws InvalidArgumentException
