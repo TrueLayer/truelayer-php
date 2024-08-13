@@ -8,6 +8,7 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
+use TrueLayer\Constants\UserPoliticalExposures;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\CreatePayment;
@@ -319,6 +320,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'email' => 'alice@truelayer.com',
             'address' => null,
             'date_of_birth' => null,
+            'political_exposure' => null,
         ],
     ]);
 
@@ -330,6 +332,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'email' => null,
             'address' => null,
             'date_of_birth' => null,
+            'political_exposure' => null,
         ],
     ]);
 });
@@ -364,9 +367,37 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'country_code' => 'GB',
             ],
             'date_of_birth' => null,
+            'political_exposure' => null,
         ],
     ]);
 });
+
+\it('sets the right user political exposure', function (?string $politicalExposure, ?string $expected) {
+    $factory = CreatePayment::responses([
+        PaymentResponse::created(),
+    ]);
+
+    $user = $politicalExposure
+        ? $factory->newUser()->politicalExposure($politicalExposure)
+        : $factory->newUser();
+
+    $factory->payment($user, $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect(\getRequestPayload(1)['user']['political_exposure'])->toBe($expected);
+})->with([
+    'no political exposure' => [
+        'politicalExposure' => null,
+        'expected' => null,
+    ],
+    'current political exposure' => [
+        'politicalExposure' => UserPoliticalExposures::CURRENT,
+        'expected' => UserPoliticalExposures::CURRENT,
+    ],
+    'none political exposure' => [
+        'politicalExposure' => UserPoliticalExposures::NONE,
+        'expected' => UserPoliticalExposures::NONE,
+    ],
+]);
 
 \it('ensures user address state is optional', function () {
     $factory = CreatePayment::responses([
@@ -396,6 +427,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'country_code' => 'GB',
             ],
             'date_of_birth' => null,
+            'political_exposure' => null,
         ],
     ]);
 });
@@ -428,6 +460,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'country_code' => 'GB',
             ],
             'date_of_birth' => null,
+            'political_exposure' => null,
         ],
     ]);
 });
@@ -447,6 +480,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
             'email' => 'alice@truelayer.com',
             'address' => null,
             'date_of_birth' => '2024-01-01',
+            'political_exposure' => null,
         ],
     ]);
 });

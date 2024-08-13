@@ -220,11 +220,16 @@ $beneficiary = $client->beneficiary()->externalAccount()
 ### 2. Creating a user
 
 ```php
+use TrueLayer\Constants\UserPoliticalExposures;
+
 $user = $client->user()
     ->name('Jane Doe')
     ->phone('+44123456789')
     ->email('jane.doe@truelayer.com')
     ->dateOfBirth('2024-01-01');
+
+// You can also set the user's political exposure field if you need to
+$user->politicalExposure(UserPoliticalExposures::CURRENT);
 ```
 
 You are also able to set the user's address:

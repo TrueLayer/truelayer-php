@@ -41,6 +41,11 @@ final class User extends Entity implements UserInterface
     protected string $dateOfBirth;
 
     /**
+     * @var string
+     */
+    protected string $politicalExposure;
+
+    /**
      * @var string[]
      */
     protected array $arrayFields = [
@@ -50,6 +55,7 @@ final class User extends Entity implements UserInterface
         'phone',
         'address',
         'date_of_birth',
+        'political_exposure',
     ];
 
     /**
@@ -177,6 +183,26 @@ final class User extends Entity implements UserInterface
     public function dateOfBirth(string $dateOfBirth): UserInterface
     {
         $this->dateOfBirth = $dateOfBirth;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPoliticalExposure(): ?string
+    {
+        return $this->politicalExposure ?? null;
+    }
+
+    /**
+     * @param string $politicalExposure
+     *
+     * @return UserInterface
+     */
+    public function politicalExposure(string $politicalExposure): UserInterface
+    {
+        $this->politicalExposure = $politicalExposure;
 
         return $this;
     }

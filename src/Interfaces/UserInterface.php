@@ -77,4 +77,16 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
      * @return UserInterface
      */
     public function dateOfBirth(string $dateOfBirth): UserInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getPoliticalExposure(): ?string;
+
+    /**
+     * @param string $politicalExposure
+     *
+     * @return UserInterface
+     */
+    public function politicalExposure(string $politicalExposure): UserInterface;
 }

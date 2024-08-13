@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\Endpoints;
+use TrueLayer\Constants\UserPoliticalExposures;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
@@ -156,6 +157,20 @@ use TrueLayer\Services\Util\Arr;
     \expect($payment->getId())->toBeString();
     \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
     \expect($fetched->getId())->toBeString();
+});
+
+\it('creates payment with user political exposure', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user()->politicalExposure(UserPoliticalExposures::CURRENT))
+        ->create();
+
+    \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($payment->getId())->toBeString();
 });
 
 \it('creates payment with valid user date of birth', function () {
