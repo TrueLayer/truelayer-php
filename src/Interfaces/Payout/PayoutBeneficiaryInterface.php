@@ -9,4 +9,8 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 
 interface PayoutBeneficiaryInterface extends ArrayableInterface, HasAttributesInterface
 {
+    /**
+     * @return string
+     */
+    public function getType(): string;
 }

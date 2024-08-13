@@ -71,6 +71,30 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     ]);
 });
 
+\it('sends correct payload on a payout to a business account', function () {
+    $client = \client(PayoutResponse::created());
+
+    $beneficiary = $client->payoutBeneficiary()->businessAccount()
+        ->reference('Test reference');
+
+    $client->payout()
+        ->amountInMinor(1)
+        ->currency('GBP')
+        ->merchantAccountId('1234')
+        ->beneficiary($beneficiary)
+        ->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'merchant_account_id' => '1234',
+        'beneficiary' => [
+            'type' => BeneficiaryTypes::BUSINESS_ACCOUNT,
+            'reference' => 'Test reference',
+        ],
+    ]);
+});
+
 \it('parses payout creation response correctly', function () {
     $client = \client(PayoutResponse::created());
 

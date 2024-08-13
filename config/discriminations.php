@@ -69,6 +69,7 @@ return [
         'discriminate_on' => 'type',
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
         BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\BusinessAccountBeneficiaryInterface::class,
     ],
     Interfaces\Payout\PayoutRetrievedInterface::class => [
         'discriminate_on' => 'status',
