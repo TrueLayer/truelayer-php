@@ -108,5 +108,5 @@ return [
     Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface::class => [
         'discriminate_on' => 'type',
         RemitterVerificationTypes::AUTOMATED => Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class,
-    ]
+    ],
 ];
