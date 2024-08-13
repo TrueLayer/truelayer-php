@@ -10,6 +10,7 @@ use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
 use TrueLayer\Constants\RefundStatus;
+use TrueLayer\Constants\RemitterVerificationTypes;
 use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Constants\WebhookEventTypes;
 use TrueLayer\Interfaces;
@@ -68,6 +69,7 @@ return [
         'discriminate_on' => 'type',
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
         BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\BusinessAccountBeneficiaryInterface::class,
     ],
     Interfaces\Payout\PayoutRetrievedInterface::class => [
         'discriminate_on' => 'status',
@@ -103,4 +105,8 @@ return [
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class,
         BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class,
     ],
+    Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface::class => [
+        'discriminate_on' => 'type',
+        RemitterVerificationTypes::AUTOMATED => Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class,
+    ]
 ];

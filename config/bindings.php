@@ -16,6 +16,7 @@ return [
     Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
+    Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
     Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
     Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
     Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,
@@ -69,6 +70,7 @@ return [
     Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
 
     Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
+    Interfaces\Payout\BusinessAccountBeneficiaryInterface::class => Entities\Payout\BusinessAccountBeneficiary::class,
     Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
@@ -78,6 +80,8 @@ return [
     Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
 
     Interfaces\Remitter\RemitterInterface::class => Entities\Remitter\Remitter::class,
+    Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface::class => Entities\Remitter\RemitterVerification\RemitterVerificationBuilder::class,
+    Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class => Entities\Remitter\RemitterVerification\AutomatedRemitterVerification::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 

@@ -9,6 +9,7 @@ use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Constants\UserPoliticalExposures;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\CreatePayment;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
@@ -123,6 +124,61 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'data_access_token' => 'mock_access_token',
             ],
             'retry' => null,
+        ],
+    ]);
+});
+
+\it('sends the risk assessment on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->riskAssessment()->segment('mock-risk-assessment');
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
+        'payment_method' => [
+            'type' => PaymentMethods::BANK_TRANSFER,
+            'beneficiary' => [
+                'account_identifier' => [
+                    'account_number' => '12345678',
+                    'sort_code' => '010203',
+                    'type' => 'sort_code_account_number',
+                ],
+                'reference' => 'The ref',
+                'account_holder_name' => 'John Doe',
+                'type' => 'external_account',
+            ],
+            'provider_selection' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
+                'filter' => [
+                    'countries' => [
+                        Countries::GB,
+                    ],
+                    'release_channel' => ReleaseChannels::PRIVATE_BETA,
+                    'customer_segments' => [
+                        CustomerSegments::RETAIL,
+                    ],
+                    'provider_ids' => [
+                        'mock-payments-gb-redirect',
+                    ],
+                    'excludes' => [
+                        'provider_ids' => null,
+                    ],
+                ],
+                'scheme_selection' => null,
+            ],
+            'retry' => null,
+        ],
+        'risk_assessment' => [
+            'segment' => 'mock-risk-assessment',
         ],
     ]);
 });
@@ -568,5 +624,39 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     'preselected' => [
         'scheme' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service'],
+    ],
+]);
+
+\it('sends remitter verification for merchant account payments', function (RemitterVerificationInterface $remitterVerification, array $expected) {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $beneficiary = $factory->merchantBeneficiary()->verification($remitterVerification);
+
+    $paymentMethod = $factory->getClient()
+        ->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($beneficiary);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1)['payment_method']['beneficiary'])->toMatchArray([
+        'verification' => $expected,
+    ]);
+})->with([
+    'without name verification, without dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated(),
+        'expected' => ['type' => 'automated', 'remitter_name' => false, 'remitter_date_of_birth' => false],
+    ],
+    'with name verification, without dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterName(true)->remitterDateOfBirth(false),
+        'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => false],
+    ],
+    'without name verification, with dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterDateOfBirth(true),
+        'expected' => ['type' => 'automated', 'remitter_name' => false, 'remitter_date_of_birth' => true],
+    ],
+    'with name verification, with dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterName(true)->remitterDateOfBirth(true),
+        'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => true],
     ],
 ]);

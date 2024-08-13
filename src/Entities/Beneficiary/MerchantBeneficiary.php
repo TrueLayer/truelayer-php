@@ -7,6 +7,7 @@ namespace TrueLayer\Entities\Beneficiary;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 
 final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInterface
 {
@@ -26,12 +27,25 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     protected string $reference;
 
     /**
+     * @var RemitterVerificationInterface
+     */
+    protected RemitterVerificationInterface $verification;
+
+    /**
+     * @var string[]
+     */
+    protected array $casts = [
+        'verification' => RemitterVerificationInterface::class,
+    ];
+
+    /**
      * @var string[]
      */
     protected array $arrayFields = [
         'merchant_account_id',
         'account_holder_name',
         'reference',
+        'verification',
         'type',
     ];
 
@@ -91,6 +105,26 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     public function reference(string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * @return RemitterVerificationInterface|null
+     */
+    public function getVerification(): ?RemitterVerificationInterface
+    {
+        return $this->verification ?? null;
+    }
+
+    /**
+     * @param RemitterVerificationInterface $verification
+     *
+     * @return MerchantBeneficiary
+     */
+    public function verification(RemitterVerificationInterface $verification): MerchantBeneficiary
+    {
+        $this->verification = $verification;
 
         return $this;
     }

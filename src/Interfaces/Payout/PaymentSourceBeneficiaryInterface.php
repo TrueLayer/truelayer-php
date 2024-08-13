@@ -31,11 +31,6 @@ interface PaymentSourceBeneficiaryInterface extends PayoutBeneficiaryInterface
     public function userId(string $userId): PaymentSourceBeneficiaryInterface;
 
     /**
-     * @return string
-     */
-    public function getType(): string;
-
-    /**
      * @return string|null
      */
     public function getReference(): ?string;

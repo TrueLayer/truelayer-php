@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payout;
 
+use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
 
@@ -59,7 +60,7 @@ final class PaymentSourceBeneficiary extends Entity implements PaymentSourceBene
      */
     public function getType(): string
     {
-        return 'payment_source';
+        return BeneficiaryTypes::PAYMENT_SOURCE;
     }
 
     /**
