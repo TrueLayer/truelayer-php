@@ -210,7 +210,7 @@ $user = $client->user()
     ->name('Jane Doe')
     ->phone('+44123456789')
     ->email('jane.doe@truelayer.com')
-    ->dateOfBirth('2024-01-01')
+    ->dateOfBirth('2024-01-01');
 
 // You can also set the user's political exposure field if you need to
 $user->politicalExposure(UserPoliticalExposures::CURRENT);
