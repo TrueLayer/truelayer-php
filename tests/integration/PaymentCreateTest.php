@@ -126,6 +126,61 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
+\it('sends the risk assessment on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->riskAssessment()->segment('mock-risk-assessment');
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'metadata' => [
+            'metadata_key_1' => 'metadata_value_1',
+            'metadata_key_2' => 'metadata_value_2',
+            'metadata_key_3' => 'metadata_value_3',
+        ],
+        'payment_method' => [
+            'type' => PaymentMethods::BANK_TRANSFER,
+            'beneficiary' => [
+                'account_identifier' => [
+                    'account_number' => '12345678',
+                    'sort_code' => '010203',
+                    'type' => 'sort_code_account_number',
+                ],
+                'reference' => 'The ref',
+                'account_holder_name' => 'John Doe',
+                'type' => 'external_account',
+            ],
+            'provider_selection' => [
+                'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
+                'filter' => [
+                    'countries' => [
+                        Countries::GB,
+                    ],
+                    'release_channel' => ReleaseChannels::PRIVATE_BETA,
+                    'customer_segments' => [
+                        CustomerSegments::RETAIL,
+                    ],
+                    'provider_ids' => [
+                        'mock-payments-gb-redirect',
+                    ],
+                    'excludes' => [
+                        'provider_ids' => null,
+                    ],
+                ],
+                'scheme_selection' => null,
+            ],
+            'retry' => null,
+        ],
+        'risk_assessment' => [
+            'segment' => 'mock-risk-assessment',
+        ],
+    ]);
+});
+
 \it('ensures preselected provider data access token is optional', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
 
