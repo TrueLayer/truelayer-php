@@ -211,7 +211,9 @@ $user = $client->user()
     ->phone('+44123456789')
     ->email('jane.doe@truelayer.com')
     ->dateOfBirth('2024-01-01')
-    ->politicalExposure(UserPoliticalExposures::NONE);
+
+// You can also set the user's political exposure field if you need to
+$user->politicalExposure(UserPoliticalExposures::CURRENT);
 ```
 
 You are also able to set the user's address:

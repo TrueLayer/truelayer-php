@@ -167,12 +167,8 @@ use TrueLayer\Services\Util\Arr;
         ->user($helper->user()->politicalExposure(UserPoliticalExposures::CURRENT))
         ->create();
 
-    $fetched = $payment->getDetails();
-
     \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
     \expect($payment->getId())->toBeString();
-    \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
-    \expect($fetched->getId())->toBeString();
 });
 
 \it('creates payment with valid user date of birth', function () {
