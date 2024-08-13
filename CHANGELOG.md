@@ -9,7 +9,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Support for remitter verification for Merchant Account beneficiary payments
+- Support for remitter verification for Merchant Account beneficiary payments (#61)
+- Support for setting the user political exposure on payment creation (#62)
+- Support for business account payouts beneficiary (#63)
+- Support for setting the risk assessment on payment creation (#64)
 
 ## [2.4.0] - 2024-08-12
 
