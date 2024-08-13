@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\UserInterface;
 
@@ -87,6 +88,14 @@ class CreatePayment
                     ->sortCode('010203')
             )
             ->accountHolderName('John Doe');
+    }
+
+    /**
+     * @return RemitterVerificationBuilderInterface
+     */
+    public function remitterVerification(): RemitterVerificationBuilderInterface
+    {
+        return $this->client->remitterVerification();
     }
 
     public function schemeSelection(string $type): SchemeSelectionInterface

@@ -79,6 +79,8 @@ return [
     Interfaces\Payout\PayoutFailedInterface::class => Entities\Payout\PayoutRetrieved\PayoutFailed::class,
 
     Interfaces\Remitter\RemitterInterface::class => Entities\Remitter\Remitter::class,
+    Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface::class => Entities\Remitter\RemitterVerification\RemitterVerificationBuilder::class,
+    Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class => Entities\Remitter\RemitterVerification\AutomatedRemitterVerification::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 

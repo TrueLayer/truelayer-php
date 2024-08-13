@@ -8,6 +8,7 @@ use TrueLayer\Constants\Currencies;
 use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
+use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\CreatePayment;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
@@ -589,5 +590,39 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     'preselected' => [
         'scheme' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service'],
+    ],
+]);
+
+\it('sends remitter verification for merchant account payments', function (RemitterVerificationInterface $remitterVerification, array $expected) {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $beneficiary = $factory->merchantBeneficiary()->verification($remitterVerification);
+
+    $paymentMethod = $factory->getClient()
+        ->paymentMethod()
+        ->bankTransfer()
+        ->beneficiary($beneficiary);
+
+    $factory->payment($factory->newUser(), $paymentMethod)->create();
+
+    \expect(\getRequestPayload(1)['payment_method']['beneficiary'])->toMatchArray([
+        'verification' => $expected,
+    ]);
+})->with([
+    'without name verification, without dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated(),
+        'expected' => ['type' => 'automated', 'remitter_name' => false, 'remitter_date_of_birth' => false],
+    ],
+    'with name verification, without dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterName(true)->remitterDateOfBirth(false),
+        'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => false],
+    ],
+    'without name verification, with dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterDateOfBirth(true),
+        'expected' => ['type' => 'automated', 'remitter_name' => false, 'remitter_date_of_birth' => true],
+    ],
+    'with name verification, with dob' => [
+        'remitterVerification' => fn () => \client()->remitterVerification()->automated()->remitterName(true)->remitterDateOfBirth(true),
+        'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => true],
     ],
 ]);

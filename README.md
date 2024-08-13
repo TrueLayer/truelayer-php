@@ -174,6 +174,22 @@ $merchantAccount = $merchantAccounts[0];
 $beneficiary = $client->beneficiary()->merchantAccount($merchantAccount);
 ```
 
+If your merchant account is configured for payment verification then you have
+the option to enable automated remitter verification for your Merchant Account payment:
+
+```php
+$remitterVerification = $client
+    ->remitterVerification()
+    ->automated()
+    ->remitterName(true)
+    ->remitterDateOfBirth(true);
+
+$beneficiary = $client->beneficiary()
+    ->merchantAccount()
+    ->merchantAccountId('a2dcee6d-7a00-414d-a1e6-8a2b23169e00')
+    ->verification($remitterVerification);
+```
+
 *External account beneficiary - Sort code & account number*
 
 ```php
