@@ -16,6 +16,7 @@ return [
     Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
+    Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
     Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
     Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
     Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,

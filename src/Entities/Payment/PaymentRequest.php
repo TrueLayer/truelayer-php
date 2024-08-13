@@ -12,6 +12,7 @@ use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
+use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -47,6 +48,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected array $metadata;
 
     /**
+     * @var PaymentRiskAssessmentInterface
+     */
+    protected PaymentRiskAssessmentInterface $riskAssessment;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -56,6 +62,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
      */
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
+        'risk_assessment' => PaymentRiskAssessmentInterface::class,
         'user' => UserInterface::class,
     ];
 
@@ -67,6 +74,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'currency',
         'metadata',
         'payment_method',
+        'risk_assessment',
         'user',
     ];
 
@@ -116,6 +124,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         $this->paymentMethod = $paymentMethod;
 
         return $this;
+    }
+
+    /**
+     * @param PaymentRiskAssessmentInterface|null $riskAssessment
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentRiskAssessmentInterface
+     */
+    public function riskAssessment(?PaymentRiskAssessmentInterface $riskAssessment = null): PaymentRiskAssessmentInterface
+    {
+        $this->riskAssessment = $riskAssessment ?: $this->entityFactory->make(PaymentRiskAssessmentInterface::class);
+
+        return $this->riskAssessment;
     }
 
     /**

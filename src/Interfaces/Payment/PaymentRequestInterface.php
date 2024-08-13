@@ -40,6 +40,13 @@ interface PaymentRequestInterface extends HasAttributesInterface
     public function paymentMethod(PaymentMethodInterface $paymentMethod): PaymentRequestInterface;
 
     /**
+     * @param PaymentRiskAssessmentInterface|null $riskAssessment
+     *
+     * @return PaymentRiskAssessmentInterface
+     */
+    public function riskAssessment(?PaymentRiskAssessmentInterface $riskAssessment): PaymentRiskAssessmentInterface;
+
+    /**
      * @param UserInterface $user
      *
      * @return PaymentRequestInterface
