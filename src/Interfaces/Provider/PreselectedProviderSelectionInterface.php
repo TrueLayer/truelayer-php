@@ -15,6 +15,7 @@ interface PreselectedProviderSelectionInterface extends ProviderSelectionInterfa
 
     /**
      * @param string $providerId
+     * The provider Id the PSU will use for this payment.
      *
      * @return PreselectedProviderSelectionInterface
      */

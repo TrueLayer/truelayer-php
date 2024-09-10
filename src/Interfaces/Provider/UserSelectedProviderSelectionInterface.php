@@ -15,8 +15,12 @@ interface UserSelectedProviderSelectionInterface extends ProviderSelectionInterf
 
     /**
      * @param ProviderFilter $filter
+     * Configuration options to constrain which providers should be available
+     * during the provider_selection action.
      *
      * @return UserSelectedProviderSelectionInterface
+     *
+     * @see TrueLayer\Interfaces\Client\ClientInterface::providerFilter()
      */
     public function filter(ProviderFilter $filter): UserSelectedProviderSelectionInterface;
 }

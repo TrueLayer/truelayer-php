@@ -13,6 +13,7 @@ interface PaymentRequestInterface extends HasAttributesInterface
 {
     /**
      * @param int $amount
+     * A 'cent' value representing the amount. eg 100 == 1GBP or 100 = 1EUR
      *
      * @return PaymentRequestInterface
      */
@@ -20,6 +21,7 @@ interface PaymentRequestInterface extends HasAttributesInterface
 
     /**
      * @param string $currency
+     * @see \TrueLayer\Constants\Currencies
      *
      * @return PaymentRequestInterface
      */
@@ -27,6 +29,10 @@ interface PaymentRequestInterface extends HasAttributesInterface
 
     /**
      * @param array<string, string> $metadata
+     * Optional field for adding custom key-value data to a resource.
+     * This object can contain a maximum of 10 key-value pairs,
+     * each with a key with a maximum length of 40 characters
+     * and a non-null value with a maximum length of 500 characters.
      *
      * @return PaymentRequestInterface
      */
@@ -41,6 +47,10 @@ interface PaymentRequestInterface extends HasAttributesInterface
 
     /**
      * @param PaymentRiskAssessmentInterface|null $riskAssessment
+     * An optional field for configuring risk assessment and the payment_creditable webhook.
+     *
+     * @see https://docs.truelayer.com/docs/settlement-risk-and-the-payment_creditable-webhook
+     * Learn how to enable this field
      *
      * @return PaymentRiskAssessmentInterface
      */

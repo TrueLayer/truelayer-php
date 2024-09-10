@@ -13,6 +13,7 @@ interface AutomatedRemitterVerificationInterface extends RemitterVerificationInt
 
     /**
      * @param bool $remitterName
+     * Enable verification for the remitter name.
      *
      * @return RemitterVerificationInterface
      */
@@ -25,6 +26,7 @@ interface AutomatedRemitterVerificationInterface extends RemitterVerificationInt
 
     /**
      * @param bool $remitterDateOfBirth
+     * Enable verification for the remitter date of birth.
      *
      * @return RemitterVerificationInterface
      */

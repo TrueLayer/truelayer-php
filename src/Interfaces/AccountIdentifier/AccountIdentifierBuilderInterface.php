@@ -10,6 +10,7 @@ interface AccountIdentifierBuilderInterface
 {
     /**
      * @return ScanInterface
+     * The scheme identifier for a bank account participating in UK payment schemes.
      */
     public function sortCodeAccountNumber(): ScanInterface;
 

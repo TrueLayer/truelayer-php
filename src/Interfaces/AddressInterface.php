@@ -13,6 +13,8 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $addressLine1
+     * The full street address including house number and street name.
+     * Pattern: `^.{1,50}$``
      *
      * @return AddressInterface
      */
@@ -25,6 +27,8 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $addressLine2
+     * Further details like building name, suite, apartment number, etc.
+     * Pattern: ^.{1,50}$
      *
      * @return AddressInterface
      */
@@ -37,6 +41,8 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $city
+     * Name of the city / locality.
+     * Pattern: ^.{1,50}$
      *
      * @return AddressInterface
      */
@@ -49,6 +55,8 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $state
+     * Name of the county / state.
+     * Pattern: ^.{1,50}$
      *
      * @return AddressInterface
      */
@@ -61,6 +69,8 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $zip
+     * Zip code or postal code.
+     * Pattern: ^.{1,20}$
      *
      * @return AddressInterface
      */
@@ -73,6 +83,7 @@ interface AddressInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $countryCode
+     * The country code according to ISO-3166-1 alpha-2
      *
      * @return AddressInterface
      */

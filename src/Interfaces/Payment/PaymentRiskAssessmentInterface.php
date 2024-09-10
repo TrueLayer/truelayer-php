@@ -13,6 +13,8 @@ interface PaymentRiskAssessmentInterface
 
     /**
      * @param string $segment
+     * The risk segment of this payment. Please contact TrueLayer before sending this field.
+     * Pattern: ^[^\(\)]+$
      *
      * @return PaymentRiskAssessmentInterface
      */

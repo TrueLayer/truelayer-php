@@ -16,6 +16,8 @@ interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface, Payo
 
     /**
      * @param AccountIdentifierInterface $accountIdentifier
+     * A unique account identifier for an external account.
+     * @see \TrueLayer\Interfaces\Client\ClientInterface::accountIdentifier()
      *
      * @return $this
      */

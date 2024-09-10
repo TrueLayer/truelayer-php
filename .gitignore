@@ -5,3 +5,6 @@ vendor/
 example/
 composer.lock
 .env
+.vscode
+composer.dev.json
+composer.dev.lock

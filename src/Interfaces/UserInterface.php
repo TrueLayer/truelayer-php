@@ -13,6 +13,9 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $id
+     * A unique identifier for the user.
+     * If you don’t provide this, TrueLayer generates a value in the response.
+     * You can use the same value for multiple payments to indicate a returning user.
      *
      * @return UserInterface
      */
@@ -25,6 +28,9 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $name
+     * This is the full first and last name of your end user (not initials).
+     * If you are using your own PISP licence this field is optional, otherwise it is required.
+     * Pattern: ^[^\(\)]+$
      *
      * @return UserInterface
      */
@@ -37,6 +43,9 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $email
+     * The email address of your end user according to RFC 2822.
+     * If you are using your own PISP licence this field is optional,
+     * otherwise one of email/phone is required.
      *
      * @return UserInterface
      */
@@ -49,6 +58,10 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $phone
+     * The phone number of your end user in formats recommended by ITU.
+     * The country calling code must be included and prefixed with a +.
+     * If you are using your own PISP licence this field is optional,
+     * otherwise one of email/phone is required.
      *
      * @return UserInterface
      */
@@ -61,6 +74,7 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param AddressInterface|null $address
+     * The physical address of your end user.
      *
      * @return AddressInterface
      */
@@ -73,6 +87,7 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $dateOfBirth
+     * The date of birth of your end user, in YYYY-MM-DD format.
      *
      * @return UserInterface
      */
@@ -85,6 +100,9 @@ interface UserInterface extends ArrayableInterface, HasAttributesInterface
 
     /**
      * @param string $politicalExposure
+     * The user's political exposure (PEP), if known this field should be set to current otherwise to none.
+     * If not known this field can be ignored or a null value can be sent.
+     * @see \TrueLayer\Constants\UserPoliticalExposures
      *
      * @return UserInterface
      */

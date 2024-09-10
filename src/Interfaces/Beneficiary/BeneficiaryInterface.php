@@ -16,6 +16,10 @@ interface BeneficiaryInterface extends ArrayableInterface, HasAttributesInterfac
 
     /**
      * @param string $name
+     * The name of the beneficiary.
+     * For MerchantBeneficiary, if unspecified,
+     * the API uses the account owner name associated with the selected merchant account.
+     * Pattern: ^[^\(\)]+$
      *
      * @return $this
      */
@@ -28,6 +32,8 @@ interface BeneficiaryInterface extends ArrayableInterface, HasAttributesInterfac
 
     /**
      * @param string $reference
+     * A reference for the payment. Not visible to the remitter.
+     * Pattern: ^[a-zA-Z0-9-:()\.,'\+ \?\/]+$
      *
      * @return $this
      */

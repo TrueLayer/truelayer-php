@@ -8,6 +8,8 @@ interface ScanInterface extends ScanDetailsInterface
 {
     /**
      * @param string $sortCode
+     * 6 digit sort code (no spaces or dashes).
+     * Pattern: ^[0-9]{6}$
      *
      * @return ScanInterface
      */
@@ -15,6 +17,8 @@ interface ScanInterface extends ScanDetailsInterface
 
     /**
      * @param string $accountNumber
+     * 8 digit account number.
+     * Pattern: ^[0-9]{8}$
      *
      * @return ScanInterface
      */

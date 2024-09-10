@@ -43,6 +43,10 @@ interface ClientInterface
 
     /**
      * @return UserInterface
+     * Details of the end user who is making the payment.
+     * If you are using your own PISP licence, these fields are not required.
+     *
+     * Payments over a mandate don't need user information as this was collected at mandate creation.
      */
     public function user(): UserInterface;
 

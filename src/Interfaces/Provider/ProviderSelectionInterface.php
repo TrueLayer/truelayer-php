@@ -17,6 +17,7 @@ interface ProviderSelectionInterface extends ArrayableInterface, HasAttributesIn
 
     /**
      * @param SchemeSelectionInterface $schemeSelection
+     * @see \TrueLayer\Interfaces\Client\ClientInterface::schemeSelection()
      *
      * @return ProviderSelectionInterface
      */

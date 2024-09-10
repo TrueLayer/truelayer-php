@@ -15,6 +15,7 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
 
     /**
      * @param string $id
+     * The unique identifier of a TrueLayer merchant account.
      *
      * @return MerchantBeneficiaryInterface
      */
@@ -27,7 +28,9 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
 
     /**
      * @param RemitterVerificationInterface $verification
-     *
+     * The verification of the remitter info.
+     * If specified, the API performs additional checks on the remitter information.
+     * @see \TrueLayer\Interfaces\Client\ClientInterface::remitterVerification()
      * @return MerchantBeneficiaryInterface
      */
     public function verification(RemitterVerificationInterface $verification): MerchantBeneficiaryInterface;
