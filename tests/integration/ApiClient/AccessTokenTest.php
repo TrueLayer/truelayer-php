@@ -6,6 +6,9 @@ use Carbon\Carbon;
 use GuzzleHttp\Psr7\Response;
 use TrueLayer\Tests\Integration\Mocks;
 
+use function PHPUnit\Framework\assertNotEmpty;
+use function PHPUnit\Framework\assertNull;
+
 \it('appends access token', function () {
     \request()->post();
     $auth = \getSentHttpRequests()[1]->getHeaderLine('Authorization');
@@ -129,6 +132,54 @@ use TrueLayer\Tests\Integration\Mocks;
 
     \expect($fooRequest->getHeaderLine('Authorization'))->toBe('Bearer ' . Mocks\AuthResponse::ACCESS_TOKEN);
     \expect($fooRequest->getHeaderLine('Authorization'))->not()->toBe('Bearer expired-token');
+});
+
+\it('uses different cache key if client id is changed', function () {
+    $okResponse = new Response(200);
+    $encrypter = new TrueLayer\Services\Util\Encryption\Encrypter(\hex2bin('31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b'), TrueLayer\Constants\Encryption::ALGORITHM);
+    $encryptedAccessToken = $encrypter->encrypt([
+        'access_token' => Mocks\AuthResponse::ACCESS_TOKEN,
+        'expires_in' => 3600,
+        'retrieved_at' => (int) Carbon::now()->timestamp,
+    ]);
+
+    $cacheMock1 = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
+    $cacheMock1->shouldReceive('has')->andReturnTrue();
+    $cacheMock1->shouldReceive('set')->andReturnTrue();
+    $cacheMock1->shouldReceive('get')->andReturn($encryptedAccessToken);
+
+    $client1 = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+        ->cache($cacheMock1, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
+        ->clientId('client_id_1')
+        ->create()
+        ->getApiClient();
+    $client1->request()->uri('/foo')->post();
+
+    $cacheKey1 = null;
+    $cacheDefaultValue = 'not-null';
+
+    $cacheMock1->shouldHaveReceived('get', function (...$args) use (&$cacheKey1, &$cacheDefaultValue) {
+        $cacheKey1 = $args[0];
+        $cacheDefaultValue = $args[1];
+        return true;
+    });
+    assertNotEmpty($cacheKey1);
+    assertNull($cacheDefaultValue);
+
+    $cacheMock2 = Mockery::mock(Psr\SimpleCache\CacheInterface::class);
+    $cacheMock2->shouldReceive('has')->andReturnTrue();
+    $cacheMock2->shouldReceive('set')->andReturnTrue();
+    $cacheMock2->shouldReceive('get')->andReturn($encryptedAccessToken);
+
+    $client2 = \rawClient([Mocks\AuthResponse::success(), $okResponse, $okResponse])
+        ->cache($cacheMock2, '31c8d81a110849f83131541b9f67c3cba9c7e0bb103bc4dd19377f0fdf2d924b')
+        ->clientId('client_id_2')
+        ->create()
+        ->getApiClient();
+    $client2->request()->uri('/foo')->post();
+
+    $cacheMock2->shouldNotHaveReceived('get', [$cacheKey1, $cacheDefaultValue]);
+
 });
 
 \it('uses default scope if none provided', function () {
