@@ -170,12 +170,12 @@ final class AccessToken implements AccessTokenInterface
         }
     }
 
-    private function getCacheKey()
+    private function getCacheKey(): string
     {
         return CacheKeys::AUTH_TOKEN . ':' . $this->getCacheSuffix();
     }
 
-    private function getCacheSuffix()
+    private function getCacheSuffix(): string
     {
         if (!$this->cacheSuffix) {
             $this->cacheSuffix = \hash_hmac('sha256', \implode(',', [$this->clientId, ...$this->scopes]), $this->clientSecret);
