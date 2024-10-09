@@ -170,11 +170,17 @@ final class AccessToken implements AccessTokenInterface
         }
     }
 
+    /**
+     * @return string
+     */
     private function getCacheKey(): string
     {
         return CacheKeys::AUTH_TOKEN . ':' . $this->getCacheSuffix();
     }
 
+    /**
+     * @return string
+     */
     private function getCacheSuffix(): string
     {
         if (!$this->cacheSuffix) {
