@@ -57,6 +57,11 @@ final class AccessToken implements AccessTokenInterface
     private ?int $retrievedAt = null;
 
     /**
+     * @var string|null
+     */
+    private ?string $cacheSuffix = null;
+
+    /**
      * @param ApiClientInterface           $api
      * @param EncryptedCacheInterface|null $cache
      * @param string                       $clientId
@@ -85,9 +90,9 @@ final class AccessToken implements AccessTokenInterface
     public function getAccessToken(): ?string
     {
         if (!$this->accessToken) {
-            if ($this->cache && $this->cache->has(CacheKeys::AUTH_TOKEN)) {
+            if ($this->cache && $this->cache->has($this->getCacheKey())) {
                 /** @var array{access_token: string, expires_in: int, retrieved_at: int} $data */
-                $data = $this->cache->get(CacheKeys::AUTH_TOKEN);
+                $data = $this->cache->get($this->getCacheKey());
 
                 $this->accessToken = $data['access_token'];
                 $this->expiresIn = $data['expires_in'];
@@ -161,8 +166,28 @@ final class AccessToken implements AccessTokenInterface
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
-            $this->cache->set(CacheKeys::AUTH_TOKEN, $this->toArray(), $this->getExpiresIn());
+            $this->cache->set($this->getCacheKey(), $this->toArray(), $this->getExpiresIn());
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getCacheKey(): string
+    {
+        return CacheKeys::AUTH_TOKEN . ':' . $this->getCacheSuffix();
+    }
+
+    /**
+     * @return string
+     */
+    private function getCacheSuffix(): string
+    {
+        if (!$this->cacheSuffix) {
+            $this->cacheSuffix = \hash_hmac('sha256', \implode(',', [$this->clientId, ...$this->scopes]), $this->clientSecret);
+        }
+
+        return $this->cacheSuffix;
     }
 
     /**
