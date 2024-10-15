@@ -41,6 +41,17 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
 }
 
+\it('handles payment cancellation', function () {
+    $client = \client([PaymentResponse::authorizationRequired(), PaymentResponse::cancelled(), PaymentResponse::failed()]);
+
+    $payment = $client->getPayment('1');
+    \assertPaymentCommon($payment);
+
+    $cancelledPayment = $payment->cancel();
+
+    \expect($cancelledPayment->isFailed())->toBeTrue();
+});
+
 \it('handles payment authorization required', function () {
     $payment = \client(PaymentResponse::authorizationRequired())->getPayment('1');
 

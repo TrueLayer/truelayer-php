@@ -49,6 +49,22 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
     }
 
     /**
+     * @param string $id
+     *
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     *
+     * @return void
+     */
+    public function cancel(string $id): void
+    {
+        $uri = \str_replace('{id}', $id, Endpoints::PAYMENTS_CANCEL);
+
+        $this->request()->uri($uri)->post();
+    }
+
+    /**
      * @param string  $id
      * @param mixed[] $authorizationFlowRequest
      *
