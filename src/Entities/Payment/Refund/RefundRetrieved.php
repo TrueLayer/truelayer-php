@@ -102,7 +102,7 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
      */
     public function getMetadata(): array
     {
-        return $this->metadata;
+        return $this->metadata ?? [];
     }
 
     /**

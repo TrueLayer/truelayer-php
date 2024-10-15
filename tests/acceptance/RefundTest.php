@@ -131,7 +131,7 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
     \assertRefundCommonAcceptance($refund);
 })->depends('it creates a refund');
 
-\it('creates refunds with the right metadata', function (PaymentCreatedInterface $paymentCreated, array $metadata) {
+\it('creates refunds with the right metadata', function (array $metadata, PaymentCreatedInterface $paymentCreated) {
     /** @var PaymentSettledInterface $payment */
     $payment = $paymentCreated->getDetails();
 
@@ -149,9 +149,11 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
     $refundRetrieved = \client()->getRefund($paymentCreated, $refund->getId());
 
     \expect($refundRetrieved->getMetadata())->toBe($metadata);
-})->depends('it creates a refund')->with([
-    'some metadata' => [
-        ['foo' => 'bar'],
-    ],
-    'no metadata' => [[]],
-]);
+})
+    ->depends('it creates a refund')
+    ->with([
+        'some metadata' => [
+            ['foo' => 'bar'],
+        ],
+        'no metadata' => [[]],
+    ]);
