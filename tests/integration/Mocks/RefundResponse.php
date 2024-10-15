@@ -28,6 +28,11 @@ class RefundResponse
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"executed","executed_at":"2022-02-04T14:12:07.705938Z"}');
     }
 
+    public static function executed_with_metadata(): Response
+    {
+        return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"executed","executed_at":"2022-02-04T14:12:07.705938Z", "metadata": {"foo": "bar"}}');
+    }
+
     public static function failed(): Response
     {
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"failed","failed_at":"2022-02-06T22:26:48.849469Z","failure_reason":"authorization_failed"}');

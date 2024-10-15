@@ -34,6 +34,11 @@ interface PayoutRetrievedInterface extends HasAttributesInterface
     public function getBeneficiary(): PayoutBeneficiaryInterface;
 
     /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
+
+    /**
      * @return string
      */
     public function getStatus(): string;

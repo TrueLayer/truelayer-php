@@ -87,3 +87,10 @@ function assertPayoutCommon(PayoutRetrievedInterface $payout)
     \expect($beneficiary->getPaymentSourceId())->toBe('source1');
     \expect($beneficiary->getUserId())->toBe('user1');
 });
+
+\it('retrieves the payout metadata', function () {
+    /** @var PayoutExecutedInterface $payout */
+    $payout = \client(PayoutResponse::executed_with_metadata())->getPayout('1');
+
+    \expect($payout->getMetadata())->toBe(['foo' => 'bar']);
+});
