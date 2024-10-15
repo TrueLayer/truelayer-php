@@ -85,9 +85,12 @@ return [
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 
+    Interfaces\Webhook\PaymentAuthorizedEventInterface::class => Entities\Webhook\PaymentAuthorizedEvent::class,
     Interfaces\Webhook\PaymentExecutedEventInterface::class => Entities\Webhook\PaymentExecutedEvent::class,
-    Interfaces\Webhook\PaymentSettledEventInterface::class => Entities\Webhook\PaymentSettledEvent::class,
     Interfaces\Webhook\PaymentFailedEventInterface::class => Entities\Webhook\PaymentFailedEvent::class,
+    Interfaces\Webhook\PaymentSettledEventInterface::class => Entities\Webhook\PaymentSettledEvent::class,
+    Interfaces\Webhook\PaymentCreditableEventInterface::class => Entities\Webhook\PaymentCreditableEvent::class,
+    Interfaces\Webhook\PaymentSettlementStalledEventInterface::class => Entities\Webhook\PaymentSettlementStalledEvent::class,
     Interfaces\Webhook\RefundExecutedEventInterface::class => Entities\Webhook\RefundExecutedEvent::class,
     Interfaces\Webhook\RefundFailedEventInterface::class => Entities\Webhook\RefundFailedEvent::class,
     Interfaces\Webhook\PayoutExecutedEventInterface::class => Entities\Webhook\PayoutExecutedEvent::class,

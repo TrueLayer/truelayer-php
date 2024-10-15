@@ -19,6 +19,14 @@ class PayoutEvent extends Event implements PayoutEventInterface
      */
     protected BeneficiaryInterface $beneficiary;
 
+    /**
+     * @var array<string, string>
+     */
+    protected array $metadata = [];
+
+    /**
+     * @return mixed[]
+     */
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
@@ -34,6 +42,7 @@ class PayoutEvent extends Event implements PayoutEventInterface
         return \array_merge(parent::arrayFields(), [
             'payout_id',
             'beneficiary',
+            'metadata',
         ]);
     }
 
@@ -51,5 +60,13 @@ class PayoutEvent extends Event implements PayoutEventInterface
     public function getBeneficiary(): ?BeneficiaryInterface
     {
         return $this->beneficiary ?? null;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array
+    {
+        return $this->metadata;
     }
 }

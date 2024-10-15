@@ -38,6 +38,11 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     protected string $reference;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $metadata;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -49,14 +54,15 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
         'payment_id',
         'amount_in_minor',
         'reference',
+        'metadata',
     ];
 
     /**
      * @param string|PaymentRetrievedInterface|PaymentCreatedInterface $payment
      *
+     * @return RefundRequestInterface
      * @throws InvalidArgumentException
      *
-     * @return RefundRequestInterface
      */
     public function payment($payment): RefundRequestInterface
     {
@@ -90,6 +96,18 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
+     * @param array<string, string> $metadata
+     *
+     * @return RefundRequestInterface
+     */
+    public function metadata(array $metadata): RefundRequestInterface
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return RefundRequestInterface
@@ -102,12 +120,12 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return RefundCreatedInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return RefundCreatedInterface
+     * @throws ApiResponseUnsuccessfulException
      */
     public function create(): RefundCreatedInterface
     {

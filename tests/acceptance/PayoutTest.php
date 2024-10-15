@@ -18,7 +18,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -72,30 +72,6 @@ use TrueLayer\Services\Util\Arr;
 });
 
 \it('creates an open loop payout', function () {
-    $helper = \paymentHelper();
-
-    $account = Arr::first(
-        $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
-    );
-
-    $merchantBeneficiary = $helper->merchantBeneficiary($account);
-
-    $created = $helper->create(
-        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
-    );
-
-    \client()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
-    \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
-
-    /** @var RedirectActionInterface $next */
-    $next = $created->getDetails()->getAuthorizationFlowNextAction();
-    \bankAction($next->getUri(), 'Execute');
-    \sleep(15);
-
-    /* @var PaymentSettledInterface $payment */
-    $payment = $created->getDetails();
-
     $client = \client();
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -110,6 +86,10 @@ use TrueLayer\Services\Util\Arr;
         ->currency(Currencies::GBP)
         ->merchantAccountId($account->getId())
         ->beneficiary($payoutBeneficiary)
+        ->metadata([
+            'key1' => 'value1',
+            'key2' => 'value2',
+        ])
         ->create();
 
     \expect($response->getId())->toBeString();
@@ -121,6 +101,10 @@ use TrueLayer\Services\Util\Arr;
     \expect($payout->getCurrency())->toBe(Currencies::GBP);
     \expect($payout->getAmountInMinor())->toBe(1);
     \expect($payout->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
+    \expect($payout->getMetadata())->toMatchArray([
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ]);
 
     /** @var ExternalAccountBeneficiaryInterface $beneficiary */
     $beneficiary = $payout->getBeneficiary();
@@ -135,7 +119,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -193,7 +177,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()

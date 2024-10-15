@@ -87,9 +87,12 @@ return [
     ],
     Interfaces\Webhook\EventInterface::class => [
         'discriminate_on' => 'type',
+        WebhookEventTypes::PAYMENT_AUTHORIZED => Interfaces\Webhook\PaymentAuthorizedEventInterface::class,
         WebhookEventTypes::PAYMENT_EXECUTED => Interfaces\Webhook\PaymentExecutedEventInterface::class,
-        WebhookEventTypes::PAYMENT_SETTLED => Interfaces\Webhook\PaymentSettledEventInterface::class,
         WebhookEventTypes::PAYMENT_FAILED => Interfaces\Webhook\PaymentFailedEventInterface::class,
+        WebhookEventTypes::PAYMENT_SETTLED => Interfaces\Webhook\PaymentSettledEventInterface::class,
+        WebhookEventTypes::PAYMENT_CREDITABLE => Interfaces\Webhook\PaymentCreditableEventInterface::class,
+        WebhookEventTypes::PAYMENT_SETTLEMENT_STALLED => Interfaces\Webhook\PaymentSettlementStalledEventInterface::class,
         WebhookEventTypes::REFUND_EXECUTED => Interfaces\Webhook\RefundExecutedEventInterface::class,
         WebhookEventTypes::REFUND_FAILED => Interfaces\Webhook\RefundFailedEventInterface::class,
         WebhookEventTypes::PAYOUT_EXECUTED => Interfaces\Webhook\PayoutExecutedEventInterface::class,

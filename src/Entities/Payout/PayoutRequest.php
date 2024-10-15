@@ -43,6 +43,11 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     protected PayoutBeneficiaryInterface $beneficiary;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $metadata;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -62,6 +67,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         'amount_in_minor',
         'currency',
         'beneficiary',
+        'metadata',
     ];
 
     /**
@@ -113,6 +119,18 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
+     * @param array<string, string> $metadata
+     *
+     * @return PayoutRequestInterface
+     */
+    public function metadata(array $metadata): PayoutRequestInterface
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return $this
@@ -125,12 +143,12 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @throws ApiRequestJsonSerializationException
+     * @return PayoutCreatedInterface
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      * @throws SignerException
      *
-     * @return PayoutCreatedInterface
+     * @throws ApiRequestJsonSerializationException
      */
     public function create(): PayoutCreatedInterface
     {

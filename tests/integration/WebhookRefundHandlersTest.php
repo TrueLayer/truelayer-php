@@ -23,6 +23,10 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event->getRefundId())->toBe('af386a24-e5e6-4508-a4e4-82d4bc4e3677');
     \expect($event->getTimestamp()->format(DateTime::FORMAT))->toBe('2022-02-16T16:21:14.000000Z');
     \expect($event->getBody())->toHaveKey('event_id');
+    \expect($event->getMetadata())->toMatchArray([
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ]);
 })->with([
     'executed' => WebhookPayload::refundExecuted(),
     'failed' => WebhookPayload::refundFailed(),
@@ -39,6 +43,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event)->toBeInstanceOf(RefundExecutedEventInterface::class);
     \expect($event->getExecutedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
     \expect($event->getType())->toBe('refund_executed');
+    \expect($event->getSchemeId())->toBe('faster_payments_service');
 });
 
 \it('handles refund failed', function () {

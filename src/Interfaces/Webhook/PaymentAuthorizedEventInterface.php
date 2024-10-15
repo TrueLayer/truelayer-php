@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
+use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 
-interface PaymentSettledEventInterface extends PaymentEventInterface
+interface PaymentAuthorizedEventInterface extends PaymentEventInterface
 {
     /**
-     * The payment's settlement risk-rating. Only available for closed-loop EUR payments in Private Beta and subject to change.
-     * Will be one of "low_risk", "high_risk".
+     * Get the date and time the payment was authorized.
      *
-     * @return string|null
+     * @return DateTimeInterface
      */
-    public function getSettlementRiskCategory(): ?string;
+    public function getAuthorizedAt(): DateTimeInterface;
 
     /**
-     * @return PaymentSourceInterface
+     * @return PaymentSourceInterface|null
      */
-    public function getPaymentSource(): PaymentSourceInterface;
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getSettledAt(): \DateTimeInterface;
+    public function getPaymentSource(): ?PaymentSourceInterface;
 
     /**
      * Get the method of the payment. T

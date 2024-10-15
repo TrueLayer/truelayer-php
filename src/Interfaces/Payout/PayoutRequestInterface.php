@@ -42,6 +42,13 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function beneficiary(PayoutBeneficiaryInterface $beneficiary): PayoutRequestInterface;
 
     /**
+     * @param array<string, string> $metadata
+     *
+     * @return PayoutRequestInterface
+     */
+    public function metadata(array $metadata): PayoutRequestInterface;
+
+    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return PayoutRequestInterface
@@ -49,12 +56,12 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function requestOptions(RequestOptionsInterface $requestOptions): PayoutRequestInterface;
 
     /**
-     * @throws SignerException
+     * @return PayoutCreatedInterface
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
      *
-     * @return PayoutCreatedInterface
+     * @throws SignerException
      */
     public function create(): PayoutCreatedInterface;
 }

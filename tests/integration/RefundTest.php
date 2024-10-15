@@ -27,11 +27,19 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
         ->payment('1234')
         ->amountInMinor(100)
         ->reference('TEST')
+        ->metadata([
+            'key1' => 'value1',
+            'key2' => 'value2',
+        ])
         ->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
         'amount_in_minor' => 100,
         'reference' => 'TEST',
+        'metadata' => [
+            'key1' => 'value1',
+            'key2' => 'value2',
+        ]
     ]);
 
     \expect(\getSentHttpRequests()[1]->getMethod())->toBe('POST');
@@ -60,6 +68,10 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
     \assertRefundCommon($refund);
     \expect($refund)->toBeInstanceOf(RefundPendingInterface::class);
+    \expect($refund->getMetadata())->toMatchArray([
+        'key1' => 'value1',
+        'key2' => 'value2',
+    ]);
 });
 
 \it('retrieves authorised refund', function () {

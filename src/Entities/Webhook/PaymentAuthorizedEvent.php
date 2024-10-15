@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
+use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
-use TrueLayer\Interfaces\Webhook\PaymentFailedEventInterface;
+use TrueLayer\Interfaces\Webhook\PaymentAuthorizedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 
-class PaymentFailedEvent extends PaymentEvent implements PaymentFailedEventInterface
+class PaymentAuthorizedEvent extends PaymentEvent implements PaymentAuthorizedEventInterface
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      */
-    protected \DateTimeInterface $failedAt;
-
-    /**
-     * @var string
-     */
-    protected string $failureStage;
-
-    /**
-     * @var string
-     */
-    protected string $failureReason;
+    protected DateTimeInterface $authorizedAt;
 
     /**
      * @var PaymentSourceInterface
@@ -40,8 +31,8 @@ class PaymentFailedEvent extends PaymentEvent implements PaymentFailedEventInter
      */
     protected function casts(): array
     {
-        return \array_merge_recursive(parent::casts(), [
-            'failed_at' => \DateTimeInterface::class,
+        return \array_merge(parent::casts(), [
+            'authorized_at' => DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
             'payment_method' => PaymentMethodInterface::class,
         ]);
@@ -53,36 +44,18 @@ class PaymentFailedEvent extends PaymentEvent implements PaymentFailedEventInter
     protected function arrayFields(): array
     {
         return \array_merge(parent::arrayFields(), [
-            'failed_at',
-            'failure_stage',
-            'failure_reason',
+            'authorized_at',
             'payment_source',
             'payment_method',
         ]);
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getFailedAt(): \DateTimeInterface
+    public function getAuthorizedAt(): DateTimeInterface
     {
-        return $this->failedAt;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFailureStage(): string
-    {
-        return $this->failureStage;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFailureReason(): ?string
-    {
-        return $this->failureReason ?? null;
+        return $this->authorizedAt;
     }
 
     /**

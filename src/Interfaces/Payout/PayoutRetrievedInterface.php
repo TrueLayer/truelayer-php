@@ -39,6 +39,11 @@ interface PayoutRetrievedInterface extends HasAttributesInterface
     public function getStatus(): string;
 
     /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
+
+    /**
      * @return \DateTimeInterface
      */
     public function getCreatedAt(): \DateTimeInterface;
