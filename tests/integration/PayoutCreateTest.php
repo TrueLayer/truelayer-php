@@ -117,7 +117,7 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
             'type' => BeneficiaryTypes::BUSINESS_ACCOUNT,
             'reference' => 'Test reference',
         ],
-        'metadata' => $metadata,
+        'metadata' => empty($metadata) ? null : $metadata,
     ]);
 })->with([
     'some metadata' => [

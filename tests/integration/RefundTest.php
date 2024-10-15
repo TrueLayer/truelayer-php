@@ -49,7 +49,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \expect(\getRequestPayload(1))->toMatchArray([
         'amount_in_minor' => 100,
         'reference' => 'TEST',
-        'metadata' => $metadata,
+        'metadata' => empty($metadata) ? null : $metadata,
     ]);
 })->with([
     'some metadata' => [
