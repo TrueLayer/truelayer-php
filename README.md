@@ -28,7 +28,7 @@
         7. [Attempt Failed Status](#status-attempt-failed)
         8. [Authorization flow config](#auth-flow-config)
         9. [Source of funds](#source-of-funds)
-7. [Cancelling a payment](#payment-cancellation)
+7. [Cancel a payment](#payment-cancellation)
 8. [Authorizing a payment](#authorizing-payment)
 9. [Refunds](#refunds)
 10. [Payouts](#payouts)
