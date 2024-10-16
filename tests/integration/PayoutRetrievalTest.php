@@ -90,7 +90,7 @@ function assertPayoutCommon(PayoutRetrievedInterface $payout)
 
 \it('retrieves the payout metadata', function () {
     /** @var PayoutExecutedInterface $payout */
-    $payout = \client(PayoutResponse::executed_with_metadata())->getPayout('1');
+    $payout = \client(PayoutResponse::executedWithMetadata())->getPayout('1');
 
     \expect($payout->getMetadata())->toBe(['foo' => 'bar']);
 });

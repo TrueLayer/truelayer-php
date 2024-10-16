@@ -28,7 +28,7 @@ class RefundResponse
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"executed","executed_at":"2022-02-04T14:12:07.705938Z"}');
     }
 
-    public static function executed_with_metadata(): Response
+    public static function executedWithMetadata(): Response
     {
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"executed","executed_at":"2022-02-04T14:12:07.705938Z", "metadata": {"foo": "bar"}}');
     }

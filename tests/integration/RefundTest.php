@@ -188,7 +188,7 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
 
 \it('retrieves the refund metadata', function () {
     /** @var RefundExecutedInterface $refund */
-    $refund = \client(RefundResponse::executed_with_metadata())->getRefund('123', '456');
+    $refund = \client(RefundResponse::executedWithMetadata())->getRefund('123', '456');
 
     \expect($refund->getMetadata())->toBe(['foo' => 'bar']);
 });
