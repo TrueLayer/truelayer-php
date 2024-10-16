@@ -25,10 +25,6 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
         ->currency('GBP')
         ->merchantAccountId('1234')
         ->beneficiary($beneficiary)
-        ->metadata([
-            'key1' => 'value1',
-            'key2' => 'value2',
-        ])
         ->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
@@ -44,10 +40,6 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
                 'iban' => 'GB29NWBK60161331926819',
             ],
         ],
-        'metadata' => [
-            'key1' => 'value1',
-            'key2' => 'value2',
-        ]
     ]);
 });
 

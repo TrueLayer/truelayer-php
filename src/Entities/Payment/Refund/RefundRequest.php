@@ -38,11 +38,6 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     protected string $reference;
 
     /**
-     * @var array<string, string>
-     */
-    protected array $metadata;
-
-    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -54,7 +49,6 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
         'payment_id',
         'amount_in_minor',
         'reference',
-        'metadata',
     ];
 
     /**
@@ -91,18 +85,6 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     public function reference(string $reference): RefundRequestInterface
     {
         $this->reference = $reference;
-
-        return $this;
-    }
-
-    /**
-     * @param array<string, string> $metadata
-     *
-     * @return RefundRequestInterface
-     */
-    public function metadata(array $metadata): RefundRequestInterface
-    {
-        $this->metadata = $metadata;
 
         return $this;
     }

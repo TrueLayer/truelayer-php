@@ -42,13 +42,6 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function beneficiary(PayoutBeneficiaryInterface $beneficiary): PayoutRequestInterface;
 
     /**
-     * @param array<string, string> $metadata
-     *
-     * @return PayoutRequestInterface
-     */
-    public function metadata(array $metadata): PayoutRequestInterface;
-
-    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return PayoutRequestInterface

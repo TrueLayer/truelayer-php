@@ -36,11 +36,6 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     protected PayoutBeneficiaryInterface $beneficiary;
 
     /**
-     * @var array<string, string>
-     */
-    protected array $metadata;
-
-    /**
      * @var string
      */
     protected string $status;
@@ -67,7 +62,6 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
         'amount_in_minor',
         'currency',
         'beneficiary',
-        'metadata',
         'status',
         'created_at',
     ];
@@ -110,14 +104,6 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     public function getBeneficiary(): PayoutBeneficiaryInterface
     {
         return $this->beneficiary;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getMetadata(): array
-    {
-        return $this->metadata ?? [];
     }
 
     /**

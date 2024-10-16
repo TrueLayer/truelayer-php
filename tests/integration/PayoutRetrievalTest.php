@@ -87,13 +87,3 @@ function assertPayoutCommon(PayoutRetrievedInterface $payout)
     \expect($beneficiary->getPaymentSourceId())->toBe('source1');
     \expect($beneficiary->getUserId())->toBe('user1');
 });
-
-\it('handles payout with metdata', function () {
-    $payout = \client(PayoutResponse::pendingWithMetadata())->getPayout('1');
-    \expect($payout)->toBeInstanceOf(PayoutPendingInterface::class);
-    \expect($payout->getMetadata())->toMatchArray([
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ]);
-    \assertPayoutCommon($payout);
-});

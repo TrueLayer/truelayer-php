@@ -251,11 +251,7 @@ class WebhookPayload
           "refund_id": "af386a24-e5e6-4508-a4e4-82d4bc4e3677",
           "payment_id": "dfb531ca-8e25-4753-bc23-0c7eeb8d4f29",
           "executed_at": "2021-12-25T15:00:00.000Z",
-          "scheme_id": "faster_payments_service",
-          "metadata": {
-            "key1": "value1",
-            "key2": "value2"
-          }
+          "scheme_id": "faster_payments_service"
         }';
     }
 
@@ -268,11 +264,7 @@ class WebhookPayload
           "refund_id": "af386a24-e5e6-4508-a4e4-82d4bc4e3677",
           "payment_id": "dfb531ca-8e25-4753-bc23-0c7eeb8d4f29",
           "failed_at": "2021-12-25T15:00:00.000Z",
-          "failure_reason": "insufficient_funds",
-          "metadata": {
-            "key1": "value1",
-            "key2": "value2"
-          }
+          "failure_reason": "insufficient_funds"
         }';
     }
 
@@ -283,11 +275,7 @@ class WebhookPayload
           "event_version": 1,
           "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
           "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
-          "executed_at": "2021-12-25T15:00:00.000Z",
-          "metadata": {
-            "key1": "value1",
-            "key2": "value2"
-          }
+          "executed_at": "2021-12-25T15:00:00.000Z"
         }';
     }
 
@@ -299,11 +287,7 @@ class WebhookPayload
           "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
           "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
           "failed_at": "2021-12-25T15:00:00.000Z",
-          "failure_reason": "scheme_error",
-          "metadata": {
-            "key1": "value1",
-            "key2": "value2"
-          }
+          "failure_reason": "scheme_error"
         }';
     }
 

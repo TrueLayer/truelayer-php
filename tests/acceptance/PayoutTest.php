@@ -74,6 +74,11 @@ use TrueLayer\Services\Util\Arr;
 \it('creates an open loop payout', function () {
     $client = \client();
 
+    $account = Arr::first(
+        $client->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
         ->accountIdentifier(
             $client->accountIdentifier()->iban()->iban('GB29NWBK60161331926819')
@@ -86,10 +91,6 @@ use TrueLayer\Services\Util\Arr;
         ->currency(Currencies::GBP)
         ->merchantAccountId($account->getId())
         ->beneficiary($payoutBeneficiary)
-        ->metadata([
-            'key1' => 'value1',
-            'key2' => 'value2',
-        ])
         ->create();
 
     \expect($response->getId())->toBeString();
@@ -101,10 +102,6 @@ use TrueLayer\Services\Util\Arr;
     \expect($payout->getCurrency())->toBe(Currencies::GBP);
     \expect($payout->getAmountInMinor())->toBe(1);
     \expect($payout->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
-    \expect($payout->getMetadata())->toMatchArray([
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ]);
 
     /** @var ExternalAccountBeneficiaryInterface $beneficiary */
     $beneficiary = $payout->getBeneficiary();

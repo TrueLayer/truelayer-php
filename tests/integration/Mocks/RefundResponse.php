@@ -15,7 +15,7 @@ class RefundResponse
 
     public static function pending(): Response
     {
-        return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"pending","metadata":{"key1":"value1","key2":"value2"}}');
+        return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"currency":"GBP","reference":"TEST","created_at":"2022-02-04T13:40:23.798415Z","status":"pending"}');
     }
 
     public static function authorized(): Response

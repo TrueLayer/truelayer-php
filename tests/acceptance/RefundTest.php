@@ -83,28 +83,6 @@ function assertRefundCommonAcceptance(RefundRetrievedInterface $refund)
     \expect($refundId)->toBeString();
 })->depends('it creates a refund');
 
-\it('creates a refund with metadata', function (PaymentCreatedInterface $paymentCreated) {
-    /** @var PaymentSettledInterface $payment */
-    $payment = $paymentCreated->getDetails();
-
-    $refundId = $payment->refund()
-        ->amountInMinor(1)
-        ->reference('refund')
-        ->metadata([
-            'key1' => 'value1',
-            'key2' => 'value2'
-        ])
-        ->create()
-        ->getId();
-
-    $refund = \paymentHelper()->client()->getRefund($refundId);
-
-    \expect($refund->getMetadata())->toMatchArray([
-        'key1' => 'value1',
-        'key2' => 'value2'
-    ]);
-})->depends('it creates a refund');
-
 \it('creates refunds with a custom idempotency key', function (PaymentCreatedInterface $paymentCreated) {
     /** @var PaymentSettledInterface $payment */
     $payment = $paymentCreated->getDetails();

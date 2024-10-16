@@ -26,10 +26,6 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event->getTimestamp()->format(DateTime::FORMAT))->toBe('2022-02-16T16:21:14.000000Z');
     \expect($event->getBeneficiary())->toBeNull();
     \expect($event->getBody())->toHaveKey('event_id');
-    \expect($event->getMetadata())->toMatchArray([
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ]);
 })->with([
     'executed' => WebhookPayload::payoutExecuted(),
     'failed' => WebhookPayload::payoutFailed(),

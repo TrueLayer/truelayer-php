@@ -19,11 +19,6 @@ class RefundEvent extends Event implements RefundEventInterface
     protected string $refundId;
 
     /**
-     * @var array<string, string>
-     */
-    protected array $metadata = [];
-
-    /**
      * @return mixed[]
      */
     protected function arrayFields(): array
@@ -31,7 +26,6 @@ class RefundEvent extends Event implements RefundEventInterface
         return \array_merge(parent::arrayFields(), [
             'payment_id',
             'refund_id',
-            'metadata',
         ]);
     }
 
@@ -49,13 +43,5 @@ class RefundEvent extends Event implements RefundEventInterface
     public function getRefundId(): string
     {
         return $this->refundId;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getMetadata(): array
-    {
-        return $this->metadata;
     }
 }
