@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Services\Util\Str;
 
@@ -12,50 +13,57 @@ final class Hpp extends Entity implements HppInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $baseUrl;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $paymentId;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $resourceToken;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $returnUri;
 
     /**
      * @var string
      */
+    #[Field('c_primary')]
     protected string $primaryColour;
 
     /**
      * @var string
      */
+    #[Field('c_secondary')]
     protected string $secondaryColour;
 
     /**
      * @var string
      */
+    #[Field('c_tertiary')]
     protected string $tertiaryColour;
 
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'base_url',
-        'payment_id',
-        'resource_token' => 'resource_token',
-        'return_uri',
-        'c_primary' => 'primary_colour',
-        'c_secondary' => 'secondary_colour',
-        'c_tertiary' => 'tertiary_colour',
-    ];
+//    /**
+//     * @var string[]
+//     */
+//    protected array $arrayFields = [
+//        'base_url',
+//        'payment_id',
+//        'resource_token' => 'resource_token',
+//        'return_uri',
+//        'c_primary' => 'primary_colour',
+//        'c_secondary' => 'secondary_colour',
+//        'c_tertiary' => 'tertiary_colour',
+//    ];
 
     /**
      * @param string $baseUrl
@@ -206,8 +214,8 @@ final class Hpp extends Entity implements HppInterface
         unset($params['base_url']);
 
         return $this->baseUrl . '#' . \http_build_query(
-            $params, '', '&', PHP_QUERY_RFC3986
-        );
+                $params, '', '&', PHP_QUERY_RFC3986
+            );
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Services\Util\Arr;
@@ -73,8 +74,8 @@ trait ArrayableAttributes
     /**
      * Set an instance property.
      *
-     * @param string $key   the instance property name or the setter name
-     * @param mixed  $value The instance property value
+     * @param string $key the instance property name or the setter name
+     * @param mixed $value The instance property value
      *
      * @return bool
      */
@@ -111,16 +112,16 @@ trait ArrayableAttributes
     {
         $array = [];
 
-        foreach ($this->arrayFields() as $dotNotation => $propertyKey) {
+        foreach ($this->getArrayFieldsFromAttributes() as $dotNotation => $propertyKey) {
             $dotNotation = \is_int($dotNotation) ? $propertyKey : $dotNotation;
             $propertyKey = Str::camel($propertyKey);
             $method = Str::camel('get_' . $propertyKey);
 
             $value = \method_exists($this, $method)
                 ? $this->{$method}() : (
-                    \property_exists($this, $propertyKey) && isset($this->{$propertyKey})
-                        ? $this->{$propertyKey}
-                        : null
+                \property_exists($this, $propertyKey) && isset($this->{$propertyKey})
+                    ? $this->{$propertyKey}
+                    : null
                 );
 
             Arr::set($array, $dotNotation, $value);
@@ -134,7 +135,7 @@ trait ArrayableAttributes
      * Nested sequential arrays will not be nested.
      *
      * @param mixed[] $array
-     * @param string  $prepend
+     * @param string $prepend
      *
      * @return mixed[]
      */
@@ -173,5 +174,24 @@ trait ArrayableAttributes
         }
 
         return $value;
+    }
+
+    private function getArrayFieldsFromAttributes()
+    {
+        $reflectionClass = new \ReflectionClass($this);
+
+        $arrayFields = [];
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $attributes = $property->getAttributes(Field::class);
+
+            if (!empty($attributes)) {
+                $propertyName = $property->getName();
+                $dotNotationFieldName = $attributes[0]->newInstance()->name ?? Str::snake($propertyName);
+                $arrayFields[$dotNotationFieldName] = $propertyName;
+            }
+        }
+
+        return $arrayFields;
     }
 }

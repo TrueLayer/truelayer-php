@@ -14,6 +14,13 @@ class Str
     protected static $camelCache = [];
 
     /**
+     * The cache of snake-cased words.
+     *
+     * @var string[]
+     */
+    protected static $snakeCache = [];
+
+    /**
      * The cache of studly-cased words.
      *
      * @var string[]
@@ -47,7 +54,7 @@ class Str
             return $subject;
         }
 
-        $result = \strstr($subject, (string) $search, true);
+        $result = \strstr($subject, (string)$search, true);
 
         return $result === false ? $subject : $result;
     }
@@ -69,9 +76,44 @@ class Str
     }
 
     /**
+     * Convert a string to snake case.
+     *
+     * @param string $value
+     * @param string $delimiter
+     * @return string
+     */
+    public static function snake($value, $delimiter = '_')
+    {
+        $key = $value;
+
+        if (isset(static::$snakeCache[$key][$delimiter])) {
+            return static::$snakeCache[$key][$delimiter];
+        }
+
+        if (!ctype_lower($value)) {
+            $value = preg_replace('/\s+/u', '', ucwords($value));
+
+            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
+        }
+
+        return static::$snakeCache[$key][$delimiter] = $value;
+    }
+
+    /**
+     * Convert the given string to lower-case.
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function lower($value)
+    {
+        return mb_strtolower($value, 'UTF-8');
+    }
+
+    /**
      * Determine if a given string ends with a given substring.
      *
-     * @param string                  $haystack
+     * @param string $haystack
      * @param string|iterable<string> $needles
      *
      * @return bool
@@ -79,11 +121,11 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         if (!\is_iterable($needles)) {
-            $needles = (array) $needles;
+            $needles = (array)$needles;
         }
 
         foreach ($needles as $needle) {
-            if ((string) $needle !== '' && \str_ends_with($haystack, $needle)) {
+            if ((string)$needle !== '' && \str_ends_with($haystack, $needle)) {
                 return true;
             }
         }
