@@ -95,6 +95,37 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     ]);
 });
 
+\it('sends correct metadata on creation', function (array $metadata) {
+    $client = \client(PayoutResponse::created());
+
+    $beneficiary = $client->payoutBeneficiary()->businessAccount()
+        ->reference('Test reference');
+
+    $client->payout()
+        ->amountInMinor(1)
+        ->currency('GBP')
+        ->merchantAccountId('1234')
+        ->beneficiary($beneficiary)
+        ->metadata($metadata)
+        ->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 1,
+        'currency' => Currencies::GBP,
+        'merchant_account_id' => '1234',
+        'beneficiary' => [
+            'type' => BeneficiaryTypes::BUSINESS_ACCOUNT,
+            'reference' => 'Test reference',
+        ],
+        'metadata' => empty($metadata) ? null : $metadata,
+    ]);
+})->with([
+    'some metadata' => [
+        ['foo' => 'bar'],
+    ],
+    'no metadata' => [[]],
+]);
+
 \it('parses payout creation response correctly', function () {
     $client = \client(PayoutResponse::created());
 

@@ -43,6 +43,11 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     protected PayoutBeneficiaryInterface $beneficiary;
 
     /**
+     * @var array<string, string>
+     */
+    protected array $metadata;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -62,6 +67,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         'amount_in_minor',
         'currency',
         'beneficiary',
+        'metadata',
     ];
 
     /**
@@ -108,6 +114,20 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     public function beneficiary(PayoutBeneficiaryInterface $beneficiary): PayoutRequestInterface
     {
         $this->beneficiary = $beneficiary;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, string> $metadata
+     *
+     * @return PayoutRequestInterface
+     */
+    public function metadata(array $metadata): PayoutRequestInterface
+    {
+        if (!empty($metadata)) {
+            $this->metadata = $metadata;
+        }
 
         return $this;
     }
