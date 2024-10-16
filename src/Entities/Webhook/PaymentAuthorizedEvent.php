@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentAuthorizedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
@@ -12,9 +11,9 @@ use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 class PaymentAuthorizedEvent extends PaymentEvent implements PaymentAuthorizedEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $authorizedAt;
+    protected \DateTimeInterface $authorizedAt;
 
     /**
      * @var PaymentSourceInterface
@@ -32,7 +31,7 @@ class PaymentAuthorizedEvent extends PaymentEvent implements PaymentAuthorizedEv
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'authorized_at' => DateTimeInterface::class,
+            'authorized_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
             'payment_method' => PaymentMethodInterface::class,
         ]);
@@ -51,9 +50,9 @@ class PaymentAuthorizedEvent extends PaymentEvent implements PaymentAuthorizedEv
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getAuthorizedAt(): DateTimeInterface
+    public function getAuthorizedAt(): \DateTimeInterface
     {
         return $this->authorizedAt;
     }

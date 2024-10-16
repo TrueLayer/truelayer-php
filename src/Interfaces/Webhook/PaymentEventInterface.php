@@ -15,6 +15,7 @@ interface PaymentEventInterface extends EventInterface
 
     /**
      * Get the metadata associated with the payment.
+     *
      * @return array<string, string>
      */
     public function getMetadata(): array;

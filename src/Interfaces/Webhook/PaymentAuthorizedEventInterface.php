@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Interfaces\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 
@@ -13,9 +12,9 @@ interface PaymentAuthorizedEventInterface extends PaymentEventInterface
     /**
      * Get the date and time the payment was authorized.
      *
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getAuthorizedAt(): DateTimeInterface;
+    public function getAuthorizedAt(): \DateTimeInterface;
 
     /**
      * @return PaymentSourceInterface|null

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettlementStalledEventInterface;
 
 class PaymentSettlementStalledEvent extends PaymentEvent implements PaymentSettlementStalledEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $settlementStalledAt;
+    protected \DateTimeInterface $settlementStalledAt;
 
     /**
      * @return mixed[]
@@ -20,7 +19,7 @@ class PaymentSettlementStalledEvent extends PaymentEvent implements PaymentSettl
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'settlement_stalled_at' => DateTimeInterface::class,
+            'settlement_stalled_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -35,9 +34,9 @@ class PaymentSettlementStalledEvent extends PaymentEvent implements PaymentSettl
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getSettlementStalledAt(): DateTimeInterface
+    public function getSettlementStalledAt(): \DateTimeInterface
     {
         return $this->settlementStalledAt;
     }

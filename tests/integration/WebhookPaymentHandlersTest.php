@@ -17,7 +17,7 @@ use TrueLayer\Interfaces\Webhook\PaymentSettledEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettlementStalledEventInterface;
 use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 
-class ConfirmCallbackRan extends \Exception
+class ConfirmCallbackRan extends Exception
 {
 }
 
@@ -59,7 +59,6 @@ class ConfirmCallbackRan extends \Exception
 \it('handles payment source', function (string $body) {
     \webhook($body)->handler(function (PaymentEventInterface $event) {
         /** @var PaymentAuthorizedEventInterface|PaymentExecutedEventInterface|PaymentSettledEventInterface|PaymentFailedEventInterface $event */
-
         $paymentSource = $event->getPaymentSource();
         \expect($paymentSource)->toBeInstanceOf(PaymentSourceInterface::class)
             ->getAccountHolderName()->toBe('HOLDER NAME')

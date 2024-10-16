@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Webhook;
 
-use DateTimeInterface;
 use TrueLayer\Interfaces\Webhook\PaymentCreditableEventInterface;
 
 class PaymentCreditableEvent extends PaymentEvent implements PaymentCreditableEventInterface
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
-    protected DateTimeInterface $creditableAt;
+    protected \DateTimeInterface $creditableAt;
 
     /**
      * @return mixed[]
@@ -20,7 +19,7 @@ class PaymentCreditableEvent extends PaymentEvent implements PaymentCreditableEv
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [
-            'creditable_at' => DateTimeInterface::class,
+            'creditable_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -35,9 +34,9 @@ class PaymentCreditableEvent extends PaymentEvent implements PaymentCreditableEv
     }
 
     /**
-     * @return DateTimeInterface
+     * @return \DateTimeInterface
      */
-    public function getCreditableAt(): DateTimeInterface
+    public function getCreditableAt(): \DateTimeInterface
     {
         return $this->creditableAt;
     }
