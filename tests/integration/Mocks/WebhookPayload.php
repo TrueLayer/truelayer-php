@@ -127,6 +127,21 @@ class WebhookPayload
         }';
     }
 
+    public static function refundExecutedWithMetadata(): string
+    {
+        return '{
+          "type": "refund_executed",
+          "event_version": 1,
+          "event_id": "f6321c84-1797-4e66-acd4-d768c09f9edf",
+          "refund_id": "af386a24-e5e6-4508-a4e4-82d4bc4e3677",
+          "payment_id": "dfb531ca-8e25-4753-bc23-0c7eeb8d4f29",
+          "executed_at": "2021-12-25T15:00:00.000Z",
+          "metadata": {
+            "foo": "bar"
+          }
+        }';
+    }
+
     public static function refundFailed(): string
     {
         return '{
@@ -137,6 +152,22 @@ class WebhookPayload
           "payment_id": "dfb531ca-8e25-4753-bc23-0c7eeb8d4f29",
           "failed_at": "2021-12-25T15:00:00.000Z",
           "failure_reason": "insufficient_funds"
+        }';
+    }
+
+    public static function refundFailedWithMetadata(): string
+    {
+        return '{
+          "type": "refund_failed",
+          "event_version": 1,
+          "event_id": "f6321c84-1797-4e66-acd4-d768c09f9edf",
+          "refund_id": "af386a24-e5e6-4508-a4e4-82d4bc4e3677",
+          "payment_id": "dfb531ca-8e25-4753-bc23-0c7eeb8d4f29",
+          "failed_at": "2021-12-25T15:00:00.000Z",
+          "failure_reason": "insufficient_funds",
+          "metadata": {
+            "foo": "bar"
+          }
         }';
     }
 
@@ -151,6 +182,20 @@ class WebhookPayload
         }';
     }
 
+    public static function payoutExecutedWithMetadata(): string
+    {
+        return '{
+          "type": "payout_executed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "executed_at": "2021-12-25T15:00:00.000Z",
+          "metadata": {
+            "foo": "bar"
+          }
+        }';
+    }
+
     public static function payoutFailed(): string
     {
         return '{
@@ -160,6 +205,21 @@ class WebhookPayload
           "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
           "failed_at": "2021-12-25T15:00:00.000Z",
           "failure_reason": "scheme_error"
+        }';
+    }
+
+    public static function payoutFailedWithMetadata(): string
+    {
+        return '{
+          "type": "payout_failed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "failed_at": "2021-12-25T15:00:00.000Z",
+          "failure_reason": "scheme_error",
+          "metadata": {
+            "foo": "bar"
+          }
         }';
     }
 

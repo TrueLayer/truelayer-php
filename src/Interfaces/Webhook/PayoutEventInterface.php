@@ -19,4 +19,9 @@ interface PayoutEventInterface extends EventInterface
      * @return BeneficiaryInterface|null
      */
     public function getBeneficiary(): ?BeneficiaryInterface;
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
 }

@@ -38,6 +38,26 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \expect(\getSentHttpRequests()[1]->getUri()->getPath())->toBe('/v3/payments/1234/refunds');
 });
 
+\it('sends correct metadata on creation', function (array $metadata) {
+    \client(RefundResponse::created())->refund()
+        ->payment('1234')
+        ->amountInMinor(100)
+        ->reference('TEST')
+        ->metadata($metadata)
+        ->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'amount_in_minor' => 100,
+        'reference' => 'TEST',
+        'metadata' => empty($metadata) ? null : $metadata,
+    ]);
+})->with([
+    'some metadata' => [
+        ['foo' => 'bar'],
+    ],
+    'no metadata' => [[]],
+]);
+
 \it('retrieves id on creation', function () {
     $refund = \client(RefundResponse::created())->refund()
         ->payment('1234')
@@ -164,4 +184,11 @@ function assertRefundCommon(RefundRetrievedInterface $refund)
     \assertRefundCommon($refunds[1]);
     \assertRefundCommon($refunds[2]);
     \assertRefundCommon($refunds[3]);
+});
+
+\it('retrieves the refund metadata', function () {
+    /** @var RefundExecutedInterface $refund */
+    $refund = \client(RefundResponse::executedWithMetadata())->getRefund('123', '456');
+
+    \expect($refund->getMetadata())->toBe(['foo' => 'bar']);
 });

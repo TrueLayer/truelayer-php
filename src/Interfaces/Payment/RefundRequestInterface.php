@@ -31,6 +31,13 @@ interface RefundRequestInterface extends HasAttributesInterface
     public function reference(string $reference): RefundRequestInterface;
 
     /**
+     * @param array<string, string> $metadata
+     *
+     * @return RefundRequestInterface
+     */
+    public function metadata(array $metadata): RefundRequestInterface;
+
+    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return RefundRequestInterface
