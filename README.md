@@ -762,9 +762,6 @@ $refundId = $client->refund()
     ->payment($paymentId) // Payment ID, PaymentRetrievedInterface or PaymentCreatedInterface
     ->amountInMinor(1)
     ->reference('My reference')
-    ->metadata([
-        'key' => 'value',  
-    ])
     ->create()
     ->getId();
     
@@ -774,7 +771,6 @@ $refund = $client->getRefund($paymentId, $refundId);
 // Common refund methods
 $refund->getId();
 $refund->getAmountInMinor();
-$refund->getMetadata();
 $refund->getCurrency();
 $refund->getReference();
 $refund->getStatus();
@@ -1151,7 +1147,6 @@ $client->webhook()
         // Handle any refund event
         $event->getPaymentId();
         $event->getRefundId();
-        $event->getMetadata();
     })
     ->handler(function (Webhook\RefundExecutedEventInterface $event) {
         // Handle refund executed

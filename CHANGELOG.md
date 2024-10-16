@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Payment authorized webhook (#69)
+- Payment creditable webhook (#69)
+- Payment settlement stalled webhook (#69)
+- `getMetadata()` on payment webhooks (#69)
+- `getPaymentSource()` on payment authorized, executed, settled and failed webhooks (#69)
+- `getSchemeId()` on refund executed and payout executed webhooks
+
+### Changed
+
+- Payment method removed from `PaymentEventInterface` and now only available on payment authorized, executed, settled
+  and failed webhooks
+
 ## [2.6.0] - 2024-10-10
 
 ### Added
