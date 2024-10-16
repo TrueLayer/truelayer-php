@@ -28,15 +28,16 @@
         7. [Attempt Failed Status](#status-attempt-failed)
         8. [Authorization flow config](#auth-flow-config)
         9. [Source of funds](#source-of-funds)
-7. [Authorizing a payment](#authorizing-payment)
-8. [Refunds](#refunds)
-9. [Payouts](#payouts)
-10. [Merchant accounts](#merchant-accounts)
-11. [Account identifiers](#account-identifiers)
-12. [Receiving webhook notifications](#webhooks)
-13. [Custom idempotency keys](#idempotency)
-14. [Custom API calls](#custom-api-calls)
-15. [Error Handling](#error-handling)
+7. [Cancelling a payment](#payment-cancellation)
+8. [Authorizing a payment](#authorizing-payment)
+9. [Refunds](#refunds)
+10. [Payouts](#payouts)
+11. [Merchant accounts](#merchant-accounts)
+12. [Account identifiers](#account-identifiers)
+13. [Receiving webhook notifications](#webhooks)
+14. [Custom idempotency keys](#idempotency)
+15. [Custom API calls](#custom-api-calls)
+16. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -686,6 +687,20 @@ if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentS
        // See 'Account identifiers' for available methods.
     }
 }
+```
+
+<a name="payment-cancellation"></a>
+
+# Cancel a payment
+
+You can cancel a retrieved payment as long as it's not been authorised yet. Please see our documentation on
+[payment cancellation](https://docs.truelayer.com/docs/cancel-a-payment) for further details.
+
+> The `cancel` method returns a fresh version of the retrieved payment
+
+```php
+$payment = $client->getPayment($paymentId);
+$cancelledPayment = $payment->cancel();
 ```
 
 <a name="authorizing-payment"></a>
