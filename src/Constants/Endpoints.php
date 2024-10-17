@@ -22,6 +22,7 @@ class Endpoints
     public const TOKEN = '/connect/token';
     public const PAYMENTS_CREATE = '/v3/payments';
     public const PAYMENTS_RETRIEVE = '/v3/payments/{id}';
+    public const PAYMENTS_CANCEL = '/v3/payments/{id}/actions/cancel';
     public const PAYMENTS_START_AUTH_FLOW = '/v3/payments/{id}/authorization-flow';
     public const PAYMENTS_SUBMIT_PROVIDER = '/v3/payments/{id}/authorization-flow/actions/provider-selection';
     public const PAYMENTS_REFUNDS_CREATE = '/v3/payments/{id}/refunds';

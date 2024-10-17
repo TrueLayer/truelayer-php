@@ -11,6 +11,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Support for metadata field on payout creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
 - Support for metadata field on refund creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Support for payment cancellation ([#67](https://github.com/TrueLayer/truelayer-php/pull/67))
 
 
 ## [2.6.0] - 2024-10-10

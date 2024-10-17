@@ -6,11 +6,19 @@ namespace TrueLayer\Entities\Payment;
 
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
+use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
+use TrueLayer\Exceptions\InvalidArgumentException;
+use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 
-class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
+class PaymentRetrieved extends Entity implements PaymentRetrievedInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var string
      */
@@ -191,5 +199,24 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     public function isSettled(): bool
     {
         return $this->getStatus() === PaymentStatus::SETTLED;
+    }
+
+    /**
+     * @throws SignerException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ApiRequestJsonSerializationException
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentRetrievedInterface
+     */
+    public function cancel(): PaymentRetrievedInterface
+    {
+        $this->getApiFactory()->paymentsApi()->cancel(
+            $this->getId()
+        );
+
+        $data = $this->getApiFactory()->paymentsApi()->retrieve($this->getId());
+
+        return $this->make(PaymentRetrievedInterface::class, $data);
     }
 }
