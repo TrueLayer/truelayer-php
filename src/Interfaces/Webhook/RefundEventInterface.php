@@ -19,4 +19,9 @@ interface RefundEventInterface extends EventInterface
      * @return string
      */
     public function getPaymentId(): string;
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
 }

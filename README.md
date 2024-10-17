@@ -762,6 +762,10 @@ $refundId = $client->refund()
     ->payment($paymentId) // Payment ID, PaymentRetrievedInterface or PaymentCreatedInterface
     ->amountInMinor(1)
     ->reference('My reference')
+    ->metadata([
+        "foo" => "bar",
+        "baz" => "qux",
+    ])
     ->create()
     ->getId();
     
@@ -773,6 +777,7 @@ $refund->getId();
 $refund->getAmountInMinor();
 $refund->getCurrency();
 $refund->getReference();
+$refund->getMetadata();
 $refund->getStatus();
 $refund->getCreatedAt();
 $refund->isPending();
@@ -807,6 +812,10 @@ if ($payment instanceof PaymentSettledInterface) {
     $refundId = $payment->refund()
         ->amountInMinor(1)
         ->reference('My reference')
+        ->metadata([
+            "foo" => "bar",
+            "baz" => "qux",
+        ])
         ->create()
         ->getId();
         
@@ -839,6 +848,10 @@ $payout = $client->payout()
     ->beneficiary($beneficiary)
     ->currency(\TrueLayer\Constants\Currencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
+    ->metadata([
+        "foo" => "bar",
+        "baz" => "qux",
+    ])
     ->create();
 
 $payout->getId();
@@ -857,6 +870,10 @@ $payout = $client->payout()
     ->beneficiary($beneficiary)
     ->currency(\TrueLayer\Constants\Currencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
+    ->metadata([
+        "foo" => "bar",
+        "baz" => "qux",
+    ])
     ->create();
 
 $payout->getId();
@@ -874,6 +891,10 @@ $payout = $client->payout()
     ->beneficiary($beneficiary)
     ->currency(\TrueLayer\Constants\Currencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
+    ->metadata([
+        "foo" => "bar",
+        "baz" => "qux",
+    ])
     ->create();
 
 $payout->getId();
@@ -899,6 +920,7 @@ if ($payout instanceof PayoutRetrievedInterface) {
     $payout->getMerchantAccountId();
     $payout->getStatus(); 
     $payout->getBeneficiary();
+    $payout->getMetadata();
     $payout->getCreatedAt();
 }
 
@@ -1147,6 +1169,7 @@ $client->webhook()
         // Handle any refund event
         $event->getPaymentId();
         $event->getRefundId();
+        $event->getMetadata();
     })
     ->handler(function (Webhook\RefundExecutedEventInterface $event) {
         // Handle refund executed
@@ -1163,6 +1186,7 @@ $client->webhook()
     ->handler(function (Webhook\PayoutEventInterface $event) {
         // handle any payout event
         $event->getPayoutId();
+        $event->getMetadata();
         $beneficiary = $event->getBeneficiary();
         $beneficiary->getType();
         

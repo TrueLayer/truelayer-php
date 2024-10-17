@@ -215,3 +215,57 @@ use TrueLayer\Services\Util\Arr;
     \expect($payout1)->not->toBe($payout3);
     \expect($payout2)->not->toBe($payout3);
 });
+
+\it('creates a payout with the right metadata', function ($metadata) {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account);
+
+    //    $created = $helper->create(
+    //        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
+    //    );
+    //
+    //    \client()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
+    //    \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
+    //
+    //    /** @var RedirectActionInterface $next */
+    //    $next = $created->getDetails()->getAuthorizationFlowNextAction();
+    //    \bankAction($next->getUri(), 'Execute');
+    //    \sleep(15);
+
+    //    /* @var PaymentSettledInterface $payment */
+    //    $payment = $created->getDetails();
+
+    $client = \client();
+
+    $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountIdentifier(
+            $client->accountIdentifier()->iban()->iban('GB29NWBK60161331926819')
+        )
+        ->accountHolderName('Test name')
+        ->reference('Test reference');
+
+    $response = $client->payout()
+        ->amountInMinor(1)
+        ->currency(Currencies::GBP)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->metadata($metadata)
+        ->create();
+
+    /** @var PayoutRetrievedInterface $payout */
+    $payout = $client->getPayout($response->getId());
+
+    \expect($payout)->toBeInstanceOf(PayoutRetrievedInterface::class);
+    \expect($payout->getMetadata())->toBe($metadata);
+})->with([
+    'some metadata' => [
+        ['foo' => 'bar'],
+    ],
+    'no metadata' => [[]],
+]);

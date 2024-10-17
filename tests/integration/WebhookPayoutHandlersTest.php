@@ -94,3 +94,20 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     'executed' => WebhookPayload::payoutExecutedBusinessAccount(),
     'failed' => WebhookPayload::payoutFailedBusinessAccount(),
 ]);
+
+\it('handles payout webhook metadata', function (string $body, array $metadata) {
+    /** @var PayoutEventInterface $event */
+    $event = null;
+
+    \webhook($body)->handler(function (PayoutEventInterface $evt) use (&$event) {
+        $event = $evt;
+    })->execute();
+
+    \expect($event)->toBeInstanceOf(PayoutEventInterface::class);
+    \expect($event->getMetadata())->toBe($metadata);
+})->with([
+    'executed, no metadata' => [WebhookPayload::payoutExecuted(), []],
+    'executed, with metadata' => [WebhookPayload::payoutExecutedWithMetadata(), ['foo' => 'bar']],
+    'failed, no metadata' => [WebhookPayload::payoutFailed(), []],
+    'failed, with metadata' => [WebhookPayload::payoutFailedWithMetadata(), ['foo' => 'bar']],
+]);

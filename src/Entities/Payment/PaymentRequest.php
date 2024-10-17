@@ -109,7 +109,9 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
      */
     public function metadata(array $metadata): PaymentRequestInterface
     {
-        $this->metadata = $metadata;
+        if (!empty($metadata)) {
+            $this->metadata = $metadata;
+        }
 
         return $this;
     }

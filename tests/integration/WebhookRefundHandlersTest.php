@@ -55,3 +55,20 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event->getFailureReason())->toBe('insufficient_funds');
     \expect($event->getType())->toBe('refund_failed');
 });
+
+\it('handles refund webhook metadata', function (string $body, array $metadata) {
+    /** @var RefundEventInterface $event */
+    $event = null;
+
+    \webhook($body)->handler(function (RefundEventInterface $evt) use (&$event) {
+        $event = $evt;
+    })->execute();
+
+    \expect($event)->toBeInstanceOf(RefundEventInterface::class);
+    \expect($event->getMetadata())->toBe($metadata);
+})->with([
+    'executed, no metadata' => [WebhookPayload::refundExecuted(), []],
+    'executed, with metadata' => [WebhookPayload::refundExecutedWithMetadata(), ['foo' => 'bar']],
+    'failed, no metadata' => [WebhookPayload::refundFailed(), []],
+    'failed, with metadata' => [WebhookPayload::refundFailedWithMetadata(), ['foo' => 'bar']],
+]);

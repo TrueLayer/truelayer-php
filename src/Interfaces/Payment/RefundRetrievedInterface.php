@@ -29,6 +29,11 @@ interface RefundRetrievedInterface extends ArrayableInterface
     public function getReference(): string;
 
     /**
+     * @return array<string, string>
+     */
+    public function getMetadata(): array;
+
+    /**
      * @return \DateTimeInterface
      */
     public function getCreatedAt(): \DateTimeInterface;
