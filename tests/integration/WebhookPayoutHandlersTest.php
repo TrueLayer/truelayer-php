@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use TrueLayer\Constants\DateTime;
+use TrueLayer\Interfaces\Webhook\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\PayoutEventInterface;
 use TrueLayer\Interfaces\Webhook\PayoutExecutedEventInterface;
@@ -42,6 +44,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event)->toBeInstanceOf(PayoutExecutedEventInterface::class);
     \expect($event->getExecutedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
     \expect($event->getType())->toBe('payout_executed');
+    \expect($event->getSchemeId())->toBe('faster_payments_service');
 });
 
 \it('handles payout failed', function () {
@@ -110,3 +113,35 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     'failed, no metadata' => [WebhookPayload::payoutFailed(), []],
     'failed, with metadata' => [WebhookPayload::payoutFailedWithMetadata(), ['foo' => 'bar']],
 ]);
+
+
+\it('handles external account payouts', function (string $body) {
+    /** @var PayoutEventInterface $event */
+    $event = null;
+
+    \webhook($body)->handler(function (PayoutEventInterface $evt) use (&$event) {
+        $event = $evt;
+    })->execute();
+
+    /** @var BusinessAccountBeneficiaryInterface $beneficiary */
+    $beneficiary = $event->getBeneficiary();
+    \expect($beneficiary)->toBeInstanceOf(ExternalAccountBeneficiaryInterface::class);
+    \expect($beneficiary->getType())->toBe('external_account');
+})->with([
+    'executed' => WebhookPayload::payoutExecutedExternalAccount(),
+    'failed' => WebhookPayload::payoutFailedExternalAccount(),
+]);
+
+\it('handles unknown beneficiary types', function () {
+    /** @var PayoutEventInterface $event */
+    $event = null;
+
+    \webhook(WebhookPayload::payoutUnknownBeneficiary())->handler(function (PayoutEventInterface $evt) use (&$event) {
+        $event = $evt;
+    })->execute();
+
+    /** @var BusinessAccountBeneficiaryInterface $beneficiary */
+    $beneficiary = $event->getBeneficiary();
+    \expect($beneficiary)->toBeInstanceOf(BeneficiaryInterface::class);
+    \expect($beneficiary->getType())->toBe('foo');
+});

@@ -24,6 +24,9 @@ class PayoutEvent extends Event implements PayoutEventInterface
      */
     protected array $metadata;
 
+    /**
+     * @return mixed[]
+     */
     protected function casts(): array
     {
         return \array_merge(parent::casts(), [

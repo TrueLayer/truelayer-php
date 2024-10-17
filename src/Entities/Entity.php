@@ -25,7 +25,7 @@ abstract class Entity implements ArrayableInterface, HasAttributesInterface
      * @param EntityFactoryInterface $entityFactory
      */
     public function __construct(
-        EntityFactoryInterface $entityFactory
+        EntityFactoryInterface $entityFactory,
     ) {
         $this->entityFactory = $entityFactory;
     }

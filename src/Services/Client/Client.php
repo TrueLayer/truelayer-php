@@ -73,7 +73,7 @@ final class Client implements ClientInterface
         ApiClientInterface $apiClient,
         ApiFactoryInterface $apiFactory,
         EntityFactoryInterface $entityFactory,
-        ClientConfigInterface $config
+        ClientConfigInterface $config,
     ) {
         $this->apiClient = $apiClient;
         $this->apiFactory = $apiFactory;

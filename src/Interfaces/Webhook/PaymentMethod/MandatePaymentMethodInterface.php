@@ -10,4 +10,9 @@ interface MandatePaymentMethodInterface extends PaymentMethodInterface
      * @return string
      */
     public function getMandateId(): string;
+
+    /**
+     * @return string|null
+     */
+    public function getReference(): ?string;
 }

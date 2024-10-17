@@ -175,8 +175,8 @@ $merchantAccount = $merchantAccounts[0];
 $beneficiary = $client->beneficiary()->merchantAccount($merchantAccount);
 ```
 
-If your merchant account is configured for payment verification then you have
-the option to enable automated remitter verification for your Merchant Account payment:
+If your merchant account is configured for payment verification then you have the option to enable automated remitter
+verification for your Merchant Account payment:
 
 ```php
 $remitterVerification = $client
@@ -289,8 +289,8 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->providerSelection($providerSelection);
 ```
 
-Alternatively, you can preselect the provider that is going to be used in the authorisation flow
-as well as the payment scheme that the payment is going to be sent on:
+Alternatively, you can preselect the provider that is going to be used in the authorisation flow as well as the payment
+scheme that the payment is going to be sent on:
 
 ```php
 // Preselect the payment scheme
@@ -326,6 +326,9 @@ $payment = $client->payment()
     ->user($user)
     ->amountInMinor(1)
     ->currency(\TrueLayer\Constants\Currencies::GBP) // You can use other currencies defined in this class.
+    ->metadata([ // add custom key value pairs
+        'key' => 'value'
+    ])
     ->paymentMethod($paymentMethod)
     ->create();
 ```
@@ -417,6 +420,7 @@ $payment->getAmountInMinor();
 $payment->getCreatedAt(); 
 $payment->getCurrency();
 $payment->getPaymentMethod();
+$payment->getMetadata();
 $payment->toArray();
 ```
 
@@ -1094,9 +1098,12 @@ $client->webhook()
 
 This library supports handlers for the following event types:
 
+- payment_authorized
 - payment_executed
 - payment_settled
 - payment_failed
+- payment_creditable
+- payment_settlement_stalled
 - refund_executed
 - refund_failed
 - payout_executed
@@ -1113,7 +1120,7 @@ use TrueLayer\Interfaces\Webhook;
 
 $client->webhook()
     ->handler(function (Webhook\EventInterface $event) {
-        // handle any incoming event
+        // Handle any incoming event
         $event->getEventId();
         $event->getEventVersion();
         $event->getSignature();
@@ -1122,58 +1129,71 @@ $client->webhook()
         $event->getBody();
     })
     ->handler(function (Webhook\PaymentEventInterface $event) {
-        // handle any payment event
+        // Handle any payment event
+        // Inherits from EventInterface so provides same methods plus:
         $event->getPaymentId();
-        
-        $paymentMethod = $event->getPaymentMethod();
-        $paymentMethod->getType();
-        
-        if ($paymentMethod instanceof Webhook\PaymentMethod\BankTransferPaymentMethodInterface) {
-            $paymentMethod->getProviderId();
-            $paymentMethod->getSchemeId();
-        }      
-       
-       if ($paymentMethod instanceof Webhook\PaymentMethod\MandatePaymentMethodInterface) {
-            $paymentMethod->getMandateId();
-       }
+        $event->getMetadata();        
+    })
+    ->handler(function (Webhook\PaymentAuthorizedEventInterface $event) {
+        // Handle payment authorized
+        // Note that this webhook is optional and disabled by default.
+        // Contact us if you would like this webhook to be enabled.
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getAuthorizedAt();
+        $event->getPaymentMethod();
+        $event->getPaymentSource();
     })
     ->handler(function (Webhook\PaymentExecutedEventInterface $event) {
-        // handle payment executed
+        // Handle payment executed
         // Inherits from PaymentEventInterface so provides same methods plus:
         $event->getExecutedAt();
         $event->getSettlementRiskCategory();
+        $event->getPaymentMethod();
+        $event->getPaymentSource();
     })
     ->handler(function (Webhook\PaymentSettledEventInterface $event) {
-        // handle payment settled
+        // Handle payment settled
         // Inherits from PaymentEventInterface so provides same methods plus:
         $event->getSettledAt();
         $event->getSettlementRiskCategory();
-        
-        $paymentSource = $event->getPaymentSource();
-        $paymentSource->getId();
-        $paymentSource->getAccountHolderName();
-        $paymentSource->getAccountIdentifiers(); // See Account Identifiers
+        $event->getPaymentMethod();
+        $event->getPaymentSource();
     })
     ->handler(function (Webhook\PaymentFailedEventInterface $event) {
-        // handle payment failed
+        // Handle payment failed
         // Inherits from PaymentEventInterface so provides same methods plus:
         $event->getFailedAt();
         $event->getFailureReason();
         $event->getFailureStage();
+        $event->getPaymentMethod();
+        $event->getPaymentSource();
+    })
+    ->handler(function (Webhook\PaymentCreditableEventInterface $event) {
+        // Handle payment creditable
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getCreditableAt();
+    })
+    ->handler(function (Webhook\PaymentSettlementStalledEventInterface $event) {
+        // Handle payment settlement stalled
+        // Note that this webhook is optional and disabled by default.
+        // Contact us if you would like this webhook to be enabled.
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getSettlementStalledAt();
     })
     ->handler(function (Webhook\RefundEventInterface $event) {
-        // handle any refund event
+        // Handle any refund event
         $event->getPaymentId();
         $event->getRefundId();
         $event->getMetadata();
     })
     ->handler(function (Webhook\RefundExecutedEventInterface $event) {
-        // handle refund executed
+        // Handle refund executed
         // Inherits from RefundEventInterface so provides same methods plus:
         $event->getExecutedAt();
+        $event->getSchemeId();
     })
     ->handler(function (Webhook\RefundFailedEventInterface $event) {
-        // handle refund failed
+        // Handle refund failed
         // Inherits from RefundEventInterface so provides same methods plus:
         $event->getFailedAt();
         $event->getFailureReason();
@@ -1206,6 +1226,38 @@ $client->webhook()
         $event->getFailureReason();
     })
     ->execute();
+```
+
+## Payment source
+
+PaymentAuthorizedEventInterface, PaymentExecutedEventInterface, PaymentSettledEventInterface,
+PaymentFailedEventInterface provide a method to get more information about the payment source:
+
+```php
+$paymentSource = $event->getPaymentSource(); $paymentSource->getId(); $paymentSource->getAccountHolderName();
+$paymentSource->getAccountIdentifiers(); // See Account Identifiers
+```
+
+### Payment method
+
+PaymentAuthorizedEventInterface, PaymentExecutedEventInterface, PaymentSettledEventInterface,
+PaymentFailedEventInterface provide a method to get more information about the payment method:
+
+```php
+use TrueLayer\Interfaces\Webhook;
+
+$paymentMethod = $event->getPaymentMethod(); 
+$paymentMethod->getType();
+
+if ($paymentMethod instanceof Webhook\PaymentMethod\BankTransferPaymentMethodInterface) {
+    $paymentMethod->getProviderId();
+    $paymentMethod->getSchemeId();
+}      
+
+if ($paymentMethod instanceof Webhook\PaymentMethod\MandatePaymentMethodInterface) {
+    $paymentMethod->getMandateId();
+    $paymentMethod->getReference();
+}
 ```
 
 ## Overriding globals

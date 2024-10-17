@@ -39,6 +39,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event)->toBeInstanceOf(RefundExecutedEventInterface::class);
     \expect($event->getExecutedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
     \expect($event->getType())->toBe('refund_executed');
+    \expect($event->getSchemeId())->toBe('faster_payments_service');
 });
 
 \it('handles refund failed', function () {

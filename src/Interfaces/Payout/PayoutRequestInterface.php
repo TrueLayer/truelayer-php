@@ -56,10 +56,10 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function requestOptions(RequestOptionsInterface $requestOptions): PayoutRequestInterface;
 
     /**
-     * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws InvalidArgumentException
+     * @throws SignerException
      *
      * @return PayoutCreatedInterface
      */
