@@ -18,7 +18,16 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     $beneficiary = $client->payoutBeneficiary()->externalAccount()
         ->accountHolderName('Test')
         ->reference('Test reference')
-        ->accountIdentifier($accountIdentifier);
+        ->accountIdentifier($accountIdentifier)
+        ->dateOfBirth('1990-01-31');
+
+    $beneficiary->address(null)
+        ->addressLine1('The Gilbert')
+        ->addressLine2('City of')
+        ->city('London')
+        ->state('Greater London')
+        ->zip('EC2A 1PX')
+        ->countryCode('GB');
 
     $client->payout()
         ->amountInMinor(1)
@@ -39,6 +48,15 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
                 'type' => AccountIdentifierTypes::IBAN,
                 'iban' => 'GB29NWBK60161331926819',
             ],
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => 'Greater London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => '1990-01-31',
         ],
     ]);
 });

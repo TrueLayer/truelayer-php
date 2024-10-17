@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Beneficiary;
 
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
+use TrueLayer\Interfaces\AddressInterface;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 
 interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface, PayoutBeneficiaryInterface
@@ -20,4 +21,18 @@ interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface, Payo
      * @return $this
      */
     public function accountIdentifier(AccountIdentifierInterface $accountIdentifier): self;
+
+    /**
+     * @param string $dateOfBirth
+     *
+     * @return $this
+     */
+    public function dateOfBirth(string $dateOfBirth): self;
+
+    /**
+     * @param AddressInterface|null $address
+     *
+     * @return AddressInterface
+     */
+    public function address(?AddressInterface $address): AddressInterface;
 }
