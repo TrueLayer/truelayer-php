@@ -11,6 +11,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Support for metadata field on payout creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
 - Support for metadata field on refund creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Support for date of birth of external account beneficiary on payout creation
+- Support for address of external account beneficiary on payout creation
 
 
 ## [2.6.0] - 2024-10-10
