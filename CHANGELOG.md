@@ -26,10 +26,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Payment method removed from `PaymentEventInterface` and now only available on payment authorized, executed, settled
   and failed webhooks
-- Support for metadata field on payout creation, retrieval and
-  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
-- Support for metadata field on refund creation, retrieval and
-  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
 
 ## [2.6.0] - 2024-10-10
 
