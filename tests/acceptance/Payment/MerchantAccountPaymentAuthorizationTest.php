@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
 use TrueLayer\Interfaces\Payment\PaymentAttemptFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
@@ -49,6 +50,31 @@ use TrueLayer\Services\Util\Arr;
     \expect($paymentMethod->isPaymentRetryEnabled())->toBe(false);
 
     return $created;
+});
+
+\it('cancels a merchant payment', function () {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account);
+
+    $created = $helper->create(
+        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
+    );
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+
+    $payment = $created->getDetails();
+
+    /** @var PaymentFailedInterface $cancelled */
+    $cancelled = $payment->cancel();
+
+    \expect($cancelled)->toBeInstanceOf(PaymentFailedInterface::class);
+    \expect($cancelled->getFailureReason())->toBe('canceled');
 });
 
 \it('starts payment authorization', function (PaymentCreatedInterface $created) {

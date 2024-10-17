@@ -24,6 +24,11 @@ class PaymentResponse
         return new Response(200, [], \json_encode(self::CREATED));
     }
 
+    public static function cancelled(): Response
+    {
+        return new Response(202, [], null);
+    }
+
     public static function authorizationRequired(): Response
     {
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"c4e754fd-8b0d-40fe-bd61-36622b7477a4"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-04T13:40:23.798415Z","status":"authorization_required"}');
