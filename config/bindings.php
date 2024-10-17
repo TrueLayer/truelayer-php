@@ -99,6 +99,8 @@ return [
     Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface::class => Entities\Webhook\PaymentMethod\MandatePaymentMethod::class,
     Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\BusinessAccountBeneficiary::class,
     Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Webhook\Beneficiary\PaymentSourceBeneficiary::class,
+    Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Webhook\Beneficiary\BeneficiaryInterface::class => Entities\Webhook\Beneficiary\Beneficiary::class,
 
     Interfaces\RequestOptionsInterface::class => Entities\RequestOptions::class,
 ];

@@ -107,6 +107,7 @@ return [
         'discriminate_on' => 'type',
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class,
         BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface::class,
     ],
     Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface::class => [
         'discriminate_on' => 'type',

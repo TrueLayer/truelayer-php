@@ -413,4 +413,48 @@ class WebhookPayload
           }
         }';
     }
+
+    public static function payoutExecutedExternalAccount(): string
+    {
+        return '{
+          "type": "payout_executed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "executed_at": "2021-12-25T15:00:00.000Z",
+          "beneficiary": {
+            "type": "external_account"
+          }
+        }';
+    }
+
+    public static function payoutFailedExternalAccount(): string
+    {
+        return '{
+          "type": "payout_failed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "failed_at": "2021-12-25T15:00:00.000Z",
+          "failure_reason": "scheme_error",
+          "beneficiary": {
+            "type": "external_account"
+          }
+        }';
+    }
+
+    public static function payoutUnknownBeneficiary(): string
+    {
+        return '{
+          "type": "payout_failed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "failed_at": "2021-12-25T15:00:00.000Z",
+          "failure_reason": "scheme_error",
+          "beneficiary": {
+            "type": "foo"
+          }
+        }';
+    }
 }
