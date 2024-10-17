@@ -37,6 +37,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'reference' => 'The ref',
                 'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
+                'address' => null,
+                'date_of_birth' => null,
             ],
             'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
@@ -109,6 +111,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'reference' => 'The ref',
                 'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
+                'address' => null,
+                'date_of_birth' => null,
             ],
             'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
@@ -155,6 +159,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'reference' => 'The ref',
                 'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
+                'address' => null,
+                'date_of_birth' => null,
             ],
             'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_USER_SELECTION,
@@ -229,6 +235,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'reference' => 'The ref',
                 'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
+                'address' => null,
+                'date_of_birth' => null,
             ],
             'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
@@ -294,6 +302,8 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'reference' => 'The ref',
                 'account_holder_name' => 'John Doe',
                 'type' => 'external_account',
+                'address' => null,
+                'date_of_birth' => null,
             ],
             'provider_selection' => [
                 'type' => PaymentMethods::PROVIDER_TYPE_PRESELECTED,
