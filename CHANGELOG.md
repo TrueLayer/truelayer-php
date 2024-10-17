@@ -15,6 +15,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `getMetadata()` on payment webhooks (#69)
 - `getPaymentSource()` on payment authorized, executed, settled and failed webhooks (#69)
 - `getSchemeId()` on refund executed and payout executed webhooks
+- Support for metadata field on payout creation, retrieval and
+  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Support for metadata field on refund creation, retrieval and
+  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Support for payment cancellation ([#67](https://github.com/TrueLayer/truelayer-php/pull/67))
 
 ### Changed
 
