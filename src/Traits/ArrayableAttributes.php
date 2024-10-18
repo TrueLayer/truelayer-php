@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TrueLayer\Traits;
 
-use TrueLayer\Attributes\Field;
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Services\Util\Arr;
@@ -42,7 +41,7 @@ trait ArrayableAttributes
      */
     protected function arrayFields(): array
     {
-        return $this->arrayFields;
+        return empty($this->propertyFieldMap) ? $this->arrayFields : $this->propertyFieldMap;
     }
 
     /**
@@ -112,7 +111,7 @@ trait ArrayableAttributes
     {
         $array = [];
 
-        foreach ($this->getArrayFieldsFromAttributes() as $dotNotation => $propertyKey) {
+        foreach ($this->arrayFields() as $dotNotation => $propertyKey) {
             $dotNotation = \is_int($dotNotation) ? $propertyKey : $dotNotation;
             $propertyKey = Str::camel($propertyKey);
             $method = Str::camel('get_' . $propertyKey);
@@ -159,7 +158,7 @@ trait ArrayableAttributes
      *
      * @return mixed
      */
-    private function convertToValueForArray($value)
+    private function convertToValueForArray($value): mixed
     {
         if (\is_array($value)) {
             return \array_map([$this, 'convertToValueForArray'], $value);
@@ -174,24 +173,5 @@ trait ArrayableAttributes
         }
 
         return $value;
-    }
-
-    private function getArrayFieldsFromAttributes()
-    {
-        $reflectionClass = new \ReflectionClass($this);
-
-        $arrayFields = [];
-
-        foreach ($reflectionClass->getProperties() as $property) {
-            $attributes = $property->getAttributes(Field::class);
-
-            if (!empty($attributes)) {
-                $propertyName = $property->getName();
-                $dotNotationFieldName = $attributes[0]->newInstance()->name ?? Str::snake($propertyName);
-                $arrayFields[$dotNotationFieldName] = $propertyName;
-            }
-        }
-
-        return $arrayFields;
     }
 }

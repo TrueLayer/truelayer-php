@@ -22,16 +22,16 @@ trait CastsAttributes
      */
     protected function casts(): array
     {
-        return $this->casts;
+        return empty($this->propertyCastMap) ? $this->casts : $this->propertyCastMap;
     }
 
     /**
-     * @param mixed[]      $data
+     * @param mixed[] $data
      * @param mixed[]|null $casts
      *
+     * @return mixed[]
      * @throws InvalidArgumentException
      *
-     * @return mixed[]
      */
     protected function castData(array $data, ?array $casts = null): array
     {
@@ -75,7 +75,7 @@ trait CastsAttributes
                             $partData = $this->toDateTime($partData);
                         }
                     } elseif ($abstract === \stdClass::class) {
-                        $partData = (object) $partData;
+                        $partData = (object)$partData;
                     } elseif (\is_array($partData) && \is_string($abstract) && (\interface_exists($abstract) || \class_exists($abstract))) {
                         // @phpstan-ignore-next-line
                         $partData = $this->make($abstract, $partData);
@@ -110,11 +110,11 @@ trait CastsAttributes
      * @template T
      *
      * @param class-string<T> $abstract
-     * @param mixed[]|null    $data
-     *
-     * @throws InvalidArgumentException
+     * @param mixed[]|null $data
      *
      * @return T
+     * @throws InvalidArgumentException
+     *
      */
     abstract protected function make(string $abstract, ?array $data = null);
 }
