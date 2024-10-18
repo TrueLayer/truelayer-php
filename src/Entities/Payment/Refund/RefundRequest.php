@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -25,16 +26,19 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     /**
      * @var string
      */
+    #[Field]
     protected string $paymentId;
 
     /**
      * @var int
      */
+    #[Field]
     protected int $amountInMinor;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $reference;
 
     /**
@@ -43,20 +47,11 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'payment_id',
-        'amount_in_minor',
-        'reference',
-    ];
-
-    /**
      * @param string|PaymentRetrievedInterface|PaymentCreatedInterface $payment
      *
+     * @return RefundRequestInterface
      * @throws InvalidArgumentException
      *
-     * @return RefundRequestInterface
      */
     public function payment($payment): RefundRequestInterface
     {
@@ -102,12 +97,12 @@ final class RefundRequest extends Entity implements RefundRequestInterface, HasA
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return RefundCreatedInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return RefundCreatedInterface
+     * @throws ApiResponseUnsuccessfulException
      */
     public function create(): RefundCreatedInterface
     {

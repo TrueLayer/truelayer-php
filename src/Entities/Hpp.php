@@ -52,19 +52,6 @@ final class Hpp extends Entity implements HppInterface
     #[Field('c_tertiary')]
     protected string $tertiaryColour;
 
-//    /**
-//     * @var string[]
-//     */
-//    protected array $arrayFields = [
-//        'base_url',
-//        'payment_id',
-//        'resource_token' => 'resource_token',
-//        'return_uri',
-//        'c_primary' => 'primary_colour',
-//        'c_secondary' => 'secondary_colour',
-//        'c_tertiary' => 'tertiary_colour',
-//    ];
-
     /**
      * @param string $baseUrl
      *

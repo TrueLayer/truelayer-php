@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
@@ -25,58 +26,43 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     /**
      * @var int
      */
+    #[Field]
     protected int $amountInMinor;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $currency;
 
     /**
      * @var PaymentMethodInterface
      */
+    #[Field]
     protected PaymentMethodInterface $paymentMethod;
 
     /**
      * @var UserInterface
      */
+    #[Field]
     protected UserInterface $user;
 
     /**
      * @var array<string, string>
      */
+    #[Field]
     protected array $metadata;
 
     /**
      * @var PaymentRiskAssessmentInterface
      */
+    #[Field]
     protected PaymentRiskAssessmentInterface $riskAssessment;
 
     /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
-
-    /**
-     * @var string[]
-     */
-    protected array $casts = [
-        'payment_method' => PaymentMethodInterface::class,
-        'risk_assessment' => PaymentRiskAssessmentInterface::class,
-        'user' => UserInterface::class,
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'amount_in_minor',
-        'currency',
-        'metadata',
-        'payment_method',
-        'risk_assessment',
-        'user',
-    ];
 
     /**
      * @param int $amount
@@ -129,9 +115,9 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     /**
      * @param PaymentRiskAssessmentInterface|null $riskAssessment
      *
+     * @return PaymentRiskAssessmentInterface
      * @throws InvalidArgumentException
      *
-     * @return PaymentRiskAssessmentInterface
      */
     public function riskAssessment(?PaymentRiskAssessmentInterface $riskAssessment = null): PaymentRiskAssessmentInterface
     {
@@ -165,12 +151,12 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return PaymentCreatedInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return PaymentCreatedInterface
+     * @throws ApiResponseUnsuccessfulException
      */
     public function create(): PaymentCreatedInterface
     {

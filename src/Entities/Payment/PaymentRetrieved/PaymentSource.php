@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
+use TrueLayer\Attributes\ArrayShape;
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
@@ -13,33 +15,20 @@ final class PaymentSource extends Entity implements PaymentSourceInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $id;
 
     /**
      * @var AccountIdentifierInterface[]
      */
+    #[Field, ArrayShape(AccountIdentifierInterface::class)]
     protected array $accountIdentifiers;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $accountHolderName;
-
-    /**
-     * @var string[]
-     */
-    protected array $casts = [
-        'account_identifiers.*' => AccountIdentifierInterface::class,
-    ];
-
-    /**
-     * @var array|string[]
-     */
-    protected array $arrayFields = [
-        'id',
-        'account_identifiers',
-        'account_holder_name',
-    ];
 
     /**
      * @return string|null

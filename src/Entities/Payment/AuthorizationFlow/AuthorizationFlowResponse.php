@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
@@ -14,27 +15,14 @@ abstract class AuthorizationFlowResponse extends Entity implements Authorization
     /**
      * @var string
      */
+    #[Field]
     protected string $status;
 
     /**
      * @var AuthorizationFlowInterface
      */
+    #[Field]
     protected AuthorizationFlowInterface $authorizationFlow;
-
-    /**
-     * @var string[]
-     */
-    protected array $casts = [
-        'authorization_flow' => AuthorizationFlowInterface::class,
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'status',
-        'authorization_flow',
-    ];
 
     /**
      * @return ActionInterface|null

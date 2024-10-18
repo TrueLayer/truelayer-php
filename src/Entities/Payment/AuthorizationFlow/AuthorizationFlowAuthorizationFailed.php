@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizationFailedInterface;
 
 final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowResponse implements AuthorizationFlowAuthorizationFailedInterface
@@ -11,20 +12,14 @@ final class AuthorizationFlowAuthorizationFailed extends AuthorizationFlowRespon
     /**
      * @var string
      */
+    #[Field]
     protected string $failureStage;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $failureReason;
-
-    protected function arrayFields(): array
-    {
-        return \array_merge(parent::arrayFields(), [
-            'failure_stage',
-            'failure_reason',
-        ]);
-    }
 
     /**
      * @return string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ActionInterface;
 
@@ -12,14 +13,8 @@ class Action extends Entity implements ActionInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $type;
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'type',
-    ];
 
     /**
      * @return string

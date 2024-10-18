@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Constants\FormInputTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
@@ -27,41 +28,38 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     /**
      * @var \ArrayObject<string, mixed>|null
      */
+    #[Field]
     protected ?\ArrayObject $userAccountSelection;
 
     /**
      * @var \ArrayObject<string, mixed>|null
      */
+    #[Field]
     protected ?\ArrayObject $providerSelection;
 
     /**
      * @var \ArrayObject<string, mixed>|null
      */
+    #[Field]
     protected ?\ArrayObject $schemeSelection;
 
     /**
      * @var string
      */
+    #[Field('redirect.direct_return_uri')]
     protected string $directReturnUri;
 
     /**
      * @var string
      */
+    #[Field('redirect.return_uri')]
     protected string $returnUri;
 
     /**
      * @var string[]
      */
+    #[Field('form.input_types')]
     protected array $formInputTypes = [];
-
-    protected array $arrayFields = [
-        'user_account_selection',
-        'provider_selection',
-        'scheme_selection',
-        'redirect.return_uri' => 'returnUri',
-        'redirect.direct_return_uri' => 'directReturnUri',
-        'form.input_types' => 'formInputTypes',
-    ];
 
     /**
      * @param string $paymentId
@@ -158,12 +156,12 @@ final class StartAuthorizationFlowRequest extends Entity implements StartAuthori
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
+     * @return AuthorizationFlowResponseInterface
      * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return AuthorizationFlowResponseInterface
+     * @throws ApiResponseUnsuccessfulException
      */
     public function start(): AuthorizationFlowResponseInterface
     {

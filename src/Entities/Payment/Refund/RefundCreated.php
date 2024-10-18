@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\RefundCreatedInterface;
 
@@ -12,14 +13,8 @@ final class RefundCreated extends Entity implements RefundCreatedInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $id;
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'id',
-    ];
 
     /**
      * @return string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
@@ -13,51 +14,38 @@ class RefundRetrieved extends Entity implements RefundRetrievedInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $id;
 
     /**
      * @var int
      */
+    #[Field]
     protected int $amountInMinor;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $currency;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $reference;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $status;
 
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $createdAt;
-
-    /**
-     * @var class-string[]
-     */
-    protected array $casts = [
-        'created_at' => \DateTimeInterface::class,
-    ];
-
-    /**
-     * @return string[]
-     */
-    protected array $arrayFields = [
-        'id',
-        'amount_in_minor',
-        'currency',
-        'reference',
-        'status',
-        'created_at',
-    ];
 
     /**
      * @return string

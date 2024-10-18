@@ -14,8 +14,6 @@ final class PaymentAuthorizing extends _PaymentWithAuthorizationConfig implement
      */
     public function getAuthorizationFlowNextAction(): ?ActionInterface
     {
-        return $this->getAuthorizationFlow()
-            ? $this->getAuthorizationFlow()->getNextAction()
-            : null;
+        return $this->getAuthorizationFlow()?->getNextAction();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Interfaces\Payment\RefundFailedInterface;
 
 final class RefundFailed extends RefundRetrieved implements RefundFailedInterface
@@ -11,33 +12,14 @@ final class RefundFailed extends RefundRetrieved implements RefundFailedInterfac
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $failedAt;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $failureReason;
-
-    /**
-     * @return mixed[]
-     */
-    protected function casts(): array
-    {
-        return \array_merge_recursive(parent::casts(), [
-            'failed_at' => \DateTimeInterface::class,
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function arrayFields(): array
-    {
-        return \array_merge(parent::arrayFields(), [
-            'failed_at',
-            'failure_reason',
-        ]);
-    }
 
     /**
      * @return \DateTimeInterface

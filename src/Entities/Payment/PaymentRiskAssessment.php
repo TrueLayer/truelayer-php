@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 
@@ -12,14 +13,8 @@ class PaymentRiskAssessment extends Entity implements PaymentRiskAssessmentInter
     /**
      * @var string
      */
+    #[Field]
     protected string $segment;
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'segment',
-    ];
 
     /**
      * @return string|null

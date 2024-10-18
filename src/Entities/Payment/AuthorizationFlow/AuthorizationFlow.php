@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\AuthorizationFlow;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface;
@@ -14,22 +15,14 @@ final class AuthorizationFlow extends Entity implements AuthorizationFlowInterfa
     /**
      * @var ActionInterface
      */
+    #[Field('actions.next')]
     protected ActionInterface $nextAction;
 
     /**
      * @var ConfigurationInterface
      */
+    #[Field]
     protected ConfigurationInterface $configuration;
-
-    protected array $casts = [
-        'actions.next' => ActionInterface::class,
-        'configuration' => ConfigurationInterface::class,
-    ];
-
-    protected array $arrayFields = [
-        'actions.next' => 'next_action',
-        'configuration' => 'configuration',
-    ];
 
     /**
      * @return ConfigurationInterface|null

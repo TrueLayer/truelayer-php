@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\Refund;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Interfaces\Payment\RefundExecutedInterface;
 
 final class RefundExecuted extends RefundRetrieved implements RefundExecutedInterface
@@ -11,27 +12,8 @@ final class RefundExecuted extends RefundRetrieved implements RefundExecutedInte
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $executedAt;
-
-    /**
-     * @return mixed[]
-     */
-    protected function casts(): array
-    {
-        return \array_merge_recursive(parent::casts(), [
-            'executed_at' => \DateTimeInterface::class,
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function arrayFields(): array
-    {
-        return \array_merge(parent::arrayFields(), [
-            'executed_at',
-        ]);
-    }
 
     /**
      * @return \DateTimeInterface

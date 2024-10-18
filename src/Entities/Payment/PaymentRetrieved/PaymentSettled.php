@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment\PaymentRetrieved;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
@@ -22,41 +23,20 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     /**
      * @var PaymentSourceInterface
      */
+    #[Field]
     protected PaymentSourceInterface $paymentSource;
 
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $executedAt;
 
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $settledAt;
-
-    /**
-     * @return mixed[]
-     */
-    protected function casts(): array
-    {
-        return \array_merge_recursive(parent::casts(), [
-            'executed_at' => \DateTimeInterface::class,
-            'settled_at' => \DateTimeInterface::class,
-            'payment_source' => PaymentSourceInterface::class,
-        ]);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function arrayFields(): array
-    {
-        return \array_merge(parent::arrayFields(), [
-            'payment_source',
-            'executed_at',
-            'settled_at',
-        ]);
-    }
 
     /**
      * @return \DateTimeInterface
@@ -83,9 +63,9 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
+     * @return RefundRequestInterface
      * @throws InvalidArgumentException
      *
-     * @return RefundRequestInterface
      */
     public function refund(): RefundRequestInterface
     {
@@ -96,12 +76,12 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     /**
      * @param string $refundId
      *
-     * @throws InvalidArgumentException
+     * @return RefundRetrievedInterface
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return RefundRetrievedInterface
+     * @throws InvalidArgumentException
      */
     public function getRefund(string $refundId): RefundRetrievedInterface
     {
@@ -111,12 +91,12 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @return RefundRetrievedInterface[]
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      *
-     * @return RefundRetrievedInterface[]
+     * @throws InvalidArgumentException
      */
     public function getRefunds(): array
     {

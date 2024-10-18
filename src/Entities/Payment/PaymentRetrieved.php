@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TrueLayer\Entities\Payment;
 
+use TrueLayer\Attributes\Field;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
@@ -14,64 +15,50 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface
     /**
      * @var string
      */
+    #[Field]
     protected string $id;
 
     /**
      * @var int
      */
+    #[Field]
     protected int $amountInMinor;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $currency;
 
     /**
      * @var array<string, string>
      */
+    #[Field]
     protected array $metadata;
 
     /**
      * @var string
      */
+    #[Field]
     protected string $status;
 
     /**
      * @var PaymentMethodInterface
      */
+    #[Field]
     protected PaymentMethodInterface $paymentMethod;
 
     /**
      * @var string
      */
+    #[Field('user.id')]
     protected string $userId;
 
     /**
      * @var \DateTimeInterface
      */
+    #[Field]
     protected \DateTimeInterface $createdAt;
-
-    /**
-     * @var class-string[]
-     */
-    protected array $casts = [
-        'payment_method' => PaymentMethodInterface::class,
-        'created_at' => \DateTimeInterface::class,
-    ];
-
-    /**
-     * @return string[]
-     */
-    protected array $arrayFields = [
-        'id',
-        'status',
-        'created_at',
-        'amount_in_minor',
-        'currency',
-        'metadata',
-        'user.id' => 'user_id',
-        'payment_method',
-    ];
 
     /**
      * @return string

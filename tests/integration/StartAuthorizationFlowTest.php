@@ -16,7 +16,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->returnUri('https://foo.bar')
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":[]}}');
 });
 
 \it('sends direct return uri', function () {
@@ -25,7 +25,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->directReturnUri('https://foo.baz')
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":"https:\/\/foo.baz"},"form":{"input_types":[]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"direct_return_uri":"https:\/\/foo.baz","return_uri":"https:\/\/foo.bar"},"form":{"input_types":[]}}');
 });
 
 \it('sends provider selection', function () {
@@ -34,7 +34,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableProviderSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":null,"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":[]}}');
 });
 
 \it('sends scheme selection', function () {
@@ -43,7 +43,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableSchemeSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":{},"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":{},"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":[]}}');
 });
 
 \it('sends user account selection', function () {
@@ -52,7 +52,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->enableUserAccountSelection()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":{},"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":[]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":{},"provider_selection":null,"scheme_selection":null,"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":[]}}');
 });
 
 \it('sends form inputs', function () {
@@ -61,7 +61,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->formInputTypes([FormInputTypes::SELECT, FormInputTypes::TEXT, FormInputTypes::TEXT_WITH_IMAGE])
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":["select","text","text_with_image"]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":null,"scheme_selection":null,"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":["select","text","text_with_image"]}}');
 });
 
 \it('sends hpp capabilities', function () {
@@ -70,7 +70,7 @@ use TrueLayer\Tests\Integration\Mocks\StartAuthorizationFlowResponse;
         ->useHPPCapabilities()
         ->start();
 
-    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":{},"redirect":{"return_uri":"https:\/\/foo.bar","direct_return_uri":null},"form":{"input_types":["text","text_with_image","select"]}}');
+    \expect(\getRequestPayload(1, false))->toBe('{"user_account_selection":null,"provider_selection":{},"scheme_selection":{},"redirect":{"direct_return_uri":null,"return_uri":"https:\/\/foo.bar"},"form":{"input_types":["text","text_with_image","select"]}}');
 });
 
 \it('handles authorizing response', function () {
