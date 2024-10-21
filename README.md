@@ -430,8 +430,8 @@ $payment->toArray();
 
 ```php
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\MerchantBeneficiaryInterface;
 
 $method = $client->getPayment($paymentId)->getPaymentMethod();
 
