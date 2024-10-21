@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Beneficiary;
+namespace TrueLayer\Interfaces\Payout;
 
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\AddressInterface;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 
-interface ExternalAccountBeneficiaryInterface extends BeneficiaryInterface, PayoutBeneficiaryInterface
+interface ExternalAccountBeneficiaryInterface extends PayoutBeneficiaryInterface
 {
     /**
      * @return AccountIdentifierInterface

@@ -11,9 +11,9 @@ return [
     Interfaces\AddressInterface::class => Entities\Address::class,
     Interfaces\UserInterface::class => Entities\User::class,
 
-    Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Beneficiary\BeneficiaryBuilder::class,
-    Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
-    Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Payment\BeneficiaryBuilderInterface::class => Entities\Payment\BeneficiaryBuilder::class,
+    Interfaces\Payment\MerchantBeneficiaryInterface::class => Entities\Payment\MerchantBeneficiary::class,
+    Interfaces\Payment\ExternalAccountBeneficiaryInterface::class => Entities\Payment\ExternalAccountBeneficiary::class,
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
     Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
@@ -71,6 +71,7 @@ return [
 
     Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
     Interfaces\Payout\BusinessAccountBeneficiaryInterface::class => Entities\Payout\BusinessAccountBeneficiary::class,
+    Interfaces\Payout\ExternalAccountBeneficiaryInterface::class => Entities\Payout\ExternalAccountBeneficiary::class,
     Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,

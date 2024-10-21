@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Beneficiary;
+namespace TrueLayer\Interfaces\Payment;
 
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;

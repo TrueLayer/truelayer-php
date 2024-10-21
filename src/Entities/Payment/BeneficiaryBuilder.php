@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payment;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Payment\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface

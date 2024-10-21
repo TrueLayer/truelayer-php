@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payout;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\AddressInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\ExternalAccountBeneficiaryInterface;
 
 final class ExternalAccountBeneficiary extends Entity implements ExternalAccountBeneficiaryInterface
 {

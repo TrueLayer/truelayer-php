@@ -6,11 +6,11 @@ namespace TrueLayer\Entities\Payout;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\BusinessAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {

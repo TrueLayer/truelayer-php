@@ -44,10 +44,10 @@ return [
         AccountIdentifierTypes::BBAN => Interfaces\AccountIdentifier\BbanInterface::class,
         AccountIdentifierTypes::NRB => Interfaces\AccountIdentifier\NrbInterface::class,
     ],
-    Interfaces\Beneficiary\BeneficiaryInterface::class => [
+    Interfaces\Payment\BeneficiaryInterface::class => [
         'discriminate_on' => 'type',
-        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
-        BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Beneficiary\MerchantBeneficiaryInterface::class,
+        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payment\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Payment\MerchantBeneficiaryInterface::class,
     ],
     Interfaces\PaymentMethod\PaymentMethodInterface::class => [
         'discriminate_on' => 'type',
@@ -68,7 +68,7 @@ return [
     Interfaces\Payout\PayoutBeneficiaryInterface::class => [
         'discriminate_on' => 'type',
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
-        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payout\ExternalAccountBeneficiaryInterface::class,
         BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\BusinessAccountBeneficiaryInterface::class,
     ],
     Interfaces\Payout\PayoutRetrievedInterface::class => [

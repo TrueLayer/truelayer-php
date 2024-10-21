@@ -9,8 +9,6 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
@@ -56,7 +54,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
      * @var string[]
      */
     protected array $casts = [
-        'beneficiary' => BeneficiaryInterface::class,
+        'beneficiary' => PayoutBeneficiaryInterface::class,
     ];
 
     /**
@@ -107,7 +105,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     }
 
     /**
-     * @param ExternalAccountBeneficiaryInterface $beneficiary
+     * @param PayoutBeneficiaryInterface $beneficiary
      *
      * @return PayoutRequestInterface
      */

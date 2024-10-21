@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\Payout;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\ExternalAccountBeneficiaryInterface;
 
 interface BeneficiaryBuilderInterface
 {

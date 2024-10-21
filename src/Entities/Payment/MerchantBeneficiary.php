@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payment;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 
 final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInterface
