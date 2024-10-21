@@ -39,7 +39,7 @@ final class EntityFactory implements Interfaces\Factories\EntityFactoryInterface
      */
     public function __construct(
         Interfaces\Configuration\ConfigInterface $sdkConfig,
-        ?Interfaces\Factories\ApiFactoryInterface $apiFactory = null
+        ?Interfaces\Factories\ApiFactoryInterface $apiFactory = null,
     ) {
         $this->sdkConfig = $sdkConfig;
         $this->apiFactory = $apiFactory;

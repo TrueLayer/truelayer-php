@@ -9,11 +9,25 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Support for metadata field on payout creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
-- Support for metadata field on refund creation, retrieval and webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Payment authorized webhook (#69)
+- Payment creditable webhook (#69)
+- Payment settlement stalled webhook (#69)
+- `getMetadata()` on payment webhooks (#69)
+- `getPaymentSource()` on payment authorized, executed, settled and failed webhooks (#69)
+- `getSchemeId()` on refund executed and payout executed webhooks
+- Support for external account beneficiary on payout executed webhook
+- Support for metadata field on payout creation, retrieval and
+  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
+- Support for metadata field on refund creation, retrieval and
+  webhooks ([#68](https://github.com/TrueLayer/truelayer-php/pull/68))
 - Support for payment cancellation ([#67](https://github.com/TrueLayer/truelayer-php/pull/67))
 - Support for date of birth of external account beneficiary on payout creation
 - Support for address of external account beneficiary on payout creation
+
+### Changed
+
+- Payment method removed from `PaymentEventInterface` and now only available on payment authorized, executed, settled
+  and failed webhooks
 
 ## [2.6.0] - 2024-10-10
 

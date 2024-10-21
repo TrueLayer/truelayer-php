@@ -7,12 +7,12 @@ namespace TrueLayer\Interfaces\Webhook\PaymentMethod;
 interface BankTransferPaymentMethodInterface extends PaymentMethodInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getProviderId(): string;
+    public function getProviderId(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSchemeId(): string;
+    public function getSchemeId(): ?string;
 }

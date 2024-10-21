@@ -50,10 +50,10 @@ class JwksManager implements JwksManagerInterface
     }
 
     /**
-     * @throws ApiResponseUnsuccessfulException
      * @throws TLPublicKeysNotFound
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
      *
      * @return mixed[]
      */
@@ -127,7 +127,7 @@ class JwksManager implements JwksManagerInterface
     {
         $data = (new WebhooksApi($this->api))->jwks();
 
-        $this->keys = (array) $data['keys'];
+        $this->keys = (array) ($data['keys'] ?? []);
         $this->retrievedAt = (int) Carbon::now()->timestamp;
 
         if ($this->cache) {
