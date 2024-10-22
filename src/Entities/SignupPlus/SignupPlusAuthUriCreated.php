@@ -9,6 +9,9 @@ use TrueLayer\Interfaces\SignupPlus\SignupPlusAuthUriCreatedInterface;
 
 class SignupPlusAuthUriCreated extends Entity implements SignupPlusAuthUriCreatedInterface
 {
+    /**
+     * @var string
+     */
     protected string $authUri;
 
     /**
@@ -18,6 +21,9 @@ class SignupPlusAuthUriCreated extends Entity implements SignupPlusAuthUriCreate
         'auth_uri',
     ];
 
+    /**
+     * @return string
+     */
     public function getAuthUri(): string
     {
         return $this->authUri;

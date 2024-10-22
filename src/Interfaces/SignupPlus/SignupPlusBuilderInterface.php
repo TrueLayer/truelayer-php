@@ -6,5 +6,8 @@ namespace TrueLayer\Interfaces\SignupPlus;
 
 interface SignupPlusBuilderInterface
 {
+    /**
+     * @return SignupPlusAuthUriRequestInterface
+     */
     public function authUri(): SignupPlusAuthUriRequestInterface;
 }
