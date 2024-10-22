@@ -89,7 +89,7 @@ By default, the client library will initialise in `sandbox` mode. To switch to p
 $client = \TrueLayer\Client::configure()
     ...
     ->useProduction() // optionally, pass a boolean flag to toggle between production/sandbox mode.
-    ->create(); 
+    ->create();
 ```
 
 This library assumes that your client_id is issued with the `payments` scope. Depending on your account type this may
@@ -100,7 +100,7 @@ the library with the `scopes()` method:
 $client = \TrueLayer\Client::configure()
     ...
     ->scopes('foo', 'bar')
-    ->create(); 
+    ->create();
 ```
 
 If needed, you can also provide your own HTTP client instance:
@@ -109,7 +109,7 @@ If needed, you can also provide your own HTTP client instance:
 $client = \TrueLayer\Client::configure()
     ...
     ->httpClient($myPSR18Client)
-    ->create(); 
+    ->create();
 ```
 
 <a name="caching"></a>
@@ -148,7 +148,7 @@ $client->payment()->fill($paymentData);
 You can also convert any resource to array. This can be convenient if you need to output it to json for example:
 
 ```php
-$paymentData = $client->getPayment($paymentId)->toArray(); 
+$paymentData = $client->getPayment($paymentId)->toArray();
 ```
 
 <a name="creating-a-payment"></a>
@@ -337,7 +337,7 @@ You then get access to the following methods:
 
 ```php
 $payment->getId(); // The payment id
-$payment->getResourceToken(); // The resource token 
+$payment->getResourceToken(); // The resource token
 $payment->getDetails(); // Get the payment details, same as $client->getPayment($paymentId)
 $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see below.
 $payment->toArray(); // Convert to array
@@ -417,7 +417,7 @@ $payment = $client->getPayment($paymentId);
 $payment->getId();
 $payment->getUserId();
 $payment->getAmountInMinor();
-$payment->getCreatedAt(); 
+$payment->getCreatedAt();
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->getMetadata();
@@ -430,8 +430,8 @@ $payment->toArray();
 
 ```php
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
-use TrueLayer\Interfaces\Payment\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Payment\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface;
 
 $method = $client->getPayment($paymentId)->getPaymentMethod();
 
@@ -439,12 +439,12 @@ if ($method instanceof BankTransferPaymentMethodInterface) {
     $providerSelection = $method->getProviderSelection();
     $beneficiary = $method->getBeneficiary();
     $beneficiary->getAccountHolderName();
-    
+
     if ($beneficiary instanceof ExternalAccountBeneficiaryInterface) {
         $beneficiary->getReference();
         $beneficiary->getAccountIdentifier(); // See account identifiers documentation
     }
-    
+
     if ($beneficiary instanceof MerchantBeneficiaryInterface) {
         $beneficiary->getReference();
         $beneficiary->getMerchantAccountId();
@@ -464,7 +464,7 @@ $payment->isAuthorizationRequired();
 $payment->isAuthorizing();
 $payment->isAuthorized(); // Will also return false when the payment has progressed to executed, failed or settled states.
 $payment->isExecuted(); // Will also return false when the payment has progressed to failed or settled states.
-$payment->isSettled(); 
+$payment->isSettled();
 $payment->isFailed(); // Payment has failed
 $payment->isAttemptFailed(); // Payment attempt has failed, only available if payment retries are enabled.
 ```
@@ -510,9 +510,9 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 
 if ($payment instanceof PaymentAuthorizingInterface) {
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
-    
+
     // Will return a \TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ActionInterface
-    $payment->getAuthorizationFlowNextAction(); 
+    $payment->getAuthorizationFlowNextAction();
 }
 ```
 
@@ -535,7 +535,7 @@ if ($nextAction instanceof ProviderSelectionActionInterface) {
         $provider->getCountryCode();
         $provider->getLogoUri();
         $provider->getIconUri();
-        $provider->getBgColor();       
+        $provider->getBgColor();
     }
 }
 
@@ -568,7 +568,7 @@ use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\WaitActionInterface;
 $nextAction = $payment->getAuthorizationFlowNextAction();
 
 if ($nextAction instanceof WaitActionInterface) {
-    // your logic here   
+    // your logic here
 }
 ```
 
@@ -662,7 +662,7 @@ This object provides information about the authorization flow the payment went t
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 
 if ($payment instanceof PaymentExecutedInterface) {
-    $config = $payment->getAuthorizationFlowConfig(); 
+    $config = $payment->getAuthorizationFlowConfig();
     $config->isRedirectSupported() // Is redirect supported or not
     $config->getRedirectReturnUri(); // The URL the user will be redirected back once the flow on the third-party's website is completed
     $config->isProviderSelectionSupported(); // Is provider selection supported or not
@@ -684,9 +684,9 @@ use TrueLayer\Interfaces\SchemeIdentifier\NrbDetailsInterface;
 if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentSettledInterface) {
     $paymentSource = $payment->getPaymentSource();
     $paymentSource->getAccountHolderName(); // The unique ID for the external account
-    $paymentSource->getId(); 
+    $paymentSource->getId();
     $paymentSource->toArray();
-        
+
     foreach ($paymentSource->getAccountIdentifiers() as $accountIdentifier) {
        // See 'Account identifiers' for available methods.
     }
@@ -783,7 +783,7 @@ $refundId = $client->refund()
     ])
     ->create()
     ->getId();
-    
+
 // Get a refund's details
 $refund = $client->getRefund($paymentId, $refundId);
 
@@ -833,10 +833,10 @@ if ($payment instanceof PaymentSettledInterface) {
         ])
         ->create()
         ->getId();
-        
+
     // Get a refund's details
     $payment->getRefund($refundId)
-    
+
     // Get all refunds
     $payment->getRefunds();
 }
@@ -933,7 +933,7 @@ if ($payout instanceof PayoutRetrievedInterface) {
     $payout->getCurrency();
     $payout->getAmountInMinor();
     $payout->getMerchantAccountId();
-    $payout->getStatus(); 
+    $payout->getStatus();
     $payout->getBeneficiary();
     $payout->getMetadata();
     $payout->getCreatedAt();
@@ -1132,7 +1132,7 @@ $client->webhook()
         // Handle any payment event
         // Inherits from EventInterface so provides same methods plus:
         $event->getPaymentId();
-        $event->getMetadata();        
+        $event->getMetadata();
     })
     ->handler(function (Webhook\PaymentAuthorizedEventInterface $event) {
         // Handle payment authorized
@@ -1204,11 +1204,11 @@ $client->webhook()
         $event->getMetadata();
         $beneficiary = $event->getBeneficiary();
         $beneficiary->getType();
-        
+
         if ($beneficiary instanceof Webhook\Beneficiary\BusinessAccountBeneficiaryInterface) {
             $beneficiary->getType();
         }
-        
+
         if ($beneficiary instanceof Webhook\Beneficiary\PaymentSourceBeneficiaryInterface) {
             $beneficiary->getPaymentSourceId();
             $beneficiary->getUserId();
@@ -1246,13 +1246,13 @@ PaymentFailedEventInterface provide a method to get more information about the p
 ```php
 use TrueLayer\Interfaces\Webhook;
 
-$paymentMethod = $event->getPaymentMethod(); 
+$paymentMethod = $event->getPaymentMethod();
 $paymentMethod->getType();
 
 if ($paymentMethod instanceof Webhook\PaymentMethod\BankTransferPaymentMethodInterface) {
     $paymentMethod->getProviderId();
     $paymentMethod->getSchemeId();
-}      
+}
 
 if ($paymentMethod instanceof Webhook\PaymentMethod\MandatePaymentMethodInterface) {
     $paymentMethod->getMandateId();
@@ -1334,7 +1334,7 @@ $client->payment()
     ->amountInMinor(10)
     ->currency('GBP')
     ->user($user)
-    ->requestOptions($requestOptions) 
+    ->requestOptions($requestOptions)
     ->create();
 
 // Creating a refund with a custom idempotency key
@@ -1342,7 +1342,7 @@ $client->refund()
     ->payment($paymentId)
     ->amountInMinor(1)
     ->reference('My reference')
-    ->requestOptions($requestOptions) 
+    ->requestOptions($requestOptions)
     ->create();
 
 // Creating a payout with a custom idempotency key
@@ -1351,7 +1351,7 @@ $client->payout()
     ->currency(Currencies::GBP)
     ->merchantAccountId($accountId)
     ->beneficiary($payoutBeneficiary)
-    ->requestOptions($requestOptions) 
+    ->requestOptions($requestOptions)
     ->create();
 ```
 
