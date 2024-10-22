@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Payment;
+namespace TrueLayer\Interfaces\Payment\Beneficiary;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;

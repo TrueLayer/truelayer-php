@@ -9,6 +9,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasAttributesInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 
 interface PayoutRequestInterface extends HasAttributesInterface
@@ -35,11 +36,11 @@ interface PayoutRequestInterface extends HasAttributesInterface
     public function currency(string $currency): PayoutRequestInterface;
 
     /**
-     * @param PayoutBeneficiaryInterface $beneficiary
+     * @param BeneficiaryInterface $beneficiary
      *
      * @return PayoutRequestInterface
      */
-    public function beneficiary(PayoutBeneficiaryInterface $beneficiary): PayoutRequestInterface;
+    public function beneficiary(BeneficiaryInterface $beneficiary): PayoutRequestInterface;
 
     /**
      * @param array<string, string> $metadata

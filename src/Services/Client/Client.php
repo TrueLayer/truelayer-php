@@ -18,7 +18,7 @@ use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
 use TrueLayer\Interfaces\Factories\EntityFactoryInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
-use TrueLayer\Interfaces\Payment\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
@@ -352,11 +352,11 @@ final class Client implements ClientInterface
     /**
      * @throws InvalidArgumentException
      *
-     * @return Payout\BeneficiaryBuilderInterface
+     * @return Payout\Beneficiary\BeneficiaryBuilderInterface
      */
-    public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface
+    public function payoutBeneficiary(): Payout\Beneficiary\BeneficiaryBuilderInterface
     {
-        return $this->entityFactory->make(Payout\BeneficiaryBuilderInterface::class);
+        return $this->entityFactory->make(Payout\Beneficiary\BeneficiaryBuilderInterface::class);
     }
 
     public function getPayout(string $id): PayoutRetrievedInterface

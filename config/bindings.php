@@ -11,9 +11,9 @@ return [
     Interfaces\AddressInterface::class => Entities\Address::class,
     Interfaces\UserInterface::class => Entities\User::class,
 
-    Interfaces\Payment\BeneficiaryBuilderInterface::class => Entities\Payment\BeneficiaryBuilder::class,
-    Interfaces\Payment\MerchantBeneficiaryInterface::class => Entities\Payment\MerchantBeneficiary::class,
-    Interfaces\Payment\ExternalAccountBeneficiaryInterface::class => Entities\Payment\ExternalAccountBeneficiary::class,
+    Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Payment\Beneficiary\BeneficiaryBuilder::class,
+    Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Payment\Beneficiary\MerchantBeneficiary::class,
+    Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Payment\Beneficiary\ExternalAccountBeneficiary::class,
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
     Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
@@ -69,10 +69,10 @@ return [
     Interfaces\AccountIdentifier\NrbInterface::class => Entities\AccountIdentifier\Nrb::class,
     Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
 
-    Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
-    Interfaces\Payout\BusinessAccountBeneficiaryInterface::class => Entities\Payout\BusinessAccountBeneficiary::class,
-    Interfaces\Payout\ExternalAccountBeneficiaryInterface::class => Entities\Payout\ExternalAccountBeneficiary::class,
-    Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
+    Interfaces\Payout\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Payout\Beneficiary\BeneficiaryBuilder::class,
+    Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\BusinessAccountBeneficiary::class,
+    Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Payout\Beneficiary\PaymentSourceBeneficiary::class,
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
     Interfaces\Payout\PayoutPendingInterface::class => Entities\Payout\PayoutRetrieved\PayoutPending::class,

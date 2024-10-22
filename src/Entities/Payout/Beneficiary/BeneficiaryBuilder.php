@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Payout;
+namespace TrueLayer\Entities\Payout\Beneficiary;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Payout\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\BeneficiaryBuilderInterface;
-use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\BusinessAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface;
 
 final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuilderInterface
 {
@@ -49,10 +49,10 @@ final class BeneficiaryBuilder extends EntityBuilder implements BeneficiaryBuild
      *
      * @throws InvalidArgumentException
      *
-     * @return PayoutBeneficiaryInterface
+     * @return BeneficiaryInterface
      */
-    public function fill(array $data): PayoutBeneficiaryInterface
+    public function fill(array $data): BeneficiaryInterface
     {
-        return $this->entityFactory->make(PayoutBeneficiaryInterface::class, $data);
+        return $this->entityFactory->make(BeneficiaryInterface::class, $data);
     }
 }

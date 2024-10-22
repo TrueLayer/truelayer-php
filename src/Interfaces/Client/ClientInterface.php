@@ -15,7 +15,7 @@ use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
-use TrueLayer\Interfaces\Payment\BeneficiaryBuilderInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
@@ -177,9 +177,9 @@ interface ClientInterface
     public function payout(): Payout\PayoutRequestInterface;
 
     /**
-     * @return Payout\BeneficiaryBuilderInterface
+     * @return Payout\Beneficiary\BeneficiaryBuilderInterface
      */
-    public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface;
+    public function payoutBeneficiary(): Payout\Beneficiary\BeneficiaryBuilderInterface;
 
     /**
      * @param string $id

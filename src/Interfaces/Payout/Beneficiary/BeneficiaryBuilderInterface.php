@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Payout;
+namespace TrueLayer\Interfaces\Payout\Beneficiary;
 
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Payout\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface;
 
 interface BeneficiaryBuilderInterface
 {
@@ -29,7 +29,7 @@ interface BeneficiaryBuilderInterface
      *
      * @throws InvalidArgumentException
      *
-     * @return PayoutBeneficiaryInterface
+     * @return BeneficiaryInterface
      */
-    public function fill(array $data): PayoutBeneficiaryInterface;
+    public function fill(array $data): BeneficiaryInterface;
 }

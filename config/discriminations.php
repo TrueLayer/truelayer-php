@@ -44,10 +44,10 @@ return [
         AccountIdentifierTypes::BBAN => Interfaces\AccountIdentifier\BbanInterface::class,
         AccountIdentifierTypes::NRB => Interfaces\AccountIdentifier\NrbInterface::class,
     ],
-    Interfaces\Payment\BeneficiaryInterface::class => [
+    Interfaces\Payment\Beneficiary\BeneficiaryInterface::class => [
         'discriminate_on' => 'type',
-        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payment\ExternalAccountBeneficiaryInterface::class,
-        BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Payment\MerchantBeneficiaryInterface::class,
+        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::MERCHANT_ACCOUNT => Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface::class,
     ],
     Interfaces\PaymentMethod\PaymentMethodInterface::class => [
         'discriminate_on' => 'type',
@@ -65,11 +65,11 @@ return [
         SchemeSelectionTypes::USER_SELECTED => Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class,
         SchemeSelectionTypes::PRESELECTED => Interfaces\Scheme\PreselectedSchemeSelectionInterface::class,
     ],
-    Interfaces\Payout\PayoutBeneficiaryInterface::class => [
+    Interfaces\Payout\Beneficiary\BeneficiaryInterface::class => [
         'discriminate_on' => 'type',
-        BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\PaymentSourceBeneficiaryInterface::class,
-        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payout\ExternalAccountBeneficiaryInterface::class,
-        BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\BusinessAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface::class,
+        BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface::class,
+        BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface::class,
     ],
     Interfaces\Payout\PayoutRetrievedInterface::class => [
         'discriminate_on' => 'status',
