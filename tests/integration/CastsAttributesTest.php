@@ -5,7 +5,7 @@ declare(strict_types=1);
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Traits\CastsAttributes;
 
-$trait = new class() {
+$trait = new class {
     use CastsAttributes;
 
     protected function make(string $abstract, ?array $data = null)

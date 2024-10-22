@@ -97,5 +97,9 @@ return [
     Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\BusinessAccountBeneficiary::class,
     Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Webhook\Beneficiary\PaymentSourceBeneficiary::class,
 
+    Interfaces\SignupPlus\SignupPlusBuilderInterface::class => Entities\SignupPlus\SignupPlusBuilder::class,
+    Interfaces\SignupPlus\SignupPlusAuthUriRequestInterface::class => Entities\SignupPlus\SignupPlusAuthUriRequest::class,
+    Interfaces\SignupPlus\SignupPlusAuthUriCreatedInterface::class => Entities\SignupPlus\SignupPlusAuthUriCreated::class,
+
     Interfaces\RequestOptionsInterface::class => Entities\RequestOptions::class,
 ];

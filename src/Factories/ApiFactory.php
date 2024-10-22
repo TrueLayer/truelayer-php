@@ -7,11 +7,13 @@ namespace TrueLayer\Factories;
 use TrueLayer\Interfaces\Api\MerchantAccountsApiInterface;
 use TrueLayer\Interfaces\Api\PaymentsApiInterface;
 use TrueLayer\Interfaces\Api\PayoutsApiInterface;
+use TrueLayer\Interfaces\Api\SignupPlusApiInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\Factories\ApiFactoryInterface;
 use TrueLayer\Services\Api\MerchantAccountsApi;
 use TrueLayer\Services\Api\PaymentsApi;
 use TrueLayer\Services\Api\PayoutsApi;
+use TrueLayer\Services\Api\SignupPlusApi;
 
 final class ApiFactory implements ApiFactoryInterface
 {
@@ -50,5 +52,13 @@ final class ApiFactory implements ApiFactoryInterface
     public function payoutsApi(): PayoutsApiInterface
     {
         return new PayoutsApi($this->apiClient);
+    }
+
+    /**
+     * @return SignupPlusApiInterface
+     */
+    public function signupPlusApi(): SignupPlusApiInterface
+    {
+        return new SignupPlusApi($this->apiClient);
     }
 }

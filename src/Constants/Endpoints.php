@@ -35,4 +35,5 @@ class Endpoints
 
     public const PAYOUTS_CREATE = '/v3/payouts';
     public const PAYOUTS_RETRIEVE = '/v3/payouts/{id}';
+    public const SIGNUP_PLUS_AUTH = '/signup-plus/authuri';
 }
