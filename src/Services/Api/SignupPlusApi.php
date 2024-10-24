@@ -21,11 +21,14 @@ class SignupPlusApi extends Api implements SignupPlusApiInterface
      *
      * @return mixed[]
      */
-    public function createAuthUri(array $authUriRequest): array
+    public function createAuthUri(string $paymentId, ?string $state): array
     {
         return (array) $this->request()
             ->uri(Endpoints::SIGNUP_PLUS_AUTH)
-            ->payload($authUriRequest)
+            ->payload([
+                'payment_id' => $paymentId,
+                'state' => $state,
+            ])
             ->post();
     }
 

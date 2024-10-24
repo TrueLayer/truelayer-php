@@ -19,7 +19,7 @@ interface SignupPlusApiInterface
      *
      * @return mixed[]
      */
-    public function createAuthUri(array $authUriRequest): array;
+    public function createAuthUri(string $paymentId, ?string $state): array;
 
     /**
      * @param string $paymentId

@@ -24,9 +24,9 @@ class SignupPlusAuthUriRequest extends Entity implements SignupPlusAuthUriReques
     protected string $paymentId;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $state;
+    protected ?string $state = null;
 
     /**
      * @var string[]
@@ -71,7 +71,8 @@ class SignupPlusAuthUriRequest extends Entity implements SignupPlusAuthUriReques
     public function create(): SignupPlusAuthUriCreatedInterface
     {
         $data = $this->getApiFactory()->signupPlusApi()->createAuthUri(
-            $this->toArray(),
+            $this->paymentId,
+            $this->state,
         );
 
         return $this->make(SignupPlusAuthUriCreatedInterface::class, $data);
