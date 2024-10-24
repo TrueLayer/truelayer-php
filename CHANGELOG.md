@@ -23,11 +23,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for payment cancellation ([#67](https://github.com/TrueLayer/truelayer-php/pull/67))
 - Support for date of birth of external account beneficiary on payout creation
 - Support for address of external account beneficiary on payout creation
-- Fully separated payment and payout beneficiaries
-- Moved all beneficiary classes to new namespace
 
 ### Changed
-
+- Fully separated payment and payout beneficiaries
+- Moved all beneficiary classes to new namespace
 - Payment method removed from `PaymentEventInterface` and now only available on payment authorized, executed, settled
   and failed webhooks
 
