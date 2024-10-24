@@ -10,4 +10,9 @@ interface SignupPlusBuilderInterface
      * @return SignupPlusAuthUriRequestInterface
      */
     public function authUri(): SignupPlusAuthUriRequestInterface;
+
+    /**
+     * @return SignupPlusUserDataRequestInterface
+     */
+    public function userData(): SignupPlusUserDataRequestInterface;
 }

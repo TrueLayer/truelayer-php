@@ -28,4 +28,40 @@ class SignupPlusApi extends Api implements SignupPlusApiInterface
             ->payload($authUriRequest)
             ->post();
     }
+
+    /**
+     * @param string $paymentId
+     *
+     * @throws SignerException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @return mixed[]
+     */
+    public function retrieveUserDataByPaymentId(string $paymentId): array
+    {
+        $uri = \str_replace('{id}', $paymentId, Endpoints::SIGNUP_PLUS_PAYMENTS);
+
+        return (array) $this->request()
+            ->uri($uri)
+            ->get();
+    }
+
+    /**
+     * @param string $mandateId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return array|mixed[]
+     */
+    public function retrieveUserDataByMandateId(string $mandateId): array
+    {
+        $uri = \str_replace('{id}', $mandateId, Endpoints::SIGNUP_PLUS_MANDATES);
+
+        return (array) $this->request()
+            ->uri($uri)
+            ->get();
+    }
 }

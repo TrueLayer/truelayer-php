@@ -20,4 +20,26 @@ interface SignupPlusApiInterface
      * @return mixed[]
      */
     public function createAuthUri(array $authUriRequest): array;
+
+    /**
+     * @param string $paymentId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return mixed[]
+     */
+    public function retrieveUserDataByPaymentId(string $paymentId): array;
+
+    /**
+     * @param string $mandateId
+     *
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     *
+     * @return mixed[]
+     */
+    public function retrieveUserDataByMandateId(string $mandateId): array;
 }
