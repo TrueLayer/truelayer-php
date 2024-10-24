@@ -37,6 +37,7 @@ use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
+use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
 use TrueLayer\Services\Util\PaymentId;
@@ -418,5 +419,15 @@ final class Client implements ClientInterface
     public function requestOptions(): RequestOptionsInterface
     {
         return $this->entityFactory->make(RequestOptionsInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return SignupPlusBuilderInterface
+     */
+    public function signupPlus(): SignupPlusBuilderInterface
+    {
+        return $this->entityFactory->make(SignupPlusBuilderInterface::class);
     }
 }

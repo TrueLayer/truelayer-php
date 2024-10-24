@@ -31,6 +31,7 @@ use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
+use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
 
@@ -228,4 +229,9 @@ interface ClientInterface
      * @return RequestOptionsInterface
      */
     public function requestOptions(): RequestOptionsInterface;
+
+    /**
+     * @return SignupPlusBuilderInterface
+     */
+    public function signupPlus(): SignupPlusBuilderInterface;
 }

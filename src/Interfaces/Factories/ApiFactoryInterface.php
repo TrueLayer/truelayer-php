@@ -7,6 +7,7 @@ namespace TrueLayer\Interfaces\Factories;
 use TrueLayer\Interfaces\Api\MerchantAccountsApiInterface;
 use TrueLayer\Interfaces\Api\PaymentsApiInterface;
 use TrueLayer\Interfaces\Api\PayoutsApiInterface;
+use TrueLayer\Interfaces\Api\SignupPlusApiInterface;
 
 interface ApiFactoryInterface
 {
@@ -24,4 +25,9 @@ interface ApiFactoryInterface
      * @return PayoutsApiInterface
      */
     public function payoutsApi(): PayoutsApiInterface;
+
+    /**
+     * @return SignupPlusApiInterface
+     */
+    public function signupPlusApi(): SignupPlusApiInterface;
 }
