@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use TrueLayer\Constants\DateTime;
 use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutAuthorizedInterface;
 use TrueLayer\Interfaces\Payout\PayoutExecutedInterface;
 use TrueLayer\Interfaces\Payout\PayoutFailedInterface;

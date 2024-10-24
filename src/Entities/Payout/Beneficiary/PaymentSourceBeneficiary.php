@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Payout;
+namespace TrueLayer\Entities\Payout\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface;
 
 final class PaymentSourceBeneficiary extends Entity implements PaymentSourceBeneficiaryInterface
 {
@@ -84,11 +84,11 @@ final class PaymentSourceBeneficiary extends Entity implements PaymentSourceBene
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReference(): ?string
+    public function getReference(): string
     {
-        return $this->reference ?? null;
+        return $this->reference;
     }
 
     /**

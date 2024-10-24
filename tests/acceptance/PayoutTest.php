@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\Currencies;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
-use TrueLayer\Interfaces\Payout\BusinessAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Payout\PaymentSourceBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 use TrueLayer\Services\Util\Arr;
 

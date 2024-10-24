@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Payout;
 
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Payout\PayoutBeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
 
 abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterface
@@ -31,9 +31,9 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     protected string $currency;
 
     /**
-     * @var PayoutBeneficiaryInterface
+     * @var BeneficiaryInterface
      */
-    protected PayoutBeneficiaryInterface $beneficiary;
+    protected BeneficiaryInterface $beneficiary;
 
     /**
      * @var array<string, string>
@@ -54,7 +54,7 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
      * @var string[]
      */
     protected array $casts = [
-        'beneficiary' => PayoutBeneficiaryInterface::class,
+        'beneficiary' => BeneficiaryInterface::class,
         'created_at' => \DateTimeInterface::class,
     ];
 
@@ -105,9 +105,9 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     }
 
     /**
-     * @return PayoutBeneficiaryInterface
+     * @return BeneficiaryInterface
      */
-    public function getBeneficiary(): PayoutBeneficiaryInterface
+    public function getBeneficiary(): BeneficiaryInterface
     {
         return $this->beneficiary;
     }

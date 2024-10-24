@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payout\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\AddressInterface;
+use TrueLayer\Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface;
 
 final class ExternalAccountBeneficiary extends Entity implements ExternalAccountBeneficiaryInterface
 {
@@ -27,10 +28,21 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     protected string $reference;
 
     /**
+     * @var string
+     */
+    protected string $dateOfBirth;
+
+    /**
+     * @var AddressInterface
+     */
+    protected AddressInterface $address;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
         'account_identifier' => AccountIdentifierInterface::class,
+        'address' => AddressInterface::class,
     ];
 
     /**
@@ -41,14 +53,16 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
         'account_identifier',
         'reference',
         'type',
+        'date_of_birth',
+        'address',
     ];
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAccountHolderName(): ?string
+    public function getAccountHolderName(): string
     {
-        return $this->accountHolderName ?? null;
+        return $this->accountHolderName;
     }
 
     /**
@@ -84,11 +98,11 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReference(): ?string
+    public function getReference(): string
     {
-        return $this->reference ?? null;
+        return $this->reference;
     }
 
     /**
@@ -109,5 +123,29 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     public function getType(): string
     {
         return BeneficiaryTypes::EXTERNAL_ACCOUNT;
+    }
+
+    /**
+     * @param string $dateOfBirth
+     *
+     * @return $this
+     */
+    public function dateOfBirth(string $dateOfBirth): self
+    {
+        $this->dateOfBirth = $dateOfBirth;
+
+        return $this;
+    }
+
+    /**
+     * @param AddressInterface|null $address
+     *
+     * @return AddressInterface
+     */
+    public function address(?AddressInterface $address = null): AddressInterface
+    {
+        $this->address = $address ?: $this->entityFactory->make(AddressInterface::class);
+
+        return $this->address;
     }
 }
