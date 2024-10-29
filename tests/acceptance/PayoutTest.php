@@ -72,31 +72,12 @@ use TrueLayer\Services\Util\Arr;
 });
 
 \it('creates an open loop payout', function () {
-    $helper = \paymentHelper();
+    $client = \client();
 
     $account = Arr::first(
-        $helper->client()->getMerchantAccounts(),
+        $client->getMerchantAccounts(),
         fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
-
-    $merchantBeneficiary = $helper->merchantBeneficiary($account);
-
-    $created = $helper->create(
-        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
-    );
-
-    \client()->startPaymentAuthorization($created, 'https://console.truelayer.com/redirect-page');
-    \client()->submitPaymentProvider($created, 'mock-payments-gb-redirect');
-
-    /** @var RedirectActionInterface $next */
-    $next = $created->getDetails()->getAuthorizationFlowNextAction();
-    \bankAction($next->getUri(), 'Execute');
-    \sleep(15);
-
-    /* @var PaymentSettledInterface $payment */
-    $payment = $created->getDetails();
-
-    $client = \client();
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
         ->accountIdentifier(
