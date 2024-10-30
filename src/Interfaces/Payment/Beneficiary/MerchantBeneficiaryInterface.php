@@ -9,9 +9,9 @@ use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInter
 interface MerchantBeneficiaryInterface extends BeneficiaryInterface
 {
     /**
-     * @return string|null
+     * @return string
      */
-    public function getMerchantAccountId(): ?string;
+    public function getMerchantAccountId(): string;
 
     /**
      * @param string $id

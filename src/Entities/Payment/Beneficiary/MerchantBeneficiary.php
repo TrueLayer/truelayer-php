@@ -52,9 +52,9 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     /**
      * @return string|null
      */
-    public function getMerchantAccountId(): ?string
+    public function getMerchantAccountId(): string
     {
-        return $this->merchantAccountId ?? null;
+        return $this->merchantAccountId;
     }
 
     /**
