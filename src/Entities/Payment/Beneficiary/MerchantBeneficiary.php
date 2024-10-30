@@ -50,7 +50,7 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     ];
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getMerchantAccountId(): string
     {
