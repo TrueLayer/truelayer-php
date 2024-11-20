@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payment\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface;
 
 final class ExternalAccountBeneficiary extends Entity implements ExternalAccountBeneficiaryInterface
 {
@@ -44,11 +44,11 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     ];
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAccountHolderName(): ?string
+    public function getAccountHolderName(): string
     {
-        return $this->accountHolderName ?? null;
+        return $this->accountHolderName;
     }
 
     /**
@@ -84,11 +84,11 @@ final class ExternalAccountBeneficiary extends Entity implements ExternalAccount
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getReference(): ?string
+    public function getReference(): string
     {
-        return $this->reference ?? null;
+        return $this->reference;
     }
 
     /**

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Beneficiary;
+namespace TrueLayer\Entities\Payment\Beneficiary;
 
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
 
 final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInterface
@@ -17,14 +17,14 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     protected string $merchantAccountId;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $accountHolderName;
+    protected ?string $accountHolderName;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $reference;
+    protected ?string $reference;
 
     /**
      * @var RemitterVerificationInterface
@@ -50,11 +50,11 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     ];
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getMerchantAccountId(): ?string
+    public function getMerchantAccountId(): string
     {
-        return $this->merchantAccountId ?? null;
+        return $this->merchantAccountId;
     }
 
     /**

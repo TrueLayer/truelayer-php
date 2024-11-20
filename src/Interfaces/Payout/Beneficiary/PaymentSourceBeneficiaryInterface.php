@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Payout;
+namespace TrueLayer\Interfaces\Payout\Beneficiary;
 
-interface PaymentSourceBeneficiaryInterface extends PayoutBeneficiaryInterface
+interface PaymentSourceBeneficiaryInterface extends BeneficiaryInterface
 {
     /**
      * @return string|null
@@ -29,16 +29,4 @@ interface PaymentSourceBeneficiaryInterface extends PayoutBeneficiaryInterface
      * @return PaymentSourceBeneficiaryInterface
      */
     public function userId(string $userId): PaymentSourceBeneficiaryInterface;
-
-    /**
-     * @return string|null
-     */
-    public function getReference(): ?string;
-
-    /**
-     * @param string $reference
-     *
-     * @return PaymentSourceBeneficiaryInterface
-     */
-    public function reference(string $reference): PaymentSourceBeneficiaryInterface;
 }

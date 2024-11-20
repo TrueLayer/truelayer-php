@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace TrueLayer\Tests\Acceptance\Payment;
 
 use TrueLayer\Constants\SchemeSelectionTypes;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface;
-use TrueLayer\Interfaces\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Client\ClientInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;

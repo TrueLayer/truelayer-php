@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Interfaces\Beneficiary;
+namespace TrueLayer\Interfaces\Payout\Beneficiary;
 
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
@@ -10,21 +10,9 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 interface BeneficiaryInterface extends ArrayableInterface, HasAttributesInterface
 {
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAccountHolderName(): ?string;
-
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function accountHolderName(string $name): self;
-
-    /**
-     * @return string|null
-     */
-    public function getReference(): ?string;
+    public function getReference(): string;
 
     /**
      * @param string $reference
