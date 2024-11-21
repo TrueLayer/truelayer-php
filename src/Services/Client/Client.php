@@ -36,7 +36,7 @@ use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
 use TrueLayer\Services\Util\PaymentId;
@@ -357,6 +357,11 @@ final class Client implements ClientInterface
     public function payoutBeneficiary(): Payout\Beneficiary\BeneficiaryBuilderInterface
     {
         return $this->entityFactory->make(Payout\Beneficiary\BeneficiaryBuilderInterface::class);
+    }
+
+    public function payoutSchemeSelection(): Payout\Scheme\SchemeSelectionBuilderInterface
+    {
+        return $this->entityFactory->make(Payout\Scheme\SchemeSelectionBuilderInterface::class);
     }
 
     public function getPayout(string $id): PayoutRetrievedInterface

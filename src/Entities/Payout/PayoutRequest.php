@@ -13,6 +13,7 @@ use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\PayoutRequestInterface;
+use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 
@@ -41,6 +42,11 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     protected BeneficiaryInterface $beneficiary;
 
     /**
+     * @var SchemeSelectionInterface
+     */
+    protected SchemeSelectionInterface $schemeSelection;
+
+    /**
      * @var array<string, string>
      */
     protected array $metadata;
@@ -55,6 +61,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
      */
     protected array $casts = [
         'beneficiary' => BeneficiaryInterface::class,
+        'scheme_selection' => SchemeSelectionInterface::class,
     ];
 
     /**
@@ -65,6 +72,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         'amount_in_minor',
         'currency',
         'beneficiary',
+        'scheme_selection',
         'metadata',
     ];
 
@@ -112,6 +120,18 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     public function beneficiary(BeneficiaryInterface $beneficiary): PayoutRequestInterface
     {
         $this->beneficiary = $beneficiary;
+
+        return $this;
+    }
+
+    /**
+     * @param SchemeSelectionInterface $schemeSelection
+     *
+     * @return PayoutRequestInterface
+     */
+    public function schemeSelection(SchemeSelectionInterface $schemeSelection): PayoutRequestInterface
+    {
+        $this->schemeSelection = $schemeSelection;
 
         return $this;
     }

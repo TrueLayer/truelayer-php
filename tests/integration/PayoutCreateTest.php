@@ -29,11 +29,14 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
         ->zip('EC2A 1PX')
         ->countryCode('GB');
 
+    $schemeSelection = $client->payoutSchemeSelection()->instantOnly();
+
     $client->payout()
         ->amountInMinor(1)
         ->currency('GBP')
         ->merchantAccountId('1234')
         ->beneficiary($beneficiary)
+        ->schemeSelection($schemeSelection)
         ->create();
 
     \expect(\getRequestPayload(1))->toMatchArray([
@@ -57,6 +60,9 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
                 'country_code' => 'GB',
             ],
             'date_of_birth' => '1990-01-31',
+        ],
+        'scheme_selection' => [
+            'type' => 'instant_only',
         ],
     ]);
 });

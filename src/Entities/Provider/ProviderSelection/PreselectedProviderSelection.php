@@ -6,9 +6,9 @@ namespace TrueLayer\Entities\Provider\ProviderSelection;
 
 use TrueLayer\Constants\ProviderSelectionTypes;
 use TrueLayer\Entities\Entity;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 
 final class PreselectedProviderSelection extends Entity implements PreselectedProviderSelectionInterface
 {
