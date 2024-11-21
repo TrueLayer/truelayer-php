@@ -23,6 +23,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for payment cancellation ([#67](https://github.com/TrueLayer/truelayer-php/pull/67))
 - Support for date of birth of external account beneficiary on payout creation
 - Support for address of external account beneficiary on payout creation
+- Support for statement_reference of merchant account beneficiary
 
 ### Changed
 - Fully separated payment and payout beneficiaries

@@ -660,3 +660,18 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
         'expected' => ['type' => 'automated', 'remitter_name' => true, 'remitter_date_of_birth' => true],
     ],
 ]);
+
+\it('sends statement_reference field', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+    $factory->payment(
+        $factory->newUser(),
+        $factory->bankTransferMethod(
+            $factory->merchantBeneficiary()->statementReference('TEST')
+        )
+    )->create();
+
+    $payload = \json_decode(\getRequestPayload(1, false), false);
+
+    \expect($payload->payment_method->beneficiary->statement_reference)->toBeString();
+    \expect($payload->payment_method->beneficiary->statement_reference)->toBe('TEST');
+});
