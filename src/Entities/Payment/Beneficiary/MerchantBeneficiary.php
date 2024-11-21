@@ -124,7 +124,7 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     }
 
     /**
-     * @param string $reference
+     * @param string $statementReference
      *
      * @return $this
      */

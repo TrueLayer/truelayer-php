@@ -26,7 +26,7 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
     public function getStatementReference(): ?string;
 
     /**
-     * @param string $reference
+     * @param string $statementReference
      *
      * @return $this
      */
