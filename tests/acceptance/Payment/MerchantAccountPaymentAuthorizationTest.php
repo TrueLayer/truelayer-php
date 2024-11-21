@@ -395,4 +395,4 @@ use TrueLayer\Services\Util\Arr;
     \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
     \expect($fetched->getId())->toBeString();
     \expect($fetched->getPaymentMethod()->getBeneficiary()->getStatementReference())->toBe('TEST');
-})->only();
+});
