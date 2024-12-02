@@ -191,6 +191,12 @@ $beneficiary = $client->beneficiary()
     ->verification($remitterVerification);
 ```
 
+For your *merchant account beneficiary* you can pass a statement reference that should be set on the end user's statement. Not all banks support setting such a reference, this value will be used wherever possible.
+
+```php
+$beneficiary->statementReference('Statement reference.');
+```
+
 *External account beneficiary - Sort code & account number*
 
 ```php
