@@ -921,6 +921,22 @@ $payout = $client->payout()
 $payout->getId();
 ```
 
+## Specifying the payment scheme for a payout
+
+You can optionally specify the payment scheme for a payout.
+
+```php
+$schemeSelection = $client->payoutSchemeSelection()->instantPreferred(); // Attempt to select a payment scheme that supports instant payments based on currency and geography, fallback to a non-instant scheme if instant payment is unavailable. This is used by default if no scheme selection is provided.
+$schemeSelection = $client->payoutSchemeSelection()->instantOnly(); // Automatically select a payment scheme that supports instant payments based on currency and geography.
+$schemeSelection = $client->payoutSchemeSelection()->preselected()->schemeId('faster_payments_service'); // Set the scheme manually. Scheme ID is required.
+
+
+$client->payout()
+    ...
+    ->schemeSelection($schemeSelection)
+    ->create();
+```
+
 ## Retrieving a payout
 
 ```php

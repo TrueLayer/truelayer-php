@@ -8,6 +8,7 @@ use TrueLayer\Constants\Endpoints;
 use TrueLayer\Constants\FormInputTypes;
 use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
+use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\ProviderSelectionActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\ConfigurationInterface;
@@ -15,10 +16,9 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
-use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
+use TrueLayer\Interfaces\Payment\Scheme\PreselectedSchemeSelectionInterface;
 use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
-use TrueLayer\Interfaces\Scheme\PreselectedSchemeSelectionInterface;
 
 \it('creates an IBAN payment', function () {
     $helper = \paymentHelper();

@@ -9,8 +9,8 @@ use TrueLayer\Constants\CustomerSegments;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\ReleaseChannels;
 use TrueLayer\Constants\UserPoliticalExposures;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\CreatePayment;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 

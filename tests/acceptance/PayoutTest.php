@@ -348,3 +348,36 @@ use TrueLayer\Services\Util\Arr;
 
     \expect($beneficiary)->toBeInstanceOf(ExternalAccountBeneficiaryInterface::class);
 });
+
+\it('creates payout with scheme selection', function () {
+    $client = \client();
+
+    $account = Arr::first(
+        $client->getMerchantAccounts(),
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountIdentifier(
+            $client->accountIdentifier()->iban()->iban('GB29NWBK60161331926819')
+        )
+        ->accountHolderName('Test name')
+        ->reference('Test reference');
+
+    $schemeSelection = $client->payoutSchemeSelection()->instantOnly();
+
+    $response = $client->payout()
+        ->amountInMinor(1)
+        ->currency(Currencies::GBP)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->schemeSelection($schemeSelection)
+        ->create();
+
+    \expect($response->getId())->toBeString();
+
+    /** @var PayoutRetrievedInterface $payout */
+    $payout = $client->getPayout($response->getId());
+
+    \expect($payout)->toBeInstanceOf(PayoutRetrievedInterface::class);
+});

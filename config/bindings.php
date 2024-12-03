@@ -53,11 +53,11 @@ return [
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
 
-    Interfaces\Scheme\SchemeSelectionBuilderInterface::class => Entities\Provider\SchemeSelection\SchemeSelectionBuilder::class,
-    Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantOnlySchemeSelection::class,
-    Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantPreferredSchemeSelection::class,
-    Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\UserSelectedSchemeSelection::class,
-    Interfaces\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\PreselectedSchemeSelection::class,
+    Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface::class => Entities\Payment\Scheme\SchemeSelectionBuilder::class,
+    Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Payment\Scheme\InstantOnlySchemeSelection::class,
+    Interfaces\Payment\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Payment\Scheme\InstantPreferredSchemeSelection::class,
+    Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Payment\Scheme\UserSelectedSchemeSelection::class,
+    Interfaces\Payment\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Payment\Scheme\PreselectedSchemeSelection::class,
 
     Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
     Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
@@ -73,6 +73,12 @@ return [
     Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\BusinessAccountBeneficiary::class,
     Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\ExternalAccountBeneficiary::class,
     Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Payout\Beneficiary\PaymentSourceBeneficiary::class,
+
+    Interfaces\Payout\Scheme\SchemeSelectionBuilderInterface::class => Entities\Payout\Scheme\SchemeSelectionBuilder::class,
+    Interfaces\Payout\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Payout\Scheme\InstantOnlySchemeSelection::class,
+    Interfaces\Payout\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Payout\Scheme\InstantPreferredSchemeSelection::class,
+    Interfaces\Payout\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Payout\Scheme\PreselectedSchemeSelection::class,
+
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
     Interfaces\Payout\PayoutPendingInterface::class => Entities\Payout\PayoutRetrieved\PayoutPending::class,

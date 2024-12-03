@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Provider\SchemeSelection;
+namespace TrueLayer\Entities\Payment\Scheme;
 
 use TrueLayer\Constants\SchemeSelectionTypes;
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface;
 
 class UserSelectedSchemeSelection extends Entity implements UserSelectedSchemeSelectionInterface
 {

@@ -2,28 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Provider\SchemeSelection;
+namespace TrueLayer\Entities\Payout\Scheme;
 
 use TrueLayer\Entities\EntityBuilder;
 use TrueLayer\Exceptions\InvalidArgumentException;
-use TrueLayer\Interfaces\Scheme\InstantOnlySchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\InstantPreferredSchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\PreselectedSchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
-use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payout\Scheme\InstantOnlySchemeSelectionInterface;
+use TrueLayer\Interfaces\Payout\Scheme\InstantPreferredSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payout\Scheme\PreselectedSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionBuilderInterface;
 
 class SchemeSelectionBuilder extends EntityBuilder implements SchemeSelectionBuilderInterface
 {
-    /**
-     * @throws InvalidArgumentException
-     *
-     * @return UserSelectedSchemeSelectionInterface
-     */
-    public function userSelected(): UserSelectedSchemeSelectionInterface
-    {
-        return $this->entityFactory->make(UserSelectedSchemeSelectionInterface::class);
-    }
-
     /**
      * @throws InvalidArgumentException
      *

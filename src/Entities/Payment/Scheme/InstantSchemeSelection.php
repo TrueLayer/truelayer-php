@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TrueLayer\Entities\Provider\SchemeSelection;
+namespace TrueLayer\Entities\Payment\Scheme;
 
 use TrueLayer\Entities\Entity;
-use TrueLayer\Interfaces\Scheme\InstantSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\InstantSchemeSelectionInterface;
 
 abstract class InstantSchemeSelection extends Entity implements InstantSchemeSelectionInterface
 {

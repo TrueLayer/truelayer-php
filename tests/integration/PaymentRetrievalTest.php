@@ -22,13 +22,13 @@ use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
+use TrueLayer\Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\InstantPreferredSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\InstantSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
-use TrueLayer\Interfaces\Scheme\InstantOnlySchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\InstantPreferredSchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\InstantSchemeSelectionInterface;
-use TrueLayer\Interfaces\Scheme\UserSelectedSchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
 
 function assertPaymentCommon(PaymentRetrievedInterface $payment)
