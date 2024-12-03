@@ -27,6 +27,11 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     protected ?string $reference;
 
     /**
+     * @var string
+     */
+    protected string $statementReference;
+
+    /**
      * @var RemitterVerificationInterface
      */
     protected RemitterVerificationInterface $verification;
@@ -45,6 +50,7 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
         'merchant_account_id',
         'account_holder_name',
         'reference',
+        'statement_reference',
         'verification',
         'type',
     ];
@@ -105,6 +111,26 @@ final class MerchantBeneficiary extends Entity implements MerchantBeneficiaryInt
     public function reference(string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatementReference(): ?string
+    {
+        return $this->statementReference ?? null;
+    }
+
+    /**
+     * @param string $statementReference
+     *
+     * @return $this
+     */
+    public function statementReference(string $statementReference): self
+    {
+        $this->statementReference = $statementReference;
 
         return $this;
     }

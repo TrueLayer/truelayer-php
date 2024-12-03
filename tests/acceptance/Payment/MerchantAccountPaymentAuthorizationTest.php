@@ -372,3 +372,27 @@ use TrueLayer\Services\Util\Arr;
     \expect($receivedRemitterVerification->getRemitterName())->toBeTrue();
     \expect($receivedRemitterVerification->getRemitterDateOfBirth())->toBeFalse();
 });
+
+\it('creates payment with statement reference', function () {
+    $helper = \paymentHelper();
+
+    $account = Arr::first(
+        $helper->client()->getMerchantAccounts(),
+        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+    );
+
+    $merchantBeneficiary = $helper->merchantBeneficiary($account);
+    $merchantBeneficiary->statementReference('TEST');
+
+    $payment = $helper->create(
+        $helper->bankTransferMethod($merchantBeneficiary), $helper->user(), $account->getCurrency()
+    );
+
+    $fetched = $payment->getDetails();
+
+    \expect($payment)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($payment->getId())->toBeString();
+    \expect($fetched)->toBeInstanceOf(PaymentRetrievedInterface::class);
+    \expect($fetched->getId())->toBeString();
+    \expect($fetched->getPaymentMethod()->getBeneficiary()->getStatementReference())->toBe('TEST');
+});

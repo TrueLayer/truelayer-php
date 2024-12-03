@@ -23,6 +23,18 @@ interface MerchantBeneficiaryInterface extends BeneficiaryInterface
     /**
      * @return string|null
      */
+    public function getStatementReference(): ?string;
+
+    /**
+     * @param string $statementReference
+     *
+     * @return $this
+     */
+    public function statementReference(string $statementReference): self;
+
+    /**
+     * @return string|null
+     */
     public function getAccountHolderName(): ?string;
 
     /**
