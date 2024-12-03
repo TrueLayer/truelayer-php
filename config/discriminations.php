@@ -58,18 +58,24 @@ return [
         PaymentMethods::PROVIDER_TYPE_USER_SELECTION => Interfaces\Provider\UserSelectedProviderSelectionInterface::class,
         PaymentMethods::PROVIDER_TYPE_PRESELECTED => Interfaces\Provider\PreselectedProviderSelectionInterface::class,
     ],
-    Interfaces\Scheme\SchemeSelectionInterface::class => [
+    Interfaces\Payment\Scheme\SchemeSelectionInterface::class => [
         'discriminate_on' => 'type',
-        SchemeSelectionTypes::INSTANT_ONLY => Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class,
-        SchemeSelectionTypes::INSTANT_PREFERRED => Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class,
-        SchemeSelectionTypes::USER_SELECTED => Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class,
-        SchemeSelectionTypes::PRESELECTED => Interfaces\Scheme\PreselectedSchemeSelectionInterface::class,
+        SchemeSelectionTypes::INSTANT_ONLY => Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface::class,
+        SchemeSelectionTypes::INSTANT_PREFERRED => Interfaces\Payment\Scheme\InstantPreferredSchemeSelectionInterface::class,
+        SchemeSelectionTypes::USER_SELECTED => Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface::class,
+        SchemeSelectionTypes::PRESELECTED => Interfaces\Payment\Scheme\PreselectedSchemeSelectionInterface::class,
     ],
     Interfaces\Payout\Beneficiary\BeneficiaryInterface::class => [
         'discriminate_on' => 'type',
         BeneficiaryTypes::PAYMENT_SOURCE => Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface::class,
         BeneficiaryTypes::EXTERNAL_ACCOUNT => Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface::class,
         BeneficiaryTypes::BUSINESS_ACCOUNT => Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface::class,
+    ],
+    Interfaces\Payout\Scheme\SchemeSelectionInterface::class => [
+        'discriminate_on' => 'type',
+        SchemeSelectionTypes::INSTANT_ONLY => Interfaces\Payout\Scheme\InstantOnlySchemeSelectionInterface::class,
+        SchemeSelectionTypes::INSTANT_PREFERRED => Interfaces\Payout\Scheme\InstantPreferredSchemeSelectionInterface::class,
+        SchemeSelectionTypes::PRESELECTED => Interfaces\Payout\Scheme\PreselectedSchemeSelectionInterface::class,
     ],
     Interfaces\Payout\PayoutRetrievedInterface::class => [
         'discriminate_on' => 'status',

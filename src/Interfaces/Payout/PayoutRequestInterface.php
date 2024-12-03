@@ -10,6 +10,7 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 
 interface PayoutRequestInterface extends HasAttributesInterface
@@ -41,6 +42,13 @@ interface PayoutRequestInterface extends HasAttributesInterface
      * @return PayoutRequestInterface
      */
     public function beneficiary(BeneficiaryInterface $beneficiary): PayoutRequestInterface;
+
+    /**
+     * @param SchemeSelectionInterface $schemeSelection
+     *
+     * @return PayoutRequestInterface
+     */
+    public function schemeSelection(SchemeSelectionInterface $schemeSelection): PayoutRequestInterface;
 
     /**
      * @param array<string, string> $metadata

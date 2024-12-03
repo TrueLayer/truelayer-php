@@ -21,6 +21,7 @@ use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
@@ -30,7 +31,6 @@ use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
 
@@ -180,6 +180,11 @@ interface ClientInterface
      * @return Payout\Beneficiary\BeneficiaryBuilderInterface
      */
     public function payoutBeneficiary(): Payout\Beneficiary\BeneficiaryBuilderInterface;
+
+    /**
+     * @return Payout\Scheme\SchemeSelectionBuilderInterface
+     */
+    public function payoutSchemeSelection(): Payout\Scheme\SchemeSelectionBuilderInterface;
 
     /**
      * @param string $id

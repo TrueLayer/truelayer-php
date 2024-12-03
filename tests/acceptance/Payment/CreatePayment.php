@@ -11,12 +11,12 @@ use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 class CreatePayment
