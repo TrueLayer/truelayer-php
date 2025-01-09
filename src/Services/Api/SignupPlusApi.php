@@ -13,11 +13,12 @@ use TrueLayer\Interfaces\Api\SignupPlusApiInterface;
 class SignupPlusApi extends Api implements SignupPlusApiInterface
 {
     /**
-     * @param mixed[] $authUriRequest
+     * @param string $paymentId
+     * @param string|null $state
      *
+     * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
-     * @throws ApiRequestJsonSerializationException
      *
      * @return mixed[]
      */
