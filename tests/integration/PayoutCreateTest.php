@@ -6,6 +6,7 @@ use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Currencies;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
+use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
 
 \it('sends correct payload on open loop payout', function () {
@@ -18,7 +19,16 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     $beneficiary = $client->payoutBeneficiary()->externalAccount()
         ->accountHolderName('Test')
         ->reference('Test reference')
-        ->accountIdentifier($accountIdentifier);
+        ->accountIdentifier($accountIdentifier)
+        ->dateOfBirth('1990-01-31');
+
+    $beneficiary->address(null)
+        ->addressLine1('The Gilbert')
+        ->addressLine2('City of')
+        ->city('London')
+        ->state('Greater London')
+        ->zip('EC2A 1PX')
+        ->countryCode('GB');
 
     $client->payout()
         ->amountInMinor(1)
@@ -39,6 +49,15 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
                 'type' => AccountIdentifierTypes::IBAN,
                 'iban' => 'GB29NWBK60161331926819',
             ],
+            'address' => [
+                'address_line1' => 'The Gilbert',
+                'address_line2' => 'City of',
+                'city' => 'London',
+                'state' => 'Greater London',
+                'zip' => 'EC2A 1PX',
+                'country_code' => 'GB',
+            ],
+            'date_of_birth' => '1990-01-31',
         ],
     ]);
 });
@@ -175,3 +194,41 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
 
     \expect($sentIdempotencyKey)->toBe('payout-test-idempotency-key');
 });
+
+\it('sends user selected scheme selection', function (SchemeSelectionInterface $schemeSelection, array $expected) {
+    $client = \client(PayoutResponse::created());
+
+    $accountIdentifier = $client->accountIdentifier()
+        ->iban()
+        ->iban('GB29NWBK60161331926819');
+
+    $beneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountHolderName('Test')
+        ->reference('Test reference')
+        ->accountIdentifier($accountIdentifier);
+
+    $client->payout()
+        ->amountInMinor(1)
+        ->currency('GBP')
+        ->merchantAccountId('1234')
+        ->beneficiary($beneficiary)
+        ->schemeSelection($schemeSelection)
+        ->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'scheme_selection' => $expected
+    ]);
+})->with([
+    'Instant only scheme' => [
+        'schemeSelection' => \client()->payoutSchemeSelection()->instantOnly(),
+        'expected' => ['type' => 'instant_only']
+    ],
+    'Instant preferred scheme' => [
+        'schemeSelection' => \client()->payoutSchemeSelection()->instantPreferred(),
+        'expected' => ['type' => 'instant_preferred']
+    ],
+    'Preselected scheme' => [
+        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service']
+    ],
+]);

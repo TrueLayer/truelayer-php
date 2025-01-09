@@ -11,16 +11,17 @@ use TrueLayer\Exceptions\MissingHttpImplementationException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface;
 use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
-use TrueLayer\Interfaces\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\HppInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\AuthorizationFlowResponseInterface;
+use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
@@ -30,7 +31,6 @@ use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
@@ -178,9 +178,14 @@ interface ClientInterface
     public function payout(): Payout\PayoutRequestInterface;
 
     /**
-     * @return Payout\BeneficiaryBuilderInterface
+     * @return Payout\Beneficiary\BeneficiaryBuilderInterface
      */
-    public function payoutBeneficiary(): Payout\BeneficiaryBuilderInterface;
+    public function payoutBeneficiary(): Payout\Beneficiary\BeneficiaryBuilderInterface;
+
+    /**
+     * @return Payout\Scheme\SchemeSelectionBuilderInterface
+     */
+    public function payoutSchemeSelection(): Payout\Scheme\SchemeSelectionBuilderInterface;
 
     /**
      * @param string $id

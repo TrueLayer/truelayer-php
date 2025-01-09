@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\Webhook;
 
 use TrueLayer\Interfaces\Webhook\PaymentEventInterface;
-use TrueLayer\Interfaces\Webhook\PaymentMethod\PaymentMethodInterface;
 
 class PaymentEvent extends Event implements PaymentEventInterface
 {
@@ -15,19 +14,9 @@ class PaymentEvent extends Event implements PaymentEventInterface
     protected string $paymentId;
 
     /**
-     * @var PaymentMethodInterface
+     * @var array<string, string>
      */
-    protected PaymentMethodInterface $paymentMethod;
-
-    /**
-     * @return mixed[]
-     */
-    protected function casts(): array
-    {
-        return \array_merge(parent::casts(), [
-            'payment_method' => PaymentMethodInterface::class,
-        ]);
-    }
+    protected array $metadata = [];
 
     /**
      * @return mixed[]
@@ -36,7 +25,7 @@ class PaymentEvent extends Event implements PaymentEventInterface
     {
         return \array_merge(parent::arrayFields(), [
             'payment_id',
-            'payment_method',
+            'metadata',
         ]);
     }
 
@@ -49,10 +38,10 @@ class PaymentEvent extends Event implements PaymentEventInterface
     }
 
     /**
-     * @return PaymentMethodInterface
+     * @return array<string, string>
      */
-    public function getPaymentMethod(): PaymentMethodInterface
+    public function getMetadata(): array
     {
-        return $this->paymentMethod;
+        return $this->metadata;
     }
 }

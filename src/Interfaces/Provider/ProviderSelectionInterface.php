@@ -6,7 +6,7 @@ namespace TrueLayer\Interfaces\Provider;
 
 use TrueLayer\Interfaces\ArrayableInterface;
 use TrueLayer\Interfaces\HasAttributesInterface;
-use TrueLayer\Interfaces\Scheme\SchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionInterface;
 
 interface ProviderSelectionInterface extends ArrayableInterface, HasAttributesInterface
 {

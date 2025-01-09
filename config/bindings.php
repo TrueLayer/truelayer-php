@@ -12,9 +12,9 @@ return [
     Interfaces\AddressRetrievedInterface::class => Entities\AddressRetrieved::class,
     Interfaces\UserInterface::class => Entities\User::class,
 
-    Interfaces\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Beneficiary\BeneficiaryBuilder::class,
-    Interfaces\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Beneficiary\MerchantBeneficiary::class,
-    Interfaces\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Payment\Beneficiary\BeneficiaryBuilder::class,
+    Interfaces\Payment\Beneficiary\MerchantBeneficiaryInterface::class => Entities\Payment\Beneficiary\MerchantBeneficiary::class,
+    Interfaces\Payment\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Payment\Beneficiary\ExternalAccountBeneficiary::class,
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
     Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
@@ -54,11 +54,11 @@ return [
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
 
-    Interfaces\Scheme\SchemeSelectionBuilderInterface::class => Entities\Provider\SchemeSelection\SchemeSelectionBuilder::class,
-    Interfaces\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantOnlySchemeSelection::class,
-    Interfaces\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\InstantPreferredSchemeSelection::class,
-    Interfaces\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\UserSelectedSchemeSelection::class,
-    Interfaces\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Provider\SchemeSelection\PreselectedSchemeSelection::class,
+    Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface::class => Entities\Payment\Scheme\SchemeSelectionBuilder::class,
+    Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Payment\Scheme\InstantOnlySchemeSelection::class,
+    Interfaces\Payment\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Payment\Scheme\InstantPreferredSchemeSelection::class,
+    Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface::class => Entities\Payment\Scheme\UserSelectedSchemeSelection::class,
+    Interfaces\Payment\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Payment\Scheme\PreselectedSchemeSelection::class,
 
     Interfaces\AccountIdentifier\AccountIdentifierBuilderInterface::class => Entities\AccountIdentifier\AccountIdentifierBuilder::class,
     Interfaces\AccountIdentifier\ScanInterface::class => Entities\AccountIdentifier\Scan::class,
@@ -70,9 +70,16 @@ return [
     Interfaces\AccountIdentifier\NrbInterface::class => Entities\AccountIdentifier\Nrb::class,
     Interfaces\AccountIdentifier\NrbDetailsInterface::class => Entities\AccountIdentifier\Nrb::class,
 
-    Interfaces\Payout\BeneficiaryBuilderInterface::class => Entities\Payout\BeneficiaryBuilder::class,
-    Interfaces\Payout\BusinessAccountBeneficiaryInterface::class => Entities\Payout\BusinessAccountBeneficiary::class,
-    Interfaces\Payout\PaymentSourceBeneficiaryInterface::class => Entities\Payout\PaymentSourceBeneficiary::class,
+    Interfaces\Payout\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Payout\Beneficiary\BeneficiaryBuilder::class,
+    Interfaces\Payout\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\BusinessAccountBeneficiary::class,
+    Interfaces\Payout\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Payout\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Payout\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Payout\Beneficiary\PaymentSourceBeneficiary::class,
+
+    Interfaces\Payout\Scheme\SchemeSelectionBuilderInterface::class => Entities\Payout\Scheme\SchemeSelectionBuilder::class,
+    Interfaces\Payout\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Payout\Scheme\InstantOnlySchemeSelection::class,
+    Interfaces\Payout\Scheme\InstantPreferredSchemeSelectionInterface::class => Entities\Payout\Scheme\InstantPreferredSchemeSelection::class,
+    Interfaces\Payout\Scheme\PreselectedSchemeSelectionInterface::class => Entities\Payout\Scheme\PreselectedSchemeSelection::class,
+
     Interfaces\Payout\PayoutCreatedInterface::class => Entities\Payout\PayoutCreated::class,
     Interfaces\Payout\PayoutRequestInterface::class => Entities\Payout\PayoutRequest::class,
     Interfaces\Payout\PayoutPendingInterface::class => Entities\Payout\PayoutRetrieved\PayoutPending::class,
@@ -86,9 +93,12 @@ return [
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
 
+    Interfaces\Webhook\PaymentAuthorizedEventInterface::class => Entities\Webhook\PaymentAuthorizedEvent::class,
     Interfaces\Webhook\PaymentExecutedEventInterface::class => Entities\Webhook\PaymentExecutedEvent::class,
-    Interfaces\Webhook\PaymentSettledEventInterface::class => Entities\Webhook\PaymentSettledEvent::class,
     Interfaces\Webhook\PaymentFailedEventInterface::class => Entities\Webhook\PaymentFailedEvent::class,
+    Interfaces\Webhook\PaymentSettledEventInterface::class => Entities\Webhook\PaymentSettledEvent::class,
+    Interfaces\Webhook\PaymentCreditableEventInterface::class => Entities\Webhook\PaymentCreditableEvent::class,
+    Interfaces\Webhook\PaymentSettlementStalledEventInterface::class => Entities\Webhook\PaymentSettlementStalledEvent::class,
     Interfaces\Webhook\RefundExecutedEventInterface::class => Entities\Webhook\RefundExecutedEvent::class,
     Interfaces\Webhook\RefundFailedEventInterface::class => Entities\Webhook\RefundFailedEvent::class,
     Interfaces\Webhook\PayoutExecutedEventInterface::class => Entities\Webhook\PayoutExecutedEvent::class,
@@ -97,6 +107,8 @@ return [
     Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface::class => Entities\Webhook\PaymentMethod\MandatePaymentMethod::class,
     Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\BusinessAccountBeneficiary::class,
     Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Webhook\Beneficiary\PaymentSourceBeneficiary::class,
+    Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\ExternalAccountBeneficiary::class,
+    Interfaces\Webhook\Beneficiary\BeneficiaryInterface::class => Entities\Webhook\Beneficiary\Beneficiary::class,
 
     Interfaces\SignupPlus\SignupPlusBuilderInterface::class => Entities\SignupPlus\SignupPlusBuilder::class,
     Interfaces\SignupPlus\SignupPlusAuthUriRequestInterface::class => Entities\SignupPlus\SignupPlusAuthUriRequest::class,
