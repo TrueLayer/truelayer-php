@@ -11,7 +11,8 @@ use TrueLayer\Exceptions\SignerException;
 interface SignupPlusApiInterface
 {
     /**
-     * @param mixed[] $authUriRequest
+     * @param string $paymentId
+     * @param string|null $state
      *
      * @throws ApiResponseUnsuccessfulException
      * @throws SignerException
