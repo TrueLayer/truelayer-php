@@ -10,9 +10,9 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 interface SignupPlusUserDataRetrievedInterface extends HasAttributesInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string;
+    public function getTitle(): ?string;
 
     /**
      * @return string
@@ -35,14 +35,14 @@ interface SignupPlusUserDataRetrievedInterface extends HasAttributesInterface
     public function getAddress(): AddressRetrievedInterface;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNationalIdentificationNumber(): string;
+    public function getNationalIdentificationNumber(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSex(): string;
+    public function getSex(): ?string;
 
     /**
      * @return SignupPlusAccountDetailsInterface

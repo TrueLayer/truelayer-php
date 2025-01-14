@@ -73,9 +73,12 @@ class SignupPlusUserDataRetrieved extends Entity implements SignupPlusUserDataRe
         'account_details',
     ];
 
-    public function getTitle(): string
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
     {
-        return $this->title;
+        return $this->title ?? null;
     }
 
     public function getFirstName(): string
@@ -98,14 +101,20 @@ class SignupPlusUserDataRetrieved extends Entity implements SignupPlusUserDataRe
         return $this->address;
     }
 
-    public function getNationalIdentificationNumber(): string
+    /**
+     * @return string|null
+     */
+    public function getNationalIdentificationNumber(): ?string
     {
-        return $this->nationalIdentificationNumber;
+        return $this->nationalIdentificationNumber ?? null;
     }
 
-    public function getSex(): string
+    /**
+     * @return string|null
+     */
+    public function getSex(): ?string
     {
-        return $this->sex;
+        return $this->sex ?? null;
     }
 
     public function getAccountDetails(): SignupPlusAccountDetailsInterface

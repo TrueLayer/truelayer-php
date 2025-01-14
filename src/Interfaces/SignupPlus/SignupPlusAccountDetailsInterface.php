@@ -9,19 +9,19 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 interface SignupPlusAccountDetailsInterface extends HasAttributesInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAccountNumber(): string;
+    public function getAccountNumber(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSortCode(): string;
+    public function getSortCode(): ?string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIban(): string;
+    public function getIban(): ?string;
 
     /**
      * @return string

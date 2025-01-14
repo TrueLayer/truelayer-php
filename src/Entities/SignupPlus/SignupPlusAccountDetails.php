@@ -40,27 +40,27 @@ class SignupPlusAccountDetails extends Entity implements SignupPlusAccountDetail
     ];
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAccountNumber(): string
+    public function getAccountNumber(): ?string
     {
-        return $this->accountNumber;
+        return $this->accountNumber ?? null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSortCode(): string
+    public function getSortCode(): ?string
     {
-        return $this->sortCode;
+        return $this->sortCode ?? null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIban(): string
+    public function getIban(): ?string
     {
-        return $this->iban;
+        return $this->iban ?? null;
     }
 
     /**
