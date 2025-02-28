@@ -6,58 +6,8 @@ namespace TrueLayer\Entities;
 
 use TrueLayer\Interfaces\AddressInterface;
 
-class Address extends Entity implements AddressInterface
+class Address extends AddressRetrieved implements AddressInterface
 {
-    /**
-     * @var string
-     */
-    protected string $addressLine1;
-
-    /**
-     * @var string
-     */
-    protected string $addressLine2;
-
-    /**
-     * @var string
-     */
-    protected string $city;
-
-    /**
-     * @var string
-     */
-    protected string $state;
-
-    /**
-     * @var string
-     */
-    protected string $zip;
-
-    /**
-     * @var string
-     */
-    protected string $countryCode;
-
-    /**
-     * @var string[]
-     */
-    protected array $arrayFields = [
-        'address_line1',
-        'address_line2',
-        'city',
-        'state',
-        'zip',
-        'country_code',
-    ];
-
-    /**
-     * @return string|null
-     */
-    public function getAddressLine1(): ?string
-    {
-        return $this->addressLine1 ?? null;
-    }
-
     /**
      * @param string $addressLine1
      *
@@ -68,14 +18,6 @@ class Address extends Entity implements AddressInterface
         $this->addressLine1 = $addressLine1;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getAddressLine2(): ?string
-    {
-        return $this->addressLine2 ?? null;
     }
 
     /**
@@ -91,14 +33,6 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city ?? null;
-    }
-
-    /**
      * @param string $city
      *
      * @return AddressInterface
@@ -108,14 +42,6 @@ class Address extends Entity implements AddressInterface
         $this->city = $city;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getState(): ?string
-    {
-        return $this->state ?? null;
     }
 
     /**
@@ -131,14 +57,6 @@ class Address extends Entity implements AddressInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getZip(): ?string
-    {
-        return $this->zip ?? null;
-    }
-
-    /**
      * @param string $zip
      *
      * @return AddressInterface
@@ -148,14 +66,6 @@ class Address extends Entity implements AddressInterface
         $this->zip = $zip;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCountryCode(): ?string
-    {
-        return $this->countryCode ?? null;
     }
 
     /**

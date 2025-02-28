@@ -34,10 +34,11 @@
 10. [Payouts](#payouts)
 11. [Merchant accounts](#merchant-accounts)
 12. [Account identifiers](#account-identifiers)
-13. [Receiving webhook notifications](#webhooks)
-14. [Custom idempotency keys](#idempotency)
-15. [Custom API calls](#custom-api-calls)
-16. [Error Handling](#error-handling)
+13. [SignUp Plus](#signup-plus)
+14. [Receiving webhook notifications](#webhooks)
+15. [Custom idempotency keys](#idempotency)
+16. [Custom API calls](#custom-api-calls)
+17. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -1009,6 +1010,29 @@ $merchantAccount->getId();
 foreach ($merchantAccount->getAccountIdentifiers() as $accountIdentifier) {
     // See 'Account identifiers' for available methods.
 }
+```
+
+<a name="signup-plus"></a>
+
+# SignUp Plus
+
+Generating a SignUp Plus authentication link:
+
+```php
+$client->signupPlus()
+    ->authUri()
+    ->paymentId('some_payment_id')
+    ->state('some_state')
+    ->create();
+```
+
+Retrieving user data:
+
+```php
+$response = $client->signupPlus()
+        ->userData()
+        ->paymentId('fake_payment_id')
+        ->retrieve(); // SignupPlusUserDataRetrievedInterface
 ```
 
 <a name="webhooks"></a>

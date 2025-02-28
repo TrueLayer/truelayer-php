@@ -9,6 +9,7 @@ return [
     Interfaces\HppInterface::class => 'makeHpp',
 
     Interfaces\AddressInterface::class => Entities\Address::class,
+    Interfaces\AddressRetrievedInterface::class => Entities\AddressRetrieved::class,
     Interfaces\UserInterface::class => Entities\User::class,
 
     Interfaces\Payment\Beneficiary\BeneficiaryBuilderInterface::class => Entities\Payment\Beneficiary\BeneficiaryBuilder::class,
@@ -108,6 +109,13 @@ return [
     Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface::class => Entities\Webhook\Beneficiary\PaymentSourceBeneficiary::class,
     Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\ExternalAccountBeneficiary::class,
     Interfaces\Webhook\Beneficiary\BeneficiaryInterface::class => Entities\Webhook\Beneficiary\Beneficiary::class,
+
+    Interfaces\SignupPlus\SignupPlusBuilderInterface::class => Entities\SignupPlus\SignupPlusBuilder::class,
+    Interfaces\SignupPlus\SignupPlusAuthUriRequestInterface::class => Entities\SignupPlus\SignupPlusAuthUriRequest::class,
+    Interfaces\SignupPlus\SignupPlusAuthUriCreatedInterface::class => Entities\SignupPlus\SignupPlusAuthUriCreated::class,
+    Interfaces\SignupPlus\SignupPlusAccountDetailsInterface::class => Entities\SignupPlus\SignupPlusAccountDetails::class,
+    Interfaces\SignupPlus\SignupPlusUserDataRequestInterface::class => Entities\SignupPlus\SignupPlusUserDataRequest::class,
+    Interfaces\SignupPlus\SignupPlusUserDataRetrievedInterface::class => Entities\SignupPlus\SignupPlusUserDataRetrieved::class,
 
     Interfaces\RequestOptionsInterface::class => Entities\RequestOptions::class,
 ];
