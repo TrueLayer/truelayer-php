@@ -37,10 +37,10 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @param ClientConfigInterface $config
      *
-     * @throws MissingHttpImplementationException
+     * @return ClientInterface
      * @throws SignerException
      *
-     * @return ClientInterface
+     * @throws MissingHttpImplementationException
      */
     public function make(ClientConfigInterface $config): ClientInterface
     {
@@ -125,7 +125,7 @@ final class ClientFactory implements ClientFactoryInterface
         $this->apiClient = new Decorators\ExponentialBackoffDecorator($this->apiClient);
         $this->apiClient = new Decorators\SigningDecorator($this->apiClient, $signer);
         $this->apiClient = new Decorators\IdempotencyKeyDecorator($this->apiClient);
-        $this->apiClient = new Decorators\TLAgentDecorator($this->apiClient);
+        $this->apiClient = new Decorators\TLAgentDecorator($this->apiClient, ['client.cache' => !!$config->getCache()]);
     }
 
     /**

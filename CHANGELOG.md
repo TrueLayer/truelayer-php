@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Support for PLN payouts
+- Send php version and cache usage via Tl-Agent
 
 ## [3.0.2] - 2025-02-27
 

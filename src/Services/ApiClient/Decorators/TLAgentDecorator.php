@@ -9,28 +9,44 @@ use TrueLayer\Constants\CustomHeaders;
 use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
+use TrueLayer\Interfaces\ApiClient\ApiClientInterface;
 use TrueLayer\Interfaces\ApiClient\ApiRequestInterface;
 
 final class TLAgentDecorator extends BaseApiClientDecorator
 {
+    private string $headerValue = 'truelayer-php';
+
+    /**
+     * @param ApiClientInterface $next
+     * @param array<string, string> $meta
+     */
+    public function __construct(ApiClientInterface $next, array $meta = [])
+    {
+        parent::__construct($next);
+
+        try {
+            $clientVersion = InstalledVersions::getPrettyVersion('truelayer/client');
+
+            $commentItems = array_merge(['php.version' => phpversion()], $meta);
+            $comment = json_encode($commentItems) ?? '';
+
+            $this->headerValue .= " / {$clientVersion} {$comment}";
+        } catch (\Exception) {
+        }
+    }
+
     /**
      * @param ApiRequestInterface $apiRequest
      *
-     * @throws ApiResponseUnsuccessfulException
+     * @return mixed
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      *
-     * @return mixed
+     * @throws ApiResponseUnsuccessfulException
      */
     public function send(ApiRequestInterface $apiRequest)
     {
-        try {
-            $version = InstalledVersions::getPrettyVersion('truelayer/client');
-        } catch (\OutOfBoundsException $e) {
-            $version = 'unknown';
-        }
-
-        $apiRequest->header(CustomHeaders::TL_AGENT, "truelayer-php/{$version}");
+        $apiRequest->header(CustomHeaders::TL_AGENT, $this->headerValue);
 
         return $this->next->send($apiRequest);
     }
