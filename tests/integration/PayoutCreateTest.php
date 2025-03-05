@@ -5,6 +5,7 @@ declare(strict_types=1);
 use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
 use TrueLayer\Constants\Currencies;
+use TrueLayer\Constants\SchemeIds;
 use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
@@ -195,7 +196,7 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     \expect($sentIdempotencyKey)->toBe('payout-test-idempotency-key');
 });
 
-\it('sends user selected scheme selection', function (SchemeSelectionInterface $schemeSelection, array $expected) {
+\it('sends scheme selection', function (SchemeSelectionInterface $schemeSelection, array $expected) {
     $client = \client(PayoutResponse::created());
 
     $accountIdentifier = $client->accountIdentifier()
@@ -228,7 +229,11 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
         'expected' => ['type' => 'instant_preferred']
     ],
     'Preselected scheme' => [
-        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::FASTER_PAYMENTS_SERVICE),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service']
     ],
+    'Poland scheme' => [
+        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::POLISH_DOMESTIC_EXPRESS),
+        'expected' => ['type' => 'preselected', 'scheme_id' => 'polish_domestic_express']
+    ]
 ]);
