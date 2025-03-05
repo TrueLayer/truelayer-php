@@ -18,7 +18,7 @@ final class TLAgentDecorator extends BaseApiClientDecorator
 
     /**
      * @param ApiClientInterface $next
-     * @param array<string, string> $meta
+     * @param array<string, string|bool> $meta
      */
     public function __construct(ApiClientInterface $next, array $meta = [])
     {
@@ -28,7 +28,7 @@ final class TLAgentDecorator extends BaseApiClientDecorator
             $clientVersion = InstalledVersions::getPrettyVersion('truelayer/client');
 
             $commentItems = array_merge(['php.version' => phpversion()], $meta);
-            $comment = json_encode($commentItems) ?? '';
+            $comment = json_encode($commentItems);
 
             $this->headerValue .= " / {$clientVersion} {$comment}";
         } catch (\Exception) {
