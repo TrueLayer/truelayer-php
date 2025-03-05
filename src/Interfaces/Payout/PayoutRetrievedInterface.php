@@ -45,6 +45,11 @@ interface PayoutRetrievedInterface extends HasAttributesInterface
     public function getStatus(): string;
 
     /**
+     * @return string|null
+     */
+    public function getSchemeId(): ?string;
+
+    /**
      * @return \DateTimeInterface
      */
     public function getCreatedAt(): \DateTimeInterface;

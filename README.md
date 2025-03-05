@@ -192,7 +192,8 @@ $beneficiary = $client->beneficiary()
     ->verification($remitterVerification);
 ```
 
-For your *merchant account beneficiary* you can pass a statement reference that should be set on the end user's statement. Not all banks support setting such a reference, this value will be used wherever possible.
+For your *merchant account beneficiary* you can pass a statement reference that should be set on the end user's
+statement. Not all banks support setting such a reference, this value will be used wherever possible.
 
 ```php
 $beneficiary->statementReference('Statement reference.');
@@ -332,7 +333,7 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
 $payment = $client->payment()
     ->user($user)
     ->amountInMinor(1)
-    ->currency(\TrueLayer\Constants\Currencies::GBP) // You can use other currencies defined in this class.
+    ->currency(\TrueLayer\Constants\PaymentCurrencies::GBP) // You can use other currencies defined in this class.
     ->metadata([ // add custom key value pairs
         'key' => 'value'
     ])
@@ -359,7 +360,7 @@ If you prefer, you can work directly with arrays by calling the `fill` method:
 ```php
 $paymentData = [
     'amount_in_minor' => 1,
-    'currency' => Currencies::GBP,
+    'currency' => PaymentCurrencies::GBP,
     'payment_method' => [
         'type' => PaymentMethods::BANK_TRANSFER,
         'beneficiary' => [
@@ -868,7 +869,7 @@ $beneficiary = $client->payoutBeneficiary()->externalAccount()
 $payout = $client->payout()
     ->amountInMinor(1)
     ->beneficiary($beneficiary)
-    ->currency(\TrueLayer\Constants\Currencies::GBP)
+    ->currency(\TrueLayer\Constants\PayoutCurrencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
     ->metadata([
         "foo" => "bar",
@@ -890,7 +891,7 @@ $beneficiary = $client->payoutBeneficiary()->paymentSource()
 $payout = $client->payout()
     ->amountInMinor(1)
     ->beneficiary($beneficiary)
-    ->currency(\TrueLayer\Constants\Currencies::GBP)
+    ->currency(\TrueLayer\Constants\PayoutCurrencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
     ->metadata([
         "foo" => "bar",
@@ -911,7 +912,7 @@ $beneficiary = $client->payoutBeneficiary()
 $payout = $client->payout()
     ->amountInMinor(1)
     ->beneficiary($beneficiary)
-    ->currency(\TrueLayer\Constants\Currencies::GBP)
+    ->currency(\TrueLayer\Constants\PayoutCurrencies::GBP)
     ->merchantAccountId($merchantAccount->getId())
     ->metadata([
         "foo" => "bar",
@@ -927,9 +928,11 @@ $payout->getId();
 You can optionally specify the payment scheme for a payout.
 
 ```php
+use \TrueLayer\Constants\SchemeIds;
+
 $schemeSelection = $client->payoutSchemeSelection()->instantPreferred(); // Attempt to select a payment scheme that supports instant payments based on currency and geography, fallback to a non-instant scheme if instant payment is unavailable. This is used by default if no scheme selection is provided.
 $schemeSelection = $client->payoutSchemeSelection()->instantOnly(); // Automatically select a payment scheme that supports instant payments based on currency and geography.
-$schemeSelection = $client->payoutSchemeSelection()->preselected()->schemeId('faster_payments_service'); // Set the scheme manually. Scheme ID is required.
+$schemeSelection = $client->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::FASTER_PAYMENTS_SERVICE); // Set the scheme manually. Scheme ID is required.
 
 
 $client->payout()
@@ -957,6 +960,7 @@ if ($payout instanceof PayoutRetrievedInterface) {
     $payout->getAmountInMinor();
     $payout->getMerchantAccountId();
     $payout->getStatus();
+    $payout->getSchemeId();
     $payout->getBeneficiary();
     $payout->getMetadata();
     $payout->getCreatedAt();

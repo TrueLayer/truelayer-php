@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Ramsey\Uuid\Uuid;
 use TrueLayer\Constants\Currencies;
+use TrueLayer\Constants\PayoutCurrencies;
+use TrueLayer\Constants\SchemeIds;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
 use TrueLayer\Interfaces\Payment\AuthorizationFlow\Action\RedirectActionInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
@@ -18,7 +20,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -76,7 +78,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -116,7 +118,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -174,7 +176,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -221,7 +223,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $helper->client()->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $merchantBeneficiary = $helper->merchantBeneficiary($account);
@@ -275,7 +277,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -318,7 +320,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -354,7 +356,7 @@ use TrueLayer\Services\Util\Arr;
 
     $account = Arr::first(
         $client->getMerchantAccounts(),
-        fn (MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === 'GBP'
     );
 
     $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
@@ -376,7 +378,38 @@ use TrueLayer\Services\Util\Arr;
 
     \expect($response->getId())->toBeString();
 
-    /** @var PayoutRetrievedInterface $payout */
+    $payout = $client->getPayout($response->getId());
+
+    \expect($payout)->toBeInstanceOf(PayoutRetrievedInterface::class);
+});
+
+\it('creates PLN payout', function () {
+    $client = \client();
+
+    $account = Arr::first(
+        $client->getMerchantAccounts(),
+        fn(MerchantAccountInterface $account) => $account->getCurrency() === PayoutCurrencies::PLN
+    );
+
+    $payoutBeneficiary = $client->payoutBeneficiary()->externalAccount()
+        ->accountIdentifier(
+            $client->accountIdentifier()->iban()->iban('GB29NWBK60161331926819')
+        )
+        ->accountHolderName('Test name')
+        ->reference('Test reference');
+
+    $schemeSelection = $client->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::POLISH_DOMESTIC_EXPRESS);
+
+    $response = $client->payout()
+        ->amountInMinor(1)
+        ->currency(PayoutCurrencies::PLN)
+        ->merchantAccountId($account->getId())
+        ->beneficiary($payoutBeneficiary)
+        ->schemeSelection($schemeSelection)
+        ->create();
+
+    \expect($response->getId())->toBeString();
+
     $payout = $client->getPayout($response->getId());
 
     \expect($payout)->toBeInstanceOf(PayoutRetrievedInterface::class);
