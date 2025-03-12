@@ -46,6 +46,11 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     protected string $status;
 
     /**
+     * @var string
+     */
+    protected string $schemeId;
+
+    /**
      * @var \DateTimeInterface
      */
     protected \DateTimeInterface $createdAt;
@@ -69,6 +74,7 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
         'beneficiary',
         'metadata',
         'status',
+        'scheme_id',
         'created_at',
     ];
 
@@ -126,6 +132,14 @@ abstract class PayoutRetrieved extends Entity implements PayoutRetrievedInterfac
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSchemeId(): ?string
+    {
+        return $this->schemeId ?? null;
     }
 
     /**

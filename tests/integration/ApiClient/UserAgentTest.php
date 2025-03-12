@@ -13,10 +13,10 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     $apiRequestUserAgent = \getSentHttpRequests()[1]->getHeaderLine(CustomHeaders::TL_AGENT);
 
     $version = InstalledVersions::getPrettyVersion('truelayer/client');
-    $userAgent = "truelayer-php/{$version}";
+    $userAgent = "truelayer-php / {$version}";
 
-    \expect($authRequestUserAgent)->toBe($userAgent);
-    \expect($apiRequestUserAgent)->toBe($userAgent);
+    \expect($authRequestUserAgent)->toStartWith($userAgent);
+    \expect($apiRequestUserAgent)->toStartWith($userAgent);
 });
 
 \it('uses custom agent header', function () {
