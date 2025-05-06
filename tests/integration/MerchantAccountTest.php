@@ -58,4 +58,9 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     $transactions = $account->getTransactions($from, $to);
 
     \expect(count($transactions))->toBe(5);
+    \expect($transactions[0])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountPaymentInterface::class);
+    \expect($transactions[1])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountExternalPaymentInterface::class);
+    \expect($transactions[2])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountPendingPayoutInterface::class);
+    \expect($transactions[3])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountExecutedPayoutInterface::class);
+    \expect($transactions[4])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountRefundInterface::class);
 });
