@@ -35,7 +35,7 @@ abstract class MerchantAccountTransactionRetrieved extends Entity implements Mer
     protected string $status;
 
     /**
-     * @var array
+     * @var array<string>
      */
     protected array $arrayFields = [
         'type',
