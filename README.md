@@ -1020,6 +1020,22 @@ foreach ($merchantAccount->getAccountIdentifiers() as $accountIdentifier) {
 }
 ```
 
+Retrieving a merchant account's list of transactions:
+
+```php
+$account = $client->getMerchantAccount('a2dcee6d-7a00-414d-a1e6-8a2b23169e00');
+
+$from = (new DateTime())->sub(new DateInterval("PT6H"));
+$to = new DateTime();
+
+$transactions = $account->getTransactions($from, $to);
+
+foreach ($transactions as $transaction) {
+    // See MerchantAccountRetrievedTransactionInterface and
+    // the interfaces that extend it for available methods.
+}
+```
+
 <a name="signup-plus"></a>
 
 # SignUp Plus
