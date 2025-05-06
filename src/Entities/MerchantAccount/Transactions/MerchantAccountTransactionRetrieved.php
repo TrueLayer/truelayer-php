@@ -35,6 +35,17 @@ abstract class MerchantAccountTransactionRetrieved extends Entity implements Mer
     protected string $status;
 
     /**
+     * @var array
+     */
+    protected array $arrayFields = [
+        'type',
+        'id',
+        'amount_in_minor',
+        'currency',
+        'status',
+    ];
+
+    /**
      * @return string
      */
     public function getType(): string

@@ -14,6 +14,16 @@ class MerchantAccountExternalPaymentReturnIdentified extends MerchantAccountExte
     protected string $returnId;
 
     /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'return_id',
+        ]);
+    }
+
+    /**
      * @return string
      */
     public function getReturnId(): string

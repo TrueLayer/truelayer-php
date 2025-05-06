@@ -30,6 +30,27 @@ class MerchantAccountPayment extends MerchantAccountTransactionRetrieved impleme
     protected array $metadata;
 
     /**
+     * @var array|string[]
+     */
+    protected array $casts = [
+        'settled_at' => \DateTimeInterface::class,
+        'payment_source' => PaymentSourceBeneficiaryInterface::class,
+    ];
+
+    /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'settled_at',
+            'payment_id',
+            'payment_source',
+            'metadata',
+        ]);
+    }
+
+    /**
      * @return \DateTimeInterface
      */
     public function getSettledAt(): \DateTimeInterface

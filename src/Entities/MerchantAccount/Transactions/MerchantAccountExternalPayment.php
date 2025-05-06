@@ -20,6 +20,24 @@ class MerchantAccountExternalPayment extends MerchantAccountTransactionRetrieved
     protected MerchantAccountExternalPaymentReturnInterface $returnedFor;
 
     /**
+     * @var array|string[]
+     */
+    protected array $casts = [
+        'settled_at' => \DateTimeInterface::class,
+    ];
+
+    /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'settled_at',
+            'returned_for',
+        ]);
+    }
+
+    /**
      * @return \DateTimeInterface
      */
     public function getSettledAt(): \DateTimeInterface

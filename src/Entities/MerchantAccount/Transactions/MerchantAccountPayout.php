@@ -35,6 +35,28 @@ abstract class MerchantAccountPayout extends MerchantAccountTransactionRetrieved
     protected array $metadata;
 
     /**
+     * @var array|string[]
+     */
+    protected array $casts = [
+        'created_at' => \DateTimeInterface::class,
+        'beneficiary' => BeneficiaryInterface::class,
+    ];
+
+    /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'created_at',
+            'context_code',
+            'payout_id',
+            'beneficiary',
+            'metadata',
+        ]);
+    }
+
+    /**
      * @return \DateTimeInterface
      */
     public function getCreatedAt(): \DateTimeInterface

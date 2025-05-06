@@ -19,6 +19,17 @@ class MerchantAccountExecutedPayout extends MerchantAccountPayout implements Mer
     protected string $schemeId;
 
     /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'returned_by',
+            'scheme_id',
+        ]);
+    }
+
+    /**
      * @return string|null
      */
     public function getReturnedBy(): ?string

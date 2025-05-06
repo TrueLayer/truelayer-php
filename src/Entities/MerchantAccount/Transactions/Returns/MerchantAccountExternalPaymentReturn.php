@@ -15,6 +15,13 @@ abstract class MerchantAccountExternalPaymentReturn extends Entity implements Me
     protected string $type;
 
     /**
+     * @var array|string[]
+     */
+    protected array $arrayFields = [
+        'type',
+    ];
+
+    /**
      * @return string
      */
     public function getType(): string {

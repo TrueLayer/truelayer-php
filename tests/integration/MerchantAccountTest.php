@@ -46,3 +46,16 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     \expect($account->getAccountHolderName())->toBe('John Doe');
     \expect($account->getAccountIdentifiers()[0])->toBeInstanceOf(IbanDetailsInterface::class);
 });
+
+\it('retrieves a merchant account\'s transactions', function () {
+    $client = \client([MerchantAccountResponse::account(), MerchantAccountResponse::transactions()]);
+
+    $account = $client->getMerchantAccount('1');
+
+    $from = DateTime::createFromFormat(DateTime::ATOM, '2025-05-01T00:00:00Z');
+    $to = DateTime::createFromFormat(DateTime::ATOM, '2025-05-30T00:00:00Z');
+
+    $transactions = $account->getTransactions($from, $to);
+
+    \expect(count($transactions))->toBe(5);
+});

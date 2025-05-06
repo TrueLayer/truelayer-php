@@ -55,6 +55,33 @@ class MerchantAccountRefund extends MerchantAccountTransactionRetrieved implemen
     protected array $metadata;
 
     /**
+     * @var array|string[]
+     */
+    protected array $casts = [
+        'created_at' => \DateTimeInterface::class,
+        'executed_at' => \DateTimeInterface::class,
+        'beneficiary' => PaymentSourceBeneficiaryInterface::class,
+    ];
+
+    /**
+     * @return string[]
+     */
+    protected function arrayFields(): array
+    {
+        return \array_merge(parent::arrayFields(), [
+            'created_at',
+            'executed_at',
+            'beneficiary',
+            'context_code',
+            'refund_id',
+            'payment_id',
+            'returned_by',
+            'scheme_id',
+            'metadata',
+        ]);
+    }
+
+    /**
      * @return \DateTimeInterface
      */
     public function getCreatedAt(): \DateTimeInterface
