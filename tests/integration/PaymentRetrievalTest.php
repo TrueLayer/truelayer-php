@@ -185,12 +185,24 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(true);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getCreditableAt())->toBeNull();
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-04T14:12:07.705938Z');
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
         'metadata_key_3' => 'metadata_value_3',
     ]);
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment executed and creditable', function () {
+    /** @var PaymentExecutedInterface $payment */
+    $payment = \client(PaymentResponse::executedAndCreditable())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentExecutedInterface::class);
+    \expect($payment->isExecuted())->toBe(true);
+    \expect($payment->getCreditableAt()->format(DateTime::FORMAT))->toBe('2022-03-03T13:40:23.000000Z');
 
     \assertPaymentCommon($payment);
 });

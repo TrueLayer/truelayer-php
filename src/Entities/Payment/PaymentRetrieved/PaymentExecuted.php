@@ -14,12 +14,18 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     protected \DateTimeInterface $executedAt;
 
     /**
+     * @var \DateTimeInterface
+     */
+    protected \DateTimeInterface $creditableAt;
+
+    /**
      * @return mixed[]
      */
     protected function casts(): array
     {
         return \array_merge_recursive(parent::casts(), [
             'executed_at' => \DateTimeInterface::class,
+            'creditable_at' => \DateTimeInterface::class,
         ]);
     }
 
@@ -30,6 +36,7 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     {
         return \array_merge(parent::arrayFields(), [
             'executed_at',
+            'creditable_at',
         ]);
     }
 
@@ -39,5 +46,13 @@ final class PaymentExecuted extends _PaymentWithAuthorizationConfig implements P
     public function getExecutedAt(): \DateTimeInterface
     {
         return $this->executedAt;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getCreditableAt(): ?\DateTimeInterface
+    {
+        return $this->creditableAt ?? null;
     }
 }
