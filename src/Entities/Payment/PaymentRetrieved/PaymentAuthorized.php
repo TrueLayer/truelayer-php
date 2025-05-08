@@ -34,10 +34,10 @@ final class PaymentAuthorized extends _PaymentWithAuthorizationConfig implements
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return \DateTimeInterface|null
      */
-    public function getCreditableAt(): \DateTimeInterface
+    public function getCreditableAt(): ?\DateTimeInterface
     {
-        return $this->creditableAt;
+        return $this->creditableAt ?? null;
     }
 }
