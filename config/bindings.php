@@ -92,6 +92,7 @@ return [
     Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class => Entities\Remitter\RemitterVerification\AutomatedRemitterVerification::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountTransactionRetrieved::class,
     Interfaces\MerchantAccount\Transactions\MerchantAccountPaymentInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountPayment::class,
     Interfaces\MerchantAccount\Transactions\MerchantAccountExternalPaymentInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountExternalPayment::class,
     Interfaces\MerchantAccount\Transactions\MerchantAccountPendingPayoutInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountPendingPayout::class,
