@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     tags:
-      - "v**"
+      - 'v**'
   pull_request:
     branches: [ main ]
   schedule:
@@ -17,13 +17,16 @@ jobs:
       fail-fast: false
       matrix:
         dependencies:
-          - lowest
-          - highest
+          - 'lowest'
+          - 'highest'
         php-version:
-          - "8.1"
-          - "8.2"
-          - "8.3"
-          - "8.4"
+          - '8.1'
+          - '8.2'
+          - '8.3'
+          - '8.4'
+        exclude:
+          - dependencies: 'lowest'
+            php-version: '8.4'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -46,7 +49,7 @@ jobs:
           key: php-${{ matrix.php-version }}-${{ matrix.dependencies }}
 
       - name: Install lowest dependencies
-        if: ${{ matrix.dependencies == 'lowest' && matrix.php-version != '8.4' }}
+        if: ${{ matrix.dependencies == 'lowest' }}
         run: composer update --prefer-lowest --no-interaction --no-progress
 
       - name: Install highest dependencies
