@@ -12,4 +12,9 @@ interface PaymentAuthorizedInterface extends PaymentRetrievedInterface
      * @return ConfigurationInterface|null
      */
     public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getCreditableAt(): ?\DateTimeInterface;
 }
