@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Support for `creditable_at` in Authorised, Executed, Settled, Failed payments ([#82](https://github.com/TrueLayer/truelayer-php/pull/82))
+- Enabled PHP 8.4 in CI test matrix. Excluded the lowest dependencies versions to overcome incompatibility issues ([#83](https://github.com/TrueLayer/truelayer-php/pull/83))
 
 ## [3.1.0] - 2025-03-07
 
