@@ -35,6 +35,11 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     protected \DateTimeInterface $settledAt;
 
     /**
+     * @var \DateTimeInterface
+     */
+    protected \DateTimeInterface $creditableAt;
+
+    /**
      * @return mixed[]
      */
     protected function casts(): array
@@ -42,6 +47,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
         return \array_merge_recursive(parent::casts(), [
             'executed_at' => \DateTimeInterface::class,
             'settled_at' => \DateTimeInterface::class,
+            'creditable_at' => \DateTimeInterface::class,
             'payment_source' => PaymentSourceInterface::class,
         ]);
     }
@@ -55,6 +61,7 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
             'payment_source',
             'executed_at',
             'settled_at',
+            'creditable_at',
         ]);
     }
 
@@ -80,6 +87,14 @@ final class PaymentSettled extends _PaymentWithAuthorizationConfig implements Pa
     public function getSettledAt(): \DateTimeInterface
     {
         return $this->settledAt;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getCreditableAt(): ?\DateTimeInterface
+    {
+        return $this->creditableAt ?? null;
     }
 
     /**

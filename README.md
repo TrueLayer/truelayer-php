@@ -591,6 +591,7 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 
 if ($payment instanceof PaymentAuthorizedInterface) {
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
+    $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
 }
 ```
 
@@ -605,6 +606,7 @@ use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 
 if ($payment instanceof PaymentExecutedInterface) {
     $payment->getExecutedAt(); // The date and time the payment was executed at
+    $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
     $payment->getAuthorizationFlowConfig(); // See authorization flow config
 }
 ```
@@ -623,6 +625,7 @@ if ($payment instanceof PaymentSettledInterface) {
     $payment->getSettledAt(); // The date and time the payment was settled at
     $payment->getAuthorizationFlowConfig(); // See authorization flow config
     $payment->getSourceOfFunds(); // See source of funds
+    $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
 }
 ```
 
@@ -640,6 +643,7 @@ if ($payment instanceof PaymentFailedInterface) {
     $payment->getFailureStage(); // The status the payment was when it failed, one of `authorization_required`, `authorizing` or `authorized`
     $payment->getFailureReason(); // The reason the payment failed. Handle unexpected values gracefully as an unknown failure.
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
+    $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
 }
 ```
 

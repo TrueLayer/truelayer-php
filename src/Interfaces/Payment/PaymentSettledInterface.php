@@ -28,6 +28,11 @@ interface PaymentSettledInterface extends PaymentRetrievedInterface
     public function getExecutedAt(): \DateTimeInterface;
 
     /**
+     * @return \DateTimeInterface|null
+     */
+    public function getCreditableAt(): ?\DateTimeInterface;
+
+    /**
      * @return ConfigurationInterface|null
      */
     public function getAuthorizationFlowConfig(): ?ConfigurationInterface;
