@@ -6,6 +6,7 @@ namespace TrueLayer\Interfaces\MerchantAccount;
 
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
 use TrueLayer\Interfaces\ArrayableInterface;
+use TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface;
 
 interface MerchantAccountInterface extends ArrayableInterface
 {
@@ -38,4 +39,9 @@ interface MerchantAccountInterface extends ArrayableInterface
      * @return string
      */
     public function getAccountHolderName(): string;
+
+    /**
+     * @return MerchantAccountTransactionRetrievedInterface[]
+     */
+    public function getTransactions(\DateTimeInterface $from, \DateTimeInterface $to): array;
 }

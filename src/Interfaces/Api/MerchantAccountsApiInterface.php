@@ -8,6 +8,7 @@ use TrueLayer\Exceptions\ApiRequestJsonSerializationException;
 use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
+use TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface;
 
 interface MerchantAccountsApiInterface
 {
@@ -30,4 +31,13 @@ interface MerchantAccountsApiInterface
      * @return mixed[]
      */
     public function retrieve(string $id): array;
+
+    /**
+     * @param string $merchantAccountId
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     *
+     * @return MerchantAccountTransactionRetrievedInterface[]
+     */
+    public function listTransactions(string $merchantAccountId, \DateTimeInterface $from, \DateTimeInterface $to): array;
 }

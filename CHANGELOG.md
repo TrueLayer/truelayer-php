@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Support for retrieving merchant account transactions ([#81](https://github.com/TrueLayer/truelayer-php/pull/81))
 - Support for `creditable_at` in Authorised, Executed, Settled, Failed payments ([#82](https://github.com/TrueLayer/truelayer-php/pull/82))
 
 ## [3.1.0] - 2025-03-07
