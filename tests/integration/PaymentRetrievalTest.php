@@ -164,6 +164,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->isExecuted())->toBe(false);
     \expect($payment->isSettled())->toBe(false);
     \expect($payment->isFailed())->toBe(false);
+    \expect($payment->getCreditableAt())->toBeNull();
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
@@ -207,6 +208,39 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \assertPaymentCommon($payment);
 });
 
+\it('handles payment settled and creditable', function () {
+    /** @var PaymentExecutedInterface $payment */
+    $payment = \client(PaymentResponse::settledAndCreditable())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentSettledInterface::class);
+    \expect($payment->isSettled())->toBe(true);
+    \expect($payment->getCreditableAt()->format(DateTime::FORMAT))->toBe('2022-03-03T13:40:23.000000Z');
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment failed and creditable', function () {
+    /** @var PaymentExecutedInterface $payment */
+    $payment = \client(PaymentResponse::failedAndCreditable())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
+    \expect($payment->isFailed())->toBe(true);
+    \expect($payment->getCreditableAt()->format(DateTime::FORMAT))->toBe('2022-03-03T13:40:23.000000Z');
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment authorized and creditable', function () {
+    /** @var PaymentExecutedInterface $payment */
+    $payment = \client(PaymentResponse::authorizedAndCreditable())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentAuthorizedInterface::class);
+    \expect($payment->isAuthorized())->toBe(true);
+    \expect($payment->getCreditableAt()->format(DateTime::FORMAT))->toBe('2022-03-03T13:40:23.000000Z');
+
+    \assertPaymentCommon($payment);
+});
+
 \it('handles payment settled', function () {
     /** @var PaymentSettledInterface $payment */
     $payment = \client(PaymentResponse::settled())->getPayment('1');
@@ -223,6 +257,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getExecutedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:48.014149Z');
     \expect($payment->getSettledAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:14:51.382114Z');
     \expect($payment->getPaymentSource())->toBeInstanceOf(PaymentSourceInterface::class);
+    \expect($payment->getCreditableAt())->toBeNull();
     \expect($payment->getMetadata())->toBeArray();
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
@@ -282,6 +317,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailedAt()->format(DateTime::FORMAT))->toBe('2022-02-06T22:26:48.849469Z');
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
+    \expect($payment->getCreditableAt())->toBeNull();
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
