@@ -5,12 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.2.0] - 2025-05-09
+## [3.2.0] - 2025-05-13
 
 ### Added
 
 - Support for retrieving merchant account transactions ([#81](https://github.com/TrueLayer/truelayer-php/pull/81))
 - Support for `creditable_at` in Authorised, Executed, Settled, Failed payments ([#82](https://github.com/TrueLayer/truelayer-php/pull/82))
+- Enabled PHP 8.4 in CI test matrix. Excluded the lowest dependencies versions to overcome incompatibility issues ([#83](https://github.com/TrueLayer/truelayer-php/pull/83))
 
 ## [3.1.0] - 2025-03-07
 
