@@ -6,6 +6,8 @@ use TrueLayer\Constants\AccountIdentifierTypes;
 use TrueLayer\Constants\AuthorizationFlowActionTypes;
 use TrueLayer\Constants\AuthorizationFlowStatusTypes;
 use TrueLayer\Constants\BeneficiaryTypes;
+use TrueLayer\Constants\MerchantAccountPayoutStatuses;
+use TrueLayer\Constants\MerchantAccountTransactionTypes;
 use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Constants\PaymentStatus;
 use TrueLayer\Constants\PayoutStatus;
@@ -118,5 +120,17 @@ return [
     Interfaces\Remitter\RemitterVerification\RemitterVerificationInterface::class => [
         'discriminate_on' => 'type',
         RemitterVerificationTypes::AUTOMATED => Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class,
+    ],
+    Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface::class => [
+        'discriminate_on' => 'type',
+        MerchantAccountTransactionTypes::EXTERNAL_PAYMENT => Interfaces\MerchantAccount\Transactions\MerchantAccountExternalPaymentInterface::class,
+        MerchantAccountTransactionTypes::PAYOUT => Interfaces\MerchantAccount\Transactions\MerchantAccountPayoutInterface::class,
+        MerchantAccountTransactionTypes::REFUND => Interfaces\MerchantAccount\Transactions\MerchantAccountRefundInterface::class,
+        MerchantAccountTransactionTypes::MERCHANT_ACCOUNT_PAYMENT => Interfaces\MerchantAccount\Transactions\MerchantAccountPaymentInterface::class,
+    ],
+    Interfaces\MerchantAccount\Transactions\MerchantAccountPayoutInterface::class => [
+        'discriminate_on' => 'status',
+        MerchantAccountPayoutStatuses::EXECUTED_PAYOUT => Interfaces\MerchantAccount\Transactions\MerchantAccountExecutedPayoutInterface::class,
+        MerchantAccountPayoutStatuses::PENDING_PAYOUT => Interfaces\MerchantAccount\Transactions\MerchantAccountPendingPayoutInterface::class,
     ],
 ];

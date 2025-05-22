@@ -35,3 +35,16 @@ use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
     \expect(\count($account->getAccountIdentifiers()))->toBeGreaterThan(0);
     \expect($account->getAccountIdentifiers()[0])->toBeInstanceOf(AccountIdentifierInterface::class);
 });
+
+\it('retrieves merchant account transactions', function () {
+    $accounts = \client()->getMerchantAccounts();
+    $account = \client()->getMerchantAccount($accounts[0]->getId());
+
+    $from = (new DateTime())->sub(new DateInterval("PT5H"));
+    $to = new DateTime();
+
+    $transactions = $account->getTransactions($from, $to);
+    \expect($transactions)->toBeArray();
+    \expect(count($transactions))->toBeGreaterThan(0);
+    \expect($transactions[0])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface::class);
+});

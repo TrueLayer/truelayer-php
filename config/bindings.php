@@ -92,6 +92,14 @@ return [
     Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class => Entities\Remitter\RemitterVerification\AutomatedRemitterVerification::class,
 
     Interfaces\MerchantAccount\MerchantAccountInterface::class => Entities\MerchantAccount\MerchantAccount::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountTransactionRetrieved::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountPaymentInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountPayment::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountExternalPaymentInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountExternalPayment::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountPendingPayoutInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountPendingPayout::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountExecutedPayoutInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountExecutedPayout::class,
+    Interfaces\MerchantAccount\Transactions\MerchantAccountRefundInterface::class => Entities\MerchantAccount\Transactions\MerchantAccountRefund::class,
+    Interfaces\MerchantAccount\Transactions\Returns\MerchantAccountExternalPaymentReturnIdentifiedInterface::class => Entities\MerchantAccount\Transactions\Returns\MerchantAccountExternalPaymentReturnIdentified::class,
+    Interfaces\MerchantAccount\Transactions\Returns\MerchantAccountExternalPaymentReturnUnknownInterface::class => Entities\MerchantAccount\Transactions\Returns\MerchantAccountExternalPaymentReturnUnknown::class,
 
     Interfaces\Webhook\PaymentAuthorizedEventInterface::class => Entities\Webhook\PaymentAuthorizedEvent::class,
     Interfaces\Webhook\PaymentExecutedEventInterface::class => Entities\Webhook\PaymentExecutedEvent::class,
