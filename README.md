@@ -33,12 +33,13 @@
 9. [Refunds](#refunds)
 10. [Payouts](#payouts)
 11. [Merchant accounts](#merchant-accounts)
-12. [Account identifiers](#account-identifiers)
-13. [SignUp Plus](#signup-plus)
-14. [Receiving webhook notifications](#webhooks)
-15. [Custom idempotency keys](#idempotency)
-16. [Custom API calls](#custom-api-calls)
-17. [Error Handling](#error-handling)
+12. [Provider search](#provider-search)
+13. [Account identifiers](#account-identifiers)
+14. [SignUp Plus](#signup-plus)
+15. [Receiving webhook notifications](#webhooks)
+16. [Custom idempotency keys](#idempotency)
+17. [Custom API calls](#custom-api-calls)
+18. [Error Handling](#error-handling)
 
 <a name="why"></a>
 
@@ -1017,6 +1018,135 @@ $merchantAccount->getId();
 
 foreach ($merchantAccount->getAccountIdentifiers() as $accountIdentifier) {
     // See 'Account identifiers' for available methods.
+}
+```
+
+<a name="provider-search"></a>
+
+# Provider search
+
+You can search for available payment providers using various filters to find providers that match your requirements.
+
+## Basic provider search
+
+```php
+// Simple search with basic authorization flow
+$providers = $client->searchProviders([
+    'authorization_flow' => [
+        'provider_selection' => [
+            'type' => 'user_selected'
+        ]
+    ]
+]);
+
+foreach ($providers as $provider) {
+    $provider->getId();
+    $provider->getDisplayName();
+    $provider->getCountryCode();
+    $provider->getCapabilities();
+    $provider->getIconUri();
+    $provider->getLogoUri();
+    $provider->getBgColor();
+    $provider->getSwiftCode(); // Optional: Swift/BIC code
+    $provider->getBinRanges(); // Optional: Bank Identification Number ranges
+}
+```
+
+## Using the SearchProvidersRequest builder
+
+```php
+// Using the fluent builder API
+$searchRequest = $client->searchProvidersRequest()
+    ->authorizationFlow([
+        'provider_selection' => [
+            'type' => 'user_selected'
+        ]
+    ])
+    ->countries(['GB', 'DE'])
+    ->currencies(['GBP', 'EUR'])
+    ->customerSegments(['retail', 'business'])
+    ->releaseChannel('general_availability');
+
+$providers = $client->searchProviders($searchRequest);
+```
+
+## Filtering providers
+
+### By country
+
+```php
+$providers = $client->searchProviders([
+    'authorization_flow' => [
+        'provider_selection' => ['type' => 'user_selected']
+    ],
+    'countries' => ['GB', 'DE', 'FR'] // Only providers from these countries
+]);
+```
+
+### By currency
+
+```php
+$providers = $client->searchProviders([
+    'authorization_flow' => [
+        'provider_selection' => ['type' => 'user_selected']
+    ],
+    'currencies' => ['GBP', 'EUR'] // Only providers supporting these currencies
+]);
+```
+
+### By customer segment
+
+```php
+$providers = $client->searchProviders([
+    'authorization_flow' => [
+        'provider_selection' => ['type' => 'user_selected']
+    ],
+    'customer_segments' => ['retail'] // retail, business, or corporate
+]);
+```
+
+### By release channel
+
+```php
+$providers = $client->searchProviders([
+    'authorization_flow' => [
+        'provider_selection' => ['type' => 'user_selected']
+    ],
+    'release_channel' => 'general_availability' // general_availability, public_beta, or private_beta
+]);
+```
+
+## Comprehensive filtering example
+
+```php
+use TrueLayer\Constants\Countries;
+use TrueLayer\Constants\PaymentCurrencies;
+
+$searchRequest = $client->searchProvidersRequest()
+    ->authorizationFlow([
+        'provider_selection' => ['type' => 'user_selected'],
+        'redirect' => ['return_uri' => 'https://myapp.com/callback']
+    ])
+    ->countries([Countries::GB, Countries::DE])
+    ->currencies([PaymentCurrencies::GBP, PaymentCurrencies::EUR])
+    ->customerSegments(['retail'])
+    ->releaseChannel('general_availability');
+
+$providers = $client->searchProviders($searchRequest);
+
+// Access provider details
+foreach ($providers as $provider) {
+    echo "Provider: {$provider->getDisplayName()} ({$provider->getId()})\n";
+    echo "Country: {$provider->getCountryCode()}\n";
+    
+    if ($provider->getSwiftCode()) {
+        echo "Swift Code: {$provider->getSwiftCode()}\n";
+    }
+    
+    $capabilities = $provider->getCapabilities();
+    if (isset($capabilities['payments']['bank_transfer'])) {
+        echo "Supports bank transfers\n";
+    }
 }
 ```
 
