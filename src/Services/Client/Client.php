@@ -30,9 +30,11 @@ use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
+use TrueLayer\Interfaces\Provider\PaymentsProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
+use TrueLayer\Interfaces\Provider\SearchProvidersRequestInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
@@ -434,5 +436,42 @@ final class Client implements ClientInterface
     public function signupPlus(): SignupPlusBuilderInterface
     {
         return $this->entityFactory->make(SignupPlusBuilderInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return SearchProvidersRequestInterface
+     */
+    public function searchProvidersRequest(): SearchProvidersRequestInterface
+    {
+        return $this->entityFactory->make(SearchProvidersRequestInterface::class);
+    }
+
+    /**
+     * @param SearchProvidersRequestInterface|array<string, mixed> $searchRequest
+     *
+     * @throws ApiResponseUnsuccessfulException
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @return PaymentsProviderInterface[]
+     */
+    public function searchProviders($searchRequest): array
+    {
+        if ($searchRequest instanceof SearchProvidersRequestInterface) {
+            $searchRequest = $searchRequest->toArray();
+        }
+
+        if (!\is_array($searchRequest)) {
+            throw new InvalidArgumentException('Search request must be SearchProvidersRequestInterface or array');
+        }
+
+        $data = $this->apiFactory->providersApi()->search($searchRequest);
+
+        return isset($data['items']) && \is_array($data['items'])
+            ? $this->entityFactory->makeMany(PaymentsProviderInterface::class, $data['items'])
+            : [];
     }
 }

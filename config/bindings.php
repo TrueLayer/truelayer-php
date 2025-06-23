@@ -53,6 +53,8 @@ return [
     Interfaces\Provider\PreselectedProviderSelectionInterface::class => Entities\Provider\ProviderSelection\PreselectedProviderSelection::class,
     Interfaces\Provider\ProviderInterface::class => Entities\Provider\Provider::class,
     Interfaces\Provider\ProviderFilterInterface::class => Entities\Provider\ProviderSelection\ProviderFilter::class,
+    Interfaces\Provider\SearchProvidersRequestInterface::class => Entities\Provider\SearchProvidersRequest::class,
+    Interfaces\Provider\PaymentsProviderInterface::class => Entities\Provider\PaymentsProvider::class,
 
     Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface::class => Entities\Payment\Scheme\SchemeSelectionBuilder::class,
     Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface::class => Entities\Payment\Scheme\InstantOnlySchemeSelection::class,

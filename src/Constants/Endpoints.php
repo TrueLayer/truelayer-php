@@ -38,4 +38,6 @@ class Endpoints
     public const SIGNUP_PLUS_AUTH = '/signup-plus/authuri';
     public const SIGNUP_PLUS_PAYMENTS = '/signup-plus/payments?payment_id={id}';
     public const SIGNUP_PLUS_MANDATES = '/signup-plus/mandates?mandate_id={id}';
+
+    public const PROVIDERS_SEARCH = '/v3/payments-providers/search';
 }

@@ -25,9 +25,11 @@ use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
+use TrueLayer\Interfaces\Provider\PaymentsProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionBuilderInterface;
+use TrueLayer\Interfaces\Provider\SearchProvidersRequestInterface;
 use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
@@ -239,4 +241,20 @@ interface ClientInterface
      * @return SignupPlusBuilderInterface
      */
     public function signupPlus(): SignupPlusBuilderInterface;
+
+    /**
+     * @return SearchProvidersRequestInterface
+     */
+    public function searchProvidersRequest(): SearchProvidersRequestInterface;
+
+    /**
+     * @param SearchProvidersRequestInterface|array<string, mixed> $searchRequest
+     *
+     * @throws ApiResponseUnsuccessfulException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     *
+     * @return PaymentsProviderInterface[]
+     */
+    public function searchProviders($searchRequest): array;
 }
