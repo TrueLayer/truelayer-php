@@ -119,4 +119,9 @@ return [
         'discriminate_on' => 'type',
         RemitterVerificationTypes::AUTOMATED => Interfaces\Remitter\RemitterVerification\AutomatedRemitterVerificationInterface::class,
     ],
+    Interfaces\SubMerchant\UltimateCounterpartyInterface::class => [
+        'discriminate_on' => 'type',
+        'business_client' => Interfaces\SubMerchant\UltimateCounterpartyBusinessClientInterface::class,
+        'business_division' => Interfaces\SubMerchant\UltimateCounterpartyBusinessDivisionInterface::class,
+    ],
 ];

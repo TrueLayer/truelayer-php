@@ -12,6 +12,7 @@ use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Interfaces\Payout\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
+use TrueLayer\Interfaces\SubMerchant\PayoutSubMerchantsInterface;
 
 interface PayoutRequestInterface extends HasAttributesInterface
 {
@@ -56,6 +57,13 @@ interface PayoutRequestInterface extends HasAttributesInterface
      * @return PayoutRequestInterface
      */
     public function metadata(array $metadata): PayoutRequestInterface;
+
+    /**
+     * @param PayoutSubMerchantsInterface|null $subMerchants
+     *
+     * @return PayoutSubMerchantsInterface
+     */
+    public function subMerchants(?PayoutSubMerchantsInterface $subMerchants): PayoutSubMerchantsInterface;
 
     /**
      * @param RequestOptionsInterface $requestOptions
