@@ -1,1 +1,0 @@
-- v3_oas.json is the OpenAPI specs file
