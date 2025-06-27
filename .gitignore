@@ -9,3 +9,4 @@ composer.lock
 .vscode
 composer.dev.json
 composer.dev.lock
+.claude

@@ -7,6 +7,7 @@ namespace TrueLayer\Interfaces\Payment;
 use TrueLayer\Interfaces\HasAttributesInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
+use TrueLayer\Interfaces\SubMerchant\PaymentSubMerchantsInterface;
 use TrueLayer\Interfaces\UserInterface;
 
 interface PaymentRequestInterface extends HasAttributesInterface
@@ -52,6 +53,13 @@ interface PaymentRequestInterface extends HasAttributesInterface
      * @return PaymentRequestInterface
      */
     public function user(UserInterface $user): PaymentRequestInterface;
+
+    /**
+     * @param PaymentSubMerchantsInterface|null $subMerchants
+     *
+     * @return PaymentRequestInterface
+     */
+    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants): PaymentRequestInterface;
 
     /**
      * @param RequestOptionsInterface $requestOptions

@@ -117,5 +117,12 @@ return [
     Interfaces\SignupPlus\SignupPlusUserDataRequestInterface::class => Entities\SignupPlus\SignupPlusUserDataRequest::class,
     Interfaces\SignupPlus\SignupPlusUserDataRetrievedInterface::class => Entities\SignupPlus\SignupPlusUserDataRetrieved::class,
 
+    Interfaces\SubMerchant\UltimateCounterpartyBuilderInterface::class => Entities\SubMerchant\UltimateCounterpartyBuilder::class,
+    Interfaces\SubMerchant\UltimateCounterpartyInterface::class => Entities\SubMerchant\UltimateCounterpartyBusinessClient::class,
+    Interfaces\SubMerchant\UltimateCounterpartyBusinessClientInterface::class => Entities\SubMerchant\UltimateCounterpartyBusinessClient::class,
+    Interfaces\SubMerchant\UltimateCounterpartyBusinessDivisionInterface::class => Entities\SubMerchant\UltimateCounterpartyBusinessDivision::class,
+    Interfaces\SubMerchant\PaymentSubMerchantsInterface::class => Entities\SubMerchant\PaymentSubMerchants::class,
+    Interfaces\SubMerchant\PayoutSubMerchantsInterface::class => Entities\SubMerchant\PayoutSubMerchants::class,
+
     Interfaces\RequestOptionsInterface::class => Entities\RequestOptions::class,
 ];

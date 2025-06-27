@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\Payout\PayoutCreatedInterface;
 use TrueLayer\Interfaces\Payout\PayoutRequestInterface;
 use TrueLayer\Interfaces\Payout\Scheme\SchemeSelectionInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
+use TrueLayer\Interfaces\SubMerchant\PayoutSubMerchantsInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 
 final class PayoutRequest extends Entity implements PayoutRequestInterface, HasApiFactoryInterface
@@ -52,6 +53,11 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     protected array $metadata;
 
     /**
+     * @var PayoutSubMerchantsInterface
+     */
+    protected PayoutSubMerchantsInterface $subMerchants;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -62,6 +68,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
     protected array $casts = [
         'beneficiary' => BeneficiaryInterface::class,
         'scheme_selection' => SchemeSelectionInterface::class,
+        'sub_merchants' => PayoutSubMerchantsInterface::class,
     ];
 
     /**
@@ -73,6 +80,7 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         'currency',
         'beneficiary',
         'scheme_selection',
+        'sub_merchants',
         'metadata',
     ];
 
@@ -146,6 +154,20 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
         if (!empty($metadata)) {
             $this->metadata = $metadata;
         }
+
+        return $this;
+    }
+
+    /**
+     * @param PayoutSubMerchantsInterface|null $subMerchants
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PayoutRequestInterface
+     */
+    public function subMerchants(?PayoutSubMerchantsInterface $subMerchants = null): PayoutRequestInterface
+    {
+        $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PayoutSubMerchantsInterface::class);
 
         return $this;
     }

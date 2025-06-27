@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rg:*)",
+      "Bash(composer install:*)",
+      "Bash(php:*)",
+      "Bash(find:*)"
+    ],
+    "deny": []
+  }
+}

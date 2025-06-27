@@ -8,9 +8,10 @@
     1. [Creating a beneficiary](#creating-a-beneficiary)
     2. [Creating a user](#creating-a-user)
     3. [Creating a payment method](#creating-a-payment-method)
-    4. [Creating the payment](#creating-the-payment)
-    5. [Creating a payment from an array](#creating-a-payment-from-array)
-    6. [Redirecting to the Hosted Payments Page](#redirect-to-hpp)
+    4. [Creating sub-merchants (optional)](#creating-sub-merchants)
+    5. [Creating the payment](#creating-the-payment)
+    6. [Creating a payment from an array](#creating-a-payment-from-array)
+    7. [Redirecting to the Hosted Payments Page](#redirect-to-hpp)
 6. [Retrieving a payment's details](#retrieving-a-payment)
     1. [Get the user](#get-the-user)
     2. [Get the payment method and beneficiary](#get-the-payment-method)
@@ -32,6 +33,7 @@
 8. [Authorizing a payment](#authorizing-payment)
 9. [Refunds](#refunds)
 10. [Payouts](#payouts)
+    1. [Creating sub-merchants for payouts](#payout-sub-merchants)
 11. [Merchant accounts](#merchant-accounts)
 12. [Account identifiers](#account-identifiers)
 13. [SignUp Plus](#signup-plus)
@@ -325,9 +327,63 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->beneficiary($beneficiary);
 ```
 
+<a name="creating-sub-merchants"></a>
+
+### 4. Creating sub-merchants (optional)
+
+Sub-merchants allow you to specify ultimate counterparty information for regulatory compliance and business transparency. This is optional but may be required for certain payment flows.
+
+#### Business Client Sub-Merchant
+
+You can create a business client sub-merchant with an address:
+
+```php
+$address = $client->address()
+    ->addressLine1('123 Business Street')
+    ->city('London')
+    ->zip('SW1A 1AA')
+    ->countryCode('GB');
+
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessClient()
+    ->address($address)
+    ->commercialName('My Business Ltd')
+    ->mcc('5411'); // Merchant Category Code (4 digits)
+
+$subMerchants = $client->paymentSubMerchants()
+    ->ultimateCounterparty($ultimateCounterparty);
+```
+
+Alternatively, you can use a registration number instead of an address:
+
+```php
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessClient()
+    ->registrationNumber('12345678')
+    ->commercialName('Registered Business Ltd')
+    ->mcc('7372');
+
+$subMerchants = $client->paymentSubMerchants()
+    ->ultimateCounterparty($ultimateCounterparty);
+```
+
+#### Business Division Sub-Merchant
+
+For business divisions within your organization:
+
+```php
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessDivision()
+    ->id('marketing-div')
+    ->name('Marketing Division');
+
+$subMerchants = $client->paymentSubMerchants()
+    ->ultimateCounterparty($ultimateCounterparty);
+```
+
 <a name="creating-the-payment"></a>
 
-### 4. Creating the payment
+### 5. Creating the payment
 
 ```php
 $payment = $client->payment()
@@ -337,8 +393,14 @@ $payment = $client->payment()
     ->metadata([ // add custom key value pairs
         'key' => 'value'
     ])
-    ->paymentMethod($paymentMethod)
-    ->create();
+    ->paymentMethod($paymentMethod);
+
+// Optionally add sub-merchants if required
+if ($subMerchants) {
+    $payment->subMerchants($subMerchants);
+}
+
+$payment = $payment->create();
 ```
 
 You then get access to the following methods:
@@ -353,7 +415,7 @@ $payment->toArray(); // Convert to array
 
 <a name="creating-a-payment-from-array"></a>
 
-### 5. Creating a payment from an array
+### 6. Creating a payment from an array
 
 If you prefer, you can work directly with arrays by calling the `fill` method:
 
@@ -399,7 +461,7 @@ $payment = $client->payment()->fill($paymentData)->create();
 
 <a name="redirect-to-hpp"></a>
 
-### 6. Redirecting to the Hosted Payments Page
+### 7. Redirecting to the Hosted Payments Page
 
 TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box,
 all action types. You can easily get the URL to redirect to after creating your payment:
@@ -992,6 +1054,53 @@ if ($payout instanceof PayoutFailedInterface) {
     $payout->getFailedAt();
     $payout->getFailureReason();
 }
+```
+
+<a name="payout-sub-merchants"></a>
+
+## Creating sub-merchants for payouts
+
+Sub-merchants can also be added to payouts for regulatory compliance. Note that payouts only support business client sub-merchants (not business divisions).
+
+```php
+// Create a business client sub-merchant for payouts
+$address = $client->address()
+    ->addressLine1('789 Payout Street')
+    ->city('Birmingham')
+    ->zip('B1 1AA')
+    ->countryCode('GB');
+
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessClient()
+    ->address($address)
+    ->commercialName('Payout Business Ltd')
+    ->mcc('6011');
+
+$subMerchants = $client->payoutSubMerchants()
+    ->ultimateCounterparty($ultimateCounterparty);
+
+// Add to payout
+$payout = $client->payout()
+    ->amountInMinor(500)
+    ->beneficiary($beneficiary)
+    ->currency(\TrueLayer\Constants\PayoutCurrencies::GBP)
+    ->merchantAccountId($merchantAccount->getId());
+
+$payout->subMerchants($subMerchants);
+$payout = $payout->create();
+```
+
+You can also use a registration number instead of an address:
+
+```php
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessClient()
+    ->registrationNumber('87654321')
+    ->commercialName('Registered Payout Ltd')
+    ->mcc('7299');
+
+$subMerchants = $client->payoutSubMerchants()
+    ->ultimateCounterparty($ultimateCounterparty);
 ```
 
 <a name="merchant-accounts"></a>

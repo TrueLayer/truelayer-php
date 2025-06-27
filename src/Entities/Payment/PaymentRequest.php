@@ -15,6 +15,7 @@ use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
+use TrueLayer\Interfaces\SubMerchant\PaymentSubMerchantsInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
 
@@ -53,6 +54,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected PaymentRiskAssessmentInterface $riskAssessment;
 
     /**
+     * @var PaymentSubMerchantsInterface
+     */
+    protected PaymentSubMerchantsInterface $subMerchants;
+
+    /**
      * @var RequestOptionsInterface|null
      */
     protected ?RequestOptionsInterface $requestOptions = null;
@@ -63,6 +69,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
         'risk_assessment' => PaymentRiskAssessmentInterface::class,
+        'sub_merchants' => PaymentSubMerchantsInterface::class,
         'user' => UserInterface::class,
     ];
 
@@ -75,6 +82,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'metadata',
         'payment_method',
         'risk_assessment',
+        'sub_merchants',
         'user',
     ];
 
@@ -150,6 +158,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     public function user(UserInterface $user): PaymentRequestInterface
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @param PaymentSubMerchantsInterface|null $subMerchants
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentRequestInterface
+     */
+    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants = null): PaymentRequestInterface
+    {
+        $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PaymentSubMerchantsInterface::class);
 
         return $this;
     }
