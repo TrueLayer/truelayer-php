@@ -43,12 +43,12 @@ final class PaymentSubMerchants extends Entity implements PaymentSubMerchantsInt
      *
      * @throws InvalidArgumentException
      *
-     * @return UltimateCounterpartyInterface
+     * @return PaymentSubMerchantsInterface
      */
-    public function ultimateCounterparty(?UltimateCounterpartyInterface $ultimateCounterparty = null): UltimateCounterpartyInterface
+    public function ultimateCounterparty(?UltimateCounterpartyInterface $ultimateCounterparty = null): PaymentSubMerchantsInterface
     {
         $this->ultimateCounterparty = $ultimateCounterparty ?: $this->entityFactory->make(UltimateCounterpartyInterface::class);
 
-        return $this->ultimateCounterparty;
+        return $this;
     }
 }

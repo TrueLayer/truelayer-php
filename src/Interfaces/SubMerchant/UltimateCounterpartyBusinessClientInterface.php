@@ -16,9 +16,9 @@ interface UltimateCounterpartyBusinessClientInterface extends UltimateCounterpar
     /**
      * @param AddressInterface|null $address
      *
-     * @return AddressInterface
+     * @return UltimateCounterpartyBusinessClientInterface
      */
-    public function address(?AddressInterface $address): AddressInterface;
+    public function address(?AddressInterface $address): UltimateCounterpartyBusinessClientInterface;
 
     /**
      * @return string|null

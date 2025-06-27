@@ -32,8 +32,12 @@ use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
+use TrueLayer\Interfaces\SubMerchant\PaymentSubMerchantsInterface;
+use TrueLayer\Interfaces\SubMerchant\PayoutSubMerchantsInterface;
+use TrueLayer\Interfaces\SubMerchant\UltimateCounterpartyBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
+use TrueLayer\Interfaces\AddressInterface;
 
 interface ClientInterface
 {
@@ -239,4 +243,24 @@ interface ClientInterface
      * @return SignupPlusBuilderInterface
      */
     public function signupPlus(): SignupPlusBuilderInterface;
+
+    /**
+     * @return AddressInterface
+     */
+    public function address(): AddressInterface;
+
+    /**
+     * @return UltimateCounterpartyBuilderInterface
+     */
+    public function ultimateCounterparty(): UltimateCounterpartyBuilderInterface;
+
+    /**
+     * @return PaymentSubMerchantsInterface
+     */
+    public function paymentSubMerchants(): PaymentSubMerchantsInterface;
+
+    /**
+     * @return PayoutSubMerchantsInterface
+     */
+    public function payoutSubMerchants(): PayoutSubMerchantsInterface;
 }

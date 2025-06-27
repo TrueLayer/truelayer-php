@@ -167,13 +167,13 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
      *
      * @throws InvalidArgumentException
      *
-     * @return PaymentSubMerchantsInterface
+     * @return PaymentRequestInterface
      */
-    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants = null): PaymentSubMerchantsInterface
+    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants = null): PaymentRequestInterface
     {
         $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PaymentSubMerchantsInterface::class);
 
-        return $this->subMerchants;
+        return $this;
     }
 
     /**

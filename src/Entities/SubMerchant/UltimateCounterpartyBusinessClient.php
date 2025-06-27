@@ -87,13 +87,13 @@ final class UltimateCounterpartyBusinessClient extends Entity implements Ultimat
      *
      * @throws InvalidArgumentException
      *
-     * @return AddressInterface
+     * @return UltimateCounterpartyBusinessClientInterface
      */
-    public function address(?AddressInterface $address = null): AddressInterface
+    public function address(?AddressInterface $address = null): UltimateCounterpartyBusinessClientInterface
     {
         $this->address = $address ?: $this->entityFactory->make(AddressInterface::class);
 
-        return $this->address;
+        return $this;
     }
 
     /**
@@ -107,10 +107,16 @@ final class UltimateCounterpartyBusinessClient extends Entity implements Ultimat
     /**
      * @param string $commercialName
      *
+     * @throws InvalidArgumentException
+     *
      * @return UltimateCounterpartyBusinessClientInterface
      */
     public function commercialName(string $commercialName): UltimateCounterpartyBusinessClientInterface
     {
+        if (strlen($commercialName) > 100) {
+            throw new InvalidArgumentException('Commercial name cannot exceed 100 characters');
+        }
+
         $this->commercialName = $commercialName;
 
         return $this;
@@ -127,10 +133,16 @@ final class UltimateCounterpartyBusinessClient extends Entity implements Ultimat
     /**
      * @param string $mcc
      *
+     * @throws InvalidArgumentException
+     *
      * @return UltimateCounterpartyBusinessClientInterface
      */
     public function mcc(string $mcc): UltimateCounterpartyBusinessClientInterface
     {
+        if (!preg_match('/^\d{4}$/', $mcc)) {
+            throw new InvalidArgumentException('MCC must be exactly 4 digits');
+        }
+
         $this->mcc = $mcc;
 
         return $this;
@@ -147,12 +159,44 @@ final class UltimateCounterpartyBusinessClient extends Entity implements Ultimat
     /**
      * @param string $registrationNumber
      *
+     * @throws InvalidArgumentException
+     *
      * @return UltimateCounterpartyBusinessClientInterface
      */
     public function registrationNumber(string $registrationNumber): UltimateCounterpartyBusinessClientInterface
     {
+        if (strlen($registrationNumber) > 50) {
+            throw new InvalidArgumentException('Registration number cannot exceed 50 characters');
+        }
+
         $this->registrationNumber = $registrationNumber;
 
         return $this;
+    }
+
+    /**
+     * @return mixed[]
+     * @throws InvalidArgumentException
+     */
+    public function toArray(): array
+    {
+        // Validate that either address or registration number is provided
+        if (empty($this->address) && empty($this->registrationNumber)) {
+            throw new InvalidArgumentException('Either address or registration number must be provided for business client');
+        }
+
+        $array = parent::toArray();
+        
+        // Remove empty address if registration number is used
+        if (!empty($this->registrationNumber) && empty($this->address)) {
+            unset($array['address']);
+        }
+        
+        // Remove empty registration number if address is used
+        if (!empty($this->address) && empty($this->registrationNumber)) {
+            unset($array['registration_number']);
+        }
+
+        return $array;
     }
 }

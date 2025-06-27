@@ -57,9 +57,9 @@ interface PaymentRequestInterface extends HasAttributesInterface
     /**
      * @param PaymentSubMerchantsInterface|null $subMerchants
      *
-     * @return PaymentSubMerchantsInterface
+     * @return PaymentRequestInterface
      */
-    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants): PaymentSubMerchantsInterface;
+    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants): PaymentRequestInterface;
 
     /**
      * @param RequestOptionsInterface $requestOptions

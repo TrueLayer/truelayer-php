@@ -17,7 +17,7 @@ interface PayoutSubMerchantsInterface extends ArrayableInterface, HasAttributesI
     /**
      * @param UltimateCounterpartyBusinessClientInterface|null $ultimateCounterparty
      *
-     * @return UltimateCounterpartyBusinessClientInterface
+     * @return PayoutSubMerchantsInterface
      */
-    public function ultimateCounterparty(?UltimateCounterpartyBusinessClientInterface $ultimateCounterparty): UltimateCounterpartyBusinessClientInterface;
+    public function ultimateCounterparty(?UltimateCounterpartyBusinessClientInterface $ultimateCounterparty): PayoutSubMerchantsInterface;
 }

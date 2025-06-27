@@ -38,8 +38,12 @@ use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuild
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
+use TrueLayer\Interfaces\SubMerchant\PaymentSubMerchantsInterface;
+use TrueLayer\Interfaces\SubMerchant\PayoutSubMerchantsInterface;
+use TrueLayer\Interfaces\SubMerchant\UltimateCounterpartyBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
+use TrueLayer\Interfaces\AddressInterface;
 use TrueLayer\Services\Util\PaymentId;
 
 final class Client implements ClientInterface
@@ -434,5 +438,45 @@ final class Client implements ClientInterface
     public function signupPlus(): SignupPlusBuilderInterface
     {
         return $this->entityFactory->make(SignupPlusBuilderInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return AddressInterface
+     */
+    public function address(): AddressInterface
+    {
+        return $this->entityFactory->make(AddressInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return UltimateCounterpartyBuilderInterface
+     */
+    public function ultimateCounterparty(): UltimateCounterpartyBuilderInterface
+    {
+        return $this->entityFactory->make(UltimateCounterpartyBuilderInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentSubMerchantsInterface
+     */
+    public function paymentSubMerchants(): PaymentSubMerchantsInterface
+    {
+        return $this->entityFactory->make(PaymentSubMerchantsInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return PayoutSubMerchantsInterface
+     */
+    public function payoutSubMerchants(): PayoutSubMerchantsInterface
+    {
+        return $this->entityFactory->make(PayoutSubMerchantsInterface::class);
     }
 }

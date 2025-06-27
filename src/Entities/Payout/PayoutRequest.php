@@ -163,13 +163,13 @@ final class PayoutRequest extends Entity implements PayoutRequestInterface, HasA
      *
      * @throws InvalidArgumentException
      *
-     * @return PayoutSubMerchantsInterface
+     * @return PayoutRequestInterface
      */
-    public function subMerchants(?PayoutSubMerchantsInterface $subMerchants = null): PayoutSubMerchantsInterface
+    public function subMerchants(?PayoutSubMerchantsInterface $subMerchants = null): PayoutRequestInterface
     {
         $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PayoutSubMerchantsInterface::class);
 
-        return $this->subMerchants;
+        return $this;
     }
 
     /**
