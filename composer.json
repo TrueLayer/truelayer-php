@@ -74,11 +74,5 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/truelayer/truelayer-signing-php"
-        }
-    ]
+    }
 }
