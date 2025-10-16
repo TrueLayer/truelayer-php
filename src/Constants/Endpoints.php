@@ -29,6 +29,7 @@ class Endpoints
     public const PAYMENTS_REFUNDS_RETRIEVE_ALL = '/v3/payments/{id}/refunds';
     public const PAYMENTS_REFUNDS_RETRIEVE = '/v3/payments/{id}/refunds/{refund_id}';
     public const PAYMENTS_PROVIDER_RETURN = '/v3/payments-provider-return';
+    public const PAYMENTS_PROVIDERS_SEARCH = '/v3/payments-providers/search';
 
     public const MERCHANT_ACCOUNTS = '/v3/merchant-accounts';
     public const TRANSACTIONS = '/v3/merchant-accounts/{id}/transactions';

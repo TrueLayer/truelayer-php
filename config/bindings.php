@@ -117,5 +117,11 @@ return [
     Interfaces\SignupPlus\SignupPlusUserDataRequestInterface::class => Entities\SignupPlus\SignupPlusUserDataRequest::class,
     Interfaces\SignupPlus\SignupPlusUserDataRetrievedInterface::class => Entities\SignupPlus\SignupPlusUserDataRetrieved::class,
 
+    Interfaces\PaymentsProvider\SearchProvidersRequestBuilderInterface::class => Entities\PaymentsProvider\SearchProvidersRequestBuilder::class,
+    Interfaces\PaymentsProvider\SearchProvidersRequestInterface::class => Entities\PaymentsProvider\SearchProvidersRequest::class,
+    Interfaces\PaymentsProvider\AuthorizationFlowConfigurationInterface::class => Entities\PaymentsProvider\AuthorizationFlowConfiguration::class,
+    Interfaces\PaymentsProvider\SearchCapabilitiesInterface::class => Entities\PaymentsProvider\SearchCapabilities::class,
+    Interfaces\PaymentsProvider\PaymentsProviderInterface::class => Entities\PaymentsProvider\PaymentsProvider::class,
+
     Interfaces\RequestOptionsInterface::class => Entities\RequestOptions::class,
 ];

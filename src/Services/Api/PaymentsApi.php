@@ -166,4 +166,25 @@ final class PaymentsApi extends Api implements PaymentsApiInterface
             ? $response['items']
             : [];
     }
+
+    /**
+     * @param mixed[] $searchRequest
+     *
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
+     */
+    public function searchProviders(array $searchRequest): array
+    {
+        $response = (array) $this->request()
+            ->uri(Endpoints::PAYMENTS_PROVIDERS_SEARCH)
+            ->payload($searchRequest)
+            ->post();
+
+        return isset($response['items']) && \is_array($response['items'])
+            ? $response['items']
+            : [];
+    }
 }
