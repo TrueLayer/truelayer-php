@@ -373,18 +373,18 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     }
 })->with([
     'user selected' => [
-        'response' => PaymentResponse::executedWithUserSelectedSchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithUserSelectedSchemeSelection(),
         'expectedType' => UserSelectedSchemeSelectionInterface::class,
         'expectedTypeValue' => 'user_selected',
     ],
     'instant only' => [
-        'response' => PaymentResponse::executedWithInstantOnlySchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithInstantOnlySchemeSelection(),
         'expectedType' => InstantOnlySchemeSelectionInterface::class,
         'expectedTypeValue' => 'instant_only',
         'expectedAllowedRemitterFee' => true,
     ],
     'instant preferred' => [
-        'response' => PaymentResponse::executedWithInstantPreferredSchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithInstantPreferredSchemeSelection(),
         'expectedType' => InstantPreferredSchemeSelectionInterface::class,
         'expectedTypeValue' => 'instant_preferred',
         'expectedAllowedRemitterFee' => true,

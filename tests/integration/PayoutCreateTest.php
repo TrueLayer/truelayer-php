@@ -221,19 +221,19 @@ use TrueLayer\Tests\Integration\Mocks\PayoutResponse;
     ]);
 })->with([
     'Instant only scheme' => [
-        'schemeSelection' => \client()->payoutSchemeSelection()->instantOnly(),
+        'schemeSelection' => fn () => \client()->payoutSchemeSelection()->instantOnly(),
         'expected' => ['type' => 'instant_only']
     ],
     'Instant preferred scheme' => [
-        'schemeSelection' => \client()->payoutSchemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->payoutSchemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred']
     ],
     'Preselected scheme' => [
-        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::FASTER_PAYMENTS_SERVICE),
+        'schemeSelection' => fn () => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::FASTER_PAYMENTS_SERVICE),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service']
     ],
     'Poland scheme' => [
-        'schemeSelection' => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::POLISH_DOMESTIC_EXPRESS),
+        'schemeSelection' => fn () => \client()->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::POLISH_DOMESTIC_EXPRESS),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'polish_domestic_express']
     ]
 ]);
