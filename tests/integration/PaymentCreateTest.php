@@ -545,31 +545,31 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->userSelected(),
         'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly(),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
 ]);
@@ -594,35 +594,35 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->userSelected(),
         'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly(),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
     'preselected' => [
-        'scheme' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'schemeSelection' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service'],
     ],
 ]);
