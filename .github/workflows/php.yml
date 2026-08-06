@@ -2,31 +2,27 @@ name: PHP
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     tags:
-      - 'v**'
+      - "v**"
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    - cron: '0 9,14,17 * * *'
+    - cron: "0 9,14,17 * * *"
 
 jobs:
+  # Pest 5 requires PHP 8.4+, so quality checks and the test suite only run there.
+  # The library itself still supports PHP 8.1+ for consumers - see the `compatibility` job below.
   code-quality:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         dependencies:
-          - 'lowest'
-          - 'highest'
+          - "lowest"
+          - "highest"
         php-version:
-          - '8.1'
-          - '8.2'
-          - '8.3'
-          - '8.4'
-        exclude:
-          - dependencies: 'lowest'
-            php-version: '8.4'
+          - "8.4"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -82,3 +78,28 @@ jobs:
           composer require php-http/curl-client --dev
           composer remove guzzlehttp/guzzle --dev
           composer run acceptance-tests -- --filter "retrieves merchant accounts"
+
+  # The library itself (require.php) still supports PHP 8.1+, but the dev
+  # tooling (Pest 5, etc.) requires 8.4, so require-dev can't be installed here.
+  # This job only verifies consumers can still install the library on these versions.
+  compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          ini-values: memory_limit=-1
+
+      - name: Install without dev dependencies
+        run: composer install --no-dev --no-interaction --no-progress
