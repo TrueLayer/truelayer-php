@@ -54,6 +54,13 @@ interface PaymentRequestInterface extends HasAttributesInterface
     public function user(UserInterface $user): PaymentRequestInterface;
 
     /**
+     * @param PaymentHostedPageInterface|null $hostedPage
+     *
+     * @return PaymentHostedPageInterface
+     */
+    public function hostedPage(?PaymentHostedPageInterface $hostedPage = null): PaymentHostedPageInterface;
+
+    /**
      * @param RequestOptionsInterface $requestOptions
      *
      * @return PaymentRequestInterface

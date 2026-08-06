@@ -11,6 +11,7 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\PaymentHostedPageInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
@@ -58,12 +59,18 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
+     * @var PaymentHostedPageInterface
+     */
+    protected PaymentHostedPageInterface $hostedPage;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
         'risk_assessment' => PaymentRiskAssessmentInterface::class,
         'user' => UserInterface::class,
+        'hosted_page' => PaymentHostedPageInterface::class,
     ];
 
     /**
@@ -76,6 +83,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'payment_method',
         'risk_assessment',
         'user',
+        'hosted_page',
     ];
 
     /**
@@ -152,6 +160,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @param PaymentHostedPageInterface|null $hostedPage
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentHostedPageInterface
+     */
+    public function hostedPage(?PaymentHostedPageInterface $hostedPage = null): PaymentHostedPageInterface
+    {
+        $this->hostedPage = $hostedPage ?: $this->entityFactory->make(PaymentHostedPageInterface::class);
+
+        return $this->hostedPage;
     }
 
     /**
