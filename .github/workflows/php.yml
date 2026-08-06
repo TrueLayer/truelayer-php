@@ -23,9 +23,12 @@ jobs:
           - "8.2"
           - "8.3"
           - "8.4"
+          - "8.5"
         exclude:
           - dependencies: "lowest"
             php-version: "8.4"
+          - dependencies: "lowest"
+            php-version: "8.5"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
