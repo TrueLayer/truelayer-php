@@ -183,6 +183,62 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
+\it('sends the hosted page on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->hostedPage()->returnUri('https://mymerchant.com/return');
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'hosted_page' => [
+            'return_uri' => 'https://mymerchant.com/return',
+            'country_code' => null,
+            'language_code' => null,
+            'max_wait_for_result' => null,
+        ],
+    ]);
+});
+
+\it('sends the hosted page country code, language code and max wait for result on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->hostedPage()
+        ->returnUri('https://mymerchant.com/return')
+        ->countryCode('GB')
+        ->languageCode('en')
+        ->maxWaitForResult(30);
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'hosted_page' => [
+            'return_uri' => 'https://mymerchant.com/return',
+            'country_code' => 'GB',
+            'language_code' => 'en',
+            'max_wait_for_result' => 30,
+        ],
+    ]);
+});
+
+\it('has no hosted page uri when the API does not return one', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect($payment->getHostedPageUri())->toBeNull();
+});
+
+\it('exposes the hosted page uri returned by the API', function () {
+    $factory = CreatePayment::responses([PaymentResponse::createdWithHostedPage()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect($payment->getHostedPageUri())->toBe('https://payment.truelayer.com/hosted-page-id');
+});
+
 \it('ensures preselected provider data access token is optional', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
 

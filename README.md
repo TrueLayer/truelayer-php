@@ -346,9 +346,31 @@ You then get access to the following methods:
 ```php
 $payment->getId(); // The payment id
 $payment->getResourceToken(); // The resource token
+$payment->getHostedPageUri(); // The hosted page uri, if a hosted_page was requested on creation
 $payment->getDetails(); // Get the payment details, same as $client->getPayment($paymentId)
 $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see below.
 $payment->toArray(); // Convert to array
+```
+
+You can optionally request a hosted page URI directly as part of payment creation, instead of building the
+Hosted Payments Page URL yourself afterwards:
+
+```php
+$payment = $client->payment()
+    ->user($user)
+    ->amountInMinor(1)
+    ->currency(\TrueLayer\Constants\PaymentCurrencies::GBP)
+    ->paymentMethod($paymentMethod);
+
+$payment->hostedPage()
+    ->returnUri('https://mymerchantwebsite.com/return')
+    ->countryCode('GB') // optional, ISO 3166-1 alpha-2
+    ->languageCode('en') // optional, ISO 639-1
+    ->maxWaitForResult(30); // optional, seconds to wait for a result, between 0 and 60
+
+$payment = $payment->create();
+
+$payment->getHostedPageUri(); // The URI to redirect your user to
 ```
 
 <a name="creating-a-payment-from-array"></a>

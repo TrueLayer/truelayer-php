@@ -30,6 +30,11 @@ interface PaymentCreatedInterface extends ArrayableInterface
     public function getUserId(): string;
 
     /**
+     * @return string|null
+     */
+    public function getHostedPageUri(): ?string;
+
+    /**
      * @return HppInterface
      */
     public function hostedPaymentsPage(): HppInterface;

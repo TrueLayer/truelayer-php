@@ -24,6 +24,15 @@ class PaymentResponse
         return new Response(200, [], \json_encode(self::CREATED));
     }
 
+    public static function createdWithHostedPage(): Response
+    {
+        return new Response(200, [], \json_encode(self::CREATED + [
+            'hosted_page' => [
+                'uri' => 'https://payment.truelayer.com/hosted-page-id',
+            ],
+        ]));
+    }
+
     public static function cancelled(): Response
     {
         return new Response(202, [], null);

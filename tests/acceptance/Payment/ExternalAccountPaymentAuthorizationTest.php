@@ -53,6 +53,27 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     return $created;
 });
 
+\it('creates a payment with a hosted page', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user());
+
+    $payment->hostedPage()
+        ->returnUri('https://console.truelayer.com/redirect-page')
+        ->countryCode('GB')
+        ->languageCode('en')
+        ->maxWaitForResult(30);
+
+    $created = $payment->create();
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+    \expect($created->getHostedPageUri())->toBeString();
+});
+
 \it('creates a payment with a preselected provider', function () {
     $helper = \paymentHelper();
 
