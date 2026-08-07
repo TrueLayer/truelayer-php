@@ -103,6 +103,7 @@ return [
         WebhookEventTypes::REFUND_FAILED => Interfaces\Webhook\RefundFailedEventInterface::class,
         WebhookEventTypes::PAYOUT_EXECUTED => Interfaces\Webhook\PayoutExecutedEventInterface::class,
         WebhookEventTypes::PAYOUT_FAILED => Interfaces\Webhook\PayoutFailedEventInterface::class,
+        WebhookEventTypes::PAYOUT_ATTEMPT_FAILED => Interfaces\Webhook\PayoutAttemptFailedEventInterface::class,
     ],
     Interfaces\Webhook\PaymentMethod\PaymentMethodInterface::class => [
         'discriminate_on' => 'type',

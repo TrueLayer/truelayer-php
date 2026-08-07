@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Support for `hosted_page` on payment creation (`return_uri`, `country_code`, `language_code`, `max_wait_for_result`), exposing `getHostedPageUri()` on the created payment
+- Support for the `payout_attempt_failed` webhook
 
 ## [3.3.0] - 2025-09-17
 

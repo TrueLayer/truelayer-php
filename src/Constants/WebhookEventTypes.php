@@ -19,4 +19,5 @@ class WebhookEventTypes
 
     public const PAYOUT_EXECUTED = 'payout_executed';
     public const PAYOUT_FAILED = 'payout_failed';
+    public const PAYOUT_ATTEMPT_FAILED = 'payout_attempt_failed';
 }

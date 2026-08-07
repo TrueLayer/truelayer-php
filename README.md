@@ -1184,6 +1184,7 @@ This library supports handlers for the following event types:
 - refund_failed
 - payout_executed
 - payout_failed
+- payout_attempt_failed
 
 You can also handle other event types by typehinting `TrueLayer\Interfaces\Webhook\EventInterface`
 in your handler. You can then get the payload data by calling the `getBody()` method on your variable.
@@ -1300,6 +1301,20 @@ $client->webhook()
         // Inherits from PayoutEventInterface so provides same methods plus:
         $event->getFailedAt();
         $event->getFailureReason();
+    })
+    ->handler(function (Webhook\PayoutAttemptFailedEventInterface $event) {
+        // handle payout attempt failed
+        // Sent when a payout attempt fails but will be retried. Only available if payout retries are enabled.
+        // Inherits from PayoutEventInterface so provides same methods plus:
+        $event->getFailedAt();
+        $event->getFailureReason();
+        $event->getSchemeId();
+
+        $retry = $event->getRetry();
+        $retry->getAttemptsMade();
+        $retry->getAttemptsRemaining();
+        $retry->isScheduledForRerouting();
+        $retry->getNextAttemptAt();
     })
     ->execute();
 ```

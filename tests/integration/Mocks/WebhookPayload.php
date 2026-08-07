@@ -352,6 +352,25 @@ class WebhookPayload
         }';
     }
 
+    public static function payoutAttemptFailed(): string
+    {
+        return '{
+          "type": "payout_attempt_failed",
+          "event_version": 1,
+          "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+          "payout_id": "0cd1b0f7-71bc-4d24-b209-95259dadcc20",
+          "failed_at": "2021-12-25T15:00:00.000Z",
+          "failure_reason": "scheme_error",
+          "scheme_id": "faster_payments_service",
+          "retry": {
+            "attempts_made": 2,
+            "attempts_remaining": 3,
+            "scheduled_for_rerouting": false,
+            "next_attempt_at": "2021-12-25T16:00:00.000Z"
+          }
+        }';
+    }
+
     public static function payoutExecutedClosedLoop(): string
     {
         return '{

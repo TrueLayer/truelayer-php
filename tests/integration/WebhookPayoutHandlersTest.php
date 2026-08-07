@@ -7,6 +7,7 @@ use TrueLayer\Interfaces\Webhook\Beneficiary\BeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\Beneficiary\ExternalAccountBeneficiaryInterface;
 use TrueLayer\Interfaces\Webhook\Beneficiary\PaymentSourceBeneficiaryInterface;
+use TrueLayer\Interfaces\Webhook\PayoutAttemptFailedEventInterface;
 use TrueLayer\Interfaces\Webhook\PayoutEventInterface;
 use TrueLayer\Interfaces\Webhook\PayoutExecutedEventInterface;
 use TrueLayer\Interfaces\Webhook\PayoutFailedEventInterface;
@@ -31,6 +32,7 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
 })->with([
     'executed' => WebhookPayload::payoutExecuted(),
     'failed' => WebhookPayload::payoutFailed(),
+    'attempt failed' => WebhookPayload::payoutAttemptFailed(),
 ]);
 
 \it('handles payout executed', function () {
@@ -59,6 +61,28 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     \expect($event->getFailedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
     \expect($event->getFailureReason())->toBe('scheme_error');
     \expect($event->getType())->toBe('payout_failed');
+});
+
+\it('handles payout attempt failed', function () {
+    /** @var PayoutAttemptFailedEventInterface $event */
+    $event = null;
+
+    \webhook(WebhookPayload::payoutAttemptFailed())->handler(function (PayoutAttemptFailedEventInterface $evt) use (&$event) {
+        $event = $evt;
+    })->execute();
+
+    \expect($event)->toBeInstanceOf(PayoutAttemptFailedEventInterface::class);
+    \expect($event->getType())->toBe('payout_attempt_failed');
+    \expect($event->getFailedAt()->format(DateTime::FORMAT))->toBe('2021-12-25T15:00:00.000000Z');
+    \expect($event->getFailureReason())->toBe('scheme_error');
+    \expect($event->getSchemeId())->toBe('faster_payments_service');
+
+    $retry = $event->getRetry();
+    \expect($retry)->not->toBeNull();
+    \expect($retry->getAttemptsMade())->toBe(2);
+    \expect($retry->getAttemptsRemaining())->toBe(3);
+    \expect($retry->isScheduledForRerouting())->toBeFalse();
+    \expect($retry->getNextAttemptAt()->format(DateTime::FORMAT))->toBe('2021-12-25T16:00:00.000000Z');
 });
 
 \it('handles closed loop payouts', function (string $body) {
@@ -113,7 +137,6 @@ use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
     'failed, no metadata' => [WebhookPayload::payoutFailed(), []],
     'failed, with metadata' => [WebhookPayload::payoutFailedWithMetadata(), ['foo' => 'bar']],
 ]);
-
 
 \it('handles external account payouts', function (string $body) {
     /** @var PayoutEventInterface $event */
