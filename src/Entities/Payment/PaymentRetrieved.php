@@ -11,6 +11,7 @@ use TrueLayer\Exceptions\ApiResponseUnsuccessfulException;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedAttemptInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Traits\ProvidesApiFactory;
@@ -60,11 +61,17 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface, HasA
     protected \DateTimeInterface $createdAt;
 
     /**
+     * @var PaymentFailedAttemptInterface[]
+     */
+    protected array $failedAttempts;
+
+    /**
      * @var class-string[]
      */
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
         'created_at' => \DateTimeInterface::class,
+        'failed_attempts.*' => PaymentFailedAttemptInterface::class,
     ];
 
     /**
@@ -79,6 +86,7 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface, HasA
         'metadata',
         'user.id' => 'user_id',
         'payment_method',
+        'failed_attempts',
     ];
 
     /**
@@ -143,6 +151,14 @@ class PaymentRetrieved extends Entity implements PaymentRetrievedInterface, HasA
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    /**
+     * @return PaymentFailedAttemptInterface[]
+     */
+    public function getFailedAttempts(): array
+    {
+        return $this->failedAttempts ?? [];
     }
 
     /**

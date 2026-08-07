@@ -50,6 +50,11 @@ interface PaymentRetrievedInterface extends ArrayableInterface
     public function getStatus(): string;
 
     /**
+     * @return PaymentFailedAttemptInterface[]
+     */
+    public function getFailedAttempts(): array;
+
+    /**
      * @return bool
      */
     public function isAuthorizationRequired(): bool;
