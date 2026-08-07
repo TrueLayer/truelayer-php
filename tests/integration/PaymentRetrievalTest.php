@@ -318,11 +318,26 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
     \expect($payment->getCreditableAt())->toBeNull();
+    \expect($payment->getSettlementStalledAt())->toBeNull();
+    \expect($payment->getReversedAt())->toBeNull();
+    \expect($payment->getReversalReason())->toBeNull();
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
         'metadata_key_3' => 'metadata_value_3',
     ]);
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment failed and reversed', function () {
+    /** @var PaymentFailedInterface $payment */
+    $payment = \client(PaymentResponse::failedAndReversed())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
+    \expect($payment->getSettlementStalledAt()->format(DateTime::FORMAT))->toBe('2023-06-13T15:00:00.000000Z');
+    \expect($payment->getReversedAt()->format(DateTime::FORMAT))->toBe('2023-06-14T09:30:00.000000Z');
+    \expect($payment->getReversalReason())->toBe('corrected');
 
     \assertPaymentCommon($payment);
 });
