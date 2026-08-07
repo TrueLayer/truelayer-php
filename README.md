@@ -93,7 +93,7 @@ $client = \TrueLayer\Client::configure()
     ->create();
 ```
 
-This library assumes that your client_id is issued with the `payments` scope. Depending on your account type this may
+This library assumes that your client_id is issued with the `payments` scope. Depending on your account type, this may
 not be the case and the authentication server will return an `invalid_scope` error. You can override the scopes used by
 the library with the `scopes()` method:
 
@@ -119,7 +119,7 @@ $client = \TrueLayer\Client::configure()
 
 The client library supports caching the `client_credentials` grant access token needed to access, create and modify
 resources on TrueLayer's systems. In order to enable it, you need to provide an implementation of
-the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-bytes encryption key.
+the [PSR-16](https://www.php-fig.org/psr/psr-16/) common caching interface and a 32-byte encryption key.
 
 You can generate a random encryption key by running `openssl rand -hex 32`. This key must be considered secret and
 stored next to the client secrets obtained from TrueLayer's console.
@@ -146,7 +146,7 @@ $client->payment()->fill($paymentData);
 // etc...
 ```
 
-You can also convert any resource to array. This can be convenient if you need to output it to json for example:
+You can also convert any resource to an array. This can be convenient if you need to output it to JSON, for example:
 
 ```php
 $paymentData = $client->getPayment($paymentId)->toArray();
@@ -176,7 +176,7 @@ $merchantAccount = $merchantAccounts[0];
 $beneficiary = $client->beneficiary()->merchantAccount($merchantAccount);
 ```
 
-If your merchant account is configured for payment verification then you have the option to enable automated remitter
+If your merchant account is configured for payment verification, then you have the option to enable automated remitter
 verification for your Merchant Account payment:
 
 ```php
@@ -192,8 +192,8 @@ $beneficiary = $client->beneficiary()
     ->verification($remitterVerification);
 ```
 
-For your *merchant account beneficiary* you can pass a statement reference that should be set on the end user's
-statement. Not all banks support setting such a reference, this value will be used wherever possible.
+For your *merchant account beneficiary*, you can pass a statement reference that should be set on the end user's
+statement. Not all banks support setting such a reference, but this value will be used wherever possible.
 
 ```php
 $beneficiary->statementReference('Statement reference.');
@@ -265,7 +265,7 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->beneficiary($beneficiary);
 ```
 
-Optionally, you can filter the providers that will be returned in the authorisation flow:
+Optionally, you can filter the providers that will be returned in the authorization flow:
 
 ```php
 use TrueLayer\Constants\Countries;
@@ -277,7 +277,7 @@ $filter = $client->providerFilter()
     ->countries([Countries::GB, Countries::ES])
     ->customerSegments([CustomerSegments::RETAIL, CustomerSegments::CORPORATE])
     ->releaseChannel(ReleaseChannels::PRIVATE_BETA)
-    ->excludesProviderIds(['provider-id'])
+    ->excludesProviderIds(['provider-id']);
 
 // You can also filter providers by the schemes they support:
 $schemeSelection = $client->schemeSelection()->userSelected(); // Let the user select. You must provide your own UI for this.
@@ -297,7 +297,7 @@ $paymentMethod = $client->paymentMethod()->bankTransfer()
     ->providerSelection($providerSelection);
 ```
 
-Alternatively, you can preselect the provider that is going to be used in the authorisation flow as well as the payment
+Alternatively, you can preselect the provider that is going to be used in the authorization flow as well as the payment
 scheme that the payment is going to be sent on:
 
 ```php
@@ -423,7 +423,7 @@ $payment = $client->payment()->fill($paymentData)->create();
 
 ### 6. Redirecting to the Hosted Payments Page
 
-TrueLayer's Hosted Payment Page provides a high-converting UI for payment authorization that supports, out of the box,
+TrueLayer's Hosted Payments Page provides a high-converting UI for payment authorization that supports, out of the box,
 all action types. You can easily get the URL to redirect to after creating your payment:
 
 ```php
@@ -515,7 +515,7 @@ $payment->getStatus() === \TrueLayer\Constants\PaymentStatus::AUTHORIZATION_REQU
 
 ### Authorization Required Status
 
-> Payment with this status is on its initial phase where no action beyond the creation of the payment was taken.
+> Payment with this status is in its initial phase where no action beyond the creation of the payment was taken.
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
@@ -529,7 +529,7 @@ if ($payment instanceof PaymentAuthorizationRequiredInterface) {
 
 ### Authorizing Status
 
-> Payment has its authorization_flow started, but the authorization has not completed yet
+> Payment has its authorization_flow started, but the authorization has not completed yet.
 
 A payment in `Authorizing` will expose 2 additional methods for retrieving:
 
@@ -607,7 +607,7 @@ if ($nextAction instanceof WaitActionInterface) {
 
 ### Authorized Status
 
-> Payment has successfully completed its authorization flow
+> Payment has successfully completed its authorization flow.
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
@@ -622,7 +622,7 @@ if ($payment instanceof PaymentAuthorizedInterface) {
 
 ### Executed Status
 
-> Payment has been accepted by the bank
+> Payment has been accepted by the bank.
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
@@ -638,7 +638,7 @@ if ($payment instanceof PaymentExecutedInterface) {
 
 ### Settled Status
 
-> Payment can transition into this state if the beneficiary account was a merchant account within Truelayer, and Truelayer has observed the money to be settled.
+> Payment can transition into this state if the beneficiary account was a merchant account within TrueLayer, and TrueLayer has observed the money to be settled.
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
@@ -656,7 +656,7 @@ if ($payment instanceof PaymentSettledInterface) {
 
 ### Failed Status
 
-> Payment has failed. The reason for failure can be observed in failure_reason field on the payment resource
+> Payment has failed. The reason for failure can be observed in the failure_reason field on the payment resource.
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
@@ -735,10 +735,10 @@ if ($payment instanceof PaymentExecutedInterface || $payment instanceof PaymentS
 
 # Cancel a payment
 
-You can cancel a retrieved payment as long as it's not been authorised yet. Please see our documentation on
+You can cancel a retrieved payment as long as it's not been authorized yet. Please see our documentation on
 [payment cancellation](https://docs.truelayer.com/docs/cancel-a-payment) for further details.
 
-> The `cancel` method returns a fresh version of the retrieved payment
+> The `cancel` method returns a fresh version of the retrieved payment.
 
 ```php
 $payment = $client->getPayment($paymentId);
@@ -752,7 +752,7 @@ $cancelledPayment = $payment->cancel();
 ## Using the Hosted Payments Page
 
 You are encouraged to use our [HPP](https://docs.truelayer.com/docs/hosted-payment-page) which collects all payment
-information required from your users and guides them through the payment authorisation journey. To do this simply
+information required from your users and guides them through the payment authorization journey. To do this, simply
 redirect to the HPP after creating a payment. See [Redirecting to HPP](#redirect-to-hpp) to get started.
 
 ## Manually starting the authorization flow
@@ -791,7 +791,7 @@ handle the returned actions.
 ### Submitting a provider
 
 If your payment requires selecting a provider as its next action, you can render the provider list and then submit the
-user selection using the `submitProvider` method:
+user selection using the `submitPaymentProvider` method:
 
 ```php
 $client->submitPaymentProvider($payment, $provider);
@@ -855,7 +855,7 @@ $refunds = $client->getRefunds($paymentId); // RefundRetrievedInterface[]
 
 ## Creating and retrieving refunds from a settled payment
 
-Alternatively, if you already have a payment instance you can use the following convenience methods:
+Alternatively, if you already have a payment instance, you can use the following convenience methods:
 
 ```php
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
@@ -873,7 +873,7 @@ if ($payment instanceof PaymentSettledInterface) {
         ->getId();
 
     // Get a refund's details
-    $payment->getRefund($refundId)
+    $payment->getRefund($refundId);
 
     // Get all refunds
     $payment->getRefunds();
@@ -960,10 +960,9 @@ You can optionally specify the payment scheme for a payout.
 ```php
 use \TrueLayer\Constants\SchemeIds;
 
-$schemeSelection = $client->payoutSchemeSelection()->instantPreferred(); // Attempt to select a payment scheme that supports instant payments based on currency and geography, fallback to a non-instant scheme if instant payment is unavailable. This is used by default if no scheme selection is provided.
+$schemeSelection = $client->payoutSchemeSelection()->instantPreferred(); // Attempt to select a payment scheme that supports instant payments based on currency and geography, falling back to a non-instant scheme if instant payments are unavailable. This is used by default if no scheme selection is provided.
 $schemeSelection = $client->payoutSchemeSelection()->instantOnly(); // Automatically select a payment scheme that supports instant payments based on currency and geography.
 $schemeSelection = $client->payoutSchemeSelection()->preselected()->schemeId(SchemeIds::FASTER_PAYMENTS_SERVICE); // Set the scheme manually. Scheme ID is required.
-
 
 $client->payout()
     ...
@@ -1074,13 +1073,13 @@ $response = $client->signupPlus()
 # Receiving webhook notifications
 
 You can register to receive notifications about your payment or mandate statuses via webhooks. The URI endpoint for the
-webhook can be [configured in the Console](https://docs.truelayer.com/docs/set-up-truelayer-console-for-payments-v3)
+webhook can be [configured in the Console](https://docs.truelayer.com/docs/set-up-truelayer-console-for-payments-v3).
 
 > ⚠️ All incoming webhook requests must have their signatures verified, otherwise you run the risk of accepting fraudulent payment status events.
 
 This library makes handling webhook events easy and secure. You do not need to manually verify the incoming request
-signature as it is done for you. You should add the code below to your webhook endpoint; Alternatively the webhook
-service can be configured in your IoC container and in your endpoint you can simply call `$webhook->execute()`.
+signature as it is done for you. You should add the code below to your webhook endpoint; alternatively, the webhook
+service can be configured in your IoC container, and in your endpoint you can simply call `$webhook->execute()`.
 
 ## Getting a webhook instance
 
@@ -1095,7 +1094,7 @@ Alternatively, you can also create an instance from scratch:
 ```php
 $webhook = \TrueLayer\Webhook::configure()
     ->httpClient($httpClient)
-    ->cache($cacheImplementation, $encryptionKey)  // optional, but recommeded. See Caching
+    ->cache($cacheImplementation, $encryptionKey)  // optional, but recommended. See Caching
     ->useProduction($useProduction) // bool
     ->create();
 ```
@@ -1103,10 +1102,10 @@ $webhook = \TrueLayer\Webhook::configure()
 ## Handling events
 
 You handle events by registering handlers (closures or invokable classes) for the event types you care about. You can
-have as many handlers as you wish, however please note the order of execution is not guaranteed.
+have as many handlers as you wish. However, please note that the order of execution is not guaranteed.
 
 Your handlers will only execute after the request signature is verified, and the incoming webhook type is matched to the
-interface you typehinted in your handler.
+interface you type-hinted in your handler.
 
 [Jump to supported event types](#webhook-types)
 
@@ -1189,7 +1188,7 @@ This library supports handlers for the following event types:
 - payout_executed
 - payout_failed
 
-You can also handle other event types by typehinting `TrueLayer\Interfaces\Webhook\EventInterface`
+You can also handle other event types by type-hinting `TrueLayer\Interfaces\Webhook\EventInterface`
 in your handler. You can then get the payload data by calling the `getBody()` method on your variable.
 
 All events inherit from `EventInterface`.
@@ -1314,11 +1313,13 @@ PaymentAuthorizedEventInterface, PaymentExecutedEventInterface, PaymentSettledEv
 PaymentFailedEventInterface provide a method to get more information about the payment source:
 
 ```php
-$paymentSource = $event->getPaymentSource(); $paymentSource->getId(); $paymentSource->getAccountHolderName();
+$paymentSource = $event->getPaymentSource();
+$paymentSource->getId();
+$paymentSource->getAccountHolderName();
 $paymentSource->getAccountIdentifiers(); // See Account Identifiers
 ```
 
-### Payment method
+## Payment method
 
 PaymentAuthorizedEventInterface, PaymentExecutedEventInterface, PaymentSettledEventInterface,
 PaymentFailedEventInterface provide a method to get more information about the payment method:
@@ -1342,8 +1343,8 @@ if ($paymentMethod instanceof Webhook\PaymentMethod\MandatePaymentMethodInterfac
 
 ## Overriding globals
 
-By default the webhook service will use php globals to read the endpoint path and request headers and body. This
-behaviour can be overriden if necessary (for example you may be calling `execute()` in a queued job.):
+By default, the webhook service will use PHP globals to read the endpoint path and request headers and body. This
+behaviour can be overridden if necessary (for example, you may be calling `execute()` in a queued job):
 
 ```php
     $client->webhook()
@@ -1357,8 +1358,8 @@ behaviour can be overriden if necessary (for example you may be calling `execute
 ## Signature verification failure
 
 If the webhook signature cannot be verified, a \TrueLayer\Exceptions\WebhookVerificationFailedException will be thrown.
-A number of other exceptions will be thrown when the webhook service is misconfigured, please
-see [error handling](#error-handling)
+A number of other exceptions will be thrown when the webhook service is misconfigured. Please
+see [error handling](#error-handling).
 
 <a name="account-identifiers"></a>
 
@@ -1488,7 +1489,7 @@ $e->getTraceId(); // The TrueLayer error trace id
 
 ### ApiRequestJsonSerializationException
 
-Thrown if the request data cannot be json encoded prior to calling the APIs.
+Thrown if the request data cannot be JSON encoded prior to calling the APIs.
 
 ```php
 \TrueLayer\Exceptions\ApiRequestJsonSerializationException
@@ -1496,7 +1497,7 @@ Thrown if the request data cannot be json encoded prior to calling the APIs.
 
 ### InvalidArgumentException
 
-Thrown when a provided argument is invalid, for example an invalid beneficiary type
+Thrown when a provided argument is invalid, for example, an invalid beneficiary type.
 
 ```php
 \TrueLayer\Exceptions\InvalidArgumentException
@@ -1544,7 +1545,7 @@ Thrown when the webhook service is provided with an invalid handler.
 
 ### WebhookHandlerInvalidArgumentException
 
-Thrown when the webhook service cannot get the request body, signature header or the provided handlers have invalid
+Thrown when the webhook service cannot get the request body, signature header, or the provided handlers have invalid
 arguments.
 
 ```php
