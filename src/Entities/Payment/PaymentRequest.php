@@ -12,6 +12,7 @@ use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentHostedPageInterface;
+use TrueLayer\Interfaces\Payment\PaymentRelatedProductsInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
@@ -64,6 +65,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected PaymentHostedPageInterface $hostedPage;
 
     /**
+     * @var PaymentRelatedProductsInterface
+     */
+    protected PaymentRelatedProductsInterface $relatedProducts;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
@@ -71,6 +77,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'risk_assessment' => PaymentRiskAssessmentInterface::class,
         'user' => UserInterface::class,
         'hosted_page' => PaymentHostedPageInterface::class,
+        'related_products' => PaymentRelatedProductsInterface::class,
     ];
 
     /**
@@ -84,6 +91,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'risk_assessment',
         'user',
         'hosted_page',
+        'related_products',
     ];
 
     /**
@@ -174,6 +182,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         $this->hostedPage = $hostedPage ?: $this->entityFactory->make(PaymentHostedPageInterface::class);
 
         return $this->hostedPage;
+    }
+
+    /**
+     * @param PaymentRelatedProductsInterface|null $relatedProducts
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentRelatedProductsInterface
+     */
+    public function relatedProducts(?PaymentRelatedProductsInterface $relatedProducts = null): PaymentRelatedProductsInterface
+    {
+        $this->relatedProducts = $relatedProducts ?: $this->entityFactory->make(PaymentRelatedProductsInterface::class);
+
+        return $this->relatedProducts;
     }
 
     /**

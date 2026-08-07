@@ -373,6 +373,20 @@ $payment = $payment->create();
 $payment->getHostedPageUri(); // The URI to redirect your user to
 ```
 
+You can also enable related products on the payment, such as [Signup+](https://docs.truelayer.com/docs/signup-basics):
+
+```php
+$payment = $client->payment()
+    ->user($user)
+    ->amountInMinor(1)
+    ->currency(\TrueLayer\Constants\PaymentCurrencies::GBP)
+    ->paymentMethod($paymentMethod);
+
+$payment->relatedProducts()->signupPlus();
+
+$payment = $payment->create();
+```
+
 <a name="creating-a-payment-from-array"></a>
 
 ### 5. Creating a payment from an array

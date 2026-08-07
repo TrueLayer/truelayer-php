@@ -223,6 +223,26 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
+\it('does not send related products field', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+    $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    $payload = \json_decode(\getRequestPayload(1, false), false);
+    \expect($payload->related_products ?? null)->toBeNull();
+});
+
+\it('sends related products signup plus on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->relatedProducts()->signupPlus();
+
+    $payment->create();
+
+    $payload = \json_decode(\getRequestPayload(1, false), false);
+    \expect($payload->related_products->signup_plus)->toBeInstanceOf(stdClass::class);
+});
+
 \it('has no hosted page uri when the API does not return one', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
 
