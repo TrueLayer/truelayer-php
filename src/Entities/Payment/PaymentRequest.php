@@ -11,6 +11,7 @@ use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Exceptions\SignerException;
 use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
+use TrueLayer\Interfaces\Payment\PaymentHostedPageInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
 use TrueLayer\Interfaces\Payment\SubMerchants\PaymentSubMerchantsInterface;
@@ -64,6 +65,11 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected PaymentSubMerchantsInterface $subMerchants;
 
     /**
+     * @var PaymentHostedPageInterface
+     */
+    protected PaymentHostedPageInterface $hostedPage;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
@@ -71,6 +77,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'risk_assessment' => PaymentRiskAssessmentInterface::class,
         'user' => UserInterface::class,
         'sub_merchants' => PaymentSubMerchantsInterface::class,
+        'hosted_page' => PaymentHostedPageInterface::class,
     ];
 
     /**
@@ -84,6 +91,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'risk_assessment',
         'user',
         'sub_merchants',
+        'hosted_page',
     ];
 
     /**
@@ -174,6 +182,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PaymentSubMerchantsInterface::class);
 
         return $this->subMerchants;
+    }
+
+    /**
+     * @param PaymentHostedPageInterface|null $hostedPage
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentHostedPageInterface
+     */
+    public function hostedPage(?PaymentHostedPageInterface $hostedPage = null): PaymentHostedPageInterface
+    {
+        $this->hostedPage = $hostedPage ?: $this->entityFactory->make(PaymentHostedPageInterface::class);
+
+        return $this->hostedPage;
     }
 
     /**

@@ -24,6 +24,15 @@ class PaymentResponse
         return new Response(200, [], \json_encode(self::CREATED));
     }
 
+    public static function createdWithHostedPage(): Response
+    {
+        return new Response(200, [], \json_encode(self::CREATED + [
+            'hosted_page' => [
+                'uri' => 'https://payment.truelayer.com/hosted-page-id',
+            ],
+        ]));
+    }
+
     public static function cancelled(): Response
     {
         return new Response(202, [], null);
@@ -74,6 +83,11 @@ class PaymentResponse
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"c4e754fd-8b0d-40fe-bd61-36622b7477a4"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-04T13:40:23.798415Z","status":"executed","authorization_flow":null,"executed_at":"2022-02-04T14:12:07.705938Z"}');
     }
 
+    public static function executedWithFailedAttempts(): Response
+    {
+        return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"c4e754fd-8b0d-40fe-bd61-36622b7477a4"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-04T13:40:23.798415Z","status":"executed","authorization_flow":{"configuration":{"provider_selection":{},"redirect":{"return_uri":"https://penny.t7r.dev/redirect/v3"}}},"executed_at":"2022-02-04T14:12:07.705938Z","failed_attempts":[{"attempt_number":1,"failed_at":"2022-02-04T13:50:00.000000Z","failure_reason":"provider_rejected"},{"attempt_number":2,"failed_at":"2022-02-04T13:55:00.000000Z","failure_reason":"authorization_failed"}]}');
+    }
+
     public static function executedWithUserSelectedSchemeSelection(): Response
     {
         return new Response(200, [], '{"id":"56bbff85-9504-4cba-a63b-c781745ad3ed","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"c4e754fd-8b0d-40fe-bd61-36622b7477a4"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected","scheme_selection":{"type":"user_selected"}}},"created_at":"2022-02-04T13:40:23.798415Z","status":"executed","authorization_flow":{"configuration":{"provider_selection":{},"redirect":{"return_uri":"https://penny.t7r.dev/redirect/v3"}}},"executed_at":"2022-02-04T14:12:07.705938Z"}');
@@ -117,6 +131,11 @@ class PaymentResponse
     public static function failedAndCreditable(): Response
     {
         return new Response(200, [], '{"creditable_at":"2022-03-03T13:40:23Z","id":"401cfaa1-8d44-4306-a2f9-a0a6e365f570","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"7ed73602-c8bc-4b2f-8a96-9490a6ea5983"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-06T22:25:43.899669Z","status":"failed","authorization_flow":{"configuration":{"provider_selection":{},"redirect":{"return_uri":"https://penny.t7r.dev/redirect/v3"}}},"failed_at":"2022-02-06T22:26:48.849469Z","failure_stage":"authorizing","failure_reason":"authorization_failed"}');
+    }
+
+    public static function failedAndReversed(): Response
+    {
+        return new Response(200, [], '{"id":"401cfaa1-8d44-4306-a2f9-a0a6e365f570","amount_in_minor":1,"metadata":{"metadata_key_1":"metadata_value_1","metadata_key_2":"metadata_value_2","metadata_key_3":"metadata_value_3"},"currency":"GBP","user":{"id":"7ed73602-c8bc-4b2f-8a96-9490a6ea5983"},"payment_method":{"type":"bank_transfer","beneficiary":{"type":"external_account","account_identifier":{"type":"sort_code_account_number","sort_code":"010203","account_number":"12345678"},"account_holder_name":"Bob","reference":"TEST"},"provider_selection":{"type":"user_selected"}},"created_at":"2022-02-06T22:25:43.899669Z","status":"failed","authorization_flow":{"configuration":{"provider_selection":{},"redirect":{"return_uri":"https://penny.t7r.dev/redirect/v3"}}},"failed_at":"2022-02-06T22:26:48.849469Z","failure_stage":"authorizing","failure_reason":"authorization_failed","settlement_stalled_at":"2023-06-13T15:00:00.000Z","reversed_at":"2023-06-14T09:30:00.000Z","reversal_reason":"corrected"}');
     }
 
     public static function attemptFailed(): Response

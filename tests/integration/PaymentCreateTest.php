@@ -250,6 +250,62 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
+\it('sends the hosted page on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->hostedPage()->returnUri('https://mymerchant.com/return');
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'hosted_page' => [
+            'return_uri' => 'https://mymerchant.com/return',
+            'country_code' => null,
+            'language_code' => null,
+            'max_wait_for_result' => null,
+        ],
+    ]);
+});
+
+\it('sends the hosted page country code, language code and max wait for result on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $payment->hostedPage()
+        ->returnUri('https://mymerchant.com/return')
+        ->countryCode('GB')
+        ->languageCode('en')
+        ->maxWaitForResult(30);
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'hosted_page' => [
+            'return_uri' => 'https://mymerchant.com/return',
+            'country_code' => 'GB',
+            'language_code' => 'en',
+            'max_wait_for_result' => 30,
+        ],
+    ]);
+});
+
+\it('has no hosted page uri when the API does not return one', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect($payment->getHostedPageUri())->toBeNull();
+});
+
+\it('exposes the hosted page uri returned by the API', function () {
+    $factory = CreatePayment::responses([PaymentResponse::createdWithHostedPage()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()))->create();
+
+    \expect($payment->getHostedPageUri())->toBe('https://payment.truelayer.com/hosted-page-id');
+});
+
 \it('ensures preselected provider data access token is optional', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
 
@@ -612,31 +668,31 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->userSelected(),
         'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly(),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
 ]);
@@ -661,35 +717,35 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 })->with([
     'user selected' => [
-        'scheme' => fn () => \client()->schemeSelection()->userSelected(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->userSelected(),
         'expected' => ['type' => 'user_selected'],
     ],
     'instant only: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly(),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(false),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => false],
     ],
     'instant only: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantOnly()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_only', 'allow_remitter_fee' => true],
     ],
     'instant preferred: default remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: no remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred(),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred(),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => false],
     ],
     'instant preferred: allow remitter fee' => [
-        'scheme' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
+        'schemeSelection' => fn () => \client()->schemeSelection()->instantPreferred()->allowRemitterFee(true),
         'expected' => ['type' => 'instant_preferred', 'allow_remitter_fee' => true],
     ],
     'preselected' => [
-        'scheme' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
+        'schemeSelection' => fn () => \client()->schemeSelection()->preselected()->schemeId('faster_payments_service'),
         'expected' => ['type' => 'preselected', 'scheme_id' => 'faster_payments_service'],
     ],
 ]);

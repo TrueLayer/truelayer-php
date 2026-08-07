@@ -18,6 +18,7 @@ use TrueLayer\Interfaces\Payment\PaymentAuthorizationRequiredInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizedInterface;
 use TrueLayer\Interfaces\Payment\PaymentAuthorizingInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
+use TrueLayer\Interfaces\Payment\PaymentFailedAttemptInterface;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\PaymentSettledInterface;
@@ -39,6 +40,7 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getCurrency())->toBeString();
     \expect($payment->getAmountInMinor())->toBeInt();
     \expect($payment->getCreatedAt())->toBeInstanceOf(DateTimeInterface::class);
+    \expect($payment->getFailedAttempts())->toBeArray();
 }
 
 \it('handles payment cancellation', function () {
@@ -318,11 +320,26 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     \expect($payment->getFailureStage())->toBe('authorizing');
     \expect($payment->getFailureReason())->toBe('authorization_failed');
     \expect($payment->getCreditableAt())->toBeNull();
+    \expect($payment->getSettlementStalledAt())->toBeNull();
+    \expect($payment->getReversedAt())->toBeNull();
+    \expect($payment->getReversalReason())->toBeNull();
     \expect($payment->getMetadata())->toMatchArray([
         'metadata_key_1' => 'metadata_value_1',
         'metadata_key_2' => 'metadata_value_2',
         'metadata_key_3' => 'metadata_value_3',
     ]);
+
+    \assertPaymentCommon($payment);
+});
+
+\it('handles payment failed and reversed', function () {
+    /** @var PaymentFailedInterface $payment */
+    $payment = \client(PaymentResponse::failedAndReversed())->getPayment('1');
+
+    \expect($payment)->toBeInstanceOf(PaymentFailedInterface::class);
+    \expect($payment->getSettlementStalledAt()->format(DateTime::FORMAT))->toBe('2023-06-13T15:00:00.000000Z');
+    \expect($payment->getReversedAt()->format(DateTime::FORMAT))->toBe('2023-06-14T09:30:00.000000Z');
+    \expect($payment->getReversalReason())->toBe('corrected');
 
     \assertPaymentCommon($payment);
 });
@@ -373,23 +390,50 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
     }
 })->with([
     'user selected' => [
-        'response' => PaymentResponse::executedWithUserSelectedSchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithUserSelectedSchemeSelection(),
         'expectedType' => UserSelectedSchemeSelectionInterface::class,
         'expectedTypeValue' => 'user_selected',
     ],
     'instant only' => [
-        'response' => PaymentResponse::executedWithInstantOnlySchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithInstantOnlySchemeSelection(),
         'expectedType' => InstantOnlySchemeSelectionInterface::class,
         'expectedTypeValue' => 'instant_only',
         'expectedAllowedRemitterFee' => true,
     ],
     'instant preferred' => [
-        'response' => PaymentResponse::executedWithInstantPreferredSchemeSelection(),
+        'mockResponse' => PaymentResponse::executedWithInstantPreferredSchemeSelection(),
         'expectedType' => InstantPreferredSchemeSelectionInterface::class,
         'expectedTypeValue' => 'instant_preferred',
         'expectedAllowedRemitterFee' => true,
     ],
 ]);
+
+\it('handles payment with failed attempts', function () {
+    $payment = \client(PaymentResponse::executedWithFailedAttempts())->getPayment('1');
+
+    $failedAttempts = $payment->getFailedAttempts();
+
+    \expect($failedAttempts)->toHaveCount(2);
+    \expect($failedAttempts[0])->toBeInstanceOf(PaymentFailedAttemptInterface::class);
+    \expect($failedAttempts[0]->getAttemptNumber())->toBe(1);
+    \expect($failedAttempts[0]->getFailedAt())->toBeInstanceOf(DateTimeInterface::class);
+    \expect($failedAttempts[0]->getFailureReason())->toBe('provider_rejected');
+    \expect($failedAttempts[1]->getAttemptNumber())->toBe(2);
+    \expect($failedAttempts[1]->getFailureReason())->toBe('authorization_failed');
+
+    \expect($payment->toArray()['failed_attempts'])->toBe([
+        [
+            'attempt_number' => 1,
+            'failed_at' => $failedAttempts[0]->getFailedAt()->format(DateTime::FORMAT),
+            'failure_reason' => 'provider_rejected',
+        ],
+        [
+            'attempt_number' => 2,
+            'failed_at' => $failedAttempts[1]->getFailedAt()->format(DateTime::FORMAT),
+            'failure_reason' => 'authorization_failed',
+        ],
+    ]);
+});
 
 \it('handles retry field correctly - empty object serialisation', function () {
     $payment1 = \client(PaymentResponse::authorizationRequiredWithRetryField())->getPayment('1');

@@ -37,12 +37,18 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     protected string $userId;
 
     /**
+     * @var string|null
+     */
+    protected ?string $hostedPageUri = null;
+
+    /**
      * @var string[]
      */
     protected array $arrayFields = [
         'id',
         'resource_token',
         'user.id' => 'user_id',
+        'hosted_page.uri' => 'hosted_page_uri',
     ];
 
     /**
@@ -67,6 +73,14 @@ final class PaymentCreated extends Entity implements PaymentCreatedInterface, Ha
     public function getUserId(): string
     {
         return $this->userId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHostedPageUri(): ?string
+    {
+        return $this->hostedPageUri;
     }
 
     /**

@@ -160,7 +160,7 @@ $paymentData = $client->getPayment($paymentId)->toArray();
 
 ### 1. Creating a beneficiary
 
-*Merchant account beneficiary*
+_Merchant account beneficiary_
 
 ```php
 // If the merchant account id is known:
@@ -192,14 +192,14 @@ $beneficiary = $client->beneficiary()
     ->verification($remitterVerification);
 ```
 
-For your *merchant account beneficiary* you can pass a statement reference that should be set on the end user's
+For your _merchant account beneficiary_ you can pass a statement reference that should be set on the end user's
 statement. Not all banks support setting such a reference, this value will be used wherever possible.
 
 ```php
 $beneficiary->statementReference('Statement reference.');
 ```
 
-*External account beneficiary - Sort code & account number*
+_External account beneficiary - Sort code & account number_
 
 ```php
 $beneficiary = $client->beneficiary()->externalAccount()
@@ -212,7 +212,7 @@ $beneficiary = $client->beneficiary()->externalAccount()
     );
 ```
 
-*External account beneficiary - IBAN*
+_External account beneficiary - IBAN_
 
 ```php
 $beneficiary = $client->beneficiary()->externalAccount()
@@ -346,6 +346,7 @@ You then get access to the following methods:
 ```php
 $payment->getId(); // The payment id
 $payment->getResourceToken(); // The resource token
+$payment->getHostedPageUri(); // The hosted page uri, if a hosted_page was requested on creation
 $payment->getDetails(); // Get the payment details, same as $client->getPayment($paymentId)
 $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see below.
 $payment->toArray(); // Convert to array
@@ -386,6 +387,27 @@ $ultimateCounterparty->address() // required if no registration number is provid
 $payment->subMerchants()->ultimateCounterparty($ultimateCounterparty);
 
 $payment = $payment->create();
+```
+
+You can optionally request a hosted page URI directly as part of payment creation, instead of building the
+Hosted Payments Page URL yourself afterwards:
+
+```php
+$payment = $client->payment()
+    ->user($user)
+    ->amountInMinor(1)
+    ->currency(\TrueLayer\Constants\PaymentCurrencies::GBP)
+    ->paymentMethod($paymentMethod);
+
+$payment->hostedPage()
+    ->returnUri('https://mymerchantwebsite.com/return')
+    ->countryCode('GB') // optional, ISO 3166-1 alpha-2
+    ->languageCode('en') // optional, ISO 639-1
+    ->maxWaitForResult(30); // optional, seconds to wait for a result, between 0 and 60
+
+$payment = $payment->create();
+
+$payment->getHostedPageUri(); // The URI to redirect your user to
 ```
 
 <a name="creating-a-payment-from-array"></a>
@@ -466,6 +488,7 @@ $payment->getCreatedAt();
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->getMetadata();
+$payment->getFailedAttempts(); // See failed attempts
 $payment->toArray();
 ```
 
@@ -681,6 +704,9 @@ if ($payment instanceof PaymentFailedInterface) {
     $payment->getFailureReason(); // The reason the payment failed. Handle unexpected values gracefully as an unknown failure.
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
     $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
+    $payment->getSettlementStalledAt(); // The date and time at which TrueLayer determined that the payment's settlement was stalled.
+    $payment->getReversedAt(); // The date and time the payment was reversed, if it was.
+    $payment->getReversalReason(); // The reason the payment was reversed, one of `corrected`, `failed` or `disputed`.
 }
 ```
 
