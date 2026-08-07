@@ -8,11 +8,14 @@ use TrueLayer\Interfaces\AccountIdentifier\ScanDetailsInterface;
 use TrueLayer\Interfaces\Payment\PaymentSourceInterface;
 use TrueLayer\Interfaces\Webhook\PaymentAuthorizedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentCreditableEventInterface;
+use TrueLayer\Interfaces\Webhook\PaymentDisputedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentExecutedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentFailedEventInterface;
+use TrueLayer\Interfaces\Webhook\PaymentFundsReceivedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface;
+use TrueLayer\Interfaces\Webhook\PaymentReversedEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettledEventInterface;
 use TrueLayer\Interfaces\Webhook\PaymentSettlementStalledEventInterface;
 use TrueLayer\Tests\Integration\Mocks\WebhookPayload;
@@ -45,6 +48,9 @@ class ConfirmCallbackRan extends Exception
     'failed' => WebhookPayload::paymentFailed(),
     'creditable' => WebhookPayload::paymentCreditable(),
     'settlement_stalled' => WebhookPayload::paymentSettlementStalled(),
+    'disputed' => WebhookPayload::paymentDisputed(),
+    'reversed' => WebhookPayload::paymentReversed(),
+    'funds_received' => WebhookPayload::paymentFundsReceived(),
 ])->throws(ConfirmCallbackRan::class);
 
 \it('handles empty metadata', function () {
@@ -207,6 +213,44 @@ class ConfirmCallbackRan extends Exception
     \webhook(WebhookPayload::paymentSettlementStalled())->handler(function (PaymentSettlementStalledEventInterface $event) {
         \expect($event)->getType()->toBe('payment_settlement_stalled');
         \expect($event->getSettlementStalledAt()->format(DateTime::FORMAT))->toBe('2024-10-14T14:02:26.825000Z');
+
+        throw new ConfirmCallbackRan();
+    })->execute();
+})->throws(ConfirmCallbackRan::class);
+
+\it('handles payment disputed', function () {
+    \webhook(WebhookPayload::paymentDisputed())->handler(function (PaymentDisputedEventInterface $event) {
+        \expect($event)->getType()->toBe('payment_disputed');
+        \expect($event->getDisputedAt()->format(DateTime::FORMAT))->toBe('2024-10-14T14:02:26.825000Z');
+        \expect($event->getDisputedReason())->toBe('unauthorized_direct_debit');
+        \expect($event->getExpiresAt()->format(DateTime::FORMAT))->toBe('2024-10-21T14:02:26.825000Z');
+
+        throw new ConfirmCallbackRan();
+    })->execute();
+})->throws(ConfirmCallbackRan::class);
+
+\it('handles payment disputed with no reason', function () {
+    \webhook(WebhookPayload::paymentDisputedNoReason())->handler(function (PaymentDisputedEventInterface $event) {
+        \expect($event->getDisputedReason())->toBeNull();
+
+        throw new ConfirmCallbackRan();
+    })->execute();
+})->throws(ConfirmCallbackRan::class);
+
+\it('handles payment reversed', function () {
+    \webhook(WebhookPayload::paymentReversed())->handler(function (PaymentReversedEventInterface $event) {
+        \expect($event)->getType()->toBe('payment_reversed');
+        \expect($event->getReversedAt()->format(DateTime::FORMAT))->toBe('2024-10-14T14:02:26.825000Z');
+        \expect($event->getReversalReason())->toBe('corrected');
+
+        throw new ConfirmCallbackRan();
+    })->execute();
+})->throws(ConfirmCallbackRan::class);
+
+\it('handles payment funds received', function () {
+    \webhook(WebhookPayload::paymentFundsReceived())->handler(function (PaymentFundsReceivedEventInterface $event) {
+        \expect($event)->getType()->toBe('payment_funds_received');
+        \expect($event->getFundsReceivedAt()->format(DateTime::FORMAT))->toBe('2024-10-14T14:02:26.825000Z');
 
         throw new ConfirmCallbackRan();
     })->execute();

@@ -1184,6 +1184,9 @@ This library supports handlers for the following event types:
 - payment_failed
 - payment_creditable
 - payment_settlement_stalled
+- payment_disputed
+- payment_reversed
+- payment_funds_received
 - refund_executed
 - refund_failed
 - payout_executed
@@ -1259,6 +1262,24 @@ $client->webhook()
         // Contact us if you would like this webhook to be enabled.
         // Inherits from PaymentEventInterface so provides same methods plus:
         $event->getSettlementStalledAt();
+    })
+    ->handler(function (Webhook\PaymentDisputedEventInterface $event) {
+        // Handle payment disputed
+        // Sent when an indemnity claim has been made against a payment. Currently only applies to payments made via direct debit mandates.
+        // Inherits from PaymentEventInterface so provides same methods plus:
+        $event->getDisputedAt();
+        $event->getDisputedReason();
+        $event->getExpiresAt(); // The date and time the dispute will expire and, by default, be resolved in favour of the end-user.
+    })
+    ->handler(function (Webhook\PaymentReversedEventInterface $event) {
+        // Handle payment reversed
+        $event->getReversedAt();
+        $event->getReversalReason(); // One of `corrected`, `failed` or `disputed`.
+    })
+    ->handler(function (Webhook\PaymentFundsReceivedEventInterface $event) {
+        // Handle payment funds received
+        // Sent when a Direct Debit payment's funds arrive in the merchant account. The payment can still be reversed at this stage.
+        $event->getFundsReceivedAt();
     })
     ->handler(function (Webhook\RefundEventInterface $event) {
         // Handle any refund event
