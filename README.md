@@ -451,6 +451,7 @@ $payment->getCreatedAt();
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->getMetadata();
+$payment->getFailedAttempts(); // See failed attempts
 $payment->toArray();
 ```
 

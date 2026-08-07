@@ -28,6 +28,7 @@ return [
     Interfaces\Payment\PaymentFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentFailed::class,
     Interfaces\Payment\PaymentAttemptFailedInterface::class => Entities\Payment\PaymentRetrieved\PaymentAttemptFailed::class,
     Interfaces\Payment\PaymentSourceInterface::class => Entities\Payment\PaymentRetrieved\PaymentSource::class,
+    Interfaces\Payment\PaymentFailedAttemptInterface::class => Entities\Payment\PaymentRetrieved\PaymentFailedAttempt::class,
 
     Interfaces\Payment\StartAuthorizationFlowRequestInterface::class => Entities\Payment\AuthorizationFlow\StartAuthorizationFlowRequest::class,
     Interfaces\Payment\AuthorizationFlow\AuthorizationFlowInterface::class => Entities\Payment\AuthorizationFlow\AuthorizationFlow::class,
