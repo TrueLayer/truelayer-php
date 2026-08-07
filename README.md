@@ -451,6 +451,7 @@ $payment->getCreatedAt();
 $payment->getCurrency();
 $payment->getPaymentMethod();
 $payment->getMetadata();
+$payment->getFailedAttempts(); // See failed attempts
 $payment->toArray();
 ```
 
@@ -666,6 +667,9 @@ if ($payment instanceof PaymentFailedInterface) {
     $payment->getFailureReason(); // The reason the payment failed. Handle unexpected values gracefully as an unknown failure.
     $payment->getAuthorizationFlowConfig(); // see authorization flow config
     $payment->getCreditableAt(); // The date and time that TrueLayer determined that the payment was ready to be credited.
+    $payment->getSettlementStalledAt(); // The date and time at which TrueLayer determined that the payment's settlement was stalled.
+    $payment->getReversedAt(); // The date and time the payment was reversed, if it was.
+    $payment->getReversalReason(); // The reason the payment was reversed, one of `corrected`, `failed` or `disputed`.
 }
 ```
 

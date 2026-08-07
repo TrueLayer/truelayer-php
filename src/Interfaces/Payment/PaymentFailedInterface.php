@@ -10,4 +10,19 @@ interface PaymentFailedInterface extends PaymentFailureInterface
      * @return \DateTimeInterface|null
      */
     public function getCreditableAt(): ?\DateTimeInterface;
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getSettlementStalledAt(): ?\DateTimeInterface;
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getReversedAt(): ?\DateTimeInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getReversalReason(): ?string;
 }
