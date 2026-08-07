@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TrueLayer\Interfaces\PaymentMethod;
 
 use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\PaymentSubMerchantsInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionInterface;
 
 interface BankTransferPaymentMethodInterface extends PaymentMethodInterface
@@ -42,4 +43,9 @@ interface BankTransferPaymentMethodInterface extends PaymentMethodInterface
      * @return bool
      */
     public function isPaymentRetryEnabled(): bool;
+
+    /**
+     * @return PaymentSubMerchantsInterface|null
+     */
+    public function getSubMerchants(): ?PaymentSubMerchantsInterface;
 }

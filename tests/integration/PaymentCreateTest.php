@@ -58,6 +58,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'scheme_selection' => null,
             ],
             'retry' => null,
+            'sub_merchants' => null,
         ],
     ]);
 });
@@ -124,6 +125,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'data_access_token' => 'mock_access_token',
             ],
             'retry' => null,
+            'sub_merchants' => null,
         ],
     ]);
 });
@@ -176,6 +178,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'scheme_selection' => null,
             ],
             'retry' => null,
+            'sub_merchants' => null,
         ],
         'risk_assessment' => [
             'segment' => 'mock-risk-assessment',
@@ -367,6 +370,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'data_access_token' => null,
             ],
             'retry' => null,
+            'sub_merchants' => null,
         ],
     ]);
 });
@@ -426,6 +430,7 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
                 'data_access_token' => 'mock-token',
             ],
             'retry' => null,
+            'sub_merchants' => null,
         ],
     ]);
 });
