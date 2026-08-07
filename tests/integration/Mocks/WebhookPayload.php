@@ -200,6 +200,70 @@ class WebhookPayload
         }';
     }
 
+    public static function paymentDisputed(): string
+    {
+        return '{
+            "type": "payment_disputed",
+            "event_version": 1,
+            "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+            "payment_id": "60c0a60ed8d7-4e5b-ac79-401b1d8a8633",
+            "disputed_at": "2024-10-14T14:02:26.825Z",
+            "disputed_reason": "unauthorized_direct_debit",
+            "expires_at": "2024-10-21T14:02:26.825Z",
+            "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              }
+        }';
+    }
+
+    public static function paymentDisputedNoReason(): string
+    {
+        return '{
+            "type": "payment_disputed",
+            "event_version": 1,
+            "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+            "payment_id": "60c0a60ed8d7-4e5b-ac79-401b1d8a8633",
+            "disputed_at": "2024-10-14T14:02:26.825Z",
+            "expires_at": "2024-10-21T14:02:26.825Z",
+            "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              }
+        }';
+    }
+
+    public static function paymentReversed(): string
+    {
+        return '{
+            "type": "payment_reversed",
+            "event_version": 1,
+            "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+            "payment_id": "60c0a60ed8d7-4e5b-ac79-401b1d8a8633",
+            "reversed_at": "2024-10-14T14:02:26.825Z",
+            "reversal_reason": "corrected",
+            "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              }
+        }';
+    }
+
+    public static function paymentFundsReceived(): string
+    {
+        return '{
+            "type": "payment_funds_received",
+            "event_version": 1,
+            "event_id": "b8d4dda0-ff2c-4d77-a6da-4615e4bad941",
+            "payment_id": "60c0a60ed8d7-4e5b-ac79-401b1d8a8633",
+            "funds_received_at": "2024-10-14T14:02:26.825Z",
+            "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              }
+        }';
+    }
+
     public static function paymentNoMetadata(): string
     {
         return '{

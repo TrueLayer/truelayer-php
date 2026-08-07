@@ -12,6 +12,9 @@ class WebhookEventTypes
     public const PAYMENT_SETTLED = 'payment_settled';
     public const PAYMENT_CREDITABLE = 'payment_creditable';
     public const PAYMENT_SETTLEMENT_STALLED = 'payment_settlement_stalled';
+    public const PAYMENT_DISPUTED = 'payment_disputed';
+    public const PAYMENT_REVERSED = 'payment_reversed';
+    public const PAYMENT_FUNDS_RECEIVED = 'payment_funds_received';
     public const EXTERNAL_PAYMENT_RECEIVED = 'external_payment_received';
 
     public const REFUND_EXECUTED = 'refund_executed';
