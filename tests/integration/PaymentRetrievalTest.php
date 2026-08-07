@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Payment\Scheme\InstantOnlySchemeSelectionInterface;
 use TrueLayer\Interfaces\Payment\Scheme\InstantPreferredSchemeSelectionInterface;
 use TrueLayer\Interfaces\Payment\Scheme\InstantSchemeSelectionInterface;
 use TrueLayer\Interfaces\Payment\Scheme\UserSelectedSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\BusinessDivisionUltimateCounterpartyInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
@@ -446,4 +447,23 @@ function assertPaymentCommon(PaymentRetrievedInterface $payment)
 
     \expect($method1->isPaymentRetryEnabled())->toBe(true);
     \expect($method2->isPaymentRetryEnabled())->toBe(false);
+});
+
+\it('handles sub merchants on payment method', function () {
+    $payment1 = \client(PaymentResponse::authorizationRequiredWithSubMerchants())->getPayment('1');
+    /** @var BankTransferPaymentMethodInterface $method1 */
+    $method1 = $payment1->getPaymentMethod();
+
+    $payment2 = \client(PaymentResponse::authorizationRequired())->getPayment('1');
+    /** @var BankTransferPaymentMethodInterface $method2 */
+    $method2 = $payment2->getPaymentMethod();
+
+    /** @var BusinessDivisionUltimateCounterpartyInterface $ultimateCounterparty */
+    $ultimateCounterparty = $method1->getSubMerchants()->getUltimateCounterparty();
+
+    \expect($ultimateCounterparty)->toBeInstanceOf(BusinessDivisionUltimateCounterpartyInterface::class);
+    \expect($ultimateCounterparty->getId())->toBe('mock-division-id');
+    \expect($ultimateCounterparty->getName())->toBe('Mock Division');
+
+    \expect($method2->getSubMerchants())->toBeNull();
 });

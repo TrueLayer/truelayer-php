@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support for `hosted_page` on payment creation (`return_uri`, `country_code`, `language_code`, `max_wait_for_result`), exposing `getHostedPageUri()` on the created payment
 - Support for `settlement_stalled_at`, `reversed_at` and `reversal_reason` on a failed payment, exposing `getSettlementStalledAt()`, `getReversedAt()` and `getReversalReason()` on `PaymentFailedInterface`
 - Support for `failed_attempts` on a retrieved payment, exposing `getFailedAttempts()` on all payment statuses
+- Support for `sub_merchants` on payment retrieval, via `getSubMerchants()` on the bank transfer payment method
 
 ## [3.3.0] - 2025-09-17
 

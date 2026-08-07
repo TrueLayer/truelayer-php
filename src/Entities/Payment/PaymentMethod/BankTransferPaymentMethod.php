@@ -8,6 +8,7 @@ use TrueLayer\Constants\PaymentMethods;
 use TrueLayer\Entities\Entity;
 use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\Payment\Beneficiary\BeneficiaryInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\PaymentSubMerchantsInterface;
 use TrueLayer\Interfaces\PaymentMethod\BankTransferPaymentMethodInterface;
 use TrueLayer\Interfaces\Provider\ProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\UserSelectedProviderSelectionInterface;
@@ -35,12 +36,18 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
     protected ?\stdClass $retry;
 
     /**
+     * @var PaymentSubMerchantsInterface
+     */
+    protected PaymentSubMerchantsInterface $subMerchants;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
         'provider_selection' => ProviderSelectionInterface::class,
         'beneficiary' => BeneficiaryInterface::class,
         'retry' => \stdClass::class,
+        'sub_merchants' => PaymentSubMerchantsInterface::class,
     ];
 
     /**
@@ -51,6 +58,7 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
         'beneficiary',
         'provider_selection',
         'retry',
+        'sub_merchants',
     ];
 
     /**
@@ -110,6 +118,14 @@ class BankTransferPaymentMethod extends Entity implements BankTransferPaymentMet
         $retry = $this->retry ?? null;
 
         return (bool) $retry;
+    }
+
+    /**
+     * @return PaymentSubMerchantsInterface|null
+     */
+    public function getSubMerchants(): ?PaymentSubMerchantsInterface
+    {
+        return $this->subMerchants ?? null;
     }
 
     /**

@@ -17,6 +17,7 @@ use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentExecutedInterface;
 use TrueLayer\Interfaces\Payment\PaymentFailedInterface;
 use TrueLayer\Interfaces\Payment\Scheme\PreselectedSchemeSelectionInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\BusinessDivisionUltimateCounterpartyInterface;
 use TrueLayer\Interfaces\Provider\PreselectedProviderSelectionInterface;
 use TrueLayer\Interfaces\Provider\ProviderInterface;
 
@@ -51,6 +52,37 @@ use TrueLayer\Interfaces\Provider\ProviderInterface;
     ]);
 
     return $created;
+});
+
+\it('creates a payment with a sub merchant and retrieves it', function () {
+    $helper = \paymentHelper();
+
+    $payment = $helper->client()->payment()
+        ->paymentMethod($helper->bankTransferMethod($helper->sortCodeBeneficiary()))
+        ->amountInMinor(10)
+        ->currency('GBP')
+        ->user($helper->user());
+
+    $ultimateCounterparty = $helper->client()->ultimateCounterparty()
+        ->businessDivision()
+        ->id('acceptance-test-division-id')
+        ->name('Acceptance Test Division');
+
+    $payment->subMerchants()->ultimateCounterparty($ultimateCounterparty);
+
+    $created = $payment->create();
+
+    \expect($created)->toBeInstanceOf(PaymentCreatedInterface::class);
+
+    /** @var BankTransferPaymentMethodInterface $method */
+    $method = $created->getDetails()->getPaymentMethod();
+
+    /** @var BusinessDivisionUltimateCounterpartyInterface $retrievedUltimateCounterparty */
+    $retrievedUltimateCounterparty = $method->getSubMerchants()->getUltimateCounterparty();
+
+    \expect($retrievedUltimateCounterparty)->toBeInstanceOf(BusinessDivisionUltimateCounterpartyInterface::class);
+    \expect($retrievedUltimateCounterparty->getId())->toBe('acceptance-test-division-id');
+    \expect($retrievedUltimateCounterparty->getName())->toBe('Acceptance Test Division');
 });
 
 \it('creates a payment with a hosted page', function () {
