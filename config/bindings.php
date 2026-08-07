@@ -104,6 +104,8 @@ return [
     Interfaces\Webhook\RefundFailedEventInterface::class => Entities\Webhook\RefundFailedEvent::class,
     Interfaces\Webhook\PayoutExecutedEventInterface::class => Entities\Webhook\PayoutExecutedEvent::class,
     Interfaces\Webhook\PayoutFailedEventInterface::class => Entities\Webhook\PayoutFailedEvent::class,
+    Interfaces\Webhook\PayoutAttemptFailedEventInterface::class => Entities\Webhook\PayoutAttemptFailedEvent::class,
+    Interfaces\Webhook\PayoutAttemptFailedRetryInterface::class => Entities\Webhook\PayoutAttemptFailedRetry::class,
     Interfaces\Webhook\PaymentMethod\BankTransferPaymentMethodInterface::class => Entities\Webhook\PaymentMethod\BankTransferPaymentMethod::class,
     Interfaces\Webhook\PaymentMethod\MandatePaymentMethodInterface::class => Entities\Webhook\PaymentMethod\MandatePaymentMethod::class,
     Interfaces\Webhook\Beneficiary\BusinessAccountBeneficiaryInterface::class => Entities\Webhook\Beneficiary\BusinessAccountBeneficiary::class,
