@@ -27,6 +27,7 @@ use TrueLayer\Interfaces\Payment\PaymentRetrievedInterface;
 use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\UltimateCounterpartyBuilderInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Payout\PayoutRetrievedInterface;
@@ -173,6 +174,16 @@ final class Client implements ClientInterface
     public function remitterVerification(): RemitterVerificationBuilderInterface
     {
         return $this->entityFactory->make(RemitterVerificationBuilderInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return UltimateCounterpartyBuilderInterface
+     */
+    public function ultimateCounterparty(): UltimateCounterpartyBuilderInterface
+    {
+        return $this->entityFactory->make(UltimateCounterpartyBuilderInterface::class);
     }
 
     /**

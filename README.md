@@ -351,6 +351,43 @@ $payment->hostedPaymentsPage(); // Get the Hosted Payments Page helper, see belo
 $payment->toArray(); // Convert to array
 ```
 
+If needed, you can provide details about the sub-merchant the payment relates to,
+for example an underlying division or client of your overall business:
+
+```php
+$payment = $client->payment()
+    ->user($user)
+    ->amountInMinor(1)
+    ->currency(\TrueLayer\Constants\PaymentCurrencies::GBP)
+    ->paymentMethod($paymentMethod);
+
+// A business division of your own business:
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessDivision()
+    ->id('my-division-id')
+    ->name('My Division');
+
+// Or, an underlying business client:
+$ultimateCounterparty = $client->ultimateCounterparty()
+    ->businessClient()
+    ->id('my-client-id')
+    ->tradingName('My Client Trading Name')
+    ->commercialName('My Client Commercial Name') // optional
+    ->url('https://my-client.example.com') // optional
+    ->mcc('1234') // optional, merchant category code
+    ->registrationNumber('12345678'); // required if no address is provided
+
+$ultimateCounterparty->address() // required if no registration number is provided
+    ->addressLine1('1 Example Street')
+    ->city('London')
+    ->zip('EC2A 1PX')
+    ->countryCode('GB');
+
+$payment->subMerchants()->ultimateCounterparty($ultimateCounterparty);
+
+$payment = $payment->create();
+```
+
 <a name="creating-a-payment-from-array"></a>
 
 ### 5. Creating a payment from an array

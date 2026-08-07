@@ -13,6 +13,7 @@ use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\Payment\PaymentCreatedInterface;
 use TrueLayer\Interfaces\Payment\PaymentRequestInterface;
 use TrueLayer\Interfaces\Payment\PaymentRiskAssessmentInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\PaymentSubMerchantsInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\UserInterface;
@@ -58,12 +59,18 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
     protected ?RequestOptionsInterface $requestOptions = null;
 
     /**
+     * @var PaymentSubMerchantsInterface
+     */
+    protected PaymentSubMerchantsInterface $subMerchants;
+
+    /**
      * @var string[]
      */
     protected array $casts = [
         'payment_method' => PaymentMethodInterface::class,
         'risk_assessment' => PaymentRiskAssessmentInterface::class,
         'user' => UserInterface::class,
+        'sub_merchants' => PaymentSubMerchantsInterface::class,
     ];
 
     /**
@@ -76,6 +83,7 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         'payment_method',
         'risk_assessment',
         'user',
+        'sub_merchants',
     ];
 
     /**
@@ -152,6 +160,20 @@ final class PaymentRequest extends Entity implements PaymentRequestInterface, Ha
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @param PaymentSubMerchantsInterface|null $subMerchants
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PaymentSubMerchantsInterface
+     */
+    public function subMerchants(?PaymentSubMerchantsInterface $subMerchants = null): PaymentSubMerchantsInterface
+    {
+        $this->subMerchants = $subMerchants ?: $this->entityFactory->make(PaymentSubMerchantsInterface::class);
+
+        return $this->subMerchants;
     }
 
     /**

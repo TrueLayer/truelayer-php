@@ -23,6 +23,7 @@ use TrueLayer\Interfaces\Payment\RefundRequestInterface;
 use TrueLayer\Interfaces\Payment\RefundRetrievedInterface;
 use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
 use TrueLayer\Interfaces\Payment\StartAuthorizationFlowRequestInterface;
+use TrueLayer\Interfaces\Payment\SubMerchants\UltimateCounterpartyBuilderInterface;
 use TrueLayer\Interfaces\PaymentMethod\PaymentMethodBuilderInterface;
 use TrueLayer\Interfaces\Payout;
 use TrueLayer\Interfaces\Provider\ProviderFilterInterface;
@@ -81,6 +82,11 @@ interface ClientInterface
      * @return RemitterVerificationBuilderInterface
      */
     public function remitterVerification(): RemitterVerificationBuilderInterface;
+
+    /**
+     * @return UltimateCounterpartyBuilderInterface
+     */
+    public function ultimateCounterparty(): UltimateCounterpartyBuilderInterface;
 
     /**
      * @return ProviderFilterInterface

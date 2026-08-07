@@ -12,6 +12,7 @@ use TrueLayer\Constants\PayoutStatus;
 use TrueLayer\Constants\RefundStatus;
 use TrueLayer\Constants\RemitterVerificationTypes;
 use TrueLayer\Constants\SchemeSelectionTypes;
+use TrueLayer\Constants\UltimateCounterpartyTypes;
 use TrueLayer\Constants\WebhookEventTypes;
 use TrueLayer\Interfaces;
 
@@ -43,6 +44,11 @@ return [
         AccountIdentifierTypes::IBAN => Interfaces\AccountIdentifier\IbanInterface::class,
         AccountIdentifierTypes::BBAN => Interfaces\AccountIdentifier\BbanInterface::class,
         AccountIdentifierTypes::NRB => Interfaces\AccountIdentifier\NrbInterface::class,
+    ],
+    Interfaces\Payment\SubMerchants\UltimateCounterpartyInterface::class => [
+        'discriminate_on' => 'type',
+        UltimateCounterpartyTypes::BUSINESS_DIVISION => Interfaces\Payment\SubMerchants\BusinessDivisionUltimateCounterpartyInterface::class,
+        UltimateCounterpartyTypes::BUSINESS_CLIENT => Interfaces\Payment\SubMerchants\BusinessClientUltimateCounterpartyInterface::class,
     ],
     Interfaces\Payment\Beneficiary\BeneficiaryInterface::class => [
         'discriminate_on' => 'type',

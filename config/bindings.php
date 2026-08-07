@@ -18,6 +18,10 @@ return [
 
     Interfaces\Payment\PaymentRequestInterface::class => Entities\Payment\PaymentRequest::class,
     Interfaces\Payment\PaymentRiskAssessmentInterface::class => Entities\Payment\PaymentRiskAssessment::class,
+    Interfaces\Payment\SubMerchants\PaymentSubMerchantsInterface::class => Entities\Payment\SubMerchants\PaymentSubMerchants::class,
+    Interfaces\Payment\SubMerchants\UltimateCounterpartyBuilderInterface::class => Entities\Payment\SubMerchants\UltimateCounterpartyBuilder::class,
+    Interfaces\Payment\SubMerchants\BusinessDivisionUltimateCounterpartyInterface::class => Entities\Payment\SubMerchants\BusinessDivisionUltimateCounterparty::class,
+    Interfaces\Payment\SubMerchants\BusinessClientUltimateCounterpartyInterface::class => Entities\Payment\SubMerchants\BusinessClientUltimateCounterparty::class,
     Interfaces\Payment\PaymentCreatedInterface::class => Entities\Payment\PaymentCreated::class,
     Interfaces\Payment\PaymentAuthorizationRequiredInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizationRequired::class,
     Interfaces\Payment\PaymentAuthorizingInterface::class => Entities\Payment\PaymentRetrieved\PaymentAuthorizing::class,
