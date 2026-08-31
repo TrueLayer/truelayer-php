@@ -183,6 +183,73 @@ use TrueLayer\Tests\Integration\Mocks\PaymentResponse;
     ]);
 });
 
+\it('sends the sub merchants business division ultimate counterparty on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $ultimateCounterparty = $factory->getClient()->ultimateCounterparty()
+        ->businessDivision()
+        ->id('mock-division-id')
+        ->name('Mock Division');
+    $payment->subMerchants()->ultimateCounterparty($ultimateCounterparty);
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'sub_merchants' => [
+            'ultimate_counterparty' => [
+                'id' => 'mock-division-id',
+                'name' => 'Mock Division',
+                'type' => 'business_division',
+            ],
+        ],
+    ]);
+});
+
+\it('sends the sub merchants business client ultimate counterparty on payment creation', function () {
+    $factory = CreatePayment::responses([PaymentResponse::created()]);
+
+    $payment = $factory->payment($factory->newUser(), $factory->bankTransferMethod($factory->sortCodeBeneficiary()));
+    $businessClient = $factory->getClient()->ultimateCounterparty()
+        ->businessClient()
+        ->id('mock-client-id')
+        ->tradingName('Mock Trading Name')
+        ->commercialName('Mock Commercial Name')
+        ->url('https://mock-client.example.com')
+        ->mcc('1234')
+        ->registrationNumber('mock-registration-number');
+    $businessClient->address()
+        ->addressLine1('1 Mock Street')
+        ->city('London')
+        ->zip('EC2A 1PX')
+        ->countryCode('GB');
+    $payment->subMerchants()->ultimateCounterparty($businessClient);
+
+    $payment->create();
+
+    \expect(\getRequestPayload(1))->toMatchArray([
+        'sub_merchants' => [
+            'ultimate_counterparty' => [
+                'id' => 'mock-client-id',
+                'trading_name' => 'Mock Trading Name',
+                'commercial_name' => 'Mock Commercial Name',
+                'url' => 'https://mock-client.example.com',
+                'mcc' => '1234',
+                'registration_number' => 'mock-registration-number',
+                'address' => [
+                    'address_line1' => '1 Mock Street',
+                    'address_line2' => null,
+                    'city' => 'London',
+                    'state' => null,
+                    'zip' => 'EC2A 1PX',
+                    'country_code' => 'GB',
+                ],
+                'type' => 'business_client',
+            ],
+        ],
+    ]);
+});
+
 \it('sends the hosted page on payment creation', function () {
     $factory = CreatePayment::responses([PaymentResponse::created()]);
 
