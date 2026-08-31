@@ -104,4 +104,15 @@ interface PaymentsApiInterface
      * @return mixed[]
      */
     public function retrieveRefunds(string $paymentId): array;
+
+    /**
+     * @param mixed[] $searchRequest
+     *
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     *
+     * @return mixed[]
+     */
+    public function searchProviders(array $searchRequest): array;
 }

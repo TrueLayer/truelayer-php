@@ -37,6 +37,8 @@ use TrueLayer\Interfaces\Remitter\RemitterInterface;
 use TrueLayer\Interfaces\Remitter\RemitterVerification\RemitterVerificationBuilderInterface;
 use TrueLayer\Interfaces\RequestOptionsInterface;
 use TrueLayer\Interfaces\Payment\Scheme\SchemeSelectionBuilderInterface;
+use TrueLayer\Interfaces\PaymentsProvider\PaymentsProviderInterface;
+use TrueLayer\Interfaces\PaymentsProvider\SearchProvidersRequestBuilderInterface;
 use TrueLayer\Interfaces\SignupPlus\SignupPlusBuilderInterface;
 use TrueLayer\Interfaces\UserInterface;
 use TrueLayer\Interfaces\Webhook\WebhookInterface;
@@ -434,5 +436,32 @@ final class Client implements ClientInterface
     public function signupPlus(): SignupPlusBuilderInterface
     {
         return $this->entityFactory->make(SignupPlusBuilderInterface::class);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @return SearchProvidersRequestBuilderInterface
+     */
+    public function searchProvidersRequest(): SearchProvidersRequestBuilderInterface
+    {
+        return $this->entityFactory->make(SearchProvidersRequestBuilderInterface::class);
+    }
+
+    /**
+     * @param array<string, mixed> $searchRequest
+     *
+     * @throws InvalidArgumentException
+     * @throws SignerException
+     * @throws ApiRequestJsonSerializationException
+     * @throws ApiResponseUnsuccessfulException
+     *
+     * @return PaymentsProviderInterface[]
+     */
+    public function searchPaymentsProviders(array $searchRequest): array
+    {
+        $data = $this->apiFactory->paymentsApi()->searchProviders($searchRequest);
+
+        return $this->entityFactory->makeMany(PaymentsProviderInterface::class, $data);
     }
 }
