@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace TrueLayer\Entities\MerchantAccount;
 
 use TrueLayer\Entities\Entity;
+use TrueLayer\Exceptions\InvalidArgumentException;
 use TrueLayer\Interfaces\AccountIdentifier\AccountIdentifierInterface;
+use TrueLayer\Interfaces\HasApiFactoryInterface;
 use TrueLayer\Interfaces\MerchantAccount\MerchantAccountInterface;
+use TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountTransactionRetrievedInterface;
+use TrueLayer\Traits\ProvidesApiFactory;
 
-final class MerchantAccount extends Entity implements MerchantAccountInterface
+final class MerchantAccount extends Entity implements MerchantAccountInterface, HasApiFactoryInterface
 {
+    use ProvidesApiFactory;
+
     /**
      * @var string
      */
@@ -102,5 +108,19 @@ final class MerchantAccount extends Entity implements MerchantAccountInterface
     public function getAccountHolderName(): string
     {
         return $this->accountHolderName;
+    }
+
+    /**
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     *
+     * @return array|MerchantAccountTransactionRetrievedInterface[]
+     * @throws InvalidArgumentException
+     */
+    public function getTransactions(\DateTimeInterface $from, \DateTimeInterface $to): array {
+        $data = $this->getApiFactory()->merchantAccountsApi()
+            ->listTransactions($this->id, $from, $to);
+
+        return $this->entityFactory->makeMany(MerchantAccountTransactionRetrievedInterface::class, $data);
     }
 }

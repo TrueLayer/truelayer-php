@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TrueLayer\Entities\MerchantAccount\Transactions\Returns;
+
+use TrueLayer\Interfaces\MerchantAccount\Transactions\Returns\MerchantAccountExternalPaymentReturnUnknownInterface;
+
+class MerchantAccountExternalPaymentReturnUnknown extends MerchantAccountExternalPaymentReturn implements MerchantAccountExternalPaymentReturnUnknownInterface
+{
+
+}

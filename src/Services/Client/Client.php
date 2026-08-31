@@ -374,7 +374,6 @@ final class Client implements ClientInterface
 
     /**
      * @throws InvalidArgumentException
-     * @throws InvalidArgumentException
      * @throws SignerException
      * @throws ApiRequestJsonSerializationException
      * @throws ApiResponseUnsuccessfulException

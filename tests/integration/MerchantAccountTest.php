@@ -46,3 +46,21 @@ use TrueLayer\Tests\Integration\Mocks\MerchantAccountResponse;
     \expect($account->getAccountHolderName())->toBe('John Doe');
     \expect($account->getAccountIdentifiers()[0])->toBeInstanceOf(IbanDetailsInterface::class);
 });
+
+\it('retrieves a merchant account\'s transactions', function () {
+    $client = \client([MerchantAccountResponse::account(), MerchantAccountResponse::transactions()]);
+
+    $account = $client->getMerchantAccount('1');
+
+    $from = DateTime::createFromFormat(DateTime::ATOM, '2025-05-01T00:00:00Z');
+    $to = DateTime::createFromFormat(DateTime::ATOM, '2025-05-30T00:00:00Z');
+
+    $transactions = $account->getTransactions($from, $to);
+
+    \expect(count($transactions))->toBe(5);
+    \expect($transactions[0])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountPaymentInterface::class);
+    \expect($transactions[1])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountExternalPaymentInterface::class);
+    \expect($transactions[2])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountPendingPayoutInterface::class);
+    \expect($transactions[3])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountExecutedPayoutInterface::class);
+    \expect($transactions[4])->toBeInstanceOf(\TrueLayer\Interfaces\MerchantAccount\Transactions\MerchantAccountRefundInterface::class);
+});
